@@ -16,7 +16,7 @@ export default function Home() {
           <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
             <li>
               <Link href="/" className="text-2xl font-bold">
-                reDcuk
+                reDuck🐥
               </Link>
             </li>
 

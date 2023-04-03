@@ -26,7 +26,7 @@ export default function Navigator() {
             </ul>
           </li>
 
-          <li className="w-32 font-bold">
+          <li className="font-bold">
             <ul>
               <li>
                 <Link href="/login">로그인</Link>

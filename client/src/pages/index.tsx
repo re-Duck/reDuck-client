@@ -11,8 +11,13 @@ export default function Home() {
       </Head>
 
       <main>
-        <div>메인</div>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
+        <nav className="w-full h-14 border-b-2 border-gray-100">
+          <ol className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
+            <div>reDcuk</div>
+            <div>목록</div>
+            <div>프로필</div>
+          </ol>
+        </nav>
       </main>
     </>
   );

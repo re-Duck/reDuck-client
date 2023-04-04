@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function Navigator() {
+  const [ishamburger, setishamburger] = useState(false);
+
   return (
     <>
       <nav className="w-full h-14 border-b-2 border-gray-100">
@@ -13,7 +15,7 @@ export default function Navigator() {
           </li>
 
           <li className="flex-auto pl-8">
-            <ul className=" flex gap-8 text-gray-500">
+            <ul className="hidden sm:flex gap-8 text-gray-500">
               <li>
                 <Link href="/board">게시판</Link>
               </li>
@@ -26,10 +28,13 @@ export default function Navigator() {
             </ul>
           </li>
 
-          <li className="font-bold">
+          <li className="">
             <ul>
-              <li>
+              <li className="hidden sm:block font-bold">
                 <Link href="/login">로그인</Link>
+              </li>
+              <li className="sm:hidden">
+                <span className="material-symbols-outlined">menu</span>
               </li>
             </ul>
           </li>

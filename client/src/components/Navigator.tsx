@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
-export default function Navigator() {
-  const [ishamburger, setishamburger] = useState(false);
+interface INavigator {
+  setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+export default function Navigator({ setisClickedHamburger }: INavigator) {
   return (
     <>
       <nav className="w-full h-14 border-b-2 border-gray-100">
@@ -28,13 +30,18 @@ export default function Navigator() {
             </ul>
           </li>
 
-          <li className="">
+          <li>
             <ul>
               <li className="hidden sm:block font-bold">
                 <Link href="/login">로그인</Link>
               </li>
               <li className="sm:hidden">
-                <span className="material-symbols-outlined">menu</span>
+                <button
+                  className="material-symbols-outlined hover:cursor-pointer"
+                  onClick={() => setisClickedHamburger(true)}
+                >
+                  menu
+                </button>
               </li>
             </ul>
           </li>

@@ -1,9 +1,10 @@
+import Layout from '@/components/Layout';
 import React from 'react';
 
 export default function Board() {
   return (
-    <main>
+    <Layout>
       <h2>게시판</h2>
-    </main>
+    </Layout>
   );
 }

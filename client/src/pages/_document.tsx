@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Html, Head, Main, NextScript } from 'next/document';
-import Navigator from '@/components/Navigator';
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <body className="m-auto">
-        <Navigator />
+      <body>
         <Main />
         <NextScript />
       </body>

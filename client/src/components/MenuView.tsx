@@ -1,4 +1,4 @@
-import { linkList } from '@/constant';
+import { menuViewLinkList } from '@/constant';
 import Link from 'next/link';
 import React from 'react';
 
@@ -13,7 +13,7 @@ export default function MenuView({ isClickedHamburger }: IMenuView) {
       {isClickedHamburger && (
         <div className="fixed top-14 z-10 w-screen h-screen sm:hidden bg-white">
           <ul className="flex flex-col text-2xl">
-            {linkList.map(({ name, href }) => (
+            {menuViewLinkList.map(({ name, href }) => (
               <li
                 className="flex justify-center items-center h-16 border-b-2 border-gray-100 text-gray-500"
                 key={name}

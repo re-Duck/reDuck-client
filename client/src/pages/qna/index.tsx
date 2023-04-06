@@ -1,10 +1,10 @@
 import Layout from '@/components/Layout';
 import React from 'react';
 
-export default function Login() {
+export default function Qna() {
   return (
     <Layout>
-      <div>로그인</div>
+      <div>qna</div>
     </Layout>
   );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { linkList } from '@/constant';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,15 +19,11 @@ export default function Navigator({ setisClickedHamburger }: INavigator) {
 
           <li className="flex-auto pl-8">
             <ul className="hidden sm:flex gap-8 text-gray-500">
-              <li>
-                <Link href="/board">게시판</Link>
-              </li>
-              <li>
-                <Link href="/qna">Q&A</Link>
-              </li>
-              <li>
-                <Link href="/chatroom">채팅방</Link>
-              </li>
+              {linkList.map(({ name, href }) => (
+                <li key={name}>
+                  <Link href={href}>{name}</Link>
+                </li>
+              ))}
             </ul>
           </li>
 
@@ -38,9 +35,9 @@ export default function Navigator({ setisClickedHamburger }: INavigator) {
               <li className="sm:hidden">
                 <button
                   className="material-symbols-outlined hover:cursor-pointer"
-                  onClick={() => setisClickedHamburger(true)}
+                  onClick={() => setisClickedHamburger(prev => !prev)}
                 >
-                  menu
+                  Menu
                 </button>
               </li>
             </ul>

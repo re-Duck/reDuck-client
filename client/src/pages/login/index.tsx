@@ -1,7 +1,10 @@
+import Layout from '@/components/Layout';
+import React from 'react';
+
 export default function Login() {
   return (
-    <main>
-      <h2>로그인</h2>
-    </main>
+    <Layout>
+      <div>로그인</div>
+    </Layout>
   );
 }

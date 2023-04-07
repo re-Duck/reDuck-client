@@ -1,5 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
+import Layout from '@/components/Layout';
+
 export default function Home() {
   return (
     <>
@@ -10,10 +12,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <div>메인</div>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      </main>
+      <Layout>
+        <div></div>
+      </Layout>
     </>
   );
 }

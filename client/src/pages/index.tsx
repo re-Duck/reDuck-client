@@ -15,8 +15,13 @@ export default function Home() {
       </Head>
 
       <Layout>
-        <div className=" mx-auto flex justify-between  bg-red-200 gap-4 max-w-5xl">
-          <Post />
+        <div className=" mx-auto flex justify-betwee gap-4 max-w-5xl">
+          <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-2 gap-3">
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+          </div>
           <Advertisement />
         </div>
       </Layout>

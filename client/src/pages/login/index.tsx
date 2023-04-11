@@ -120,12 +120,14 @@ export default function Login() {
               <div className="flex justify-evenly">
                 <Link
                   href="/signup"
-                  className="underline before:content-['글'] before:invisible after:content-['자'] after:invisible"
+                  className="underline underline-offset-4 before:content-['글'] before:invisible after:content-['자'] after:invisible"
                 >
                   회원가입
                 </Link>
                 <span>|</span>
-                <span className="underline">비밀번호찾기</span>
+                <span className="underline underline-offset-4">
+                  비밀번호찾기
+                </span>
               </div>
             </Form>
           )}

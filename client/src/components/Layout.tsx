@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         setisClickedHamburger={setisClickedHamburger}
       />
       <Navigator setisClickedHamburger={setisClickedHamburger} />
-      <main className="m-auto">{children}</main>
+      <main className="m-auto bg-gray-50 h-screen mt-14 p-4">{children}</main>
     </main>
   );
 }

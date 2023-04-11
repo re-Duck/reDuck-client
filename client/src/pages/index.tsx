@@ -1,6 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
+import Advertisement from '@/components/Advertisement';
+import Post from '@/components/Post';
 
 export default function Home() {
   return (
@@ -14,15 +16,9 @@ export default function Home() {
 
       <Layout>
         <div className=" mx-auto flex justify-between  bg-red-200 gap-4 max-w-5xl">
-          <div className="bg-blue-5 w-8/12 bg-blue-200 h-60">
-            <div>게시판</div>
-          </div>
-          <div className="bg-blue-5  w-3/12 bg-blue-200 h-60">
-            <div>광고</div>
-          </div>
+          <Post />
+          <Advertisement />
         </div>
-
-        {/* <div className="bg-gray-50 h-screen mt-14 p-4"></div> */}
       </Layout>
     </>
   );

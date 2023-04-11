@@ -4,7 +4,7 @@ import React from 'react';
 interface IPost {
   id: string;
 }
-export default function Post({ id }: IPost) {
+export function Post({ id }: IPost) {
   return (
     <article className="flex flex-col w-full  bg-white border-gray-100 border-2 h-50 p-6 hover:cursor-pointer">
       <Link href={`/board/${id}`}>
@@ -20,3 +20,5 @@ export default function Post({ id }: IPost) {
     </article>
   );
 }
+
+export default React.memo(Post);

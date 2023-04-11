@@ -12,6 +12,6 @@ export const menuViewLinkList = [
 export const initialLoginValue = { userId: "", password: "" };
 
 export const errorMessage = {
-  blankID: "ID를 입력해주세요.",
-  blankPassword: "비밀번호를 입력해주세요.",
+  blankID: "아이디는 필수 입력값 입니다.",
+  blankPassword: "비밀번호는 필수 입력값 입니다.",
 };

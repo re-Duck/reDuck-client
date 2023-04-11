@@ -1,10 +1,21 @@
 import React from 'react';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
-import Advertisement from '@/components/Advertisement';
-import Post from '@/components/Post';
+import { Post, Advertisement } from '@/components';
+import { postList } from '@/constant';
 
-export default function Home() {
+interface IPostList {
+  postOriginId: string;
+  title: string;
+  content: string;
+}
+interface IHome {
+  postList: IPostList[];
+}
+
+export default function Home({ postList }: IHome) {
+  //TODO : 스크롤 이벤트로 무한 스크롤 구현
+
   return (
     <>
       <Head>
@@ -17,14 +28,23 @@ export default function Home() {
       <Layout>
         <div className=" mx-auto flex justify-betwee gap-4 max-w-5xl">
           <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-2 gap-3">
-            <Post />
-            <Post />
-            <Post />
-            <Post />
+            {postList.map(post => (
+              <Post key={post.postOriginId} id={post.postOriginId} />
+            ))}
           </div>
           <Advertisement />
         </div>
       </Layout>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  //API 요청
+  // const res = await fetch('http://localhost:3000/api/post');
+  // const postList = await res.json();
+
+  return {
+    props: { postList },
+  };
 }

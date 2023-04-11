@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -12,14 +12,15 @@ import * as Yup from "yup";
 import googleLogo from "../../assets/images/google_logo.png";
 
 // service
-import { axios_post } from "@/service/api";
+import { loginPost } from "@/service/loginPost";
+import { initialLoginValue, errorMessage } from "@/constant";
 
 const ValidationSchema = Yup.object().shape({
-  userId: Yup.string().required("ID를 입력해주세요."),
-  password: Yup.string().required("비밀번호를 입력해주세요."),
+  userId: Yup.string().required(errorMessage.blankID),
+  password: Yup.string().required(errorMessage.blankPassword),
 });
 
-interface LoginType {
+interface ILogin {
   userId: string;
   password: string;
 }
@@ -27,24 +28,22 @@ interface LoginType {
 export default function Login() {
   const router = useRouter();
   // TODO: any타입 정의하기
-  const handleSubmit = async (sendData: LoginType, setSubmitting: any) => {
-    setSubmitting(true);
-    const data = await axios_post("/login", sendData);
-    if (data !== undefined) {
-      //TODO: data 세팅하기
-      console.log(data);
-      router.push("/");
-    }
-    setSubmitting(false);
-  };
-
+  const handleSubmit = useCallback(
+    async (sendData: ILogin, setSubmitting: any) => {
+      setSubmitting(true);
+      const flag = await loginPost(sendData);
+      flag && router.push("/");
+      setSubmitting(false);
+    },
+    [router]
+  );
   return (
     <div className="flex flex-col h-screen justify-center items-center">
       <Link href="/" className="text-2xl font-bold">
         reDuck🐥
       </Link>
       <Formik
-        initialValues={{ userId: "", password: "" }}
+        initialValues={initialLoginValue}
         validationSchema={ValidationSchema}
         onSubmit={(data, { setSubmitting }) =>
           handleSubmit(data, setSubmitting)

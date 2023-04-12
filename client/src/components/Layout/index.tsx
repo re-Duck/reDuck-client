@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Navigator from '../Navigator/Navigator';
-import MenuView from '../MenuView/MenuView';
+import Navigator from '../Navigator';
+import MenuView from '../MenuView';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isClickedHamburger, setisClickedHamburger] = useState(false);

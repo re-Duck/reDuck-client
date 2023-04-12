@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import Layout from '@/components/Layout/Layout';
-import { Post, Advertisement } from '@/components';
+
+import { Post, Advertisement, Layout } from '@/components';
 import { postList } from '@/constant';
 
 interface IPostList {

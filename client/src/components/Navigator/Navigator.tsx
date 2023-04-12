@@ -6,7 +6,7 @@ interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Navigator({ setisClickedHamburger }: INavigator) {
+export function Navigator({ setisClickedHamburger }: INavigator) {
   return (
     <nav className="w-full h-14 border-b-2 border-gray-100 fixed top-0 left-0 bg-white">
       <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
@@ -45,3 +45,5 @@ export default function Navigator({ setisClickedHamburger }: INavigator) {
     </nav>
   );
 }
+
+export default React.memo(Navigator);

@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import Layout from '@/components/Layout';
+import Layout from '@/components/Layout/Layout';
 import { Post, Advertisement } from '@/components';
 import { postList } from '@/constant';
 

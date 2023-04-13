@@ -1,9 +1,9 @@
 import React from 'react';
 
-interface IPost {
+interface IPostDetail {
   id: string | string[] | undefined;
 }
-export default function PostDetail({ id }: IPost) {
+export default function PostDetail({ id }: IPostDetail) {
   return (
     <article className="flex flex-col w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <h1 className="text-xl font-bold mb-4">제목 {id}</h1>

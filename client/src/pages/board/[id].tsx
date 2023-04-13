@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 
-export default function PostDetail() {
+export default function PostDetailPage() {
   const router = useRouter();
   const { id } = router.query;
   return (

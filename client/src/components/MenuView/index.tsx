@@ -4,7 +4,6 @@ import React from 'react';
 
 interface IMenuView {
   isClickedHamburger: boolean;
-  setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function MenuView({ isClickedHamburger }: IMenuView) {

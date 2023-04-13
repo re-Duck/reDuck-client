@@ -5,7 +5,7 @@ interface IPostDetail {
 }
 export default function PostDetail({ id }: IPostDetail) {
   return (
-    <article className="flex flex-col w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
+    <article className="flex flex-col max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <h1 className="text-xl font-bold mb-4">제목 {id}</h1>
       <p className="text-md text-gray-500">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias saepe odit eos laborum culpa,

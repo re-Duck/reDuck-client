@@ -1,19 +1,22 @@
-import React, { useCallback } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/router";
+import React, { useCallback } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 // packages
-import { Icon } from "@iconify/react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { Icon } from '@iconify/react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 // assets
-import googleLogo from "../../assets/images/google_logo.png";
+import googleLogo from '../../assets/images/google_logo.png';
+
+// components
+import { Divider } from '@/components';
 
 // service
-import { loginPost } from "@/service/loginPost";
-import { initialLoginValue, errorMessage } from "@/constant";
+import { loginPost } from '@/service/loginPost';
+import { initialLoginValue, errorMessage } from '@/constant';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string().required(errorMessage.blankID),
@@ -32,7 +35,7 @@ export default function Login() {
     async (sendData: ILogin, setSubmitting: any) => {
       setSubmitting(true);
       const flag = await loginPost(sendData);
-      flag && router.push("/");
+      flag && router.push('/');
       setSubmitting(false);
     },
     [router]
@@ -72,7 +75,7 @@ export default function Login() {
                 name="userId"
                 placeholder="아이디를 입력하세요."
                 className={`${
-                  touched.userId && errors.userId && "ring-red-600"
+                  touched.userId && errors.userId && 'ring-red-600'
                 } relative block w-full rounded-b-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
               />
               <label className="flex gap-x-2 items-center">
@@ -88,7 +91,7 @@ export default function Login() {
                 name="password"
                 placeholder="비밀번호를 입력하세요."
                 className={`${
-                  touched.password && errors.password && "ring-red-600"
+                  touched.password && errors.password && 'ring-red-600'
                 } relative block w-full rounded-b-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
               />
               <button
@@ -106,7 +109,7 @@ export default function Login() {
                 <Image
                   src={googleLogo}
                   alt="googleLogo"
-                  style={{ width: "20px" }}
+                  style={{ width: '20px' }}
                 />
                 <span className="flex-grow">구글 계정으로 로그인</span>
               </button>
@@ -114,7 +117,7 @@ export default function Login() {
                 type="button"
                 className="group relative flex gap-x-2 rounded-md bg-black px-3 py-2 text-sm font-semibold text-white hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                <Icon icon="mdi:github" style={{ fontSize: "20px" }} />
+                <Icon icon="mdi:github" style={{ fontSize: '20px' }} />
                 <span className="flex-grow">깃허브 계정으로 로그인</span>
               </button>
               <div className="flex justify-evenly">
@@ -124,7 +127,7 @@ export default function Login() {
                 >
                   회원가입
                 </Link>
-                <span>|</span>
+                <Divider type="vertical" thin={1} margin={1} />
                 <span className="underline underline-offset-4">
                   비밀번호찾기
                 </span>

@@ -4,13 +4,16 @@ export const linkList = [
   { name: '채팅방', href: '/chatroom' },
 ];
 
-export const menuViewLinkList = [...linkList, { name: '로그인', href: '/login' }];
+export const menuViewLinkList = [
+  ...linkList,
+  { name: '로그인', href: '/login' },
+];
 
 export const initialLoginValue = { userId: '', password: '' };
 
 export const errorMessage = {
-  blankID: "아이디는 필수 입력값 입니다.",
-  blankPassword: "비밀번호는 필수 입력값 입니다.",
+  blankID: '아이디는 필수 입력값 입니다.',
+  blankPassword: '비밀번호는 필수 입력값 입니다.',
 };
 
 export const postList = [
@@ -55,3 +58,13 @@ export const postList = [
     view: 5,
   },
 ];
+
+// 이미지 파일 최대용량 10MB
+export const imageFileMaxSize = 10 * 1024 * 1024;
+
+// 개발시작연도 선택 상수
+const thisYear = new Date().getFullYear();
+export const developExperience = Array.from(
+  { length: 10 },
+  (_, i) => thisYear - i
+);

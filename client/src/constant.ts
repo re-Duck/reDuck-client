@@ -10,10 +10,28 @@ export const menuViewLinkList = [
 ];
 
 export const initialLoginValue = { userId: '', password: '' };
+export const initialSignupValue = {
+  userId: '',
+  password: '',
+  passwordCheck: '',
+  name: '',
+  profileImg: '',
+  email: '',
+  school: '',
+  job: '',
+  startYear: '',
+};
 
 export const errorMessage = {
   blankID: '아이디는 필수 입력값 입니다.',
   blankPassword: '비밀번호는 필수 입력값 입니다.',
+  blankName: '이름은 필수 입력값 입니다.',
+  blankEmail: '이메일을 입력해주세요.',
+  minIDLength: '아이디는 최소 6자 이상입니다.',
+  maxIDLength: '아이디는 최대 12자 이하입니다.',
+  invalidFormatPassword: '비밀번호 양식이 맞지 않습니다.',
+  mismatchPassword: '비밀번호가 일치하지 않습니다.',
+  invalidFormatEmail: '이메일 양식이 맞지 않습니다',
 };
 
 export const postList = [
@@ -60,11 +78,17 @@ export const postList = [
 ];
 
 // 이미지 파일 최대용량 10MB
-export const imageFileMaxSize = 10 * 1024 * 1024;
+export const IMAGE_FILE_MAX_SIZE = 10 * 1024 * 1024;
 
 // 개발시작연도 선택 상수
 const thisYear = new Date().getFullYear();
 export const developExperience = Array.from(
-  { length: 10 },
+  { length: 60 },
   (_, i) => thisYear - i
 );
+
+export const MODAL_TITLE = {
+  success: '성공',
+  warning: '경고',
+  error: '오류',
+};

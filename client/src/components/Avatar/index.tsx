@@ -1,13 +1,13 @@
 import { positionStyle } from '@/styles/styleConstant';
 
-interface AvatarProp {
+interface IAvatarProp {
   src: string | null;
   alt: string;
   hasDot: boolean;
   position?: 'topRight' | 'bottomRight' | 'topLeft' | 'bottomLeft';
 }
 
-export default function Avatar({ src, alt, hasDot, position }: AvatarProp) {
+export default function Avatar({ src, alt, hasDot, position }: IAvatarProp) {
   const backgroundColor = src ? '' : 'bg-slate-400';
   return (
     <div

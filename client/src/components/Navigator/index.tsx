@@ -2,6 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import { linkList } from '@/constant';
 
+// Images & Icons
+import menu_icon from '@/assets/images/hamburger_logo.svg';
+import Image from 'next/image';
+
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -32,12 +36,15 @@ export function Navigator({ setisClickedHamburger }: INavigator) {
               <Link href="/login">로그인</Link>
             </li>
             <li className="sm:hidden">
-              <button
-                className="material-symbols-outlined hover:cursor-pointer"
-                onClick={() => setisClickedHamburger(prev => !prev)}
-              >
-                Menu
-              </button>
+              {
+                <button onClick={() => setisClickedHamburger((prev) => !prev)}>
+                  <Image
+                    src={menu_icon}
+                    alt="menu_icon"
+                    style={{ width: '25px' }}
+                  />
+                </button>
+              }
             </li>
           </ul>
         </li>

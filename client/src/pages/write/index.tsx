@@ -26,7 +26,7 @@ export default function Write() {
         onSubmit={(data, { setSubmitting }) => handleSubmit()}
       >
         {({ errors, touched, isSubmitting }) => (
-          <Form className="flex flex-col shadow-lg p-10 m-auto gap-y-5 max-w-5xl">
+          <Form className="flex flex-col shadow-lg px-10 m-auto gap-y-5 max-w-5xl pb-20">
             <div className="flex justify-between">
               <Link href="/">
                 <Image

@@ -41,5 +41,12 @@ const formats = [
 ];
 
 export default function QuillEditBox() {
-  return <QuillNoSSRWrapper modules={modules} formats={formats} theme="snow" />;
+  return (
+    <QuillNoSSRWrapper
+      modules={modules}
+      formats={formats}
+      theme="snow"
+      style={{ height: '500px' }}
+    />
+  );
 }

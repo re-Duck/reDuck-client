@@ -19,14 +19,14 @@ export default function Write() {
   const handleSubmit = useCallback(() => {}, []);
 
   return (
-    <Layout>
+    <div className="bg-gray-50">
       <Formik
         initialValues={{ title: '' }}
         validationSchema={ValidationSchema}
         onSubmit={(data, { setSubmitting }) => handleSubmit()}
       >
         {({ errors, touched, isSubmitting }) => (
-          <Form className="flex flex-col shadow-lg p-10 m-auto gap-y-5 max-w-5xl pb-20 bg-gray-100 rounded-md">
+          <Form className="flex flex-col shadow-lg p-10 m-auto gap-y-5 max-w-5xl pb-20">
             <div className="flex justify-between">
               <Link href="/">
                 <Image
@@ -54,6 +54,6 @@ export default function Write() {
           </Form>
         )}
       </Formik>
-    </Layout>
+    </div>
   );
 }

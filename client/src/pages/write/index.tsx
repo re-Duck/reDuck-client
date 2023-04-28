@@ -22,7 +22,7 @@ export default function Write() {
         onSubmit={(data, { setSubmitting }) => handleSubmit()}
       >
         {({ errors, touched, isSubmitting }) => (
-          <Form className="flex flex-col shadow-lg p-10 m-auto gap-y-10 min-w-[22rem] max-w-6xl">
+          <Form className="flex flex-col shadow-lg p-10 m-auto gap-y-5 min-w-[22rem] max-w-6xl">
             <div className="flex justify-between">
               <button
                 className="rounded-md w-15 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
@@ -44,7 +44,7 @@ export default function Write() {
               name="name"
               type="text"
               placeholder="제목을 입력하세요"
-              className="text-4xl p-3 border-2 rounded-md border-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-transparent text-slate-600"
+              className="text-4xl p-3 border-2 rounded-md border-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700 bg-transparent"
             />
             <QuillEditBox />
           </Form>

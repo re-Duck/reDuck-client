@@ -47,6 +47,7 @@ export default function QuillEditBox() {
       formats={formats}
       theme="snow"
       style={{ height: '500px' }}
+      placeholder={'내용을 입력해주세요.'}
     />
   );
 }

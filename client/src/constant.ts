@@ -14,7 +14,7 @@ export const initialLoginValue = { userId: '', password: '' };
 export const errorMessage = {
   blankID: '아이디는 필수 입력값 입니다.',
   blankPassword: '비밀번호는 필수 입력값 입니다.',
-  blankTitle: '제목은 필수 입력값 입니다.',
+  blankTitle: '제목을 입력해 주세요.',
 };
 
 export const postList = [

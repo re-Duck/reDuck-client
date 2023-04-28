@@ -1,16 +1,12 @@
+import { QuillEditBox } from '@/components';
 import Layout from '@/components/Layout';
-import React, { useState } from 'react';
-import { Editor, EditorState } from 'draft-js';
+import React from 'react';
 
 export default function Write() {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
   return (
     <Layout>
       <div>
-        Write
-        <Editor editorState={editorState} onChange={setEditorState} />
+        <QuillEditBox />
       </div>
     </Layout>
   );

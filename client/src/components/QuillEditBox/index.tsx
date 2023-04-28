@@ -40,7 +40,15 @@ const formats = [
   'video',
 ];
 
-export default function QuillEditBox() {
+interface IQuillEditBox {
+  content: string;
+  handleContent: (content: string) => void;
+}
+
+export default function QuillEditBox({
+  content,
+  handleContent,
+}: IQuillEditBox) {
   return (
     <QuillNoSSRWrapper
       modules={modules}
@@ -48,6 +56,8 @@ export default function QuillEditBox() {
       theme="snow"
       style={{ height: '500px' }}
       placeholder={'내용을 입력해주세요.'}
+      value={content}
+      onChange={handleContent}
     />
   );
 }

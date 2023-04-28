@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { QuillEditBox } from '@/components';
 
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { errorMessage } from '@/constant';
 
@@ -15,6 +15,13 @@ const ValidationSchema = Yup.object().shape({
 });
 
 export default function Write() {
+  const [content, setContent] = useState<string>('');
+
+  const handleContent = (value: string) => {
+    console.log(value);
+    setContent(value);
+  };
+
   return (
     <div className="bg-gray-50">
       <Formik
@@ -22,7 +29,9 @@ export default function Write() {
         validationSchema={ValidationSchema}
         onSubmit={(data, { setSubmitting }) => {
           //API 요청
+          setSubmitting(true);
           console.log('data', data);
+          console.log('content', content);
           setSubmitting(false);
         }}
       >
@@ -54,7 +63,7 @@ export default function Write() {
               className="text-4xl p-3 border-2 rounded-md border-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700 bg-transparent"
             />
 
-            <QuillEditBox />
+            <QuillEditBox content={content} handleContent={handleContent} />
           </Form>
         )}
       </Formik>

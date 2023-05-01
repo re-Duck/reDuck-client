@@ -18,7 +18,7 @@ import {
 } from '@/constant';
 
 enum ModalType {
-  SUCESS = 'success',
+  SUCCESS = 'success',
   WARNING = 'warning',
   ERROR = 'error',
 }
@@ -52,7 +52,7 @@ export default function SignUp() {
 
   // Modal
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalType, setModalType] = useState<ModalType>(ModalType.SUCESS);
+  const [modalType, setModalType] = useState<ModalType>(ModalType.SUCCESS);
   const [modalMessage, setModalMessage] = useState<string>('');
 
   const handleModalButton = () => {
@@ -97,7 +97,7 @@ export default function SignUp() {
     touched: boolean | undefined
   ) => {
     if (typeof errorMessage === 'undefined' && touched) {
-      setModalType(ModalType.SUCESS);
+      setModalType(ModalType.SUCCESS);
       setModalMessage(
         '이메일이 전송됐습니다. 메일함을 확인하시고 인증번호를 입력해주세요'
       );
@@ -256,17 +256,6 @@ export default function SignUp() {
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
                 <label className="text-xs w-20 sm:text-base sm:w-28">
-                  직장
-                </label>
-                <Field
-                  type="text"
-                  name="job"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  placeholder="직장을 선택해주세요"
-                />
-              </div>
-              <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
                   학교
                 </label>
                 <Field
@@ -274,6 +263,17 @@ export default function SignUp() {
                   name="school"
                   className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                   placeholder="학교를 선택해주세요"
+                />
+              </div>
+              <div className="inline-flex w-full h-[38px] items-center">
+                <label className="text-xs w-20 sm:text-base sm:w-28">
+                  직장
+                </label>
+                <Field
+                  type="text"
+                  name="job"
+                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                  placeholder="직장을 선택해주세요"
                 />
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
@@ -303,7 +303,8 @@ export default function SignUp() {
               <div className="text-center">
                 <button
                   type="submit"
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm"
+                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20"
+                  disabled={isSubmitting}
                 >
                   회원가입
                 </button>

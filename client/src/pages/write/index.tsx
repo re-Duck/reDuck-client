@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
 import { QuillEditBox } from '@/components';
 
@@ -9,6 +9,7 @@ import { errorMessage } from '@/constant';
 import Image from 'next/image';
 import arrow_back from '@/assets/images/arrow_back.svg';
 import Link from 'next/link';
+import { makeHtmlToBlob } from '@/util';
 
 const ValidationSchema = Yup.object().shape({
   title: Yup.string().required(errorMessage.blankTitle),
@@ -27,11 +28,11 @@ export default function Write() {
       <Formik
         initialValues={{ title: '' }}
         validationSchema={ValidationSchema}
-        onSubmit={(data, { setSubmitting }) => {
+        onSubmit={({ title }, { setSubmitting }) => {
           //API 요청
+          const blobFile = makeHtmlToBlob(content);
+          const file = { title, file: blobFile };
           setSubmitting(true);
-          console.log('data', data);
-          console.log('content', content);
           setSubmitting(false);
         }}
       >

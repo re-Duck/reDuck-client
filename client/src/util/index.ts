@@ -1,14 +1,18 @@
-export const makeContentASFile = (innerHTML: string) => {
+export const makeHtmlToBlob = (innerHTML: string) => {
   const htmlContent = new Array(innerHTML);
-  const bl = new Blob(htmlContent, { type: 'text/html' });
+  const blob = new Blob(htmlContent, { type: 'text/html' });
+  return blob;
+};
+
+export const makeblobToHTML = (blob: Blob) => {
   const fr = new FileReader();
 
   try {
     fr.onload = () => {
       return fr.result;
     };
-    fr.readAsText(bl);
-  } catch (e) {
-    console.log(e);
+    fr.readAsText(blob);
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const BASE_URL = 'http://168.188.123.234:8080';
-const MOCK_URL = 'https://bc8f5065-dd76-46c0-8364-a70034df3be7.mock.pstmn.io';
 
 interface IResponse {
   isOkay: boolean;
@@ -37,12 +36,13 @@ export async function axios_get(
 
 export async function axios_post(
   suburl: string,
-  data: object
+  data: FormData
 ): Promise<IResponse> {
   try {
-    const response = await axios.post(`${MOCK_URL}${suburl}`, data, {
+    const response = await axios.post(`${BASE_URL}${suburl}`, data, {
       headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
       },
     });
     const RESPONSE_OK = response.status === 200 || response.status === 201;

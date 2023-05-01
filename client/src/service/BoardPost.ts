@@ -4,9 +4,25 @@ import { v4 as uuidv4 } from 'uuid';
 // service
 import { axios_post } from './base/api';
 
-export async function boardPost(sendData: object): Promise<boolean> {
+export async function boardPost(
+  title: string,
+  blobFile: Blob
+): Promise<boolean> {
   const postOriginId = uuidv4();
-  const result = await axios_post(`/post/${postOriginId}`, sendData);
+
+  const formData = new FormData();
+  const postDto = {
+    title,
+    postOriginId,
+    userId: 'reduck',
+    content: 'this is the first posting!!',
+    boardType: 'qna',
+    temporary: 'true',
+  };
+  formData.append('postDto', JSON.stringify(postDto));
+  formData.append('multipartFiles', blobFile);
+
+  const result = await axios_post(`/post/${postOriginId}`, formData);
 
   if (result.isOkay) {
     // TODO: 성공 로직

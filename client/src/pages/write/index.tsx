@@ -10,6 +10,7 @@ import Image from 'next/image';
 import arrow_back from '@/assets/images/arrow_back.svg';
 import Link from 'next/link';
 import { makeHtmlToBlob } from '@/util';
+import { boardPost } from '@/service/boardPost';
 
 const ValidationSchema = Yup.object().shape({
   title: Yup.string().required(errorMessage.blankTitle),
@@ -28,11 +29,10 @@ export default function Write() {
       <Formik
         initialValues={{ title: '' }}
         validationSchema={ValidationSchema}
-        onSubmit={({ title }, { setSubmitting }) => {
+        onSubmit={async ({ title }, { setSubmitting }) => {
           //API 요청
           const blobFile = makeHtmlToBlob(content);
-          const file = { title, file: blobFile };
-          console.log(process.env.NEXT_PUBLIC_AUTH_TOKEN);
+          await boardPost(title, blobFile);
           setSubmitting(true);
           setSubmitting(false);
         }}

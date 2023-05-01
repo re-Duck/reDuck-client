@@ -32,6 +32,7 @@ export default function Write() {
           //API 요청
           const blobFile = makeHtmlToBlob(content);
           const file = { title, file: blobFile };
+          console.log(process.env.NEXT_PUBLIC_AUTH_TOKEN);
           setSubmitting(true);
           setSubmitting(false);
         }}

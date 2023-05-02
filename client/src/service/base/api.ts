@@ -7,12 +7,21 @@ interface IResponse {
   data: object;
   message?: string;
 }
+interface IAxiosGet {
+  suburl: string;
+  params: object;
+}
+interface IAxiosPost {
+  suburl: string;
+  data: FormData | object;
+  headers?: object;
+}
 
 // TODO: any 타입 정의하기
-export async function axios_get(
-  suburl: string,
-  params: object
-): Promise<IResponse> {
+export async function axios_get({
+  suburl,
+  params,
+}: IAxiosGet): Promise<IResponse> {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {
       params,
@@ -34,18 +43,17 @@ export async function axios_get(
   }
 }
 
-export async function axios_post(
-  suburl: string,
-  data: FormData
-): Promise<IResponse> {
+export async function axios_post({
+  suburl,
+  data,
+  headers = {},
+}: IAxiosPost): Promise<IResponse> {
   try {
     const response = await axios.post(`${BASE_URL}${suburl}`, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
-      },
+      headers,
     });
     const RESPONSE_OK = response.status === 200 || response.status === 201;
+
     if (RESPONSE_OK) {
       return {
         isOkay: true,

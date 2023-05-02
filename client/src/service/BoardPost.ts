@@ -9,7 +9,11 @@ export async function boardPost(
   blobFile: Blob
 ): Promise<boolean> {
   const postOriginId = uuidv4();
-
+  const suburl = `/post/${postOriginId}`;
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+  };
   const formData = new FormData();
   const postDto = {
     title,
@@ -22,7 +26,7 @@ export async function boardPost(
   formData.append('postDto', JSON.stringify(postDto));
   formData.append('multipartFiles', blobFile);
 
-  const result = await axios_post(`/post/${postOriginId}`, formData);
+  const result = await axios_post({ suburl, headers, data: formData });
 
   if (result.isOkay) {
     // TODO: 성공 로직

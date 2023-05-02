@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { QuillEditBox } from '@/components';
 
@@ -19,23 +19,25 @@ const ValidationSchema = Yup.object().shape({
 export default function Write() {
   const [content, setContent] = useState<string>('');
 
-  const handleContent = (value: string) => {
-    console.log(value);
-    setContent(value);
-  };
+  const handleContent = useCallback((value: string) => setContent(value), []);
+  const handleSubmit = useCallback(
+    async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
+      setSubmitting(true);
+      const blobFile = makeHtmlToBlob(content);
+      await boardPost(title, blobFile);
+      setSubmitting(false);
+    },
+    [content]
+  );
 
   return (
     <div className="bg-gray-50">
       <Formik
         initialValues={{ title: '' }}
         validationSchema={ValidationSchema}
-        onSubmit={async ({ title }, { setSubmitting }) => {
-          //API 요청
-          const blobFile = makeHtmlToBlob(content);
-          await boardPost(title, blobFile);
-          setSubmitting(true);
-          setSubmitting(false);
-        }}
+        onSubmit={async ({ title }, { setSubmitting }) =>
+          handleSubmit(title, setSubmitting)
+        }
       >
         {({ errors, touched, isSubmitting }) => (
           <Form className="flex flex-col shadow-lg p-10 m-auto gap-y-5 max-w-5xl pb-20">

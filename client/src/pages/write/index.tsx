@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 //react-quill component
 import { QuillEditBox } from '@/components';
@@ -10,14 +9,12 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { errorMessage } from '@/constant';
 
-//assets
-import arrow_back from '@/assets/images/arrow_back.svg';
-
 //util
 import { makeHtmlToBlob } from '@/util';
 
 //service
 import { boardPost } from '@/service/boardPost';
+import { Icon } from '@iconify/react';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -52,10 +49,9 @@ export default function Write() {
             <Form className="flex flex-col p-10 m-auto gap-y-5 max-w-5xl pb-20">
               <div className="flex justify-between">
                 <Link href="/">
-                  <Image
-                    src={arrow_back}
-                    alt="arrow_back"
-                    style={{ width: '30px' }}
+                  <Icon
+                    icon="material-symbols:arrow-back-rounded"
+                    style={{ fontSize: '30px' }}
                   />
                 </Link>
                 <button

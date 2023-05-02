@@ -2,9 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { linkList } from '@/constant';
 
-// Images & Icons
-import menu_icon from '@/assets/images/hamburger_logo.svg';
-import Image from 'next/image';
+// Icons
+import { Icon } from '@iconify/react';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,10 +37,9 @@ export function Navigator({ setisClickedHamburger }: INavigator) {
             <li className="sm:hidden">
               {
                 <button onClick={() => setisClickedHamburger((prev) => !prev)}>
-                  <Image
-                    src={menu_icon}
-                    alt="menu_icon"
-                    style={{ width: '25px' }}
+                  <Icon
+                    icon="material-symbols:menu-rounded"
+                    style={{ fontSize: '25px' }}
                   />
                 </button>
               }

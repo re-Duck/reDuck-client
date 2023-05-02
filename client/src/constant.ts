@@ -9,13 +9,13 @@ export const menuViewLinkList = [
   { name: '로그인', href: '/login' },
 ];
 
-export const initialLoginValue = { userId: '', password: '' };
+export const initialLoginValue = Object.freeze({ userId: '', password: '' });
 
-export const errorMessage = {
+export const errorMessage = Object.freeze({
   blankID: '아이디는 필수 입력값 입니다.',
   blankPassword: '비밀번호는 필수 입력값 입니다.',
   blankTitle: '제목을 입력해 주세요.',
-};
+});
 
 export const postList = [
   {
@@ -77,3 +77,20 @@ export const quillModules = Object.freeze({
     matchVisual: false,
   },
 });
+
+export const quillFormats = [
+  'header',
+  'font',
+  'size',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'link',
+  'image',
+  'video',
+];

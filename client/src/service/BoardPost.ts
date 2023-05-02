@@ -14,6 +14,7 @@ export async function boardPost(
     'Content-Type': 'multipart/form-data',
     'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
   };
+
   const formData = new FormData();
   const postDto = {
     title,

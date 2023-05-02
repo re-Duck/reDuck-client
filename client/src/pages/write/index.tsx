@@ -44,7 +44,7 @@ export default function Write() {
         <Formik
           initialValues={{ title: '' }}
           validationSchema={ValidationSchema}
-          onSubmit={async ({ title }, { setSubmitting }) =>
+          onSubmit={({ title }, { setSubmitting }) =>
             handleSubmit(title, setSubmitting)
           }
         >

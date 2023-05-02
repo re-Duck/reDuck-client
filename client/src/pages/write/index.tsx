@@ -1,17 +1,25 @@
 import React, { useCallback, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
+//react-quill component
 import { QuillEditBox } from '@/components';
 
+// form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { errorMessage } from '@/constant';
 
-import Image from 'next/image';
+//assets
 import arrow_back from '@/assets/images/arrow_back.svg';
-import Link from 'next/link';
+
+//util
 import { makeHtmlToBlob } from '@/util';
+
+//service
 import { boardPost } from '@/service/boardPost';
 
+// TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
   title: Yup.string().required(errorMessage.blankTitle),
 });

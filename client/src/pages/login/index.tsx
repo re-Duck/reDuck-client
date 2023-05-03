@@ -31,15 +31,12 @@ interface ILogin {
 export default function Login() {
   const router = useRouter();
   // TODO: any타입 정의하기
-  const handleSubmit = useCallback(
-    async (sendData: ILogin, setSubmitting: any) => {
-      setSubmitting(true);
-      const flag = await loginPost(sendData);
-      flag && router.push('/');
-      setSubmitting(false);
-    },
-    [router]
-  );
+  const handleSubmit = async (sendData: ILogin, setSubmitting: any) => {
+    setSubmitting(true);
+    const flag = await loginPost(sendData);
+    flag && router.push('/');
+    setSubmitting(false);
+  };
   return (
     <>
       <nav className="w-full h-14 border-b-2 border-gray-100">

@@ -9,7 +9,20 @@ export const menuViewLinkList = [
   { name: '로그인', href: '/login' },
 ];
 
-export const initialLoginValue = { userId: '', password: '' };
+export const initialLoginValue = Object.freeze({ userId: '', password: '' });
+
+export const errorMessage = Object.freeze({
+  blankID: '아이디는 필수 입력값 입니다.',
+  blankPassword: '비밀번호는 필수 입력값 입니다.',
+  blankName: '이름은 필수 입력값 입니다.',
+  blankEmail: '이메일을 입력해주세요.',
+  minIDLength: '아이디는 최소 6자 이상입니다.',
+  maxIDLength: '아이디는 최대 12자 이하입니다.',
+  invalidFormatPassword: '비밀번호 양식이 맞지 않습니다.',
+  mismatchPassword: '비밀번호가 일치하지 않습니다.',
+  invalidFormatEmail: '이메일 양식이 맞지 않습니다',
+  blankTitle: '제목을 입력해 주세요.',
+});
 export const initialSignupValue = {
   userId: '',
   password: '',
@@ -20,18 +33,6 @@ export const initialSignupValue = {
   school: '',
   job: '',
   startYear: '',
-};
-
-export const errorMessage = {
-  blankID: '아이디는 필수 입력값 입니다.',
-  blankPassword: '비밀번호는 필수 입력값 입니다.',
-  blankName: '이름은 필수 입력값 입니다.',
-  blankEmail: '이메일을 입력해주세요.',
-  minIDLength: '아이디는 최소 6자 이상입니다.',
-  maxIDLength: '아이디는 최대 12자 이하입니다.',
-  invalidFormatPassword: '비밀번호 양식이 맞지 않습니다.',
-  mismatchPassword: '비밀번호가 일치하지 않습니다.',
-  invalidFormatEmail: '이메일 양식이 맞지 않습니다',
 };
 
 export const postList = [
@@ -77,6 +78,40 @@ export const postList = [
   },
 ];
 
+export const quillModules = Object.freeze({
+  toolbar: [
+    [{ header: '1' }, { header: '2' }, { font: [] }],
+    [{ size: [] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' },
+    ],
+    ['link', 'image'],
+  ],
+  clipboard: {
+    matchVisual: false,
+  },
+});
+
+export const quillFormats = [
+  'header',
+  'font',
+  'size',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'link',
+  'image',
+  'video',
+];
 // 이미지 파일 최대용량 10MB
 export const IMAGE_FILE_MAX_SIZE = 10 * 1024 * 1024;
 

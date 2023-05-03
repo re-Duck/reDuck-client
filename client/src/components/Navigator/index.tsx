@@ -2,13 +2,16 @@ import React from 'react';
 import Link from 'next/link';
 import { linkList } from '@/constant';
 
+// Icons
+import { Icon } from '@iconify/react';
+
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function Navigator({ setisClickedHamburger }: INavigator) {
   return (
-    <nav className="w-full h-14 border-b-2 border-gray-100 fixed top-0 left-0 bg-white">
+    <nav className="w-full h-14 border-b-2 border-gray-100 fixed top-0 left-0 bg-white z-10">
       <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
         <li>
           <Link href="/" className="text-2xl font-bold">
@@ -32,12 +35,14 @@ export function Navigator({ setisClickedHamburger }: INavigator) {
               <Link href="/login">로그인</Link>
             </li>
             <li className="sm:hidden">
-              <button
-                className="material-symbols-outlined hover:cursor-pointer"
-                onClick={() => setisClickedHamburger(prev => !prev)}
-              >
-                Menu
-              </button>
+              {
+                <button onClick={() => setisClickedHamburger((prev) => !prev)}>
+                  <Icon
+                    icon="material-symbols:menu-rounded"
+                    style={{ fontSize: '25px' }}
+                  />
+                </button>
+              }
             </li>
           </ul>
         </li>

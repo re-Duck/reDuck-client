@@ -3,6 +3,8 @@ import Head from 'next/head';
 
 import { Post, Advertisement, Layout } from '@/components';
 import { postList } from '@/constant';
+import Link from 'next/link';
+import { WritePostButton } from '@/components/WritePostButton';
 
 interface IPostList {
   postOriginId: string;
@@ -28,7 +30,8 @@ export default function Home({ postList }: IHome) {
       <Layout>
         <div className=" mx-auto flex justify-betwee gap-4 max-w-5xl">
           <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-2 gap-3">
-            {postList.map(post => (
+            <WritePostButton />
+            {postList.map((post) => (
               <Post key={post.postOriginId} id={post.postOriginId} />
             ))}
           </div>

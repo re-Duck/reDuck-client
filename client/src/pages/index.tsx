@@ -28,8 +28,8 @@ export default function Home({ postList }: IHome) {
       </Head>
 
       <Layout>
-        <div className=" mx-auto flex justify-betwee gap-4 max-w-5xl">
-          <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-2 gap-3">
+        <div className=" mx-auto flex justify-between max-w-5xl">
+          <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-[1px] gap-3">
             <WritePostButton />
             {postList.map((post) => (
               <Post key={post.postOriginId} id={post.postOriginId} />

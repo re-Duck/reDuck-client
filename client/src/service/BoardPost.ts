@@ -9,10 +9,10 @@ export async function boardPost(
   blobFile: Blob
 ): Promise<boolean> {
   const postOriginId = uuidv4();
-  const suburl = `/post/${postOriginId}`;
+  const suburl = '/post';
   const headers = {
     'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+    'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzMjYzMDY0LCJleHAiOjE2ODMzNDk0NjR9.PNBxX2zkDeI4npCD0NrCghs2xaGjARowlVvKv1u-7UQ`,
   };
 
   const formData = new FormData();
@@ -20,12 +20,10 @@ export async function boardPost(
     title,
     postOriginId,
     userId: 'reduck',
-    content: 'this is the first posting!!',
-    boardType: 'qna',
-    temporary: 'true',
+    postType: 'qna',
   };
   formData.append('postDto', JSON.stringify(postDto));
-  formData.append('multipartFiles', blobFile);
+  formData.append('file', blobFile);
 
   const result = await axios_post({ suburl, headers, data: formData });
 

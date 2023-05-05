@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // service
 import { axios_post } from './base/api';
+import { makeJsonToBlob } from '@/util';
 
 export async function boardPost(
   title: string,
@@ -22,7 +23,9 @@ export async function boardPost(
     userId: 'reduck',
     postType: 'qna',
   };
-  formData.append('postDto', JSON.stringify(postDto));
+  const blobPostDto = makeJsonToBlob(postDto);
+
+  formData.append('postDto', blobPostDto);
   formData.append('file', blobFile);
 
   const result = await axios_post({ suburl, headers, data: formData });

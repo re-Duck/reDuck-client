@@ -16,3 +16,9 @@ export const makeblobToHTML = (blob: Blob) => {
     console.log(error);
   }
 };
+
+export const makeJsonToBlob = (json: object) => {
+  const jsonContent = new Array(JSON.stringify(json));
+  const blob = new Blob(jsonContent, { type: 'application/json' });
+  return blob;
+};

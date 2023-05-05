@@ -13,7 +13,7 @@ import { errorMessage } from '@/constant';
 import { makeHtmlToBlob } from '@/util';
 
 //service
-import { boardPost } from '@/service/boardPost';
+import { boardPost } from '@/service/BoardPost';
 import { Icon } from '@iconify/react';
 
 // TODO : title 없을 시 빨간 테두리

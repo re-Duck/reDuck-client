@@ -1,16 +1,22 @@
 // service
 import { axios_post } from './base/api';
 
-export async function loginPost(data: object): Promise<boolean> {
+interface ILoginPost {
+  flag: boolean;
+  data: object;
+}
+
+export async function loginPost(data: object): Promise<ILoginPost> {
   const suburl = '/login';
 
-  const result = await axios_post({ suburl, data });
+  const result: any = await axios_post({ suburl, data });
   if (result.isOkay) {
-    // TODO: 성공 로직
-    console.log(result.data);
-    return true;
-  } else {
-    alert(result.message);
-    return false;
+    sessionStorage.setItem('accessToken', result.data.accessToken);
+    sessionStorage.setItem('refreshToken', result.data.refreshToken);
   }
+  const returnValue = {
+    flag: result.isOkay,
+    data: result.data,
+  };
+  return returnValue;
 }

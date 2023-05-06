@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -7,16 +7,23 @@ import { useRouter } from 'next/router';
 import { Icon } from '@iconify/react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { logIn } from '@/lib/redux/slices/authSlice';
 
 // assets
 import googleLogo from '../../assets/images/google_logo.png';
 
 // components
-import { Divider } from '@/components';
+import { Divider, Modal } from '@/components';
 
 // service
 import { loginPost } from '@/service/loginPost';
-import { initialLoginValue, errorMessage } from '@/constant';
+import {
+  initialLoginValue,
+  errorMessage,
+  MODAL_TITLE,
+  errorCodeToMessage,
+} from '@/constant';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string().required(errorMessage.blankID),
@@ -28,17 +35,49 @@ interface ILogin {
   password: string;
 }
 
+enum ModalType {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+}
+
 export default function Login() {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  // Modal
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  const handleModalButton = () => {
+    setModalOpen(false);
+  };
   // TODO: any타입 정의하기
   const handleSubmit = async (sendData: ILogin, setSubmitting: any) => {
     setSubmitting(true);
-    const flag = await loginPost(sendData);
-    flag && router.push('/');
+    const result: any = await loginPost(sendData);
+    if (result.flag) {
+      dispatch(
+        logIn({ userId: result.data!.userId, userName: result.data!.name })
+      );
+      router.push('/');
+    } else {
+      setModalMessage(errorCodeToMessage[result.data.code]);
+      setModalOpen(true);
+    }
     setSubmitting(false);
   };
   return (
     <>
+      {modalOpen && (
+        <Modal
+          type={ModalType.ERROR}
+          title={MODAL_TITLE.error}
+          content={modalMessage}
+          buttonType="check"
+          handleModalButton={handleModalButton}
+        />
+      )}
       <nav className="w-full h-14 border-b-2 border-gray-100">
         <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
           <li>

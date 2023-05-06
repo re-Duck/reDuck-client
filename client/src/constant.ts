@@ -23,6 +23,12 @@ export const errorMessage = Object.freeze({
   invalidFormatEmail: '이메일 양식이 맞지 않습니다',
   blankTitle: '제목을 입력해 주세요.',
 });
+
+export const errorCodeToMessage = Object.freeze({
+  USER_NOT_EXIST: '유저가 존재하지 않습니다.',
+  INVALID_PASSWORD: '비밀번호가 맞지 않습니다.',
+});
+
 export const initialSignupValue = {
   userId: '',
   password: '',

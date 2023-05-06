@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 import { HYDRATE } from 'next-redux-wrapper';
 
 interface IUserState {
@@ -28,14 +29,12 @@ export const authSlice = createSlice({
     [HYDRATE]: (state, action) => {
       return {
         ...state,
-        // ...action.payload.auth
+        ...action.payload.auth,
       };
     },
   },
 });
 
 export const { logIn, logOut } = authSlice.actions;
-
-//export const selectUser = (state: RootState) => state.userInfo.value
-
+export const selectUser = (state: RootState) => state.auth;
 export default authSlice.reducer;

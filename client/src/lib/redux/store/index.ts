@@ -1,13 +1,19 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 import { reducer } from '../reducer';
+import { createWrapper } from 'next-redux-wrapper';
 
 const makeStore = () =>
   configureStore({
     reducer,
   });
 
-const store = makeStore();
+export type RootStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<RootStore['getState']>;
+export type RootThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action
+>;
 
-export type RootState = ReturnType<typeof store.getState>;
-
-export default store;
+export const wrapper = createWrapper<RootStore>(makeStore);

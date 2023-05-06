@@ -4,15 +4,11 @@ import type { AppProps } from 'next/app';
 
 // packages
 import 'react-quill/dist/quill.snow.css';
-import { Provider } from 'react-redux';
-
 // redux
-import store from '@/lib/redux/store';
+import { wrapper } from '@/lib/redux/store';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
-  );
+function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />;
 }
+
+export default wrapper.withRedux(App);

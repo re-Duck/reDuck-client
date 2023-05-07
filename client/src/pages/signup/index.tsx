@@ -16,6 +16,7 @@ import {
   initialSignupValue,
   MODAL_TITLE,
 } from '@/constant';
+import { checkID, sendEmail } from '@/service/signup';
 
 enum ModalType {
   SUCCESS = 'success',
@@ -46,17 +47,39 @@ const ValidationSchema = Yup.object().shape({
 export default function SignUp() {
   const imgRef = useRef<HTMLInputElement>(null);
   const [profileImg, setProfileImg] = useState<string | null>(null);
-  const [certificationNumber, setCertificationNumber] = useState<number | null>(
-    null
-  );
 
   // Modal
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>(ModalType.SUCCESS);
   const [modalMessage, setModalMessage] = useState<string>('');
 
+  // 아이디 중복 체크 여부
+  const [checkedId, setCheckedId] = useState<string>('');
+
+  // 이메일 전송/확인 여부
+  const [isSendEmail, setIsSendEmail] = useState<boolean>(false);
+  const [checkedEmail, setCheckedEmail] = useState<string>('');
+
   const handleModalButton = () => {
     setModalOpen(false);
+  };
+
+  const checkDuplicateID = async (userId: string) => {
+    const response: any = await checkID(userId);
+    console.log(response);
+    if (response.state && !response.isDuplicate) {
+      setCheckedId(userId);
+      setModalType(ModalType.SUCCESS);
+      setModalMessage('사용할 수 있는 아이디입니다.');
+    } else {
+      setModalType(ModalType.ERROR);
+      setModalMessage(
+        response.message !== undefined
+          ? '네트워크 에러'
+          : '사용중인 아이디 입니다.'
+      );
+    }
+    setModalOpen(true);
   };
 
   const handleChooseFile = () => {
@@ -92,18 +115,23 @@ export default function SignUp() {
     }
   };
 
-  const handleRequestEmail = (
+  const handleRequestEmail = async (
     errorMessage: string | undefined,
-    touched: boolean | undefined
+    touched: boolean | undefined,
+    email: string
   ) => {
     if (typeof errorMessage === 'undefined' && touched) {
-      setModalType(ModalType.SUCCESS);
-      setModalMessage(
-        '이메일이 전송됐습니다. 메일함을 확인하시고 인증번호를 입력해주세요'
-      );
-      setModalOpen(true);
-      // TODO: API 연동
-      setCertificationNumber(9999);
+      const status = await sendEmail({ email });
+      if (status) {
+        setIsSendEmail(true);
+        setModalType(ModalType.SUCCESS);
+        setModalMessage(
+          '이메일이 전송됐습니다. 메일함을 확인하시고 인증번호를 입력해주세요'
+        );
+      } else {
+        setModalType(ModalType.ERROR);
+        setModalMessage('이메일 전송에 실패했습니다. 다시 시도해주세요.');
+      }
     } else {
       setModalType(ModalType.ERROR);
       setModalMessage(
@@ -111,10 +139,8 @@ export default function SignUp() {
           errorMessage === undefined ? '이메일을 입력해주세요.' : errorMessage
         }`
       );
-      setModalOpen(true);
-
-      setCertificationNumber(null);
     }
+    setModalOpen(true);
   };
   return (
     <Layout>
@@ -154,6 +180,7 @@ export default function SignUp() {
                 />
                 <button
                   type="button"
+                  onClick={() => checkDuplicateID(values.userId)}
                   className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
                 >
                   중복확인
@@ -232,13 +259,17 @@ export default function SignUp() {
                       type="button"
                       className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                       onClick={() =>
-                        handleRequestEmail(errors.email, touched.email)
+                        handleRequestEmail(
+                          errors.email,
+                          touched.email,
+                          values.email
+                        )
                       }
                     >
                       인증번호발송
                     </button>
                   </div>
-                  {certificationNumber && (
+                  {isSendEmail && (
                     <div className="flex flex-none">
                       <input
                         type="text"

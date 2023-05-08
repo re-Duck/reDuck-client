@@ -40,8 +40,8 @@ export async function axios_get({
   } catch (e: any) {
     return {
       isOkay: false,
-      data: e.response.data,
-      message: e.response.message,
+      data: e.response?.data,
+      message: e.response?.message,
     };
   }
 }

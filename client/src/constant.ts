@@ -22,6 +22,10 @@ export const errorMessage = Object.freeze({
   mismatchPassword: '비밀번호가 일치하지 않습니다.',
   invalidFormatEmail: '이메일 양식이 맞지 않습니다',
   blankTitle: '제목을 입력해 주세요.',
+  duplicateId: '사용중인 아이디 입니다.',
+  network: '네트워크 오류 입니다.',
+  checkDuplicateId: '아이디 중복확인을 진행해주세요',
+  checkCertificateEmail: '이메일 인증을 진행해주세요',
 });
 
 export const errorCodeToMessage = Object.freeze({
@@ -32,13 +36,12 @@ export const errorCodeToMessage = Object.freeze({
 export const initialSignupValue = {
   userId: '',
   password: '',
-  passwordCheck: '',
+  passwordConfirm: '',
   name: '',
-  profileImg: '',
   email: '',
   school: '',
-  job: '',
-  startYear: '',
+  company: '',
+  developYear: '',
 };
 
 export const postList = [

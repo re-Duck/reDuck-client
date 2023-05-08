@@ -1,16 +1,28 @@
 // services
 import { axios_get, axios_post } from './base/api';
 
-export async function SignupPost(data: object): Promise<boolean> {
-  const suburl = '/user';
+// util
+import { makeJsonToBlob } from '@/util';
 
-  const result = await axios_post({ suburl, data });
-  if (result.isOkay) {
-    return true;
-  } else {
-    alert(result.message);
-    return false;
+interface ISignUpProp {
+  signUpDto: object;
+  file: Blob | null;
+}
+
+export async function SignupPost(data: ISignUpProp): Promise<boolean> {
+  const suburl = '/user';
+  const formData = new FormData();
+  const signUpDto = makeJsonToBlob(data.signUpDto);
+  formData.append('signUpDto', signUpDto);
+  if (data.file !== null) {
+    formData.append('file', data.file);
   }
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+  };
+
+  const result = await axios_post({ suburl, data: formData, headers });
+  return result.isOkay;
 }
 
 export async function checkID(id: string): Promise<object> {

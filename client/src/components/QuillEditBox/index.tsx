@@ -53,7 +53,7 @@ export default function QuillEditBox({
 
       const file = input.files[0];
       const formData = new FormData();
-      formData.append('img', file);
+      formData.append('file', file);
 
       try {
         const dataObject = {
@@ -61,18 +61,24 @@ export default function QuillEditBox({
           data: formData,
           headers: {
             Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzMjYzMDY0LCJleHAiOjE2ODMzNDk0NjR9.PNBxX2zkDeI4npCD0NrCghs2xaGjARowlVvKv1u-7UQ',
+              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzNTMwMTExLCJleHAiOjE2ODM2MTY1MTF9._0j4R-9x1IfnEG9IBe9wfQafY8Fpfphsn54Kt6__8C4',
           },
         };
-        // const result = await axios_post(dataObject);
-        // console.log(result);
+        const result = await axios_post(dataObject);
+        console.log(result);
         // console.log('성공 시, 백엔드가 보내주는 데이터', result.data.url);
         // const IMG_URL = result.data.url;
-        const editor = quillRef?.current?.getEditor(); // 에디터 객체 가져오기
-        console.log(editor?.root.innerHTML);
+        const editor = quillRef?.current?.getEditor();
+        const IS_EDITOR_NULL = editor === undefined || editor === null;
+
+        // if (IS_EDITOR_NULL) return;
+
         // editor.root.innerHTML =
-        //   editor.root.innerHTML + `<img src=${IMG_URL} /><br/>`; // 현재 있는 내용들 뒤에 써줘야한다.
+        // editor.root.innerHTML + `<img src=${IMG_URL} /><br/>`;
         // const range = editor.getSelection();
+        // const IS_RANGE_NULL = range === null;
+
+        // if (IS_RANGE_NULL) return;
 
         // editor.insertEmbed(range.index, 'image', IMG_URL);
       } catch (error) {

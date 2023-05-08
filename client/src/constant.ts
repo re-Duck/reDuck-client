@@ -1,3 +1,5 @@
+import { imageHandler } from '@/components/QuillEditBox/imageHandler';
+
 export const linkList = [
   { name: '게시판', href: '/board' },
   { name: 'Q&A', href: '/qna' },
@@ -78,23 +80,28 @@ export const postList = [
   },
 ];
 
-export const quillModules = Object.freeze({
-  toolbar: [
-    [{ header: '1' }, { header: '2' }, { font: [] }],
-    [{ size: [] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
+export const quillModules = {
+  toolbar: {
+    container: [
+      [{ header: '1' }, { header: '2' }, { font: [] }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
+      ['link', 'image'],
     ],
-    ['link', 'image'],
-  ],
+    handlers: {
+      image: imageHandler,
+    },
+  },
   clipboard: {
     matchVisual: false,
   },
-});
+};
 
 export const quillFormats = [
   'header',

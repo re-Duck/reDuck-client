@@ -3,7 +3,6 @@ import Head from 'next/head';
 
 import { Post, Advertisement, Layout } from '@/components';
 import { postList } from '@/constant';
-import Link from 'next/link';
 import { WritePostButton } from '@/components/WritePostButton';
 
 interface IPostList {

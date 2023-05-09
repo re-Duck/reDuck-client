@@ -9,31 +9,10 @@ import { WritePostButton } from '@/components/WritePostButton';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/getPosts';
 
-interface IPostList {
-  postOriginId: string;
-  title: string;
-  content: string;
-}
-interface IHome {
-  postList: IPostList[];
-}
-
-export default function Home({ postList }: IHome) {
+export default function Home() {
   //TODO : 스크롤 이벤트로 무한 스크롤 구현
-
-  // const LIMIT = 10;
-  // useEffect(() => {
-  //   getFirstPosts('');
-  // }, []);
-  const fetchProjects = async ({ pageParam = 0 }) => {
-    // const res = await fetch('/api/projects?cursor=' + pageParam);
-    // return res.json();
-    console.log(pageParam);
-    return { nextCursor: 2 };
-  };
   const {
     data,
-    error,
     fetchNextPage,
     hasNextPage,
     isFetching,
@@ -57,14 +36,38 @@ export default function Home({ postList }: IHome) {
       <Layout>
         <div className=" mx-auto flex justify-between max-w-5xl">
           <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-[1px] gap-3">
+            <WritePostButton />
             {hasNextPage && (
               <button onClick={() => fetchNextPage()}>fetch</button>
             )}
-
-            <WritePostButton />
-            {postList.map((post) => (
-              <Post key={post.postOriginId} id={post.postOriginId} />
-            ))}
+            {status === 'loading' ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {data?.pages.map((group, i) => (
+                  <React.Fragment key={i}>
+                    {group?.data.map((props) => {
+                      return <Post key={props.postOriginId} {...props} />;
+                    })}
+                  </React.Fragment>
+                ))}
+                <div>
+                  <button
+                    onClick={() => fetchNextPage()}
+                    disabled={!hasNextPage || isFetchingNextPage}
+                  >
+                    {isFetchingNextPage
+                      ? 'Loading more...'
+                      : hasNextPage
+                      ? 'Load More'
+                      : 'Nothing more to load'}
+                  </button>
+                </div>
+                <div>
+                  {isFetching && !isFetchingNextPage ? 'Fetching...' : null}
+                </div>
+              </>
+            )}
           </div>
           <Advertisement />
         </div>

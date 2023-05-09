@@ -2,6 +2,7 @@ import React from 'react';
 
 //interface
 import { IPostInformation } from '@/types';
+import { parseDate } from '@/util';
 
 interface PostDetail {
   data: IPostInformation;
@@ -25,7 +26,7 @@ export default function PostDetail({ data }: PostDetail) {
         odit eos laborum culpa, animi sapiente! Voluptas est rem ipsum ex.
         Aspernatur ab voluptatem saepe deleniti incidunt pariatur, modi iusto!
       </p>
-      <p className="text-gray-400">{data.postCreatedAt}</p>
+      <p className="text-gray-400">{parseDate(data.postCreatedAt)}</p>
       <hr />
       <p className="text-gray-400 text-sm">좋아요 261 | 조회 7,042</p>
     </article>

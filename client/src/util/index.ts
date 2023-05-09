@@ -22,3 +22,5 @@ export const makeJsonToBlob = (json: object) => {
   const blob = new Blob(jsonContent, { type: 'application/json' });
   return blob;
 };
+
+export const parseDate = (date: string) => date.slice(0, 10);

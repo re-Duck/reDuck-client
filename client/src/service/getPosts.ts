@@ -6,7 +6,6 @@ const headers = {
 
 export const getAllPosts = async ({ pageParam = '' }) => {
   //TODO: try catch
-  console.log('props', pageParam);
   const suburl =
     pageParam === ''
       ? `/post?postType=qna&page=10`

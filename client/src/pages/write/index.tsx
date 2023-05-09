@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 //react-quill component
 import { QuillEditBox } from '@/components';
@@ -23,6 +24,7 @@ const ValidationSchema = Yup.object().shape({
 
 export default function Write() {
   const [content, setContent] = useState<string>('');
+  const router = useRouter();
 
   const handleContent = useCallback((value: string) => setContent(value), []);
   const handleSubmit = useCallback(
@@ -31,6 +33,8 @@ export default function Write() {
       const blobFile = makeHtmlToBlob(content);
       await boardPost(title, blobFile);
       setSubmitting(false);
+      alert('게시글 작성되었습니다');
+      router.replace('/');
     },
     [content]
   );
@@ -59,6 +63,7 @@ export default function Write() {
                   type="submit"
                   disabled={isSubmitting}
                   onClick={() => {
+                    console.log(errors);
                     errors.title && alert(errors.title);
                   }}
                 >

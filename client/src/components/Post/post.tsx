@@ -2,9 +2,9 @@ import Link from 'next/link';
 import React from 'react';
 
 //Interface
-import IPost from './IPost';
+import { IPostInformation } from '@/types';
 
-export function Post(props: IPost) {
+export function Post(props: IPostInformation) {
   return (
     <article className="flex flex-col w-full  bg-white border-gray-100 border-2 h-50 p-6 hover:cursor-pointer rounded-lg">
       <Link href={`/board/${props.postOriginId}`}>

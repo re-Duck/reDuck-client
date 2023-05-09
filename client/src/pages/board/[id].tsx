@@ -4,10 +4,10 @@ import Image from 'next/image';
 
 import googleLogo from '../../assets/images/google_logo.png';
 import { axios_get } from '@/service/base/api';
-import IPost from '@/components/Post/IPost';
+import { IPostInformation } from '@/types';
 
 interface IPostDetailPage {
-  data: IPost;
+  data: IPostInformation;
 }
 
 export default function PostDetailPage({ data }: IPostDetailPage) {

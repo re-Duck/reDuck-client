@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 //interface
-import IPost from './IPost';
+import { IPostInformation } from '@/types';
 
 interface PostDetail {
-  data: IPost;
+  data: IPostInformation;
 }
 
 export default function PostDetail({ data }: PostDetail) {

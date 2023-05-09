@@ -1,4 +1,4 @@
-export default interface IPost {
+export interface IPostInformation {
   comments: string | null;
   postAuthorDevelopAnnual: string;
   postAuthorId: string;

@@ -5,9 +5,10 @@ import { Post, Advertisement, Layout } from '@/components';
 import { postList } from '@/constant';
 import { WritePostButton } from '@/components/WritePostButton';
 
-//react-query
+//@tanstack/react-query
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getFirstPosts } from '@/service/getPosts';
+import { getAllPosts } from '@/service/getPosts';
+
 interface IPostList {
   postOriginId: string;
   title: string;
@@ -24,14 +25,26 @@ export default function Home({ postList }: IHome) {
   // useEffect(() => {
   //   getFirstPosts('');
   // }, []);
-  // const { data, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage } =
-  //   useInfiniteQuery('repos', () => getFirstPosts, {
-  //     getNextPageParam: (lastPage, allPages) => {
-  //       console.log(lastPage, allPages);
-  //       // const nextPage = lastPage.length + 1;
-  //       // return nextPage;
-  //     },
-  //   });
+  const fetchProjects = async ({ pageParam = 0 }) => {
+    // const res = await fetch('/api/projects?cursor=' + pageParam);
+    // return res.json();
+    console.log(pageParam);
+    return { nextCursor: 2 };
+  };
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ['projects'],
+    queryFn: getAllPosts,
+    getNextPageParam: (lastPage, pages) => lastPage?.nextPageParms,
+  });
+  console.log(data, hasNextPage);
   return (
     <>
       <Head>
@@ -44,6 +57,10 @@ export default function Home({ postList }: IHome) {
       <Layout>
         <div className=" mx-auto flex justify-between max-w-5xl">
           <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-[1px] gap-3">
+            {hasNextPage && (
+              <button onClick={() => fetchNextPage()}>fetch</button>
+            )}
+
             <WritePostButton />
             {postList.map((post) => (
               <Post key={post.postOriginId} id={post.postOriginId} />

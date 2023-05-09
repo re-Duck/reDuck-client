@@ -4,7 +4,7 @@ const BASE_URL = 'http://168.188.123.234:8080';
 
 interface IResponse {
   isOkay: boolean;
-  data: object;
+  data: Array<object> | object;
   message?: string;
 }
 interface IAxiosGet {

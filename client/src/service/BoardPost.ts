@@ -13,7 +13,7 @@ export async function boardPost(
   const suburl = '/post';
   const headers = {
     'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzNTMwMTExLCJleHAiOjE2ODM2MTY1MTF9._0j4R-9x1IfnEG9IBe9wfQafY8Fpfphsn54Kt6__8C4`,
+    'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzNjM1NzI4LCJleHAiOjE2ODM3MjIxMjh9.WkRuNU6MrpAz0AmRobQfy3Qndxwuh2NNsKg1543f07Y`,
   };
 
   const formData = new FormData();

@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 
+//components
 import { Post, Advertisement, Layout } from '@/components';
 import { WritePostButton } from '@/components/WritePostButton';
 
 //@tanstack/react-query
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/getPosts';
+
+//iconify
 import { Icon } from '@iconify/react';
+import LoadingIcon from '@/components/LoadingIcon';
 
 export default function Home() {
   const { data, fetchNextPage, hasNextPage, isFetching, status } =
     useInfiniteQuery({
       queryKey: ['projects'],
       queryFn: getAllPosts,
-      getNextPageParam: (lastPage, pages) => lastPage?.nextPageParms,
+      getNextPageParam: (lastPage) => lastPage?.nextPageParms,
     });
   const IS_LOADING = status === 'loading';
 
@@ -31,7 +35,7 @@ export default function Home() {
       document.removeEventListener('scroll', handleScroll);
     };
   }, [fetchNextPage, hasNextPage]);
-  console.log('data', data);
+
   return (
     <>
       <Head>
@@ -49,10 +53,7 @@ export default function Home() {
             {IS_LOADING ? (
               <div className="flex flex-col items-center">
                 <div>Loading...</div>
-                <Icon
-                  icon="line-md:loading-loop"
-                  style={{ fontSize: '65px' }}
-                />
+                <LoadingIcon size="65px" />
               </div>
             ) : (
               <>
@@ -65,12 +66,7 @@ export default function Home() {
                 ))}
 
                 <div className="flex justify-center">
-                  {hasNextPage && (
-                    <Icon
-                      icon="line-md:loading-loop"
-                      style={{ fontSize: '40px' }}
-                    />
-                  )}
+                  {hasNextPage && <LoadingIcon size="40px" />}
                 </div>
               </>
             )}

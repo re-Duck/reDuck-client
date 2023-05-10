@@ -5,10 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { axios_post } from './base/api';
 import { makeJsonToBlob } from '@/util';
 
-export async function boardPost(
-  title: string,
-  blobFile: Blob
-): Promise<boolean> {
+export async function boardPost(title: string, blobFile: Blob): Promise<void> {
   const postOriginId = uuidv4();
   const suburl = '/post';
   const headers = {
@@ -30,12 +27,7 @@ export async function boardPost(
 
   const result = await axios_post({ suburl, headers, data: formData });
 
-  if (result.isOkay) {
-    // TODO: 성공 로직
-    console.log(result.data);
-    return true;
-  } else {
+  if (!result.isOkay) {
     alert(result.message);
-    return false;
   }
 }

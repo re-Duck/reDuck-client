@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 
 import { Post, Advertisement, Layout } from '@/components';
-import { postList } from '@/constant';
 import { WritePostButton } from '@/components/WritePostButton';
 
 //@tanstack/react-query
@@ -11,7 +10,6 @@ import { getAllPosts } from '@/service/getPosts';
 import { Icon } from '@iconify/react';
 
 export default function Home() {
-  //TODO : 스크롤 이벤트로 무한 스크롤 구현
   const { data, fetchNextPage, hasNextPage, isFetching, status } =
     useInfiniteQuery({
       queryKey: ['projects'],
@@ -33,7 +31,7 @@ export default function Home() {
       document.removeEventListener('scroll', handleScroll);
     };
   }, [fetchNextPage, hasNextPage]);
-
+  console.log('data', data);
   return (
     <>
       <Head>
@@ -82,14 +80,4 @@ export default function Home() {
       </Layout>
     </>
   );
-}
-
-export async function getServerSideProps() {
-  //API 요청
-  // const res = await fetch('http://localhost:3000/api/post');
-  // const postList = await res.json();
-
-  return {
-    props: { postList },
-  };
 }

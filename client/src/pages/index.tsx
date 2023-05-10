@@ -9,8 +9,6 @@ import { WritePostButton } from '@/components/WritePostButton';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/getPosts';
 
-//iconify
-import { Icon } from '@iconify/react';
 import LoadingIcon from '@/components/LoadingIcon';
 
 export default function Home() {

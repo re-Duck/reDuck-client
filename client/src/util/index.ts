@@ -23,4 +23,10 @@ export const makeJsonToBlob = (json: object) => {
   return blob;
 };
 
-export const parseDate = (date: string) => date.slice(0, 10);
+export const parseDate = (date: string) => {
+  const year = Number(date.slice(0, 4));
+  const month = Number(date.slice(5, 7));
+  const day = Number(date.slice(8, 10));
+
+  return `${year}년 ${month}월 ${day}일`;
+};

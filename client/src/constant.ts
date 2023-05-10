@@ -109,3 +109,8 @@ export const MODAL_TITLE = {
   warning: '경고',
   error: '오류',
 };
+
+export const POSTS_INISIATE_VALUE = Object.freeze({
+  data: [],
+  nextPageParms: null,
+});

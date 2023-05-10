@@ -39,8 +39,6 @@ export default function QuillEditBox({
   const quillRef = useRef<ReactQuill>(null);
 
   const imageHandler = useCallback((props: any) => {
-    console.log('에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!');
-
     const input = document.createElement('input');
 
     input.setAttribute('type', 'file');
@@ -48,7 +46,6 @@ export default function QuillEditBox({
     input.click();
 
     input.addEventListener('change', async () => {
-      console.log('온체인지');
       if (input.files === null) return;
 
       const file = input.files[0];
@@ -65,7 +62,6 @@ export default function QuillEditBox({
           },
         };
         const result = await axios_post(dataObject);
-        console.log(result);
         // console.log('성공 시, 백엔드가 보내주는 데이터', result.data.url);
         // const IMG_URL = result.data.url;
         const editor = quillRef?.current?.getEditor();
@@ -82,7 +78,7 @@ export default function QuillEditBox({
 
         // editor.insertEmbed(range.index, 'image', IMG_URL);
       } catch (error) {
-        console.log('실패했어요ㅠ');
+        console.log('실패');
       }
     });
   }, []);

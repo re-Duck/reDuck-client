@@ -12,20 +12,28 @@ import { Icon } from '@iconify/react';
 
 export default function Home() {
   //TODO : 스크롤 이벤트로 무한 스크롤 구현
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ['projects'],
-    queryFn: getAllPosts,
-    getNextPageParam: (lastPage, pages) => lastPage?.nextPageParms,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetching, status } =
+    useInfiniteQuery({
+      queryKey: ['projects'],
+      queryFn: getAllPosts,
+      getNextPageParam: (lastPage, pages) => lastPage?.nextPageParms,
+    });
   const IS_LOADING = status === 'loading';
-  console.log(data, hasNextPage);
+
+  useEffect(() => {
+    const handleScroll = async (e: any) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!isFetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        await fetchNextPage();
+      }
+    };
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [fetchNextPage, hasNextPage]);
+
   return (
     <>
       <Head>
@@ -62,24 +70,9 @@ export default function Home() {
                   {hasNextPage && (
                     <Icon
                       icon="line-md:loading-loop"
-                      style={{ fontSize: '50px' }}
+                      style={{ fontSize: '40px' }}
                     />
                   )}
-                  <button
-                    onClick={() => fetchNextPage()}
-                    disabled={!hasNextPage || isFetchingNextPage}
-                  >
-                    {isFetchingNextPage ? (
-                      <Icon
-                        icon="line-md:loading-alt-loop"
-                        style={{ fontSize: '25px' }}
-                      />
-                    ) : hasNextPage ? (
-                      'Load More'
-                    ) : (
-                      'Nothing more to load'
-                    )}
-                  </button>
                 </div>
               </>
             )}

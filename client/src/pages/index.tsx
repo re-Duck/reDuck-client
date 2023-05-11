@@ -1,20 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 
+//components
 import { Post, Advertisement, Layout } from '@/components';
-import { postList } from '@/constant';
+import { WritePostButton } from '@/components/WritePostButton';
 
-interface IPostList {
-  postOriginId: string;
-  title: string;
-  content: string;
-}
-interface IHome {
-  postList: IPostList[];
-}
+//@tanstack/react-query
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getAllPosts } from '@/service/getPosts';
 
-export default function Home({ postList }: IHome) {
-  //TODO : 스크롤 이벤트로 무한 스크롤 구현
+import LoadingIcon from '@/components/LoadingIcon';
+
+export default function Home() {
+  const { data, fetchNextPage, hasNextPage, isFetching, status } =
+    useInfiniteQuery({
+      queryKey: ['projects'],
+      queryFn: getAllPosts,
+      getNextPageParam: (lastPage) => lastPage?.nextPageParms,
+    });
+  const IS_LOADING = status === 'loading';
+
+  useEffect(() => {
+    const handleScroll = async (e: any) => {
+      const { scrollHeight, scrollTop, clientHeight } =
+        e.target.scrollingElement;
+      if (!isFetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        await fetchNextPage();
+      }
+    };
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [fetchNextPage, hasNextPage]);
 
   return (
     <>
@@ -26,25 +44,34 @@ export default function Home({ postList }: IHome) {
       </Head>
 
       <Layout>
-        <div className=" mx-auto flex justify-betwee gap-4 max-w-5xl">
-          <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-2 gap-3">
-            {postList.map(post => (
-              <Post key={post.postOriginId} id={post.postOriginId} />
-            ))}
+        <div className=" mx-auto flex justify-between max-w-5xl">
+          <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-[1px] gap-3">
+            <WritePostButton />
+
+            {IS_LOADING ? (
+              <div className="flex flex-col items-center">
+                <div>Loading...</div>
+                <LoadingIcon size="65px" />
+              </div>
+            ) : (
+              <>
+                {data?.pages.map((group, i) => (
+                  <React.Fragment key={i}>
+                    {group?.data.map((props) => {
+                      return <Post key={props.postOriginId} {...props} />;
+                    })}
+                  </React.Fragment>
+                ))}
+
+                <div className="flex justify-center">
+                  {hasNextPage && <LoadingIcon size="40px" />}
+                </div>
+              </>
+            )}
           </div>
           <Advertisement />
         </div>
       </Layout>
     </>
   );
-}
-
-export async function getServerSideProps() {
-  //API 요청
-  // const res = await fetch('http://localhost:3000/api/post');
-  // const postList = await res.json();
-
-  return {
-    props: { postList },
-  };
 }

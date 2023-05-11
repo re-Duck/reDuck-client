@@ -4,12 +4,13 @@ const BASE_URL = 'http://168.188.123.234:8080';
 
 interface IResponse {
   isOkay: boolean;
-  data: object;
+  data: Array<object> | object;
   message?: string;
 }
 interface IAxiosGet {
   suburl: string;
-  params: object;
+  headers: object;
+  params?: object;
 }
 interface IAxiosPost {
   suburl: string;
@@ -20,11 +21,11 @@ interface IAxiosPost {
 // TODO: any 타입 정의하기
 export async function axios_get({
   suburl,
-  params,
+  headers = {},
 }: IAxiosGet): Promise<IResponse> {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {
-      params,
+      headers,
     });
     const RESPONSE_OK = response.status === 200 || response.status === 201;
     if (RESPONSE_OK) {

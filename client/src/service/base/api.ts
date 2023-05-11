@@ -10,6 +10,7 @@ interface IResponse {
 interface IAxiosGet {
   suburl: string;
   headers: object;
+  params?: object;
 }
 interface IAxiosPost {
   suburl: string;

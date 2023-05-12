@@ -1,11 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
 
+import { useSelector } from 'react-redux';
+
 import { Post, Advertisement, Layout } from '@/components';
 import { postList } from '@/constant';
-
-import { useSelector } from 'react-redux';
-import { useSession } from 'next-auth/react';
 
 interface IPostList {
   postOriginId: string;
@@ -18,13 +17,9 @@ interface IHome {
 
 export default function Home({ postList }: IHome) {
   //TODO : 스크롤 이벤트로 무한 스크롤 구현
-  const { data: session, status } = useSession();
-  console.log(session);
-  // let auth = useSelector((state) => {
-  //   return state.auth;
-  // });
-  // console.log(auth);
+  const auth = useSelector((state) => state.auth);
 
+  console.log(auth);
   return (
     <>
       <Head>

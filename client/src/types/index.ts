@@ -1,5 +1,5 @@
 export interface IPostInformation {
-  comments: string | null;
+  comments: Array<string> | null;
   postAuthorDevelopAnnual: string;
   postAuthorId: string;
   postAuthorName: string;
@@ -10,7 +10,7 @@ export interface IPostInformation {
     size: number;
     path: string;
   };
-  postContentPath: string;
+  postContent: string;
   postCreatedAt: string;
   postOriginId: string;
   postTitle: string;

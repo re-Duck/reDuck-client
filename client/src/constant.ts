@@ -88,24 +88,6 @@ export const postList = [
   },
 ];
 
-export const quillModules = Object.freeze({
-  toolbar: [
-    [{ header: '1' }, { header: '2' }, { font: [] }],
-    [{ size: [] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
-    ],
-    ['link', 'image'],
-  ],
-  clipboard: {
-    matchVisual: false,
-  },
-});
-
 export const quillFormats = [
   'header',
   'font',
@@ -137,3 +119,8 @@ export const MODAL_TITLE = {
   warning: '경고',
   error: '오류',
 };
+
+export const POSTS_INISIATE_VALUE = Object.freeze({
+  data: [],
+  nextPageParms: null,
+});

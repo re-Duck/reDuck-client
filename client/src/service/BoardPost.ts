@@ -10,7 +10,7 @@ export async function boardPost(title: string, blobFile: Blob): Promise<void> {
   const suburl = '/post';
   const headers = {
     'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzNjM1NzI4LCJleHAiOjE2ODM3MjIxMjh9.WkRuNU6MrpAz0AmRobQfy3Qndxwuh2NNsKg1543f07Y`,
+    'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzOTAxMDczLCJleHAiOjE2ODM5ODc0NzN9.DfSNToZubPJV1KqUb88PbTE-uJPiOSlnDbhjtA05hk0`,
   };
 
   const formData = new FormData();

@@ -1,15 +1,14 @@
 import { JWT } from 'next-auth/jwt';
 import NextAuth from 'next-auth/next';
-import { DefaultUser } from 'next-auth';
 
 declare module 'next-auth' {
   interface Session {
     user: {
-      userId: string;
+      id: string;
+      email: string;
       name: string;
-      image: string;
+      image: object;
+      token: string;
     };
-    accessToken: JWT;
   }
 }
-export interface User extends DefaultUser {}

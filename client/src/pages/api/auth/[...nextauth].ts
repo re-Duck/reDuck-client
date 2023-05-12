@@ -2,6 +2,7 @@ import { axios_post } from '@/service/base/api';
 import { DefaultUser } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { getSession } from 'next-auth/react';
 
 export default NextAuth({
   providers: [
@@ -29,7 +30,6 @@ export default NextAuth({
         if (!result.isOkay) {
           throw new Error(result.data.code);
         }
-        console.log(result);
         const userInfo = {
           id: result.data.userId,
           name: result.data.name,
@@ -44,25 +44,22 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt(props) {
-      console.log(props);
-      //   console.log('account 정보', account);
-      //   console.log('token 정보', token);
-      //   console.log('user 정보', user);
-      //   console.log('profile: ', profile);
-      //   if (account) {
-      //     token.accessToken = account.access_token;
-      //   }
-      //   return token;
-      return props.token;
+      console.log('jwt 전', props);
+      if (!props.user) return props.token;
+      return props;
     },
 
-    async session({ session, token, user }) {
-      //   console.log('Session 정보', session);
-      //   console.log('Token정보', token);
-      //   console.log('User정보', user);
-
-      session.accessToken = token;
-
+    async session({ session, token }) {
+      session = {
+        expires: session.expires,
+        user: {
+          id: token.user.id,
+          name: token.user.name,
+          email: token.user.email,
+          image: token.user.image,
+          token: token.user.token,
+        },
+      };
       return session;
     },
   },

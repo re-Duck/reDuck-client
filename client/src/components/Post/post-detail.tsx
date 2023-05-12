@@ -17,7 +17,7 @@ export default function PostDetail({ data }: PostDetail) {
   });
 
   return (
-    <article className="flex flex-col max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
+    <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <h1 className="text-xl font-bold mb-4">{data.postTitle}</h1>
       <p className="text-md text-gray-500" ref={contentRef}></p>
       <p className="text-gray-400">{parseDate(data.postCreatedAt)}</p>

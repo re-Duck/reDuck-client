@@ -30,8 +30,7 @@ export default function Write() {
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       setSubmitting(true);
-      const blobFile = makeHtmlToBlob(content);
-      await boardPost(title, blobFile);
+      await boardPost(title, content);
       setSubmitting(false);
       alert('게시글 작성되었습니다');
       router.replace('/');

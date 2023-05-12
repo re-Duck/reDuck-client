@@ -10,9 +10,6 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { errorMessage } from '@/constant';
 
-//util
-import { makeHtmlToBlob } from '@/util';
-
 //service
 import { boardPost } from '@/service/BoardPost';
 import { Icon } from '@iconify/react';

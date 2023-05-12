@@ -71,8 +71,6 @@ export default function QuillEditBox({
 
         if (IS_EDITOR_NULL) return;
 
-        // editor.root.innerHTML =
-        //   editor.root.innerHTML + `<img src=${IMG_URL} /><br/>`;
         const range = editor.getSelection();
         const IS_RANGE_NULL = range === null;
 

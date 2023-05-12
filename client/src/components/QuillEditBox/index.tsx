@@ -1,3 +1,5 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/display-name */
 // 동적 import 사용
 import dynamic from 'next/dynamic';
 
@@ -56,26 +58,27 @@ export default function QuillEditBox({
           suburl: '/post/image',
           data: formData,
           headers: {
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzNTMwMTExLCJleHAiOjE2ODM2MTY1MTF9._0j4R-9x1IfnEG9IBe9wfQafY8Fpfphsn54Kt6__8C4',
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
           },
         };
         const result = await axios_post(dataObject);
-        // console.log('성공 시, 백엔드가 보내주는 데이터', result.data.url);
-        // const IMG_URL = result.data.url;
+
+        const IMG_URL = `http://168.188.123.234:8080${result.data}`;
+
         const editor = quillRef?.current?.getEditor();
         const IS_EDITOR_NULL = editor === undefined || editor === null;
 
-        // if (IS_EDITOR_NULL) return;
+        if (IS_EDITOR_NULL) return;
 
         // editor.root.innerHTML =
-        // editor.root.innerHTML + `<img src=${IMG_URL} /><br/>`;
-        // const range = editor.getSelection();
-        // const IS_RANGE_NULL = range === null;
+        //   editor.root.innerHTML + `<img src=${IMG_URL} /><br/>`;
+        const range = editor.getSelection();
+        const IS_RANGE_NULL = range === null;
 
-        // if (IS_RANGE_NULL) return;
+        if (IS_RANGE_NULL) return;
 
-        // editor.insertEmbed(range.index, 'image', IMG_URL);
+        editor.insertEmbed(range.index, 'image', IMG_URL);
       } catch (error) {
         console.log('실패');
       }

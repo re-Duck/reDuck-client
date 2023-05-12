@@ -11,8 +11,8 @@ export async function loginPost(data: object): Promise<ILoginPost> {
 
   const result: any = await axios_post({ suburl, data });
   if (result.isOkay) {
-    sessionStorage.setItem('accessToken', result.data.accessToken);
-    sessionStorage.setItem('refreshToken', result.data.refreshToken);
+    // TODO: set-cookie를 통해 자동으로 쿠키에 저장
+    document.cookie = `accessToken=${result.data.accessToken}`;
   }
   const returnValue = {
     flag: result.isOkay,

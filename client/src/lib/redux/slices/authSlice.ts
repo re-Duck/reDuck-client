@@ -5,11 +5,13 @@ import { HYDRATE } from 'next-redux-wrapper';
 interface IUserState {
   userId: string;
   userName: string;
+  isLogin: boolean;
 }
 
 const initialState: IUserState = {
   userId: '',
   userName: '',
+  isLogin: false,
 };
 
 export const authSlice = createSlice({
@@ -19,9 +21,12 @@ export const authSlice = createSlice({
     logIn: (state, actions: PayloadAction<IUserState>) => {
       state.userId = actions.payload.userId;
       state.userName = actions.payload.userName;
+      state.isLogin = true;
     },
     logOut: (state) => {
       state.userId = '';
+      state.userName = '';
+      state.isLogin = false;
     },
   },
   /* 페이지 이동시 상태 초기화가 필요한 경우 사용 */

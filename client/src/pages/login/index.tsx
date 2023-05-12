@@ -17,7 +17,7 @@ import googleLogo from '../../assets/images/google_logo.png';
 import { Divider, Modal } from '@/components';
 
 // service
-import { loginPost } from '@/service/loginPost';
+import { signIn } from 'next-auth/react';
 import {
   initialLoginValue,
   errorMessage,
@@ -55,15 +55,22 @@ export default function Login() {
   // TODO: any타입 정의하기
   const handleSubmit = async (sendData: ILogin, setSubmitting: any) => {
     setSubmitting(true);
-    const result: any = await loginPost(sendData);
-    if (result.flag) {
-      dispatch(
-        logIn({ userId: result.data!.userId, userName: result.data!.name })
-      );
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        ...sendData,
+      });
+      console.log(result);
+
+      if (result?.error) {
+        setModalMessage(errorCodeToMessage[result.error]);
+        setModalOpen(true);
+        return;
+      }
+
       router.push('/');
-    } else {
-      setModalMessage(errorCodeToMessage[result.data.code]);
-      setModalOpen(true);
+    } catch (error) {
+      console.error(error);
     }
     setSubmitting(false);
   };

@@ -15,7 +15,7 @@ export default function PostDetail({ data }: PostDetail) {
       contentRef.current.innerHTML = data.postContent;
     }
   });
-  console.log(data);
+
   return (
     <article className="flex flex-col max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <h1 className="text-xl font-bold mb-4">{data.postTitle}</h1>

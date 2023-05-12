@@ -26,7 +26,7 @@ export async function axios_get({
 }: IAxiosGet): Promise<IResponse> {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {
-      params
+      params,
       headers,
     });
     const RESPONSE_OK = response.status === 200 || response.status === 201;

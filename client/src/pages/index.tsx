@@ -10,6 +10,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/getPosts';
 
 import LoadingIcon from '@/components/LoadingIcon';
+import { IPostInformation } from '@/types';
 
 export default function Home() {
   const { data, fetchNextPage, hasNextPage, isFetching, status } =
@@ -19,6 +20,7 @@ export default function Home() {
       getNextPageParam: (lastPage) => lastPage?.nextPageParms,
     });
   const IS_LOADING = status === 'loading';
+  console.log(process.env.NEXT_PUBLIC_ACCESS_TOKEN);
 
   useEffect(() => {
     const handleScroll = async (e: any) => {
@@ -57,7 +59,7 @@ export default function Home() {
               <>
                 {data?.pages.map((group, i) => (
                   <React.Fragment key={i}>
-                    {group?.data.map((props) => {
+                    {group?.data.map((props: any) => {
                       return <Post key={props.postOriginId} {...props} />;
                     })}
                   </React.Fragment>

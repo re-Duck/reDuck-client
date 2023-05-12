@@ -28,7 +28,6 @@ const QuillNoSSRWrapper = dynamic(
 
   {
     ssr: false,
-    loading: () => <p>Loading ...</p>,
   }
 );
 

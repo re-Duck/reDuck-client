@@ -8,8 +8,7 @@ export async function boardPost(title: string, content: string): Promise<void> {
   const postOriginId = uuidv4();
   const suburl = '/post';
   const headers = {
-    'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzOTAxMDczLCJleHAiOjE2ODM5ODc0NzN9.DfSNToZubPJV1KqUb88PbTE-uJPiOSlnDbhjtA05hk0`,
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
   };
 
   const data = {

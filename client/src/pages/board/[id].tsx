@@ -49,7 +49,7 @@ export async function getServerSideProps(context: any) {
   const postOriginId = context.params.id;
   const suburl = `/post/detail/${postOriginId}`;
   const headers = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzOTAyMTkwLCJleHAiOjE2ODM5ODg1OTB9.Vo0EZ45kIqaNpq2WklkaC39IhN7v82ScS0kRx3Y3LJA`,
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
   };
   const res = await axios_get({ suburl, headers });
 

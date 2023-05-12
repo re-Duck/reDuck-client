@@ -2,7 +2,7 @@ import { axios_get } from './base/api';
 import { POSTS_INISIATE_VALUE } from '@/constant';
 
 const headers = {
-  Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzOTAxMDczLCJleHAiOjE2ODM5ODc0NzN9.DfSNToZubPJV1KqUb88PbTE-uJPiOSlnDbhjtA05hk0`,
+  Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
 };
 
 export const getAllPosts = async ({ pageParam = '' }) => {

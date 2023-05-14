@@ -8,7 +8,7 @@ import { useCallback, useMemo, useRef } from 'react';
 // 상수 호출
 import { quillFormats } from '@/constant';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
-import { axios_post } from '@/service/base/api';
+import { uploadImagePost } from '@/service/uploadImagePost';
 
 interface IQuillEditBox {
   content: string;
@@ -54,17 +54,9 @@ export default function QuillEditBox({
       formData.append('file', file);
 
       try {
-        const dataObject = {
-          suburl: '/post/image',
-          data: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-          },
-        };
-        const result = await axios_post(dataObject);
+        const imgHash = await uploadImagePost(formData);
 
-        const IMG_URL = `http://168.188.123.234:8080${result.data}`;
+        const IMG_URL = `http://168.188.123.234:8080${imgHash}`;
 
         const editor = quillRef?.current?.getEditor();
         const IS_EDITOR_NULL = editor === undefined || editor === null;

@@ -46,20 +46,12 @@ export async function sendEmail(data: object) {
   const suburl = '/auth/email';
 
   const result = await axios_post({ suburl, data });
-  if (result.isOkay) {
-    return true;
-  } else {
-    return false;
-  }
+  return result.isOkay;
 }
 
 export async function checkEmail(data: object) {
   const suburl = '/auth/email/user';
 
   const result = await axios_post({ suburl, data });
-  if (result.isOkay) {
-    return true;
-  } else {
-    return false;
-  }
+  return result.isOkay;
 }

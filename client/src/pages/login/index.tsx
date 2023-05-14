@@ -7,8 +7,6 @@ import { useRouter } from 'next/router';
 import { Icon } from '@iconify/react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { logIn } from '@/lib/redux/slices/authSlice';
 
 // assets
 import googleLogo from '../../assets/images/google_logo.png';
@@ -43,7 +41,6 @@ enum ModalType {
 
 export default function Login() {
   const router = useRouter();
-  const dispatch = useDispatch();
 
   // Modal
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -60,7 +57,6 @@ export default function Login() {
         redirect: false,
         ...sendData,
       });
-      console.log(result);
 
       if (result?.error) {
         setModalMessage(errorCodeToMessage[result.error]);

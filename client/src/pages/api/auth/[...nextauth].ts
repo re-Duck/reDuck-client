@@ -2,7 +2,6 @@ import { axios_post } from '@/service/base/api';
 import { DefaultUser } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { getSession } from 'next-auth/react';
 
 export default NextAuth({
   providers: [
@@ -20,7 +19,7 @@ export default NextAuth({
           placeholder: '비밀번호 입력',
         },
       },
-      async authorize(credential, req): Promise<DefaultUser> {
+      async authorize(credential): Promise<DefaultUser> {
         if (!credential) {
           throw new Error('INVALID_TYPING');
         }
@@ -44,7 +43,6 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt(props) {
-      console.log('jwt 전', props);
       if (!props.user) return props.token;
       return props;
     },

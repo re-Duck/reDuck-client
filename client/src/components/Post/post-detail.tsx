@@ -14,7 +14,7 @@ export default function PostDetail({ data }: PostDetail) {
     if (contentRef.current) {
       contentRef.current.innerHTML = data.postContent;
     }
-  });
+  }, []);
 
   return (
     <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">

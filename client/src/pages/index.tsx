@@ -57,7 +57,7 @@ export default function Home() {
               <>
                 {data?.pages.map((group, i) => (
                   <React.Fragment key={i}>
-                    {group?.data.map((props) => {
+                    {group?.data.map((props: any) => {
                       return <Post key={props.postOriginId} {...props} />;
                     })}
                   </React.Fragment>

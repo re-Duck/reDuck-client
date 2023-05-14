@@ -10,11 +10,8 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { errorMessage } from '@/constant';
 
-//util
-import { makeHtmlToBlob } from '@/util';
-
 //service
-import { boardPost } from '@/service/BoardPost';
+import { boardPost } from '@/service/boardPost';
 import { Icon } from '@iconify/react';
 
 // TODO : title 없을 시 빨간 테두리
@@ -30,8 +27,7 @@ export default function Write() {
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       setSubmitting(true);
-      const blobFile = makeHtmlToBlob(content);
-      await boardPost(title, blobFile);
+      await boardPost(title, content);
       setSubmitting(false);
       alert('게시글 작성되었습니다');
       router.replace('/');

@@ -1,3 +1,5 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/display-name */
 // 동적 import 사용
 import dynamic from 'next/dynamic';
 
@@ -6,7 +8,7 @@ import { useCallback, useMemo, useRef } from 'react';
 // 상수 호출
 import { quillFormats } from '@/constant';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
-import { axios_post } from '@/service/base/api';
+import { uploadImagePost } from '@/service/uploadImagePost';
 
 interface IQuillEditBox {
   content: string;
@@ -28,7 +30,6 @@ const QuillNoSSRWrapper = dynamic(
 
   {
     ssr: false,
-    loading: () => <p>Loading ...</p>,
   }
 );
 
@@ -53,30 +54,21 @@ export default function QuillEditBox({
       formData.append('file', file);
 
       try {
-        const dataObject = {
-          suburl: '/post/image',
-          data: formData,
-          headers: {
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWR1Y2siLCJyb2xlcyI6W3sibmFtZSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjgzNTMwMTExLCJleHAiOjE2ODM2MTY1MTF9._0j4R-9x1IfnEG9IBe9wfQafY8Fpfphsn54Kt6__8C4',
-          },
-        };
-        const result = await axios_post(dataObject);
-        // console.log('성공 시, 백엔드가 보내주는 데이터', result.data.url);
-        // const IMG_URL = result.data.url;
+        const imgHash = await uploadImagePost(formData);
+
+        const IMG_URL = `http://168.188.123.234:8080${imgHash}`;
+
         const editor = quillRef?.current?.getEditor();
         const IS_EDITOR_NULL = editor === undefined || editor === null;
 
-        // if (IS_EDITOR_NULL) return;
+        if (IS_EDITOR_NULL) return;
 
-        // editor.root.innerHTML =
-        // editor.root.innerHTML + `<img src=${IMG_URL} /><br/>`;
-        // const range = editor.getSelection();
-        // const IS_RANGE_NULL = range === null;
+        const range = editor.getSelection();
+        const IS_RANGE_NULL = range === null;
 
-        // if (IS_RANGE_NULL) return;
+        if (IS_RANGE_NULL) return;
 
-        // editor.insertEmbed(range.index, 'image', IMG_URL);
+        editor.insertEmbed(range.index, 'image', IMG_URL);
       } catch (error) {
         console.log('실패');
       }

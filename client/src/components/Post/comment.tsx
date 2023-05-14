@@ -11,9 +11,9 @@ export default function Comment() {
         <span className=" font-semibold">배성현</span>
       </div>
       <p className="text-md text-gray-500">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias saepe odit eos laborum culpa,
-        animi sapiente! Voluptas est rem ipsum ex. Aspernatur ab voluptatem saepe deleniti incidunt
-        pariatur, modi iusto!
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias saepe
+        odit eos laborum culpa, animi sapiente! Voluptas est rem ipsum ex.
+        Aspernatur ab voluptatem saepe deleniti incidunt pariatur, modi iusto!
       </p>
     </div>
   );

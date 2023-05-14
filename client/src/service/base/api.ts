@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { parseDate } from '../../util/index';
 
 const BASE_URL = 'http://168.188.123.234:8080';
 
@@ -18,14 +19,26 @@ interface IAxiosPost {
   headers?: object;
 }
 
+const paramsSerializer = (paramObj: any) => {
+  const params = new URLSearchParams();
+  for (const key in paramObj) {
+    params.append(key, paramObj[key]);
+  }
+
+  return params.toString();
+};
+
 // TODO: any 타입 정의하기
 export async function axios_get({
   suburl,
   headers = {},
+  params,
 }: IAxiosGet): Promise<IResponse> {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {
       headers,
+      params,
+      paramsSerializer,
     });
     const RESPONSE_OK = response.status === 200 || response.status === 201;
     if (RESPONSE_OK) {

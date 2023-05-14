@@ -6,11 +6,10 @@ const headers = {
 };
 
 export const getAllPosts = async ({ pageParam = '' }) => {
-  const suburl =
-    pageParam === ''
-      ? `/post?postType=qna&postType=stack&page=10`
-      : `/post/${pageParam}?postType=stack&page=10`;
-  const response = await axios_get({ suburl, headers });
+  const params = { pageParam, postType: ['stack', 'qna'], page: 10 };
+  const suburl = '/post';
+
+  const response = await axios_get({ suburl, headers, params });
   const data = response.data;
   const IS_ARRAY = Array.isArray(data);
 

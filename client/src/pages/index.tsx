@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
+// import { useSelector } from 'react-redux';
 
 //components
 import { Post, Advertisement, Layout } from '@/components';
@@ -12,6 +13,8 @@ import { getAllPosts } from '@/service/getPosts';
 import LoadingIcon from '@/components/LoadingIcon';
 
 export default function Home() {
+  // TODO: 유저정보 필요시 사용
+  // const auth = useSelector((state) => state.auth);
   const { data, fetchNextPage, hasNextPage, isFetching, status } =
     useInfiniteQuery({
       queryKey: ['projects'],

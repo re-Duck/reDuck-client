@@ -1,16 +1,22 @@
 // service
 import { axios_post } from './base/api';
 
-export async function loginPost(sendData: object): Promise<boolean> {
+interface ILoginPost {
+  flag: boolean;
+  data: object;
+}
+
+export async function loginPost(data: object): Promise<ILoginPost> {
   const suburl = '/login';
 
-  const result = await axios_post({ suburl, data: sendData });
+  const result: any = await axios_post({ suburl, data });
   if (result.isOkay) {
-    // TODO: 성공 로직
-    console.log(result.data);
-    return true;
-  } else {
-    alert(result.message);
-    return false;
+    // TODO: set-cookie를 통해 자동으로 쿠키에 저장
+    document.cookie = `accessToken=${result.data.accessToken}`;
   }
+  const returnValue = {
+    flag: result.isOkay,
+    data: result.data,
+  };
+  return returnValue;
 }

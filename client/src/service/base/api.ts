@@ -10,8 +10,8 @@ interface IResponse {
 }
 interface IAxiosGet {
   suburl: string;
-  headers: object;
   params?: object;
+  headers?: object;
 }
 interface IAxiosPost {
   suburl: string;
@@ -36,6 +36,7 @@ export async function axios_get({
 }: IAxiosGet): Promise<IResponse> {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {
+      params,
       headers,
       params,
       paramsSerializer,
@@ -51,8 +52,8 @@ export async function axios_get({
   } catch (e: any) {
     return {
       isOkay: false,
-      data: e.response.data,
-      message: e.response.message,
+      data: e.response?.data,
+      message: e.response?.message,
     };
   }
 }

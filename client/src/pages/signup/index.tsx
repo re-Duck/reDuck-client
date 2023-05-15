@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout';
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 
 // packages
 import { Formik, Form, Field } from 'formik';
@@ -16,6 +17,7 @@ import {
   initialSignupValue,
   MODAL_TITLE,
 } from '@/constant';
+import { SignupPost, checkEmail, checkID, sendEmail } from '@/service/signup';
 
 enum ModalType {
   SUCCESS = 'success',
@@ -31,7 +33,7 @@ const ValidationSchema = Yup.object().shape({
   password: Yup.string()
     .required(errorMessage.blankPassword)
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,15}$/,
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
       errorMessage.invalidFormatPassword
     ),
   passwordConfirm: Yup.string()
@@ -44,19 +46,57 @@ const ValidationSchema = Yup.object().shape({
 });
 
 export default function SignUp() {
+  const router = useRouter();
+
   const imgRef = useRef<HTMLInputElement>(null);
+  const certificateNumberRef = useRef<HTMLInputElement>(null);
   const [profileImg, setProfileImg] = useState<string | null>(null);
-  const [certificationNumber, setCertificationNumber] = useState<number | null>(
-    null
-  );
+  const [imgFile, setImgFile] = useState<Blob | null>(null);
+  const [certificateNumber, setCertificateNumber] = useState<string>('');
 
   // Modal
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>(ModalType.SUCCESS);
   const [modalMessage, setModalMessage] = useState<string>('');
 
+  // 아이디 중복 체크 여부
+  const [checkedId, setCheckedId] = useState<string>('');
+
+  // 이메일 전송/확인 여부
+  const [isSendEmail, setIsSendEmail] = useState<boolean>(false);
+  const [sendingEmail, setSendingEmail] = useState<boolean>(false);
+  const [checkedEmail, setCheckedEmail] = useState<string>('');
+
   const handleModalButton = () => {
     setModalOpen(false);
+    if (modalMessage === '회원가입에 성공했습니다. 다시 로그인해주세요.') {
+      router.push('/login');
+    }
+  };
+
+  const checkDuplicateID = async (
+    userId: string,
+    isTouched: boolean | undefined,
+    errorMsg: string | undefined
+  ) => {
+    if (!isTouched || errorMsg) {
+      setModalType(ModalType.ERROR);
+      setModalMessage(errorMsg ? errorMsg : errorMessage.blankID);
+    } else {
+      const response: any = await checkID(userId);
+      if (response.state && !response.isDuplicate) {
+        setCheckedId(userId);
+        setModalType(ModalType.SUCCESS);
+        setModalMessage('사용할 수 있는 아이디입니다.');
+      } else {
+        setCheckedId('');
+        setModalType(ModalType.ERROR);
+        setModalMessage(
+          response.isDuplicate ? errorMessage.duplicateId : errorMessage.network
+        );
+      }
+    }
+    setModalOpen(true);
   };
 
   const handleChooseFile = () => {
@@ -77,6 +117,7 @@ export default function SignUp() {
         // null 방지
         if (reader.result) {
           if (typeof reader.result === 'string') {
+            setImgFile(file);
             setProfileImg(reader.result);
           } else {
             // ArrayBuffer인 경우 string으로 변경
@@ -92,30 +133,86 @@ export default function SignUp() {
     }
   };
 
-  const handleRequestEmail = (
-    errorMessage: string | undefined,
-    touched: boolean | undefined
+  const handleRequestEmail = async (
+    email: string,
+    isTouched: boolean | undefined,
+    errorMsg: string | undefined
   ) => {
-    if (typeof errorMessage === 'undefined' && touched) {
-      setModalType(ModalType.SUCCESS);
-      setModalMessage(
-        '이메일이 전송됐습니다. 메일함을 확인하시고 인증번호를 입력해주세요'
-      );
-      setModalOpen(true);
-      // TODO: API 연동
-      setCertificationNumber(9999);
+    if (!isTouched || errorMsg) {
+      setModalType(ModalType.ERROR);
+      setModalMessage(errorMsg ? errorMsg : errorMessage.blankEmail);
     } else {
+      // TODO 버튼 스피너 추가 (로딩)
+      setSendingEmail(true);
+      const status = await sendEmail({ email });
+      if (status) {
+        setIsSendEmail(true);
+        setModalType(ModalType.SUCCESS);
+        setModalMessage(
+          '이메일이 전송됐습니다. 메일함을 확인하시고 5분 이내로 인증번호를 입력해주세요'
+        );
+      } else {
+        setModalType(ModalType.ERROR);
+        setModalMessage('이메일 전송에 실패했습니다. 다시 시도해주세요.');
+      }
+      setSendingEmail(false);
+    }
+    setModalOpen(true);
+  };
+
+  const handleCertificateNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCertificateNumber(e.target.value);
+  };
+
+  const handleCheckEmail = async (email: string) => {
+    const data = {
+      email,
+      number: certificateNumber,
+    };
+    const status = await checkEmail(data);
+    if (status) {
+      setCheckedEmail(email);
+      setModalType(ModalType.SUCCESS);
+      setModalMessage('정상적으로 인증 완료됐습니다.');
+    } else {
+      setCheckedEmail('');
       setModalType(ModalType.ERROR);
       setModalMessage(
-        `이메일이 전송에 실패했습니다. ${
-          errorMessage === undefined ? '이메일을 입력해주세요.' : errorMessage
-        }`
+        '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요'
+      );
+    }
+    setModalOpen(true);
+  };
+
+  const handleSubmit = async (sendData: any, setSubmitting: any) => {
+    // 아이디 / 이메일 인증확인
+    if (checkedId !== sendData.userId || checkedEmail !== sendData.email) {
+      setModalType(ModalType.ERROR);
+      setModalMessage(
+        checkedId !== sendData.userId
+          ? errorMessage.checkDuplicateId
+          : errorMessage.checkCertificateEmail
       );
       setModalOpen(true);
-
-      setCertificationNumber(null);
+      return;
     }
+    setSubmitting(true);
+    const data = {
+      signUpDto: sendData,
+      file: imgFile,
+    };
+    const status = await SignupPost(data);
+    if (status) {
+      setModalType(ModalType.SUCCESS);
+      setModalMessage('회원가입에 성공했습니다. 다시 로그인해주세요.');
+    } else {
+      setModalType(ModalType.ERROR);
+      setModalMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+    }
+    setModalOpen(true);
+    setSubmitting(false);
   };
+
   return (
     <Layout>
       {modalOpen && (
@@ -138,7 +235,9 @@ export default function SignUp() {
         <Formik
           initialValues={initialSignupValue}
           validationSchema={ValidationSchema}
-          onSubmit={() => console.log('submit')}
+          onSubmit={(data, { setSubmitting }) =>
+            handleSubmit(data, setSubmitting)
+          }
         >
           {({ values, errors, touched, isSubmitting }) => (
             <Form className="flex flex-col gap-y-10">
@@ -146,14 +245,28 @@ export default function SignUp() {
                 <label className="text-xs w-20 sm:text-base sm:w-28">
                   아이디 <span className="text-red-500">*</span>
                 </label>
-                <Field
-                  type="text"
-                  name="userId"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  placeholder="아이디를 입력해주세요"
-                />
+                <div className="flex grow flex-col">
+                  <Field
+                    type="text"
+                    name="userId"
+                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    placeholder="아이디를 입력해주세요"
+                  />
+                  {errors.userId && touched.userId && (
+                    <span className="text-xs text-red-500 translate-y-2 h-0">
+                      {errors.userId}
+                    </span>
+                  )}
+                </div>
                 <button
                   type="button"
+                  onClick={() =>
+                    checkDuplicateID(
+                      values.userId,
+                      touched.userId,
+                      errors.userId
+                    )
+                  }
                   className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
                 >
                   중복확인
@@ -163,34 +276,55 @@ export default function SignUp() {
                 <label className="text-xs w-20 sm:text-base sm:w-28">
                   비밀번호 <span className="text-red-500">*</span>
                 </label>
-                <Field
-                  type="password"
-                  name="password"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  placeholder="비밀번호를 입력해주세요 "
-                />
+                <div className="flex flex-col grow">
+                  <Field
+                    type="password"
+                    name="password"
+                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    placeholder="비밀번호를 입력해주세요 "
+                  />
+                  {errors.password && touched.password && (
+                    <span className="text-xs text-red-500 translate-y-2 h-0">
+                      {errors.password}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
                 <label className="text-xs w-20 sm:text-base sm:w-28">
                   비밀번호 확인 <span className="text-red-500">*</span>
                 </label>
-                <Field
-                  type="password"
-                  name="passwordConfirm"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  placeholder="비밀번호를 한번 더 입력해주세요 "
-                />
+                <div className="flex flex-col grow">
+                  <Field
+                    type="password"
+                    name="passwordConfirm"
+                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    placeholder="비밀번호를 한번 더 입력해주세요 "
+                  />
+                  {errors.passwordConfirm && touched.passwordConfirm && (
+                    <span className="text-xs text-red-500 translate-y-2 h-0">
+                      {errors.passwordConfirm}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
                 <label className="text-xs w-20 sm:text-base sm:w-28">
                   이름 <span className="text-red-500">*</span>
                 </label>
-                <Field
-                  type="text"
-                  name="name"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  placeholder="이름을 입력해주세요."
-                />
+                <div className="flex flex-col grow">
+                  <Field
+                    type="text"
+                    name="name"
+                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    placeholder="이름을 입력해주세요."
+                  />
+                  {errors.name && touched.name && (
+                    <span className="text-xs text-red-500 translate-y-2 h-0">
+                      {errors.name}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="inline-flex w-full items-center">
                 <label className="text-xs w-28 sm:text-base sm:w-28">
@@ -232,21 +366,28 @@ export default function SignUp() {
                       type="button"
                       className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                       onClick={() =>
-                        handleRequestEmail(errors.email, touched.email)
+                        handleRequestEmail(
+                          values.email,
+                          touched.email,
+                          errors.email
+                        )
                       }
                     >
-                      인증번호발송
+                      {sendingEmail ? 'Loading..' : '인증번호발송'}
                     </button>
                   </div>
-                  {certificationNumber && (
+                  {isSendEmail && (
                     <div className="flex flex-none">
                       <input
                         type="text"
                         className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                        ref={certificateNumberRef}
+                        onChange={handleCertificateNumber}
                       />
                       <button
                         type="button"
                         className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                        onClick={() => handleCheckEmail(values.email)}
                       >
                         인증번호확인
                       </button>
@@ -271,7 +412,7 @@ export default function SignUp() {
                 </label>
                 <Field
                   type="text"
-                  name="job"
+                  name="company"
                   className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                   placeholder="직장을 선택해주세요"
                 />
@@ -281,11 +422,13 @@ export default function SignUp() {
                   개발시작연도
                 </label>
                 <div className="flex flex-col grow self-baseline">
-                  <select
-                    name="startYear"
-                    disabled={values.job === ''}
+                  <Field
+                    as="select"
+                    name="developYear"
+                    default={0}
+                    disabled={values.company === ''}
                     className={`${
-                      values.job === '' && 'opacity-30'
+                      values.company === '' && 'opacity-30'
                     } grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
                   >
                     {developExperience.map((val) => (
@@ -293,7 +436,7 @@ export default function SignUp() {
                         {val}
                       </option>
                     ))}
-                  </select>
+                  </Field>
                   <span className="text-gray-500 text-xs">
                     개발 시작연도는 실제 직장에 입사한 연도입니다.
                   </span>

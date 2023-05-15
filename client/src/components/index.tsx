@@ -8,3 +8,4 @@ export { default as Divider } from '@/components/Divider';
 export { default as Avatar } from '@/components/Avatar';
 export { default as Icon } from '@/components/Icon';
 export { default as Modal } from '@/components/Modal';
+export { default as AuthComponent } from '@/components/AuthComponent';

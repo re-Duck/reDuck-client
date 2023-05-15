@@ -22,17 +22,27 @@ export const errorMessage = Object.freeze({
   mismatchPassword: '비밀번호가 일치하지 않습니다.',
   invalidFormatEmail: '이메일 양식이 맞지 않습니다',
   blankTitle: '제목을 입력해 주세요.',
+  duplicateId: '사용중인 아이디 입니다.',
+  network: '네트워크 오류 입니다.',
+  checkDuplicateId: '아이디 중복확인을 진행해주세요',
+  checkCertificateEmail: '이메일 인증을 진행해주세요',
 });
+
+export const errorCodeToMessage = Object.freeze({
+  INVALID_TYPING: '잘못된 입력으로 인한 오류입니다. 다시 시도해주세요',
+  USER_NOT_EXIST: '유저가 존재하지 않습니다.',
+  INVALID_PASSWORD: '비밀번호가 맞지 않습니다.',
+});
+
 export const initialSignupValue = {
   userId: '',
   password: '',
-  passwordCheck: '',
+  passwordConfirm: '',
   name: '',
-  profileImg: '',
   email: '',
   school: '',
-  job: '',
-  startYear: '',
+  company: '',
+  developYear: '',
 };
 
 export const postList = [

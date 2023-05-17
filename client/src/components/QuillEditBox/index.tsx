@@ -9,6 +9,7 @@ import { useCallback, useMemo, useRef } from 'react';
 import { quillFormats } from '@/constant';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
 import { uploadImagePost } from '@/service/uploadImagePost';
+import { BASE_URL } from '@/service/base/api';
 
 interface IQuillEditBox {
   content: string;
@@ -56,7 +57,7 @@ export default function QuillEditBox({
       try {
         const imgHash = await uploadImagePost(formData);
 
-        const IMG_URL = `http://168.188.123.234:8080${imgHash}`;
+        const IMG_URL = `${BASE_URL}${imgHash}`;
 
         const editor = quillRef?.current?.getEditor();
         const IS_EDITOR_NULL = editor === undefined || editor === null;

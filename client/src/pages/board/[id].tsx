@@ -7,15 +7,17 @@ import { axios_get } from '@/service/base/api';
 import { IPostInformation } from '@/types';
 
 interface IPostDetailPage {
-  data: IPostInformation;
+  pageProps: {
+    data: IPostInformation;
+  };
 }
+export default function PostDetailPage({ pageProps }: IPostDetailPage) {
+  const data = pageProps.data;
 
-export default function PostDetailPage({ data }: IPostDetailPage) {
   return (
     <Layout>
       <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
         <PostDetail data={data} />
-
         <h3 className="text-2xl font-bold pl-3">댓글 3</h3>
         <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
           <div className="flex justify-between items-center gap-1 h-16 bg-white border-gray-100 border-[1px] px-10">
@@ -47,11 +49,11 @@ export default function PostDetailPage({ data }: IPostDetailPage) {
 
 export async function getServerSideProps(context: any) {
   const postOriginId = context.params.id;
-  const suburl = `/post/detail/${postOriginId}`;
-  const headers = {
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
-  };
-  const res = await axios_get({ suburl, headers });
+  const suburl = `/post/detail/8bb6dde0-71f2-4ecd-8484-7da2a862bae1`;
+  // const headers = {
+  //   Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+  // };
+  const res = await axios_get({ suburl });
 
   return { props: { data: res.data } };
 }

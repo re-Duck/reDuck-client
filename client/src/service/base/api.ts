@@ -32,7 +32,7 @@ const paramsSerializer = (paramObj: any) => {
 export async function axios_get({
   suburl,
   headers = {},
-  params,
+  params = {},
 }: IAxiosGet): Promise<IResponse> {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {

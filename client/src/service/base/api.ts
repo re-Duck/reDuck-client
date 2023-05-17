@@ -38,7 +38,6 @@ export async function axios_get({
     const response = await axios.get(`${BASE_URL}${suburl}`, {
       params,
       headers,
-      params,
       paramsSerializer,
     });
     const RESPONSE_OK = response.status === 200 || response.status === 201;

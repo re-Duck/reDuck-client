@@ -16,7 +16,9 @@ export default function PostDetailPage({ pageProps }: IPostDetailPage) {
   const data = pageProps.data;
   const session = useSession();
   const user = session.data?.user;
-  const comentImgSrc = user ? `${BASE_URL}${user.image?.path}` : googleLogo;
+  const comentImgSrc = user
+    ? `${BASE_URL}${user.userProfileImgPath}`
+    : googleLogo;
 
   return (
     <Layout>

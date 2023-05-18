@@ -16,7 +16,7 @@ export default function AuthComponent({
       const payload = {
         userId: session.user.id,
         userName: session.user.name,
-        imagePath: session.user.image.path,
+        userProfileImgPath: session.user.userProfileImgPath,
         isLogin: true,
       };
       dispatch(logIn(payload));

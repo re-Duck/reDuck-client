@@ -2,7 +2,11 @@ import { axios_get } from './base/api';
 import { POSTS_INISIATE_VALUE } from '@/constant';
 
 export const getAllPosts = async ({ pageParam = '' }) => {
-  const params = { pageParam, postType: ['stack', 'qna'], page: 10 };
+  const params = {
+    postOriginId: pageParam,
+    postType: ['stack', 'qna'],
+    page: 10,
+  };
   const suburl = '/post';
 
   const response = await axios_get({ suburl, params });

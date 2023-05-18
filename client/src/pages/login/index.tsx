@@ -57,7 +57,6 @@ export default function Login() {
         redirect: false,
         ...sendData,
       });
-
       if (result?.error) {
         setModalMessage(errorCodeToMessage[result.error]);
         setModalOpen(true);

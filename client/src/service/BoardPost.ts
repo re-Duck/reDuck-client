@@ -4,11 +4,20 @@ import { v4 as uuidv4 } from 'uuid';
 // service
 import { axios_post } from './base/api';
 
-export async function boardPost(title: string, content: string): Promise<void> {
+interface IBoardPost {
+  title: string;
+  content: string;
+  accessToken: string;
+}
+export async function boardPost({
+  title,
+  content,
+  accessToken,
+}: IBoardPost): Promise<void> {
   const postOriginId = uuidv4();
   const suburl = '/post';
   const headers = {
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_ACCESS_TOKEN}`,
+    Authorization: `Bearer ${accessToken}`,
   };
 
   const data = {

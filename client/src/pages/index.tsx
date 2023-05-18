@@ -14,7 +14,7 @@ import LoadingIcon from '@/components/LoadingIcon';
 
 export default function Home() {
   // TODO: 유저정보 필요시 사용
-  // const auth = useSelector((state) => state.auth);
+  // const auth = useSelector((state: any) => state.auth);
   const { data, fetchNextPage, hasNextPage, isFetching, status } =
     useInfiniteQuery({
       queryKey: ['projects'],
@@ -36,7 +36,6 @@ export default function Home() {
       document.removeEventListener('scroll', handleScroll);
     };
   }, [fetchNextPage, hasNextPage]);
-
   return (
     <>
       <Head>
@@ -60,9 +59,9 @@ export default function Home() {
               <>
                 {data?.pages.map((group, i) => (
                   <React.Fragment key={i}>
-                    {group?.data.map((props: any) => {
-                      return <Post key={props.postOriginId} {...props} />;
-                    })}
+                    {group?.data.map((props: any) => (
+                      <Post key={props.postOriginId} {...props} />
+                    ))}
                   </React.Fragment>
                 ))}
 

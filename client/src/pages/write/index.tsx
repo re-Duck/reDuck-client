@@ -13,6 +13,7 @@ import { errorMessage } from '@/constant';
 //service
 import { boardPost } from '@/service/boardPost';
 import { Icon } from '@iconify/react';
+import { useSession } from 'next-auth/react';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -23,11 +24,19 @@ export default function Write() {
   const [content, setContent] = useState<string>('');
   const router = useRouter();
 
+  const { data } = useSession();
+  const accessToken = data?.user.token;
+
   const handleContent = useCallback((value: string) => setContent(value), []);
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
+      if (!accessToken) {
+        alert('로그인이 필요합니다');
+        return;
+      }
+
       setSubmitting(true);
-      await boardPost(title, content);
+      await boardPost({ title, content, accessToken });
       setSubmitting(false);
       alert('게시글 작성되었습니다');
       router.replace('/');

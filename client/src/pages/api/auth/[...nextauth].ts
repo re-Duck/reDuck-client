@@ -32,7 +32,7 @@ export default NextAuth({
         const userInfo = {
           id: result.data.userId,
           name: result.data.name,
-          image: result.data.userProfileImg,
+          userProfileImgPath: result.data.userProfileImgPath,
           email: result.data.email,
           token: result.data.accessToken,
         };
@@ -54,7 +54,7 @@ export default NextAuth({
           id: token.user.id,
           name: token.user.name,
           email: token.user.email,
-          image: token.user.image,
+          userProfileImgPath: token.user.userProfileImgPath,
           token: token.user.token,
         },
       };

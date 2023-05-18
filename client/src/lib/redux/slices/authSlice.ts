@@ -5,14 +5,14 @@ import { HYDRATE } from 'next-redux-wrapper';
 interface IUserState {
   userId: string;
   userName: string;
-  imagePath: string;
+  userProfileImgPath: string;
   isLogin: boolean;
 }
 
 const initialState: IUserState = {
   userId: '',
   userName: '',
-  imagePath: '',
+  userProfileImgPath: '',
   isLogin: false,
 };
 
@@ -23,7 +23,7 @@ export const authSlice = createSlice({
     logIn: (state, actions: PayloadAction<IUserState>) => {
       state.userId = actions.payload.userId;
       state.userName = actions.payload.userName;
-      state.imagePath = actions.payload.imagePath;
+      state.userProfileImgPath = actions.payload.userProfileImgPath;
       state.isLogin = true;
     },
     logOut: (state) => {

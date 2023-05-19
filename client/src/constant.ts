@@ -4,11 +4,6 @@ export const linkList = [
   { name: '채팅방', href: '/chatroom' },
 ];
 
-export const menuViewLinkList = [
-  ...linkList,
-  { name: '로그인', href: '/login' },
-];
-
 export const initialLoginValue = Object.freeze({ userId: '', password: '' });
 
 export const errorMessage = Object.freeze({

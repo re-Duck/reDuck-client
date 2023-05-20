@@ -119,3 +119,11 @@ export const POSTS_INISIATE_VALUE = Object.freeze({
   data: [],
   nextPageParms: null,
 });
+
+export const sideBarList = [
+  '내 정보',
+  '활동기록',
+  '친구목록',
+  '덕력치',
+  '회원탈퇴',
+];

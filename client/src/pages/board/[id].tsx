@@ -4,6 +4,8 @@ import { Layout, PostDetail, Comment, CommentUpload } from '@/components';
 import { axios_get } from '@/service/base/api';
 import { IPostInformation } from '@/types';
 import { useSession } from 'next-auth/react';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 
 interface IPostDetailPage {
   pageProps: {
@@ -20,10 +22,10 @@ interface IComment {
   commentAuthorName: string;
 }
 export default function PostDetailPage({ pageProps }: IPostDetailPage) {
-  const data = pageProps.data;
   const session = useSession();
   const user = session.data?.user;
-  const comments = data.comments as IComment[] | null;
+  const data = pageProps.data;
+  const comments = data?.comments as IComment[] | null;
 
   return (
     <Layout>

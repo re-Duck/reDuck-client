@@ -1,9 +1,15 @@
-import { BASE_URL } from '@/service/base/api';
-import Image from 'next/image';
-import React from 'react';
-import googleLogo from '@/assets/images/google_logo.png';
-import { commentPost } from '@/service/comment-post';
+import React, { useState } from 'react';
+
+//next
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+
+//service
+import { BASE_URL } from '@/service/base/api';
+import { commentPost } from '@/service/comment-post';
+
+//assets
+import googleLogo from '@/assets/images/google_logo.png';
 
 interface IUser {
   id: string;
@@ -20,7 +26,7 @@ export default function CommentUpload({ user }: IComentUpload) {
   const router = useRouter();
   const postOriginId = router.query.id;
 
-  const [content, setContent] = React.useState('');
+  const [content, setContent] = useState('');
   const comentImgSrc = user
     ? `${BASE_URL}${user.userProfileImgPath}`
     : googleLogo;
@@ -34,10 +40,10 @@ export default function CommentUpload({ user }: IComentUpload) {
       return;
     }
     await commentPost({ content, postOriginId, token: user.token });
-    setContent('');
+    alert('댓글이 등록되었습니다.');
   };
   return (
-    <div className="flex justify-between items-center gap-1 h-16 bg-white border-gray-100 border-[1px] px-10">
+    <form className="flex justify-between items-center gap-1 h-16 bg-white border-gray-100 border-[1px] px-10">
       <Image
         src={comentImgSrc}
         alt="img"
@@ -54,10 +60,11 @@ export default function CommentUpload({ user }: IComentUpload) {
       />
       <button
         className=" bg-red-400 rounded-lg px-3 py-2 text-white text-xs"
+        type="submit"
         onClick={handleComment}
       >
         등록
       </button>
-    </div>
+    </form>
   );
 }

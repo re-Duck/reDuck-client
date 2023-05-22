@@ -43,7 +43,7 @@ export default function QuillEditBox({
   const { data } = useSession();
   const accessToken = data?.user.token;
 
-  const imageHandler = useCallback((props: any) => {
+  const imageHandler = useCallback(() => {
     const input = document.createElement('input');
 
     input.setAttribute('type', 'file');

@@ -1,11 +1,16 @@
 import React from 'react';
+
+//components
 import { Layout, PostDetail, Comment, CommentUpload } from '@/components';
 
+//service
 import { axios_get } from '@/service/base/api';
+
+//types
 import { IPostInformation } from '@/types';
+
+//next-auth
 import { useSession } from 'next-auth/react';
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 
 interface IPostDetailPage {
   pageProps: {

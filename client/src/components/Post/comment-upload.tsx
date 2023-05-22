@@ -48,9 +48,9 @@ export default function CommentUpload({ user }: IComentUpload) {
       <Image
         src={comentImgSrc}
         alt="img"
-        width={20}
-        height={20}
-        className="rounded-full w-10 h-10"
+        width={30}
+        height={30}
+        className="rounded-full"
       />
 
       <input

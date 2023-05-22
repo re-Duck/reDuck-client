@@ -22,7 +22,7 @@ export default function PostDetail({ data }: PostDetail) {
       <p className="text-md text-gray-500" ref={contentRef}></p>
       <p className="text-gray-400">{parseDate(data.postCreatedAt)}</p>
       <hr />
-      <p className="text-gray-400 text-sm">좋아요 261 | 조회 7,042</p>
+      <p className="text-gray-400 text-sm">좋아요 0 | 조회 0</p>
     </article>
   );
 }

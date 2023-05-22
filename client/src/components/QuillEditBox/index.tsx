@@ -8,7 +8,7 @@ import { useCallback, useMemo, useRef } from 'react';
 // 상수 호출
 import { quillFormats } from '@/constant';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
-import { uploadImagePost } from '@/service/uploadImagePost';
+import { uploadImagePost } from '@/service/upload-image-post';
 import { BASE_URL } from '@/service/base/api';
 import { useSession } from 'next-auth/react';
 

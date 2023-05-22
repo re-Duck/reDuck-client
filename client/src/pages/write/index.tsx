@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import { errorMessage } from '@/constant';
 
 //service
-import { boardPost } from '@/service/boardPost';
+import { boardPost } from '@/service/board-post';
 import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
 

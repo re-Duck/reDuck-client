@@ -2,7 +2,7 @@ import { BASE_URL } from '@/service/base/api';
 import Image from 'next/image';
 import React from 'react';
 import googleLogo from '@/assets/images/google_logo.png';
-import { commentPost } from '@/service/commentPost';
+import { commentPost } from '@/service/comment-post';
 import { useRouter } from 'next/router';
 
 interface IUser {

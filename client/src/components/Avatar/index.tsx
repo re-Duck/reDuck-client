@@ -1,22 +1,27 @@
-import { positionStyle } from '@/styles/styleConstant';
+import React from 'react';
+import { positionStyle, avatarSizeStyle } from '@/styles/styleConstant';
 
 interface IAvatarProp {
   src: string | null;
   alt: string;
-  hasDot: boolean;
+  size: 'sm' | 'md' | 'lg';
+  hasDot?: boolean;
   position?: 'topRight' | 'bottomRight' | 'topLeft' | 'bottomLeft';
 }
 
-export default function Avatar({ src, alt, hasDot, position }: IAvatarProp) {
+export default function Avatar({
+  src,
+  alt,
+  size = 'sm',
+  hasDot,
+  position,
+}: IAvatarProp) {
   const backgroundColor = src ? '' : 'bg-slate-400';
+  const avatarStyle = `relative rounded-full ${backgroundColor} border border-slate-200 ${avatarSizeStyle[size]} max-w-[200px] max-h-[200px] overflow-hidden`;
   return (
-    <div
-      className={`relative rounded-full ${backgroundColor} border border-slate-200 w-[80px] h-[80px] max-w-[100px] max-h-[100px] overflow-hidden`}
-    >
-      {src ? (
+    <div className={avatarStyle}>
+      {src && (
         <img src={src} alt={alt} className="w-full h-full object-cover" />
-      ) : (
-        <></>
       )}
       {hasDot && (
         <div

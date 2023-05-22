@@ -23,12 +23,8 @@ export default function PostDetailPage({ pageProps }: IPostDetailPage) {
         <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
           <CommentUpload user={user} />
 
-          <article>
-            <Comment />
-          </article>
-          <article>
-            <Comment />
-          </article>
+          <Comment />
+          <Comment />
         </div>
       </div>
     </Layout>

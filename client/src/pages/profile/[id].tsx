@@ -7,6 +7,8 @@ import { Layout, Avatar, Divider } from '@/components';
 import { sideBarList } from '@/constant';
 import { signOut } from 'next-auth/react';
 
+import { BASE_URL } from '@/service/base/api';
+
 export default function Profile() {
   const router = useRouter();
   const authState = useSelector((state) => state.auth);
@@ -23,7 +25,7 @@ export default function Profile() {
       <div className="flex mx-auto max-w-5xl p-8 gap-x-16">
         <div className="flex-none text-center">
           <Avatar
-            src={`http://168.188.123.234/${authState.userProfileImgPath}`}
+            src={`${BASE_URL}${authState.userProfileImgPath}`}
             alt="profileImg"
             size="lg"
           />

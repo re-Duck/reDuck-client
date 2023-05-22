@@ -10,6 +10,7 @@ import { commentPost } from '@/service/comment-post';
 
 //assets
 import googleLogo from '@/assets/images/google_logo.png';
+import { errorMessage, successMessage } from '@/constant';
 
 interface IUser {
   id: string;
@@ -32,15 +33,15 @@ export default function CommentUpload({ user }: IComentUpload) {
     : googleLogo;
   const handleComment = async () => {
     if (user === undefined) {
-      alert('로그인이 필요합니다.');
+      alert(errorMessage.needLogin);
       return;
     }
     if (content === '') {
-      alert('댓글을 입력해주세요.');
+      alert(errorMessage.blankComment);
       return;
     }
     await commentPost({ content, postOriginId, token: user.token });
-    alert('댓글이 등록되었습니다.');
+    alert(successMessage.commentSuccess);
   };
   return (
     <form className="flex justify-between items-center gap-1 h-16 bg-white border-gray-100 border-[1px] px-10">

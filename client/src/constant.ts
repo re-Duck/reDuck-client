@@ -21,12 +21,18 @@ export const errorMessage = Object.freeze({
   network: '네트워크 오류 입니다.',
   checkDuplicateId: '아이디 중복확인을 진행해주세요',
   checkCertificateEmail: '이메일 인증을 진행해주세요',
+  needLogin: '로그인이 필요합니다.',
+  blankComment: '댓글을 입력해주세요.',
 });
 
 export const errorCodeToMessage = Object.freeze({
   INVALID_TYPING: '잘못된 입력으로 인한 오류입니다. 다시 시도해주세요',
   USER_NOT_EXIST: '유저가 존재하지 않습니다.',
   INVALID_PASSWORD: '비밀번호가 맞지 않습니다.',
+});
+
+export const successMessage = Object.freeze({
+  commentSuccess: '댓글이 등록되었습니다.',
 });
 
 export const initialSignupValue = {

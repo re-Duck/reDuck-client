@@ -17,7 +17,7 @@ import {
   initialSignupValue,
   MODAL_TITLE,
 } from '@/constant';
-import { SignupPost, checkEmail, checkID, sendEmail } from '@/service/signup';
+import { SignupPost, checkEmail, checkID, sendEmail } from '@/service/sign-up';
 
 enum ModalType {
   SUCCESS = 'success',
@@ -331,7 +331,12 @@ export default function SignUp() {
                   프로필 이미지
                 </label>
                 <div className="flex gap-x-4 items-baseline flex-wrap">
-                  <Avatar src={profileImg} alt="profileImg" hasDot={false} />
+                  <Avatar
+                    src={profileImg}
+                    alt="profileImg"
+                    hasDot={false}
+                    size="sm"
+                  />
                   <input
                     type="file"
                     accept="image/*"

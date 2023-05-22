@@ -8,7 +8,7 @@ import { WritePostButton } from '@/components/WritePostButton';
 
 //@tanstack/react-query
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getAllPosts } from '@/service/getPosts';
+import { getAllPosts } from '@/service/get-posts';
 
 import LoadingIcon from '@/components/LoadingIcon';
 

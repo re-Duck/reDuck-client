@@ -10,10 +10,7 @@ export function Post(props: IPostInformation) {
       <Link href={`/board/${props.postOriginId}`}>
         <h1 className="text-xl font-bold mb-4">{props.postTitle}</h1>
         <p className="text-md text-gray-500 line-clamp-3">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia nam rem
-          perferendis quisquam nulla itaque atque tempora esse praesentium ipsam
-          eaque provident nemo accusantium, deleniti minus? Mollitia facere
-          laudantium voluptatum?
+          {props.postContent}
         </p>
       </Link>
     </article>

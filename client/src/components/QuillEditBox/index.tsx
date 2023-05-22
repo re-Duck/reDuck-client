@@ -10,6 +10,7 @@ import { quillFormats } from '@/constant';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
 import { uploadImagePost } from '@/service/uploadImagePost';
 import { BASE_URL } from '@/service/base/api';
+import { useSession } from 'next-auth/react';
 
 interface IQuillEditBox {
   content: string;
@@ -39,6 +40,8 @@ export default function QuillEditBox({
   handleContent,
 }: IQuillEditBox) {
   const quillRef = useRef<ReactQuill>(null);
+  const { data } = useSession();
+  const accessToken = data?.user.token;
 
   const imageHandler = useCallback((props: any) => {
     const input = document.createElement('input');
@@ -55,7 +58,7 @@ export default function QuillEditBox({
       formData.append('file', file);
 
       try {
-        const imgHash = await uploadImagePost(formData);
+        const imgHash = await uploadImagePost(formData, accessToken);
 
         const IMG_URL = `${BASE_URL}${imgHash}`;
 

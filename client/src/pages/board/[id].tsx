@@ -24,8 +24,8 @@ interface IComment {
 export default function PostDetailPage({ pageProps }: IPostDetailPage) {
   const session = useSession();
   const user = session.data?.user;
-  const data = pageProps.data;
-  const comments = data?.comments as IComment[] | null;
+  const data: IPostInformation = pageProps.data;
+  const comments: IComment[] | null = data?.comments;
 
   return (
     <Layout>

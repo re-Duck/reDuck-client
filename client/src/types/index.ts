@@ -1,5 +1,13 @@
+export interface IComment {
+  commentOriginId: number;
+  commentContent: string;
+  commentCreatedAt: string;
+  commentUpdatedAt: string;
+  commentAuthorId: string;
+  commentAuthorName: string;
+}
 export interface IPostInformation {
-  comments: Array<string> | null;
+  comments: Array<IComment> | null;
   postAuthorDevelopAnnual: string;
   postAuthorId: string;
   postAuthorName: string;

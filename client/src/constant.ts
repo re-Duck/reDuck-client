@@ -46,49 +46,6 @@ export const initialSignupValue = {
   developYear: '',
 };
 
-export const postList = [
-  {
-    postOriginId: 1,
-    title: '제목1',
-    content: '내용1',
-    writer: '작성자1',
-    date: '2021-10-10',
-    view: 1,
-  },
-  {
-    postOriginId: 2,
-    title: '제목2',
-    content: '내용2',
-    writer: '작성자2',
-    date: '2021-10-10',
-    view: 2,
-  },
-  {
-    postOriginId: 3,
-    title: '제목3',
-    content: '내용3',
-    writer: '작성자3',
-    date: '2021-10-10',
-    view: 3,
-  },
-  {
-    postOriginId: 4,
-    title: '제목4',
-    content: '내용4',
-    writer: '작성자4',
-    date: '2021-10-10',
-    view: 4,
-  },
-  {
-    postOriginId: 5,
-    title: '제목5',
-    content: '내용5',
-    writer: '작성자5',
-    date: '2021-10-10',
-    view: 5,
-  },
-];
-
 export const quillFormats = [
   'header',
   'font',

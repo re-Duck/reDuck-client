@@ -22,6 +22,7 @@ import {
   MODAL_TITLE,
   errorCodeToMessage,
 } from '@/constant';
+import { useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string().required(errorMessage.blankID),
@@ -33,22 +34,12 @@ interface ILogin {
   password: string;
 }
 
-enum ModalType {
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-}
-
 export default function Login() {
   const router = useRouter();
 
+  const { openModal } = useModal();
   // Modal
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalMessage, setModalMessage] = useState('');
 
-  const handleModalButton = () => {
-    setModalOpen(false);
-  };
   // TODO: any타입 정의하기
   const handleSubmit = async (sendData: ILogin, setSubmitting: any) => {
     setSubmitting(true);
@@ -58,8 +49,12 @@ export default function Login() {
         ...sendData,
       });
       if (result?.error) {
-        setModalMessage(errorCodeToMessage[result.error]);
-        setModalOpen(true);
+        openModal({
+          type: 'error',
+          props: {
+            code: result.error,
+          },
+        });
         return;
       }
 
@@ -71,15 +66,6 @@ export default function Login() {
   };
   return (
     <>
-      {modalOpen && (
-        <Modal
-          type={ModalType.ERROR}
-          title={MODAL_TITLE.error}
-          content={modalMessage}
-          buttonType="check"
-          handleModalButton={handleModalButton}
-        />
-      )}
       <nav className="w-full h-14 border-b-2 border-gray-100">
         <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
           <li>

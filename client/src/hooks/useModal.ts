@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { openModal, closeModal } from '../store/modalSlice';
+import { openModal, closeModal } from '../lib/redux/slices/modalSlice';
 
 function useModal() {
   const dispatch = useDispatch();
@@ -8,7 +8,7 @@ function useModal() {
     dispatch(openModal({ type, props }));
   };
 
-  const handleCloseModal = (type: any) => {
+  const handleCloseModal = () => {
     dispatch(closeModal());
   };
 

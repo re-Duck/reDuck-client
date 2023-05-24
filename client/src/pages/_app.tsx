@@ -20,14 +20,13 @@ import {
 function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
   const [queryClient] = React.useState(() => new QueryClient());
-
   return (
     <SessionProvider session={props.session}>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={props.dehydratedState}>
             <AuthComponent>
-              {/* <div>1234</div> */}
+              <Modal />
               <Component {...props} />
             </AuthComponent>
           </Hydrate>

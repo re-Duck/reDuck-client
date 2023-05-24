@@ -133,3 +133,18 @@ export const sideBarList = [
   '덕력치',
   '회원탈퇴',
 ];
+
+export const iconInfo = Object.freeze({
+  success: {
+    color: 'green',
+    shape: 'check-circle',
+  },
+  warning: {
+    color: 'orange',
+    shape: 'alert-triangle',
+  },
+  error: {
+    color: 'red',
+    shape: 'alert-octagon',
+  },
+});

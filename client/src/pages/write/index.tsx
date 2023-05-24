@@ -8,7 +8,12 @@ import { QuillEditBox } from '@/components';
 // form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { MODAL_TITLE, errorMessage, successMessage } from '@/constant';
+import {
+  MODAL_TITLE,
+  ModalType,
+  errorMessage,
+  successMessage,
+} from '@/constant';
 
 //service
 import { boardPost } from '@/service/board-post';
@@ -33,7 +38,7 @@ export default function Write() {
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       if (!accessToken) {
-        openModal({ type: MODAL_TITLE.error, message: errorMessage.needLogin });
+        openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
         return;
       }
 
@@ -41,7 +46,7 @@ export default function Write() {
       await boardPost({ title, content, accessToken });
       setSubmitting(false);
       openModal({
-        type: MODAL_TITLE.success,
+        type: ModalType.SUCCESS,
         message: successMessage.postSuccess,
       });
       router.replace('/');

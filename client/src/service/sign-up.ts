@@ -55,7 +55,7 @@ export async function sendEmail(data: object) {
   return result.isOkay;
 }
 
-export async function checkEmail(data: object): ICheckEmail {
+export async function checkEmail(data: object): Promise<ICheckEmail> {
   const suburl = '/auth/email/user';
 
   const result = await axios_post({ suburl, data });

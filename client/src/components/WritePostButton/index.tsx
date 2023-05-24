@@ -4,16 +4,22 @@ import React from 'react';
 
 import googleLogo from '@/assets/images/google_logo.png';
 import { useSession } from 'next-auth/react';
+import { BASE_URL } from '@/service/base/api';
 
 export function WritePostButton() {
   const { data } = useSession();
+  const imgPath = data
+    ? `${BASE_URL}${data.user.userProfileImgPath}`
+    : googleLogo;
 
   return (
     <article className="flex justify-between w-full items-center bg-white border-gray-100 border-[1px] h-25 p-6 ">
       <Image
-        src={googleLogo}
+        src={imgPath}
         alt="googleLogo"
-        style={{ width: '35px', height: '35px' }}
+        width="0"
+        height="0"
+        className="rounded-full w-10 h-10"
       />
       <button className=" border-[1px] rounded-md w-11/12 bg-gray-50 h-12">
         {data?.user.token ? (

@@ -1,7 +1,7 @@
 import React from 'react';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { AuthComponent } from '@/components';
+import { AuthComponent, Modal } from '@/components';
 
 // packages
 import 'react-quill/dist/quill.snow.css';
@@ -27,6 +27,7 @@ function App({ Component, ...rest }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <Hydrate state={props.dehydratedState}>
             <AuthComponent>
+              {/* <div>1234</div> */}
               <Component {...props} />
             </AuthComponent>
           </Hydrate>

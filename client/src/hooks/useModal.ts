@@ -4,8 +4,8 @@ import { openModal, closeModal } from '../lib/redux/slices/modalSlice';
 function useModal() {
   const dispatch = useDispatch();
 
-  const handleOpenModal = ({ type, props }: any) => {
-    dispatch(openModal({ type, props }));
+  const handleOpenModal = ({ type, message }: any) => {
+    dispatch(openModal({ type, message }));
   };
 
   const handleCloseModal = () => {

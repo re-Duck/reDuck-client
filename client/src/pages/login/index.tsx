@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -12,14 +12,13 @@ import * as Yup from 'yup';
 import googleLogo from '../../assets/images/google_logo.png';
 
 // components
-import { Divider, Modal } from '@/components';
+import { Divider } from '@/components';
 
 // service
 import { signIn } from 'next-auth/react';
 import {
   initialLoginValue,
   errorMessage,
-  MODAL_TITLE,
   errorCodeToMessage,
 } from '@/constant';
 import { useModal } from '@/hooks';
@@ -51,9 +50,7 @@ export default function Login() {
       if (result?.error) {
         openModal({
           type: 'error',
-          props: {
-            code: result.error,
-          },
+          message: errorCodeToMessage[result.error],
         });
         return;
       }

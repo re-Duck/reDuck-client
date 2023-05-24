@@ -5,15 +5,24 @@ import { modalSelector } from '@/lib/redux/slices/modalSlice';
 import { useModal } from '@/hooks';
 import ModalIcon from './modal-icon';
 import ModalButton from './modal-button';
-import { MODAL_TITLE } from '@/constant';
+import { MODAL_TITLE, ModalType } from '@/constant';
+
+interface IModal {
+  type:
+    | ModalType.SUCCESS
+    | ModalType.WARNING
+    | ModalType.ERROR
+    | ModalType.CLOSE;
+  message: string;
+}
 
 export default function Modal() {
-  const { type, props } = useSelector(modalSelector);
+  const { type, message }: IModal = useSelector(modalSelector);
   const { closeModal } = useModal();
-  console.log(type, props);
+
   return (
     <>
-      {type !== null && (
+      {type !== ModalType.CLOSE && (
         <div className="relative z-20">
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
           <div className="fixed inset-0 z-20 overflow-y-auto">
@@ -31,7 +40,7 @@ export default function Modal() {
                       </h3>
 
                       <div className="mt-2">
-                        <p className="text-sm text-gray-500">content</p>
+                        <p className="text-sm text-gray-500">{message}</p>
                       </div>
                     </div>
                   </div>

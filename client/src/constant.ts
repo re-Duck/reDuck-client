@@ -95,6 +95,7 @@ export enum ModalType {
   SUCCESS = 'success',
   WARNING = 'warning',
   ERROR = 'error',
+  CLOSE = 'close',
 }
 
 export const iconInfo = Object.freeze({

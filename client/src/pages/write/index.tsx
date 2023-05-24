@@ -14,6 +14,7 @@ import { errorMessage } from '@/constant';
 import { boardPost } from '@/service/board-post';
 import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
+import { useModal } from '@/hooks';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -26,6 +27,7 @@ export default function Write() {
 
   const { data } = useSession();
   const accessToken = data?.user.token;
+  const { openModal } = useModal();
 
   const handleContent = useCallback((value: string) => setContent(value), []);
   const handleSubmit = useCallback(

@@ -11,7 +11,6 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/get-posts';
 
 import LoadingIcon from '@/components/LoadingIcon';
-import { useModal } from '@/hooks';
 
 export default function Home() {
   // TODO: 유저정보 필요시 사용
@@ -37,7 +36,7 @@ export default function Home() {
       document.removeEventListener('scroll', handleScroll);
     };
   }, [fetchNextPage, hasNextPage]);
-  const { openModal, closeModal } = useModal();
+
   return (
     <>
       <Head>
@@ -59,20 +58,6 @@ export default function Home() {
               </div>
             ) : (
               <>
-                <button
-                  onClick={() => {
-                    openModal({ type: 'error' });
-                  }}
-                >
-                  o
-                </button>
-                <button
-                  onClick={() => {
-                    openModal({ type: 'success' });
-                  }}
-                >
-                  x
-                </button>
                 {data?.pages.map((group, i) => (
                   <React.Fragment key={i}>
                     {group?.data.map((props: any) => (

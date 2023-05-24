@@ -6,6 +6,7 @@ export { Post, PostDetail, Comment, CommentUpload } from '@/components/Post';
 export { default as QuillEditBox } from '@/components/QuillEditBox';
 export { default as Divider } from '@/components/Divider';
 export { default as Avatar } from '@/components/Avatar';
+export { default as LoadingIcon } from '@/components/LoadingIcon';
 export { default as Icon } from '@/components/Icon';
 export { default as Modal } from '@/components/Modal';
 export { default as AuthComponent } from '@/components/AuthComponent';

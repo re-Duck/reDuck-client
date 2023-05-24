@@ -78,10 +78,9 @@ export default function Write() {
                   type="submit"
                   disabled={isSubmitting}
                   onClick={() => {
-                    console.log(errors);
                     errors.title &&
                       openModal({
-                        type: MODAL_TITLE.error,
+                        type: ModalType.ERROR,
                         message: errors.title,
                       });
                   }}

@@ -38,6 +38,7 @@ export const successMessage = Object.freeze({
   postSuccess: '게시글이 등록되었습니다.',
   postDeleteSuccess: '게시글이 삭제되었습니다.',
   postUpdateSuccess: '게시글이 수정되었습니다.',
+  signUpSuccess: '회원가입에 성공했습니다. 다시 로그인해주세요.',
 });
 
 export const initialSignupValue = {

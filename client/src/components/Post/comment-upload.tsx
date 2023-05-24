@@ -10,7 +10,8 @@ import { commentPost } from '@/service/comment-post';
 
 //assets
 import googleLogo from '@/assets/images/google_logo.png';
-import { errorMessage, successMessage } from '@/constant';
+import { ModalType, errorMessage, successMessage } from '@/constant';
+import { useModal } from '@/hooks';
 
 interface IUser {
   id: string;
@@ -27,21 +28,26 @@ export default function CommentUpload({ user }: IComentUpload) {
   const router = useRouter();
   const postOriginId = router.query.id;
 
+  const { openModal } = useModal();
   const [content, setContent] = useState('');
   const comentImgSrc = user
     ? `${BASE_URL}${user.userProfileImgPath}`
     : googleLogo;
+
   const handleComment = async () => {
     if (user === undefined) {
-      alert(errorMessage.needLogin);
+      openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
       return;
     }
     if (content === '') {
-      alert(errorMessage.blankComment);
+      openModal({ type: ModalType.ERROR, message: errorMessage.blankComment });
       return;
     }
     await commentPost({ content, postOriginId, token: user.token });
-    alert(successMessage.commentSuccess);
+    openModal({
+      type: ModalType.SUCCESS,
+      message: successMessage.commentSuccess,
+    });
   };
   return (
     <form className="flex justify-between items-center gap-1 h-16 bg-white border-gray-100 border-[1px] px-10">

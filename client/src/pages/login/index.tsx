@@ -16,11 +16,7 @@ import { Divider } from '@/components';
 
 // service
 import { signIn } from 'next-auth/react';
-import {
-  initialLoginValue,
-  errorMessage,
-  errorCodeToMessage,
-} from '@/constant';
+import { initialLoginValue, errorMessage, ModalType } from '@/constant';
 import { useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
@@ -49,8 +45,8 @@ export default function Login() {
       });
       if (result?.error) {
         openModal({
-          type: 'error',
-          message: errorCodeToMessage[result.error],
+          type: ModalType.ERROR,
+          message: result.error,
         });
         return;
       }

@@ -8,7 +8,7 @@ import { QuillEditBox } from '@/components';
 // form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { errorMessage } from '@/constant';
+import { MODAL_TITLE, errorMessage, successMessage } from '@/constant';
 
 //service
 import { boardPost } from '@/service/board-post';
@@ -33,14 +33,17 @@ export default function Write() {
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       if (!accessToken) {
-        alert('로그인이 필요합니다');
+        openModal({ type: MODAL_TITLE.error, message: errorMessage.needLogin });
         return;
       }
 
       setSubmitting(true);
       await boardPost({ title, content, accessToken });
       setSubmitting(false);
-      alert('게시글 작성되었습니다');
+      openModal({
+        type: MODAL_TITLE.success,
+        message: successMessage.postSuccess,
+      });
       router.replace('/');
     },
     [content]
@@ -71,7 +74,11 @@ export default function Write() {
                   disabled={isSubmitting}
                   onClick={() => {
                     console.log(errors);
-                    errors.title && alert(errors.title);
+                    errors.title &&
+                      openModal({
+                        type: MODAL_TITLE.error,
+                        message: errors.title,
+                      });
                   }}
                 >
                   완료

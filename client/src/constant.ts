@@ -33,6 +33,11 @@ export const errorCodeToMessage = Object.freeze({
 
 export const successMessage = Object.freeze({
   commentSuccess: '댓글이 등록되었습니다.',
+  commentDeleteSuccess: '댓글이 삭제되었습니다.',
+  commentUpdateSuccess: '댓글이 수정되었습니다.',
+  postSuccess: '게시글이 등록되었습니다.',
+  postDeleteSuccess: '게시글이 삭제되었습니다.',
+  postUpdateSuccess: '게시글이 수정되었습니다.',
 });
 
 export const initialSignupValue = {

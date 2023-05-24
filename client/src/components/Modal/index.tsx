@@ -4,49 +4,9 @@ import { useSelector } from 'react-redux';
 import { modalSelector } from '@/lib/redux/slices/modalSlice';
 import { useModal } from '@/hooks';
 import ModalIcon from './modal-icon';
+import ModalButton from './modal-button';
 
-interface IModalProp {
-  type: 'success' | 'warning' | 'error';
-  title: string;
-  content: string;
-  buttonType: 'check' | 'select';
-  handleModalButton: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-export default function Modal({ content, buttonType }: IModalProp) {
-  const { closeModal } = useModal();
-
-  // 버튼 타입
-  const modalButton =
-    buttonType === 'check' ? (
-      <button
-        type="button"
-        className="inline-flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-        value="check"
-        onClick={closeModal}
-      >
-        확인
-      </button>
-    ) : (
-      <>
-        <button
-          type="button"
-          className="inline-flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-          value="yes"
-          onClick={closeModal}
-        >
-          예
-        </button>
-        <button
-          type="button"
-          className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-          value="cancle"
-          onClick={closeModal}
-        >
-          취소
-        </button>
-      </>
-    );
+export default function Modal() {
   const { type, props } = useSelector(modalSelector);
   // console.log(type, props);
   return (
@@ -69,17 +29,14 @@ export default function Modal({ content, buttonType }: IModalProp) {
                     </h3>
 
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        {content}
-                        content
-                      </p>
+                      <p className="text-sm text-gray-500">content</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                {modalButton}
+                <ModalButton type="check" />
               </div>
             </div>
           </div>

@@ -1,8 +1,8 @@
-import { useModal } from '@/hooks';
 import React from 'react';
 
 interface IType {
   type: 'check' | 'yes' | 'cancle';
+  onClick: () => void;
 }
 
 const CONTENT = {
@@ -23,12 +23,11 @@ const CONTENT = {
   },
 };
 
-export default function ModalButton({ type }: IType) {
+export default function ModalButton({ type, onClick }: IType) {
   const { content, className } = CONTENT[type];
-  const { closeModal } = useModal();
 
   return (
-    <button type="button" className={className} onClick={closeModal}>
+    <button type="button" className={className} onClick={onClick}>
       {content}
     </button>
   );

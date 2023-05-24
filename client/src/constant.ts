@@ -134,6 +134,12 @@ export const sideBarList = [
   '회원탈퇴',
 ];
 
+export enum ModalType {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+}
+
 export const iconInfo = Object.freeze({
   success: {
     color: 'green',

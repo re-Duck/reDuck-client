@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from '../Icon';
-import { iconInfo } from '@/constant';
+import { ModalType, iconInfo } from '@/constant';
 
 interface IType {
-  type: 'success' | 'warning' | 'error';
+  type: ModalType.SUCCESS | ModalType.WARNING | ModalType.ERROR;
 }
 
 export default function ModalIcon({ type }: IType) {

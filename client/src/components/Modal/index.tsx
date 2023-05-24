@@ -8,7 +8,8 @@ import ModalButton from './modal-button';
 
 export default function Modal() {
   const { type, props } = useSelector(modalSelector);
-  // console.log(type, props);
+  const { closeModal } = useModal();
+  console.log(type, props);
   return (
     type !== null && (
       <div className="relative z-20">
@@ -36,7 +37,7 @@ export default function Modal() {
               </div>
 
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <ModalButton type="check" />
+                <ModalButton type="check" onClick={closeModal} />
               </div>
             </div>
           </div>

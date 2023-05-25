@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 //components
 import { Layout, PostDetail, Comment, CommentUpload } from '@/components';

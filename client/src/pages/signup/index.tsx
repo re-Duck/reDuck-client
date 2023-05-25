@@ -7,7 +7,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Divider, Avatar, Modal } from '@/components';
+import { Divider, Avatar, Modal, LoadingIcon } from '@/components';
 
 // service
 import {
@@ -65,7 +65,7 @@ export default function SignUp() {
   // 이메일 전송/확인 여부
   const [isSendEmail, setIsSendEmail] = useState<boolean>(false);
   const [sendingEmail, setSendingEmail] = useState<boolean>(false);
-  const [checkedEmail, setCheckedEmail] = useState<string>('');
+  const [emailAuthToken, setEmailAuthToken] = useState<string>('');
 
   const handleModalButton = () => {
     setModalOpen(false);
@@ -142,7 +142,6 @@ export default function SignUp() {
       setModalType(ModalType.ERROR);
       setModalMessage(errorMsg ? errorMsg : errorMessage.blankEmail);
     } else {
-      // TODO 버튼 스피너 추가 (로딩)
       setSendingEmail(true);
       const status = await sendEmail({ email });
       if (status) {
@@ -168,14 +167,15 @@ export default function SignUp() {
     const data = {
       email,
       number: certificateNumber,
+      type: 'user',
     };
-    const status = await checkEmail(data);
-    if (status) {
-      setCheckedEmail(email);
+    const result = await checkEmail(data);
+    if (result.status) {
+      setEmailAuthToken(result.value);
       setModalType(ModalType.SUCCESS);
       setModalMessage('정상적으로 인증 완료됐습니다.');
     } else {
-      setCheckedEmail('');
+      setEmailAuthToken('');
       setModalType(ModalType.ERROR);
       setModalMessage(
         '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요'
@@ -186,7 +186,7 @@ export default function SignUp() {
 
   const handleSubmit = async (sendData: any, setSubmitting: any) => {
     // 아이디 / 이메일 인증확인
-    if (checkedId !== sendData.userId || checkedEmail !== sendData.email) {
+    if (checkedId !== sendData.userId || emailAuthToken === '') {
       setModalType(ModalType.ERROR);
       setModalMessage(
         checkedId !== sendData.userId
@@ -198,7 +198,7 @@ export default function SignUp() {
     }
     setSubmitting(true);
     const data = {
-      signUpDto: sendData,
+      signUpDto: { ...sendData, emailAuthToken },
       file: imgFile,
     };
     const status = await SignupPost(data);
@@ -378,7 +378,7 @@ export default function SignUp() {
                         )
                       }
                     >
-                      {sendingEmail ? 'Loading..' : '인증번호발송'}
+                      {sendingEmail ? <LoadingIcon /> : '인증번호발송'}
                     </button>
                   </div>
                   {isSendEmail && (

@@ -82,7 +82,6 @@ export default function CommentUpload({ user }: IComentUpload) {
             height={30}
             className="rounded-full"
           />
-
           <Field
             name="content"
             type="text"

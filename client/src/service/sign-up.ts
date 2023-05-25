@@ -9,9 +9,15 @@ interface ISignUpProp {
   file: Blob | null;
 }
 
+interface ICheckEmail {
+  status: boolean;
+  value: string;
+}
+
 export async function SignupPost(data: ISignUpProp): Promise<boolean> {
   const suburl = '/user';
   const formData = new FormData();
+  console.log(data);
   const signUpDto = makeJsonToBlob(data.signUpDto);
   formData.append('signUpDto', signUpDto);
   if (data.file !== null) {
@@ -43,15 +49,21 @@ export async function checkID(id: string): Promise<object> {
 }
 
 export async function sendEmail(data: object) {
-  const suburl = '/auth/email';
+  const suburl = '/auth/email/user/number';
 
   const result = await axios_post({ suburl, data });
   return result.isOkay;
 }
 
-export async function checkEmail(data: object) {
+export async function checkEmail(data: object): Promise<ICheckEmail> {
   const suburl = '/auth/email/user';
 
   const result = await axios_post({ suburl, data });
-  return result.isOkay;
+  const value = result.isOkay
+    ? result.data.emailAuthToken
+    : result.data.message;
+  return {
+    status: result.isOkay,
+    value,
+  };
 }

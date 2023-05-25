@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 //interface
 import { IPostInformation } from '@/types';
@@ -9,12 +9,14 @@ interface PostDetail {
 }
 
 export default function PostDetail({ data }: PostDetail) {
+  const [html, setHtml] = useState(data ? data.postContent : '');
+  console.log(html);
   return (
     <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <h1 className="text-xl font-bold mb-4">{data.postTitle}</h1>
       <p
         className="text-md text-gray-500"
-        dangerouslySetInnerHTML={{ __html: data.postContent }}
+        dangerouslySetInnerHTML={{ __html: html }}
       />
       <p className="text-gray-400">{parseDate(data.postCreatedAt)}</p>
       <hr />

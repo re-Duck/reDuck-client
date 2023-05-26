@@ -12,6 +12,7 @@ import { IComment } from '@/types';
 //next-auth
 import { useSession } from 'next-auth/react';
 import { useQuery } from '@tanstack/react-query';
+
 export default function PostDetailPage({ pageProps }: any) {
   const session = useSession();
 

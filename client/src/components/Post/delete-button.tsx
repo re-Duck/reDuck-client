@@ -1,9 +1,12 @@
-import { ModalType, successMessage, warningMessage } from '@/constant';
+import React from 'react';
+import { useRouter } from 'next/router';
+
 import { useModal } from '@/hooks';
+import { ModalType, successMessage, warningMessage } from '@/constant';
+
+//service
 import { deleteCommtent } from '@/service/delete-comment';
 import { deletePost } from '@/service/delete-post';
-import { useRouter } from 'next/router';
-import React from 'react';
 
 export default function DeleteButton({ id, token, type, refetch }: any) {
   const { openModal } = useModal();

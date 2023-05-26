@@ -24,6 +24,7 @@ export const makeJsonToBlob = (json: object) => {
 };
 
 export const parseDate = (date: string) => {
+  if (!date) return;
   const year = Number(date.slice(0, 4));
   const month = Number(date.slice(5, 7));
   const day = Number(date.slice(8, 10));

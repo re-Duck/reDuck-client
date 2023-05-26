@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 //components
 import { Layout, PostDetail, Comment, CommentUpload } from '@/components';
@@ -11,20 +11,30 @@ import { IComment, IPostInformation } from '@/types';
 
 //next-auth
 import { useSession } from 'next-auth/react';
+import { DEFAULT_POST_DATA } from '@/constant';
 
-interface IPostDetailPage {
-  pageProps: {
-    data: IPostInformation;
-  };
-}
-
-export default function PostDetailPage({ pageProps }: IPostDetailPage) {
+export default function PostDetailPage({ pageProps }: any) {
   const session = useSession();
-  const user = session.data?.user;
-  const data: IPostInformation = pageProps.data;
-  const comments: IComment[] | null = data?.comments;
-  const IS_POST_AUTHOR = user?.id === data.postAuthorId;
 
+  const user = session.data?.user;
+  const [data, setData] = useState<IPostInformation>(DEFAULT_POST_DATA);
+  const comments = data?.comments;
+  const IS_POST_AUTHOR = user?.id === data?.postAuthorId;
+
+  const getBoardData = useCallback(async () => {
+    if (!data.postAuthorId) {
+      const suburl = `/post/detail/${pageProps.postOriginId}`;
+      const res = await axios_get({ suburl });
+      const data = res.data;
+      console.log(data);
+
+      setData(data);
+    }
+  }, []);
+
+  useEffect(() => {
+    getBoardData();
+  }, []);
   return (
     <Layout>
       <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
@@ -49,11 +59,8 @@ export default function PostDetailPage({ pageProps }: IPostDetailPage) {
     </Layout>
   );
 }
-
 export async function getServerSideProps(context: any) {
   const postOriginId = context.params.id;
-  const suburl = `/post/detail/${postOriginId}`;
-  const res = await axios_get({ suburl });
 
-  return { props: { data: res.data } };
+  return { props: { postOriginId: postOriginId } };
 }

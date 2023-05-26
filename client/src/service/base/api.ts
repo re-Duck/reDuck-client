@@ -36,7 +36,7 @@ export async function axios_get({
   suburl,
   headers = {},
   params = {},
-}: IAxiosGet): Promise<IResponse> {
+}: IAxiosGet) {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {
       params,

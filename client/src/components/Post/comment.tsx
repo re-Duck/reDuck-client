@@ -11,7 +11,6 @@ interface ICommentProps {
   token: string;
 }
 export default function Comment({ data, IS_AUTHOR, token }: ICommentProps) {
-  console.log(data);
   return (
     <article className="flex flex-col w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <div className="flex justify-between">

@@ -6,10 +6,7 @@ import { parseDate } from '@/util';
 import Image from 'next/image';
 import { BASE_URL } from '@/service/base/api';
 import user_icon from '@/assets/images/user_icon.png';
-import { useModal } from '@/hooks';
-import { ModalType, successMessage, warningMessage } from '@/constant';
-import { deletePost } from '@/service/delete-post';
-import { useRouter } from 'next/router';
+import DeleteButton from './delete-button';
 
 interface PostDetail {
   data: IPostInformation;
@@ -20,8 +17,6 @@ interface PostDetail {
 export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   const [html, setHTML] = useState<string>('');
   const url = data ? `${BASE_URL}${data.postAuthorProfileImgPath}` : user_icon;
-  const { openModal } = useModal();
-  const router = useRouter();
 
   useEffect(() => {
     setHTML(data?.postContent);
@@ -44,28 +39,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
         {IS_AUTHOR && (
           <div className="flex gap-1 font-normal text-gray-500">
             <button>수정</button>
-            <button
-              onClick={() =>
-                openModal({
-                  type: ModalType.WARNING,
-                  message: warningMessage.confirmDeletePost,
-                  callback: () =>
-                    deletePost({
-                      postOriginId: data.postOriginId,
-                      token,
-                      callback: () => {
-                        router.push('/');
-                        openModal({
-                          type: ModalType.SUCCESS,
-                          message: successMessage.postDeleteSuccess,
-                        });
-                      },
-                    }),
-                })
-              }
-            >
-              삭제
-            </button>
+            <DeleteButton token={token} id={data.postAuthorId} type="post" />
           </div>
         )}
       </div>

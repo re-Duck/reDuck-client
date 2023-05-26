@@ -43,6 +43,7 @@ export const successMessage = Object.freeze({
 
 export const warningMessage = Object.freeze({
   confirmDeletePost: '정말로 게시글을 삭제하시겠습니까?',
+  confirmDeleteComment: '정말로 댓글을 삭제하시겠습니까?',
 });
 export const initialSignupValue = {
   userId: '',

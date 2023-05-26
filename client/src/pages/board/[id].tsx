@@ -7,7 +7,7 @@ import { Layout, PostDetail, Comment, CommentUpload } from '@/components';
 import { axios_get } from '@/service/base/api';
 
 //types
-import { IPostInformation } from '@/types';
+import { IComment, IPostInformation } from '@/types';
 
 //next-auth
 import { useSession } from 'next-auth/react';
@@ -18,27 +18,19 @@ interface IPostDetailPage {
   };
 }
 
-interface IComment {
-  commentOriginId: number;
-  commentContent: string;
-  commentCreatedAt: string;
-  commentUpdatedAt: string;
-  commentAuthorId: string;
-  commentAuthorName: string;
-}
 export default function PostDetailPage({ pageProps }: IPostDetailPage) {
   const session = useSession();
   const user = session.data?.user;
   const data: IPostInformation = pageProps.data;
   const comments: IComment[] | null = data?.comments;
-  const IS_AUTHOR = user?.id === data.postAuthorId;
+  const IS_POST_AUTHOR = user?.id === data.postAuthorId;
 
   return (
     <Layout>
       <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
         <PostDetail
           data={data}
-          IS_AUTHOR={IS_AUTHOR}
+          IS_AUTHOR={IS_POST_AUTHOR}
           token={user ? user.token : ''}
         />
         <h3 className="text-2xl font-bold pl-3">댓글 {comments?.length}</h3>
@@ -48,7 +40,8 @@ export default function PostDetailPage({ pageProps }: IPostDetailPage) {
             <Comment
               key={comment.commentOriginId}
               data={comment}
-              IS_AUTHOR={IS_AUTHOR}
+              token={user ? user.token : ''}
+              IS_AUTHOR={user?.id === comment.commentAuthorId}
             />
           ))}
         </div>

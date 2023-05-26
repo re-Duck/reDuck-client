@@ -14,11 +14,13 @@ interface IModal {
     | ModalType.ERROR
     | ModalType.CLOSE;
   message: string;
+  callback: () => void;
 }
 
 export default function Modal() {
-  const { type, message }: IModal = useSelector(modalSelector);
+  const { type, message, callback }: IModal = useSelector(modalSelector);
   const { closeModal } = useModal();
+  const IS_CONFIRM_MODAL = type === ModalType.WARNING;
 
   return (
     <>
@@ -47,7 +49,14 @@ export default function Modal() {
                 </div>
 
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  <ModalButton type="check" onClick={closeModal} />
+                  {IS_CONFIRM_MODAL ? (
+                    <>
+                      <ModalButton type="yes" onClick={callback} />
+                      <ModalButton type="cancle" onClick={closeModal} />
+                    </>
+                  ) : (
+                    <ModalButton type="check" onClick={closeModal} />
+                  )}
                 </div>
               </div>
             </div>

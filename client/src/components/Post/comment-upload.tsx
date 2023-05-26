@@ -9,7 +9,7 @@ import { BASE_URL } from '@/service/base/api';
 import { commentPost } from '@/service/comment-post';
 
 //assets
-import googleLogo from '@/assets/images/google_logo.png';
+import user_icon from '@/assets/images/user_icon.png';
 import { ModalType, errorMessage, successMessage } from '@/constant';
 import { useModal } from '@/hooks';
 
@@ -45,7 +45,7 @@ export default function CommentUpload({ user }: IComentUpload) {
   const { openModal } = useModal();
   const comentImgSrc = user
     ? `${BASE_URL}${user.userProfileImgPath}`
-    : googleLogo;
+    : user_icon;
 
   const handleComment = async ({
     content,

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import googleLogo from '@/assets/images/google_logo.png';
+import user_icon from '@/assets/images/user_icon.png';
 import { useSession } from 'next-auth/react';
 import { BASE_URL } from '@/service/base/api';
 
@@ -10,13 +10,13 @@ export function WritePostButton() {
   const { data } = useSession();
   const imgPath = data
     ? `${BASE_URL}${data.user.userProfileImgPath}`
-    : googleLogo;
+    : user_icon;
 
   return (
     <article className="flex justify-between w-full items-center bg-white border-gray-100 border-[1px] h-25 p-6 ">
       <Image
         src={imgPath}
-        alt="googleLogo"
+        alt="user_icon"
         width="0"
         height="0"
         className="rounded-full w-10 h-10"

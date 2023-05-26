@@ -5,7 +5,7 @@ import { IPostInformation } from '@/types';
 import { parseDate } from '@/util';
 import Image from 'next/image';
 import { BASE_URL } from '@/service/base/api';
-import googleLogo from '@/assets/images/google_logo.png';
+import user_icon from '@/assets/images/user_icon.png';
 import { useModal } from '@/hooks';
 import { ModalType, successMessage, warningMessage } from '@/constant';
 import { deletePost } from '@/service/delete-post';
@@ -19,7 +19,7 @@ interface PostDetail {
 
 export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   const [html, setHTML] = useState<string>('');
-  const url = data ? `${BASE_URL}${data.postAuthorProfileImgPath}` : googleLogo;
+  const url = data ? `${BASE_URL}${data.postAuthorProfileImgPath}` : user_icon;
   const { openModal } = useModal();
   const router = useRouter();
 
@@ -34,7 +34,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
         <div className="flex gap-2 font-semibold">
           <Image
             src={url}
-            alt="googleLogo"
+            alt="user_icon"
             width="0"
             height="0"
             className="rounded-full w-6 h-6"

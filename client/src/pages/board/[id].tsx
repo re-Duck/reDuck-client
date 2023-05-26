@@ -36,7 +36,7 @@ export default function PostDetailPage({ pageProps }: IPostDetailPage) {
     <Layout>
       <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
         <PostDetail data={data} />
-        <h3 className="text-2xl font-bold pl-3">댓글 3</h3>
+        <h3 className="text-2xl font-bold pl-3">댓글 {comments?.length}</h3>
         <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
           <CommentUpload user={user} />
           {comments?.map((comment: IComment) => (

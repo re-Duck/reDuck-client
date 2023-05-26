@@ -11,13 +11,7 @@ export interface IPostInformation {
   postAuthorDevelopAnnual: string;
   postAuthorId: string;
   postAuthorName: string;
-  postAuthorProfileImg: {
-    uploadedFileName: string;
-    storagedFileName: string;
-    extension: string;
-    size: number;
-    path: string;
-  };
+  postAuthorProfileImgPath: string;
   postContent: string;
   postCreatedAt: string;
   postOriginId: string;

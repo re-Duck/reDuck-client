@@ -122,17 +122,3 @@ export const iconInfo = Object.freeze({
     shape: 'alert-octagon',
   },
 });
-
-export const DEFAULT_POST_DATA = {
-  comments: null,
-  postAuthorDevelopAnnual: '',
-  postAuthorId: '',
-  postAuthorName: '',
-  postAuthorProfileImgPath: '',
-  postContent: '',
-  postCreatedAt: '',
-  postOriginId: '',
-  postTitle: '',
-  postType: '',
-  postUpdatedAt: '',
-};

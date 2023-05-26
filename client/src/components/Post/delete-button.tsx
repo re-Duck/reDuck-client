@@ -5,16 +5,15 @@ import { deletePost } from '@/service/delete-post';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-export default function DeleteButton({ id, token, type }: any) {
+export default function DeleteButton({ id, token, type, refetch }: any) {
   const { openModal } = useModal();
-
   const router = useRouter();
   const IS_CHECK_MODAL_MESSAGE =
     type === 'post'
       ? warningMessage.confirmDeletePost
       : warningMessage.confirmDeleteComment;
 
-  const callback = () => {
+  const callback = async () => {
     if (type === 'post') {
       deletePost({
         token,
@@ -28,7 +27,7 @@ export default function DeleteButton({ id, token, type }: any) {
         },
       });
     } else if (type === 'comment') {
-      deleteCommtent({
+      await deleteCommtent({
         token,
         commentOriginId: id,
         callback: () =>
@@ -37,6 +36,7 @@ export default function DeleteButton({ id, token, type }: any) {
             message: successMessage.commentDeleteSuccess,
           }),
       });
+      refetch();
     }
   };
   return (

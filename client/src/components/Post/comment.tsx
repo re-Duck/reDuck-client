@@ -9,8 +9,14 @@ interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
   token: string;
+  refetch: () => void;
 }
-export default function Comment({ data, IS_AUTHOR, token }: ICommentProps) {
+export default function Comment({
+  data,
+  IS_AUTHOR,
+  token,
+  refetch,
+}: ICommentProps) {
   return (
     <article className="flex flex-col w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <div className="flex justify-between">
@@ -29,6 +35,7 @@ export default function Comment({ data, IS_AUTHOR, token }: ICommentProps) {
             id={data.commentOriginId}
             token={token}
             type="comment"
+            refetch={refetch}
           />
         )}
       </div>

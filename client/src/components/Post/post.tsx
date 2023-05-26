@@ -5,7 +5,6 @@ import React from 'react';
 import { IPostInformation } from '@/types';
 
 export function Post(props: IPostInformation) {
-  console.log(props.postContent);
   return (
     <article className="flex flex-col w-full  bg-white border-gray-100 border-2 h-50 p-6 hover:cursor-pointer rounded-lg">
       <Link href={`/board/${props.postOriginId}`}>

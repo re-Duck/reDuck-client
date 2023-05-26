@@ -26,6 +26,7 @@ interface IUser {
 
 interface IComentUpload {
   user: IUser | undefined;
+  refetch: () => void;
 }
 
 interface IHnadlerComment {
@@ -38,7 +39,7 @@ const ValidationSchema = Yup.object().shape({
   content: Yup.string().required(errorMessage.blankTitle),
 });
 
-export default function CommentUpload({ user }: IComentUpload) {
+export default function CommentUpload({ user, refetch }: IComentUpload) {
   const router = useRouter();
   const postOriginId = router.query.id;
 
@@ -64,6 +65,7 @@ export default function CommentUpload({ user }: IComentUpload) {
       type: ModalType.SUCCESS,
       message: successMessage.commentSuccess,
     });
+    refetch();
   };
   return (
     <Formik

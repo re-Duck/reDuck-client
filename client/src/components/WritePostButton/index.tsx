@@ -5,12 +5,15 @@ import React from 'react';
 import user_icon from '@/assets/images/user_icon.png';
 import { useSession } from 'next-auth/react';
 import { BASE_URL } from '@/service/base/api';
+import { useModal } from '@/hooks';
+import { ModalType, errorMessage } from '@/constant';
 
 export function WritePostButton() {
   const { data } = useSession();
   const imgPath = data
     ? `${BASE_URL}${data.user.userProfileImgPath}`
     : user_icon;
+  const { openModal } = useModal();
 
   return (
     <article className="flex justify-between w-full items-center bg-white border-gray-100 border-[1px] h-25 p-6 ">
@@ -29,7 +32,12 @@ export function WritePostButton() {
         ) : (
           <p
             className=" text-gray-400"
-            onClick={() => alert('로그인 후 게시글을 작성해 주세요')}
+            onClick={() =>
+              openModal({
+                type: ModalType.ERROR,
+                message: errorMessage.needLogin,
+              })
+            }
           >
             로그인 후 게시글을 작성해 주세요
           </p>

@@ -7,21 +7,25 @@ import Image from 'next/image';
 import { BASE_URL } from '@/service/base/api';
 import googleLogo from '@/assets/images/google_logo.png';
 import { useModal } from '@/hooks';
-import { ModalType, warningMessage } from '@/constant';
+import { ModalType, successMessage, warningMessage } from '@/constant';
+import { deletePost } from '@/service/delete-post';
+import { useRouter } from 'next/router';
 
 interface PostDetail {
   data: IPostInformation;
   IS_AUTHOR: boolean;
+  token: string;
 }
 
-export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
+export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   const [html, setHTML] = useState<string>('');
+  const url = data ? `${BASE_URL}${data.postAuthorProfileImgPath}` : googleLogo;
+  const { openModal } = useModal();
+  const router = useRouter();
 
   useEffect(() => {
     setHTML(data?.postContent);
   }, []);
-  const url = data ? `${BASE_URL}${data.postAuthorProfileImgPath}` : googleLogo;
-  const { openModal } = useModal();
   return (
     <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-4">
       <h1 className="text-xl font-bold">{data.postTitle}</h1>
@@ -45,6 +49,18 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
                 openModal({
                   type: ModalType.WARNING,
                   message: warningMessage.confirmDeletePost,
+                  callback: () =>
+                    deletePost({
+                      postOriginId: data.postOriginId,
+                      token,
+                      callback: () => {
+                        router.push('/');
+                        openModal({
+                          type: ModalType.SUCCESS,
+                          message: successMessage.postDeleteSuccess,
+                        });
+                      },
+                    }),
                 })
               }
             >

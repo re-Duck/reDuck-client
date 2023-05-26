@@ -21,7 +21,6 @@ export default function Modal() {
   const { type, message, callback }: IModal = useSelector(modalSelector);
   const { closeModal } = useModal();
   const IS_CONFIRM_MODAL = type === ModalType.WARNING;
-
   return (
     <>
       {type !== ModalType.CLOSE && (

@@ -8,12 +8,7 @@ import { QuillEditBox } from '@/components';
 // form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import {
-  MODAL_TITLE,
-  ModalType,
-  errorMessage,
-  successMessage,
-} from '@/constant';
+import { ModalType, errorMessage, successMessage } from '@/constant';
 
 //service
 import { boardPost } from '@/service/board-post';

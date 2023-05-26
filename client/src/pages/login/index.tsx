@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -12,16 +12,12 @@ import * as Yup from 'yup';
 import googleLogo from '../../assets/images/google_logo.png';
 
 // components
-import { Divider, Modal } from '@/components';
+import { Divider } from '@/components';
 
 // service
 import { signIn } from 'next-auth/react';
-import {
-  initialLoginValue,
-  errorMessage,
-  MODAL_TITLE,
-  errorCodeToMessage,
-} from '@/constant';
+import { initialLoginValue, errorMessage, ModalType } from '@/constant';
+import { useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string().required(errorMessage.blankID),
@@ -33,22 +29,12 @@ interface ILogin {
   password: string;
 }
 
-enum ModalType {
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-}
-
 export default function Login() {
   const router = useRouter();
 
+  const { openModal } = useModal();
   // Modal
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalMessage, setModalMessage] = useState('');
 
-  const handleModalButton = () => {
-    setModalOpen(false);
-  };
   // TODO: any타입 정의하기
   const handleSubmit = async (sendData: ILogin, setSubmitting: any) => {
     setSubmitting(true);
@@ -58,8 +44,10 @@ export default function Login() {
         ...sendData,
       });
       if (result?.error) {
-        setModalMessage(errorCodeToMessage[result.error]);
-        setModalOpen(true);
+        openModal({
+          type: ModalType.ERROR,
+          message: result.error,
+        });
         return;
       }
 
@@ -71,15 +59,6 @@ export default function Login() {
   };
   return (
     <>
-      {modalOpen && (
-        <Modal
-          type={ModalType.ERROR}
-          title={MODAL_TITLE.error}
-          content={modalMessage}
-          buttonType="check"
-          handleModalButton={handleModalButton}
-        />
-      )}
       <nav className="w-full h-14 border-b-2 border-gray-100">
         <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
           <li>

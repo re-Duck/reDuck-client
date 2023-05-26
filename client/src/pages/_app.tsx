@@ -1,7 +1,7 @@
 import React from 'react';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { AuthComponent } from '@/components';
+import { AuthComponent, Modal } from '@/components';
 
 // packages
 import 'react-quill/dist/quill.snow.css';
@@ -20,13 +20,13 @@ import {
 function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
   const [queryClient] = React.useState(() => new QueryClient());
-
   return (
     <SessionProvider session={props.session}>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={props.dehydratedState}>
             <AuthComponent>
+              <Modal />
               <Component {...props} />
             </AuthComponent>
           </Hydrate>

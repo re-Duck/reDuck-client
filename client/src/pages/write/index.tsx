@@ -8,12 +8,18 @@ import { QuillEditBox } from '@/components';
 // form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { errorMessage } from '@/constant';
+import {
+  MODAL_TITLE,
+  ModalType,
+  errorMessage,
+  successMessage,
+} from '@/constant';
 
 //service
 import { boardPost } from '@/service/board-post';
 import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
+import { useModal } from '@/hooks';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -26,19 +32,23 @@ export default function Write() {
 
   const { data } = useSession();
   const accessToken = data?.user.token;
+  const { openModal } = useModal();
 
   const handleContent = useCallback((value: string) => setContent(value), []);
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       if (!accessToken) {
-        alert('로그인이 필요합니다');
+        openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
         return;
       }
 
       setSubmitting(true);
       await boardPost({ title, content, accessToken });
       setSubmitting(false);
-      alert('게시글 작성되었습니다');
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.postSuccess,
+      });
       router.replace('/');
     },
     [content]
@@ -68,8 +78,11 @@ export default function Write() {
                   type="submit"
                   disabled={isSubmitting}
                   onClick={() => {
-                    console.log(errors);
-                    errors.title && alert(errors.title);
+                    errors.title &&
+                      openModal({
+                        type: ModalType.ERROR,
+                        message: errors.title,
+                      });
                   }}
                 >
                   완료

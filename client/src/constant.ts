@@ -33,6 +33,12 @@ export const errorCodeToMessage = Object.freeze({
 
 export const successMessage = Object.freeze({
   commentSuccess: '댓글이 등록되었습니다.',
+  commentDeleteSuccess: '댓글이 삭제되었습니다.',
+  commentUpdateSuccess: '댓글이 수정되었습니다.',
+  postSuccess: '게시글이 등록되었습니다.',
+  postDeleteSuccess: '게시글이 삭제되었습니다.',
+  postUpdateSuccess: '게시글이 수정되었습니다.',
+  signUpSuccess: '회원가입에 성공했습니다. 다시 로그인해주세요.',
 });
 
 export const initialSignupValue = {
@@ -45,49 +51,6 @@ export const initialSignupValue = {
   company: '',
   developYear: '',
 };
-
-export const postList = [
-  {
-    postOriginId: 1,
-    title: '제목1',
-    content: '내용1',
-    writer: '작성자1',
-    date: '2021-10-10',
-    view: 1,
-  },
-  {
-    postOriginId: 2,
-    title: '제목2',
-    content: '내용2',
-    writer: '작성자2',
-    date: '2021-10-10',
-    view: 2,
-  },
-  {
-    postOriginId: 3,
-    title: '제목3',
-    content: '내용3',
-    writer: '작성자3',
-    date: '2021-10-10',
-    view: 3,
-  },
-  {
-    postOriginId: 4,
-    title: '제목4',
-    content: '내용4',
-    writer: '작성자4',
-    date: '2021-10-10',
-    view: 4,
-  },
-  {
-    postOriginId: 5,
-    title: '제목5',
-    content: '내용5',
-    writer: '작성자5',
-    date: '2021-10-10',
-    view: 5,
-  },
-];
 
 export const quillFormats = [
   'header',
@@ -133,3 +96,25 @@ export const sideBarList = [
   '덕력치',
   '회원탈퇴',
 ];
+
+export enum ModalType {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+  CLOSE = 'close',
+}
+
+export const iconInfo = Object.freeze({
+  success: {
+    color: 'green',
+    shape: 'check-circle',
+  },
+  warning: {
+    color: 'orange',
+    shape: 'alert-triangle',
+  },
+  error: {
+    color: 'red',
+    shape: 'alert-octagon',
+  },
+});

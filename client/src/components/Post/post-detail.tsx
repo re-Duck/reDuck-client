@@ -6,25 +6,28 @@ import { parseDate } from '@/util';
 import Image from 'next/image';
 import { BASE_URL } from '@/service/base/api';
 import googleLogo from '@/assets/images/google_logo.png';
+import { useModal } from '@/hooks';
+import { ModalType, warningMessage } from '@/constant';
 
 interface PostDetail {
   data: IPostInformation;
+  IS_AUTHOR: boolean;
 }
 
-export default function PostDetail({ data }: PostDetail) {
+export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
   const [html, setHTML] = useState<string>('');
 
   useEffect(() => {
     setHTML(data?.postContent);
   }, []);
-  console.log(data);
   const url = data ? `${BASE_URL}${data.postAuthorProfileImgPath}` : googleLogo;
-
+  const { openModal } = useModal();
   return (
-    <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
+    <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-4">
       <h1 className="text-xl font-bold">{data.postTitle}</h1>
-      <h2 className="text-md font-semibold mb-2">
-        <div className="flex gap-2">
+      <h2 className="text-md font-semibold"></h2>
+      <div className="flex justify-between mb-5">
+        <div className="flex gap-2 font-semibold">
           <Image
             src={url}
             alt="googleLogo"
@@ -34,7 +37,22 @@ export default function PostDetail({ data }: PostDetail) {
           />
           <p>{data.postAuthorName}</p>
         </div>
-      </h2>
+        {IS_AUTHOR && (
+          <div className="flex gap-1 font-normal text-gray-500">
+            <button>수정</button>
+            <button
+              onClick={() =>
+                openModal({
+                  type: ModalType.WARNING,
+                  message: warningMessage.confirmDeletePost,
+                })
+              }
+            >
+              삭제
+            </button>
+          </div>
+        )}
+      </div>
       <p
         className="text-md text-gray-500"
         dangerouslySetInnerHTML={{ __html: html }}

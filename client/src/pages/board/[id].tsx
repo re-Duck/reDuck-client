@@ -31,16 +31,21 @@ export default function PostDetailPage({ pageProps }: IPostDetailPage) {
   const user = session.data?.user;
   const data: IPostInformation = pageProps.data;
   const comments: IComment[] | null = data?.comments;
+  const IS_AUTHOR = user?.id === data.postAuthorId;
 
   return (
     <Layout>
       <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
-        <PostDetail data={data} />
+        <PostDetail data={data} IS_AUTHOR={IS_AUTHOR} />
         <h3 className="text-2xl font-bold pl-3">댓글 {comments?.length}</h3>
         <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
           <CommentUpload user={user} />
           {comments?.map((comment: IComment) => (
-            <Comment key={comment.commentOriginId} data={comment} />
+            <Comment
+              key={comment.commentOriginId}
+              data={comment}
+              IS_AUTHOR={IS_AUTHOR}
+            />
           ))}
         </div>
       </div>

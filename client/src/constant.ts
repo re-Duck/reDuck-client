@@ -41,6 +41,9 @@ export const successMessage = Object.freeze({
   signUpSuccess: '회원가입에 성공했습니다. 다시 로그인해주세요.',
 });
 
+export const warningMessage = Object.freeze({
+  confirmDeletePost: '정말로 게시글을 삭제하시겠습니까?',
+});
 export const initialSignupValue = {
   userId: '',
   password: '',

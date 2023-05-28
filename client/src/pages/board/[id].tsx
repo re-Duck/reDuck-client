@@ -42,6 +42,7 @@ export default function PostDetailPage({ pageProps }: any) {
                 data={comment}
                 token={user ? user.token : ''}
                 IS_AUTHOR={user?.id === comment.commentAuthorId}
+                postOriginId={pageProps.postOriginId}
                 refetch={refetch}
               />
             ))}

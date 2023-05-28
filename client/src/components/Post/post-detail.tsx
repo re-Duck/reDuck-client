@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { BASE_URL } from '@/service/base/api';
 import user_icon from '@/assets/images/user_icon.png';
 import DeleteButton from './delete-button';
+import ModifyCotentButton from './modify-content-button';
 
 interface PostDetail {
   data: IPostInformation;
@@ -40,7 +41,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
         </div>
         {IS_AUTHOR && (
           <div className="flex gap-1 font-normal text-gray-500">
-            <button>수정</button>
+            <ModifyCotentButton postOriginId={data.postOriginId} />
             <DeleteButton token={token} id={data.postAuthorId} type="post" />
           </div>
         )}

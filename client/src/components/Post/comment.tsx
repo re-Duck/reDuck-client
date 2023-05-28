@@ -10,12 +10,14 @@ interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
   token: string;
+  postOriginId: string;
   refetch: () => void;
 }
 export default function Comment({
   data,
   IS_AUTHOR,
   token,
+  postOriginId,
   refetch,
 }: ICommentProps) {
   const [isModifying, setIsModifying] = React.useState<boolean>(false);
@@ -42,6 +44,7 @@ export default function Comment({
               type="comment"
               refetch={refetch}
               comment={comment}
+              postOriginId={postOriginId}
               isModifying={isModifying}
               setIsModifying={setIsModifying}
             />

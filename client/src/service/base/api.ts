@@ -94,13 +94,9 @@ export async function axios_post({
 
 export async function axios_put({ suburl, headers = {}, obj }: IAxiosPut) {
   try {
-    const response = await axios.put(
-      `${BASE_URL}${suburl}`,
-      { commentDto: obj },
-      {
-        headers,
-      }
-    );
+    const response = await axios.put(`${BASE_URL}${suburl}`, obj, {
+      headers,
+    });
     const RESPONSE_OK = response.status === 200;
 
     if (RESPONSE_OK) {

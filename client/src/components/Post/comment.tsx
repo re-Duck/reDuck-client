@@ -1,10 +1,11 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import user_icon from '../../assets/images/user_icon.png';
 import { BASE_URL } from '@/service/base/api';
 import DeleteButton from './delete-button';
 import { IComment } from '@/types';
+import ModifyButton from './modify-button';
 interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
@@ -17,6 +18,9 @@ export default function Comment({
   token,
   refetch,
 }: ICommentProps) {
+  const [isModifying, setIsModifying] = React.useState<boolean>(false);
+  const [comment, setComment] = React.useState<string>(data.commentContent);
+
   return (
     <article className="flex flex-col w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <div className="flex justify-between">
@@ -31,15 +35,36 @@ export default function Comment({
           <span className=" font-semibold">{data.commentAuthorName}</span>
         </div>
         {IS_AUTHOR && (
-          <DeleteButton
-            id={data.commentOriginId}
-            token={token}
-            type="comment"
-            refetch={refetch}
-          />
+          <div className="flex gap-2">
+            <ModifyButton
+              id={data.commentOriginId}
+              token={token}
+              type="comment"
+              refetch={refetch}
+              isModifying={isModifying}
+              setIsModifying={setIsModifying}
+            />
+            {isModifying && (
+              <button onClick={() => setIsModifying(false)}>취소</button>
+            )}
+            <DeleteButton
+              id={data.commentOriginId}
+              token={token}
+              type="comment"
+              refetch={refetch}
+            />
+          </div>
         )}
       </div>
-      <p className="text-md text-gray-500">{data.commentContent}</p>
+      {isModifying ? (
+        <input
+          className="text-md text-gray-500  rounded-md p-1 pl-4 border-2 border-gray-200 focus:outline-none focus:border-gray-400"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      ) : (
+        <p className="text-md text-gray-500">{comment}</p>
+      )}
     </article>
   );
 }

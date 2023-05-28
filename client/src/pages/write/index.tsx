@@ -16,6 +16,7 @@ import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
 import { useModal } from '@/hooks';
 import { axios_get } from '@/service/base/api';
+import { boardUpdate } from '@/service/board-update';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -27,7 +28,7 @@ export default function Write() {
   const [content, setContent] = useState<string>('');
 
   const router = useRouter();
-  const postOriginId = router.query.postOriginId;
+  const postOriginId = router.query.postOriginId as string;
 
   const { data } = useSession();
   const accessToken = data?.user.token;
@@ -42,13 +43,24 @@ export default function Write() {
       }
 
       setSubmitting(true);
-      await boardPost({ title, content, accessToken });
-      setSubmitting(false);
-      openModal({
-        type: ModalType.SUCCESS,
-        message: successMessage.postSuccess,
-      });
-      router.replace('/');
+
+      if (postOriginId) {
+        await boardUpdate({ title, content, accessToken, postOriginId });
+        openModal({
+          type: ModalType.SUCCESS,
+          message: successMessage.postUpdateSuccess,
+        });
+        setSubmitting(false);
+        router.replace(`/board/${postOriginId}`);
+      } else {
+        await boardPost({ title, content, accessToken });
+        openModal({
+          type: ModalType.SUCCESS,
+          message: successMessage.postSuccess,
+        });
+        setSubmitting(false);
+        router.replace('/');
+      }
     },
     [content]
   );
@@ -76,10 +88,10 @@ export default function Write() {
             handleSubmit(title, setSubmitting)
           }
         >
-          {({ errors, touched, isSubmitting }) => (
+          {({ errors, isSubmitting }) => (
             <Form className="flex flex-col p-10 m-auto gap-y-5 max-w-5xl pb-20">
               <div className="flex justify-between">
-                <Link href="/">
+                <Link href={postOriginId ? `board/${postOriginId}` : '/'}>
                   <Icon
                     icon="material-symbols:arrow-back-rounded"
                     style={{ fontSize: '30px' }}

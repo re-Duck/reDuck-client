@@ -23,6 +23,7 @@ export const errorMessage = Object.freeze({
   checkCertificateEmail: '이메일 인증을 진행해주세요',
   needLogin: '로그인이 필요합니다.',
   blankComment: '댓글을 입력해주세요.',
+  error: '에러입니다.',
 });
 
 export const errorCodeToMessage = Object.freeze({

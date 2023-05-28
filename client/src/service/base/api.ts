@@ -17,6 +17,11 @@ interface IAxiosPost {
   data: FormData | object;
   headers?: object;
 }
+interface IAxiosPut {
+  suburl: string;
+  headers?: object;
+  obj: object;
+}
 interface IAxiosDelete {
   suburl: string;
   headers?: object;
@@ -87,7 +92,29 @@ export async function axios_post({
   }
 }
 
-// TODO: axios_put, axios_delete 구현
+export async function axios_put({ suburl, headers = {}, obj }: IAxiosPut) {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}${suburl}`,
+      { commentDto: obj },
+      {
+        headers,
+      }
+    );
+    const RESPONSE_OK = response.status === 200;
+
+    if (RESPONSE_OK) {
+      return {
+        isOkay: true,
+      };
+    }
+    throw new Error('AXIOS PUT 통신 에러');
+  } catch (e: any) {
+    return {
+      isOkay: false,
+    };
+  }
+}
 export async function axios_delete({ suburl, headers = {} }: IAxiosDelete) {
   try {
     const response = await axios.delete(`${BASE_URL}${suburl}`, {

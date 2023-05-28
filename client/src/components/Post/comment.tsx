@@ -5,7 +5,7 @@ import user_icon from '../../assets/images/user_icon.png';
 import { BASE_URL } from '@/service/base/api';
 import DeleteButton from './delete-button';
 import { IComment } from '@/types';
-import ModifyButton from './modify-button';
+import ModifyCommentButton from './modify-comment-button';
 interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
@@ -36,11 +36,12 @@ export default function Comment({
         </div>
         {IS_AUTHOR && (
           <div className="flex gap-2">
-            <ModifyButton
+            <ModifyCommentButton
               id={data.commentOriginId}
               token={token}
               type="comment"
               refetch={refetch}
+              comment={comment}
               isModifying={isModifying}
               setIsModifying={setIsModifying}
             />

@@ -77,10 +77,37 @@ export async function axios_post({
   } catch (e: any) {
     return {
       isOkay: false,
-      data: e.response.data,
-      message: e.response.message,
+      data: e.response?.data,
+      message: e.response?.message,
     };
   }
 }
 
-// TODO: axios_put, axios_delete 구현
+export async function axios_put({
+  suburl,
+  data,
+  headers = {},
+}: IAxiosPost): Promise<IResponse> {
+  try {
+    const response = await axios.put(`${BASE_URL}${suburl}`, data, {
+      headers,
+    });
+    const RESPONSE_OK = response.status === 200 || response.status === 201;
+
+    if (RESPONSE_OK) {
+      return {
+        isOkay: true,
+        data: response.data,
+      };
+    }
+    throw new Error('AXIOS PUT 통신 에러');
+  } catch (e: any) {
+    return {
+      isOkay: false,
+      data: e.response?.data,
+      message: e.response?.message,
+    };
+  }
+}
+
+// TODO: axios_delete 구현

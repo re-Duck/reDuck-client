@@ -90,11 +90,26 @@ export const POSTS_INISIATE_VALUE = Object.freeze({
 });
 
 export const sideBarList = [
-  '내 정보',
-  '활동기록',
-  '친구목록',
-  '덕력치',
-  '회원탈퇴',
+  {
+    content: '내 정보',
+    iconName: 'user',
+  },
+  {
+    content: '활동기록',
+    iconName: 'activity',
+  },
+  {
+    content: '친구목록',
+    iconName: 'users',
+  },
+  {
+    content: '덕력치',
+    iconName: 'bar-chart',
+  },
+  {
+    content: '회원탈퇴',
+    iconName: 'log-out',
+  },
 ];
 
 export enum ModalType {

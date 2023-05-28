@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { logOut } from '@/lib/redux/slices/authSlice';
 
-import { Layout, Avatar, Divider } from '@/components';
+import { Layout, Avatar, Divider, Icon } from '@/components';
 import { sideBarList } from '@/constant';
 import { signOut } from 'next-auth/react';
 
@@ -19,6 +19,8 @@ export default function Profile({ pageProps }) {
     logOut();
     signOut({ redirect: true, callbackUrl: '/' });
   };
+
+  const [selectedMenu, setSelectedMenu] = useState('내 정보');
 
   const { userData } = pageProps;
   const {
@@ -51,20 +53,29 @@ export default function Profile({ pageProps }) {
             <p>{school}</p>
           </div>
           <Divider type="horizental" margin={4} thin={2} />
-          <div className="sm:block hidden">
-            {sideBarList.map((content, id) => (
-              <div
+          <ul className="sm:block hidden">
+            {sideBarList.map(({ content, iconName }, id) => (
+              <li
                 key={id}
-                className=" bg-indigo-600 p-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
+                className={`${
+                  content === selectedMenu &&
+                  'before:block before:absolute before:w-1 before:h-8 before:translate-x-[-15px] before:bg-indigo-600 before:rounded-sm bg-gray-300'
+                } text-left rounded-md p-2 text-sm font-semibold text-black hover:bg-gray-300 flex items-center`}
+                onClick={() => setSelectedMenu(content)}
               >
-                {content}
-              </div>
+                <Icon name={iconName} size={15} strokeWidth={3} color="black" />
+                <span className="ml-4">{content}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
         <div className="flex flex-col flex-1 border p-8 gap-2">
           <div className="flex">
             <span className="w-24 min-w-fit">아이디</span>
+            <span>{userId}</span>
+          </div>
+          <div className="flex">
+            <span className="w-24 min-w-fit">프로필이미지</span>
             <span>{userId}</span>
           </div>
           <div className="flex">

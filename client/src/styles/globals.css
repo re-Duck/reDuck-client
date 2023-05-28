@@ -8,3 +8,10 @@
   font-family: Arial, Helvetica, sans-serif !important;
   color: #333 !important;
 }
+.ql-snow {
+  border: 0px !important;
+}
+
+.ql-toolbar {
+  border-bottom: 1px solid #e5e7eb !important;
+}

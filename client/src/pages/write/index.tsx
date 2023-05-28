@@ -118,8 +118,9 @@ export default function Write() {
                 placeholder="제목을 입력하세요"
                 className="text-4xl p-3 border-2 rounded-md border-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700 bg-transparent"
               />
-
-              <QuillEditBox content={content} handleContent={handleContent} />
+              <div className=" border-2">
+                <QuillEditBox content={content} handleContent={handleContent} />
+              </div>
             </Form>
           )}
         </Formik>

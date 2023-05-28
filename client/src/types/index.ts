@@ -40,3 +40,9 @@ export interface IUserInfo {
   userId?: string;
   userProfileImgPath?: string;
 }
+
+export enum EmailState {
+  None,
+  Submitting,
+  Submitted,
+}

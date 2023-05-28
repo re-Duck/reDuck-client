@@ -7,12 +7,34 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Avatar } from '..';
+import { Avatar, LoadingIcon } from '..';
 
 // service
 import { BASE_URL } from '@/service/base/api';
-import { IMAGE_FILE_MAX_SIZE, developExperience } from '@/constant';
-import { IUserInfo } from '@/types';
+import {
+  IMAGE_FILE_MAX_SIZE,
+  developExperience,
+  errorMessage,
+} from '@/constant';
+import { IUserInfo, EmailState } from '@/types';
+
+const ValidationSchema = Yup.object().shape({
+  currentPassword: Yup.string().matches(
+    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
+    errorMessage.invalidFormatPassword
+  ),
+  newPassword: Yup.string().matches(
+    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
+    errorMessage.invalidFormatPassword
+  ),
+  newPasswordConfirm: Yup.string().oneOf(
+    [Yup.ref('newPassword')],
+    errorMessage.mismatchPassword
+  ),
+  email: Yup.string().email(errorMessage.invalidFormatEmail),
+  schoolEmail: Yup.string().email(errorMessage.invalidFormatEmail),
+  companyEmail: Yup.string().email(errorMessage.invalidFormatEmail),
+});
 
 export default function EditProfile({ userData }: { userData: object }) {
   const {
@@ -34,11 +56,38 @@ export default function EditProfile({ userData }: { userData: object }) {
     signOut({ redirect: true, callbackUrl: '/' });
   };
 
+  // profileImg 관련
   const imgRef = useRef<HTMLInputElement>(null);
   const [profileImg, setProfileImg] = useState<string>(
     `${BASE_URL}${userProfileImgPath}`
   );
   const [imgFile, setImgFile] = useState<Blob | null>(null);
+
+  // TODO 이메일 Custom Hook 만들기
+
+  // User 이메일 관련
+  const userCertificateNumberRef = useRef<HTMLInputElement>(null);
+  const [userEmailState, setUserEmailState] = useState<EmailState>(
+    EmailState.None
+  );
+  const [userCertificationNumber, setUserCertificationNumber] =
+    useState<string>('');
+
+  // School 이메일 관련
+  const schoolCertificateNumberRef = useRef<HTMLInputElement>(null);
+  const [schoolEmailState, setSchoolEmailState] = useState<EmailState>(
+    EmailState.None
+  );
+  const [schoolCertificationNumber, setSchoolCertificationNumber] =
+    useState<string>('');
+
+  // Comapny 이메일 관련
+  const companyCertificateNumberRef = useRef<HTMLInputElement>(null);
+  const [companyEmailState, setCompanyEmailState] = useState<EmailState>(
+    EmailState.None
+  );
+  const [companyCertificationNumber, setCompanyCertificationNumber] =
+    useState<string>('');
 
   const handleChooseFile = () => {
     imgRef.current!.click();
@@ -74,6 +123,29 @@ export default function EditProfile({ userData }: { userData: object }) {
     }
   };
 
+  const handleSubmitEmail = (type: string) => {
+    switch (type) {
+      case 'user':
+        break;
+      case 'school':
+        break;
+      case 'company':
+        break;
+    }
+  };
+
+  const handleCheckEmail = (type: string) => {
+    // 인증번호가 일치한다면 토큰 받아옴
+    switch (type) {
+      case 'user':
+        break;
+      case 'school':
+        break;
+      case 'company':
+        break;
+    }
+  };
+
   const initialValues = {
     currentPassword: '',
     newPassword: '',
@@ -90,15 +162,16 @@ export default function EditProfile({ userData }: { userData: object }) {
     <>
       <Formik
         initialValues={initialValues}
+        validationSchema={ValidationSchema}
         onSubmit={() => console.log('submit')}
       >
-        {({ values }) => (
+        {({ values, isSubmitting }) => (
           <Form className="flex flex-1 flex-col p-8 gap-4">
-            <div className="flex">
+            <div className="flex items-center">
               <label className="w-24 min-w-fit">이름</label>
               <span>{name}</span>
             </div>
-            <div className="flex">
+            <div className="flex items-center">
               <label className="w-24 min-w-fit">아이디</label>
               <span>{userId}</span>
             </div>
@@ -155,87 +228,166 @@ export default function EditProfile({ userData }: { userData: object }) {
             </div>
             <div className="flex items-center">
               <label className="w-24 min-w-fit">이메일</label>
-              <div className="flex gap-x-4 items-baseline flex-wrap">
-                <Field
-                  type="text"
-                  name="email"
-                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                />
-                {initialValues.email !== values.email && (
-                  <button
-                    type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                  >
-                    인증번호 발송
-                  </button>
+              <div>
+                <div className="flex gap-x-4 items-baseline flex-wrap">
+                  <Field
+                    type="text"
+                    name="email"
+                    className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                  />
+                  {initialValues.email !== values.email && (
+                    <button
+                      type="button"
+                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                    >
+                      {userEmailState === EmailState.Submitting ? (
+                        <LoadingIcon />
+                      ) : (
+                        '인증번호 전송'
+                      )}
+                    </button>
+                  )}
+                  <span className="text-xs text-zinc-500">
+                    * 변경시 재인증이 필요합니다.
+                  </span>
+                </div>
+                {userEmailState === EmailState.Submitted && (
+                  <div className="flex flex-none">
+                    <input
+                      type="text"
+                      className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                      ref={userCertificateNumberRef}
+                      onChange={(e) =>
+                        setUserCertificationNumber(e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                      onClick={() => handleCheckEmail('user')}
+                    >
+                      인증번호확인
+                    </button>
+                  </div>
                 )}
-                <span className="text-xs text-zinc-500">
-                  * 변경시 재인증이 필요합니다.
-                </span>
               </div>
             </div>
             <div className="flex items-center">
               <label className="w-24 min-w-fit">학교</label>
-              <div className="flex gap-x-4 items-baseline flex-wrap">
+              <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
                 <Field
                   type="text"
                   name="school"
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
-                <span className="text-xs text-zinc-500">
-                  메일 인증이 필요합니다.
-                </span>
+                {!schoolEmailAuthentication && (
+                  <span className="text-xs text-zinc-500">
+                    메일 인증이 필요합니다.
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex items-center">
               <label className="w-24 min-w-fit">학교이메일</label>
-              <div className="flex gap-x-4 items-baseline flex-wrap">
-                <Field
-                  type="text"
-                  name="schoolEmail"
-                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                />
-                <button
-                  type="button"
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                >
-                  인증번호 발송
-                </button>
-                <span className="text-xs text-zinc-500">
-                  * 변경시 재인증이 필요합니다.
-                </span>
+              <div>
+                <div className="flex gap-x-4 items-baseline flex-wrap">
+                  <Field
+                    type="text"
+                    name="schoolEmail"
+                    className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                  />
+                  <button
+                    type="button"
+                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                  >
+                    {schoolEmailState === EmailState.Submitting ? (
+                      <LoadingIcon />
+                    ) : (
+                      '인증번호 전송'
+                    )}
+                  </button>
+                  <span className="text-xs text-zinc-500">
+                    * 변경시 재인증이 필요합니다.
+                  </span>
+                </div>
+                {schoolEmailState === EmailState.Submitted && (
+                  <div className="flex flex-none">
+                    <input
+                      type="text"
+                      className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                      ref={schoolCertificateNumberRef}
+                      onChange={(e) =>
+                        setSchoolCertificationNumber(e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                      onClick={() => handleCheckEmail('school')}
+                    >
+                      인증번호확인
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center">
               <label className="w-24 min-w-fit">회사</label>
-              <div className="flex gap-x-4 items-baseline flex-wrap">
+              <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
                 <Field
                   type="text"
                   name="company"
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
-                <span className="text-xs text-zinc-500">
-                  메일 인증이 필요합니다.
-                </span>
+                {!companyEmailAuthentication && (
+                  <span className="text-xs text-zinc-500">
+                    메일 인증이 필요합니다.
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex items-center">
               <label className="w-24 min-w-fit">회사이메일</label>
-              <div className="flex gap-x-4 items-baseline flex-wrap">
-                <Field
-                  type="text"
-                  name="companyEmail"
-                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                />
-                <button
-                  type="button"
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                >
-                  인증번호 발송
-                </button>
-                <span className="text-xs text-zinc-500">
-                  * 변경시 재인증이 필요합니다.
-                </span>
+              <div>
+                <div className="flex gap-x-4 items-baseline flex-wrap">
+                  <Field
+                    type="text"
+                    name="companyEmail"
+                    className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                  />
+                  <button
+                    type="button"
+                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                  >
+                    {companyEmailState === EmailState.Submitting ? (
+                      <LoadingIcon />
+                    ) : (
+                      '인증번호 전송'
+                    )}
+                  </button>
+                  <span className="text-xs text-zinc-500">
+                    * 변경시 재인증이 필요합니다.
+                  </span>
+                </div>
+                {companyEmailState === EmailState.Submitted && (
+                  <div className="flex flex-none">
+                    <input
+                      type="text"
+                      className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                      ref={companyCertificateNumberRef}
+                      onChange={(e) =>
+                        setCompanyCertificationNumber(e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                      onClick={() => handleCheckEmail('company')}
+                    >
+                      인증번호확인
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center">
@@ -261,10 +413,15 @@ export default function EditProfile({ userData }: { userData: object }) {
                 </span>
               </div>
             </div>
-            <button className="flex-none rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-none rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
+            >
               정보수정
             </button>
             <button
+              type="button"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
               onClick={handleLogout}
             >

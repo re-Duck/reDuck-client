@@ -58,7 +58,7 @@ export default function Profile({ pageProps }: { pageProps: object }) {
             ))}
           </ul>
         </div>
-        <div className="flex flex-1 border">
+        <div className="flex flex-1 border bg-white">
           {isMyPage ? (
             <EditProfile userData={userData} />
           ) : (

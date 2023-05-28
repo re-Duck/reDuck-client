@@ -8,12 +8,31 @@ import { BASE_URL } from '@/service/base/api';
 import user_icon from '@/assets/images/user_icon.png';
 import DeleteButton from './delete-button';
 import ModifyCotentButton from './modify-content-button';
+import dynamic from 'next/dynamic';
+import ReactQuill, { ReactQuillProps } from 'react-quill';
 
 interface PostDetail {
   data: IPostInformation;
   IS_AUTHOR: boolean;
   token: string;
 }
+
+interface ForwardedQuillComponent extends ReactQuillProps {
+  forwardedRef: React.Ref<ReactQuill>;
+}
+const Content = dynamic(
+  async () => {
+    const { default: RQ } = await import('react-quill');
+    const component = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
+      <RQ ref={forwardedRef} {...props} readOnly className="border-red-300" />
+    );
+    return component;
+  },
+
+  {
+    ssr: false,
+  }
+);
 
 export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   const [html, setHTML] = useState<string>('');
@@ -46,10 +65,8 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
           </div>
         )}
       </div>
-      <p
-        className="text-md text-gray-500"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <Content forwardedRef={null} modules={{ toolbar: false }} value={html} />
+
       <p className="text-gray-400">{parseDate(data?.postCreatedAt)}</p>
       <hr />
       <p className="text-gray-400 text-sm">좋아요 0 | 조회 0</p>

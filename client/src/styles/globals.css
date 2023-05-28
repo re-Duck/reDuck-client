@@ -4,4 +4,7 @@
 
 .ql-container {
   font-size: 1.2rem !important;
+  border: 0px !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  color: #333 !important;
 }

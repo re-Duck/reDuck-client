@@ -39,13 +39,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>reDuck</title>
-        <meta name="description" content="reDuck site" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <Layout>
         <div className=" mx-auto flex justify-between max-w-5xl">
           <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-[1px] gap-3">

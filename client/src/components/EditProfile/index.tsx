@@ -85,7 +85,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   const [imgFile, setImgFile] = useState<Blob | null>(null);
 
   // TODO 이메일 Custom Hook 만들기
-  const [authToken, setAuthToken] = useState<object>({});
+  const [authToken, setAuthToken] = useState<any>({});
 
   // User 이메일 관련
   const userCertificateNumberRef = useRef<HTMLInputElement>(null);
@@ -112,7 +112,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     useState<string>('');
 
   const handleChooseFile = () => {
-    imgRef.current!.click();
+    imgRef.current?.click();
   };
 
   const handleImgInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -218,12 +218,11 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       number: number[type],
       type,
     };
-    const result = await certificationNumberCheck({
+    const result: any = await certificationNumberCheck({
       data: dto,
       accessToken,
     });
     if (result.isOkay) {
-      // TODO: type에 따라 달리 넣기
       const addObject = {
         user: {
           emailAuthToken: result.data?.emailAuthToken,
@@ -256,8 +255,8 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   };
 
   const handleSubmit = async (inputData: object, setSubmitting: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { newPasswordConfirm, ...modifyUserDto } = inputData;
+    const { newPasswordConfirm, ...modifyUserDto }: { [key: string]: any } =
+      inputData;
 
     const data = {
       modifyUserDto: {

@@ -73,5 +73,8 @@ export async function certificationNumberCheck({
   const suburl = '/auth/email/profile';
 
   const result = await axios_post({ suburl, data, headers });
-  return result;
+  return {
+    isOkay: result.isOkay,
+    data: result.data,
+  };
 }

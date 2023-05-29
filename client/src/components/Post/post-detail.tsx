@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
+//next
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+//react-quill
+import ReactQuill, { ReactQuillProps } from 'react-quill';
+
 //interface
 import { IPostInformation } from '@/types';
+
+//component
+import { DeleteButton, ModifyCotentButton } from './';
+
+//util and constant
 import { parseDate } from '@/util';
-import Image from 'next/image';
 import { BASE_URL } from '@/service/base/api';
 import user_icon from '@/assets/images/user_icon.png';
-import DeleteButton from './delete-button';
-import ModifyCotentButton from './modify-content-button';
-import dynamic from 'next/dynamic';
-import ReactQuill, { ReactQuillProps } from 'react-quill';
 
 interface PostDetail {
   data: IPostInformation;

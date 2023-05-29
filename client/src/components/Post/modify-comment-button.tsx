@@ -5,6 +5,14 @@ import { ModalType, errorMessage, successMessage } from '@/constant';
 
 import { updateCommtent } from '@/service/update-comment';
 
+interface IProps {
+  id: string;
+  token: string;
+  comment: string;
+  isModifying: boolean;
+  setIsModifying: (isModifying: boolean) => void;
+  postOriginId: string;
+}
 export default function ModifyCommentButton({
   id,
   token,
@@ -12,7 +20,7 @@ export default function ModifyCommentButton({
   isModifying,
   setIsModifying,
   postOriginId,
-}: any) {
+}: IProps) {
   const { openModal } = useModal();
 
   const handleUpdate = async () => {

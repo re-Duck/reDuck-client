@@ -1,11 +1,18 @@
+import React from 'react';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
 
+//components
+import { ModifyCommentButton, DeleteButton } from './';
+
+//assets
 import user_icon from '../../assets/images/user_icon.png';
+
+//service
 import { BASE_URL } from '@/service/base/api';
-import DeleteButton from './delete-button';
+
+//types
 import { IComment } from '@/types';
-import ModifyCommentButton from './modify-comment-button';
+
 interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
@@ -41,8 +48,6 @@ export default function Comment({
             <ModifyCommentButton
               id={data.commentOriginId}
               token={token}
-              type="comment"
-              refetch={refetch}
               comment={comment}
               postOriginId={postOriginId}
               isModifying={isModifying}

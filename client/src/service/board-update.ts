@@ -1,8 +1,5 @@
-// 게시글 id 생성
-import { v4 as uuidv4 } from 'uuid';
-
 // service
-import { axios_post, axios_put } from './base/api';
+import { axios_put } from './base/api';
 
 interface IBoardPost {
   title: string;

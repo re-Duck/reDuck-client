@@ -13,7 +13,12 @@ import { IComment } from '@/types';
 import { useSession } from 'next-auth/react';
 import { useQuery } from '@tanstack/react-query';
 
-export default function PostDetailPage({ pageProps }: any) {
+interface IProps {
+  pageProps: {
+    postOriginId: string;
+  };
+}
+export default function PostDetailPage({ pageProps }: IProps) {
   const session = useSession();
 
   const user = session.data?.user;
@@ -55,5 +60,5 @@ export default function PostDetailPage({ pageProps }: any) {
 export async function getServerSideProps(context: any) {
   const postOriginId = context.params.id;
 
-  return { props: { postOriginId: postOriginId } };
+  return { props: { postOriginId } };
 }

@@ -43,9 +43,9 @@ export default function Profile({ pageProps }: { pageProps: object }) {
           </div>
           <Divider type="horizental" margin={4} thin={2} />
           <ul className="sm:block hidden">
-            {sideBarList.map(({ content, iconName }, id) => (
+            {sideBarList.map(({ content, iconName }) => (
               <li
-                key={id}
+                key={content}
                 className={`${
                   content === selectedMenu &&
                   'before:block before:absolute before:w-1 before:h-8 before:translate-x-[-15px] before:bg-indigo-600 before:rounded-sm bg-gray-200'

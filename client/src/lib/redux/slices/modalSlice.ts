@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   type: ModalType.CLOSE,
   message: '',
-  callback: () => {},
+  callback: null,
 };
 
 export const modalSelector = (state: any) => state.modal;

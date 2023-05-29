@@ -9,7 +9,7 @@ interface IMenuView {
 }
 
 export default function MenuView({ isClickedHamburger }: IMenuView) {
-  const authState = useSelector((state) => state.auth);
+  const authState = useSelector((state: any) => state.auth);
   return (
     <>
       {isClickedHamburger && (

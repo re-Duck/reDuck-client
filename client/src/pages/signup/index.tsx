@@ -215,7 +215,7 @@ export default function SignUp() {
 
   return (
     <Layout>
-      {modalOpen && (
+      {/* {modalOpen && (
         <Modal
           type={modalType}
           title={MODAL_TITLE[modalType]}
@@ -223,7 +223,7 @@ export default function SignUp() {
           buttonType="check"
           handleModalButton={handleModalButton}
         />
-      )}
+      )} */}
       <div className="max-w-xl m-auto">
         <div>
           <h2 className="text-2xl font-bold text-center">회원가입</h2>
@@ -378,7 +378,7 @@ export default function SignUp() {
                         )
                       }
                     >
-                      {sendingEmail ? <LoadingIcon /> : '인증번호발송'}
+                      {/* {sendingEmail ? <LoadingIcon /> : '인증번호발송'} */}
                     </button>
                   </div>
                   {isSendEmail && (

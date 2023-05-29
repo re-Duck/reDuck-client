@@ -17,6 +17,15 @@ interface IAxiosPost {
   data: FormData | object;
   headers?: object;
 }
+interface IAxiosPut {
+  suburl: string;
+  headers?: object;
+  data: object;
+}
+interface IAxiosDelete {
+  suburl: string;
+  headers?: object;
+}
 
 const paramsSerializer = (paramObj: any) => {
   const params = new URLSearchParams();
@@ -32,7 +41,7 @@ export async function axios_get({
   suburl,
   headers = {},
   params = {},
-}: IAxiosGet): Promise<IResponse> {
+}: IAxiosGet) {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {
       params,
@@ -56,11 +65,7 @@ export async function axios_get({
   }
 }
 
-export async function axios_post({
-  suburl,
-  data,
-  headers = {},
-}: IAxiosPost): Promise<IResponse> {
+export async function axios_post({ suburl, data, headers = {} }: IAxiosPost) {
   try {
     const response = await axios.post(`${BASE_URL}${suburl}`, data, {
       headers,
@@ -83,4 +88,41 @@ export async function axios_post({
   }
 }
 
-// TODO: axios_put, axios_delete 구현
+export async function axios_put({ suburl, headers = {}, data }: IAxiosPut) {
+  try {
+    const response = await axios.put(`${BASE_URL}${suburl}`, data, {
+      headers,
+    });
+    const RESPONSE_OK = response.status === 200;
+
+    if (RESPONSE_OK) {
+      return {
+        isOkay: true,
+      };
+    }
+    throw new Error('AXIOS PUT 통신 에러');
+  } catch (e: any) {
+    return {
+      isOkay: false,
+    };
+  }
+}
+export async function axios_delete({ suburl, headers = {} }: IAxiosDelete) {
+  try {
+    const response = await axios.delete(`${BASE_URL}${suburl}`, {
+      headers,
+    });
+    const RESPONSE_OK = response.status === 204;
+
+    if (RESPONSE_OK) {
+      return {
+        isOkay: true,
+      };
+    }
+    throw new Error('AXIOS DELTE 통신 에러');
+  } catch (e: any) {
+    return {
+      isOkay: false,
+    };
+  }
+}

@@ -5,19 +5,23 @@ import { linkList } from '@/constant';
 // Icons
 import { Icon } from '@iconify/react';
 import { useSelector } from 'react-redux';
+import Image from 'next/image';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function Navigator({ setisClickedHamburger }: INavigator) {
-  const authState = useSelector((state) => state.auth);
+  const authState = useSelector((state: any) => state.auth);
   return (
     <nav className="w-full h-14 border-b-2 border-gray-100 fixed top-0 left-0 bg-white z-10">
       <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
         <li>
           <Link href="/" className="text-2xl font-bold">
-            reDuck🐥
+            <div className="flex">
+              reDuck
+              <Image src="/main-duck.png" alt="reDuck" width={30} height={30} />
+            </div>
           </Link>
         </li>
 

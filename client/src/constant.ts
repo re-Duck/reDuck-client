@@ -23,6 +23,7 @@ export const errorMessage = Object.freeze({
   checkCertificateEmail: '이메일 인증을 진행해주세요',
   needLogin: '로그인이 필요합니다.',
   blankComment: '댓글을 입력해주세요.',
+  error: '에러입니다.',
 });
 
 export const errorCodeToMessage = Object.freeze({
@@ -41,6 +42,10 @@ export const successMessage = Object.freeze({
   signUpSuccess: '회원가입에 성공했습니다. 다시 로그인해주세요.',
 });
 
+export const warningMessage = Object.freeze({
+  confirmDeletePost: '정말로 게시글을 삭제하시겠습니까?',
+  confirmDeleteComment: '정말로 댓글을 삭제하시겠습니까?',
+});
 export const initialSignupValue = {
   userId: '',
   password: '',

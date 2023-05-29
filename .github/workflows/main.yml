@@ -21,8 +21,8 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_TOKEN_VALUE }}
         with:
           source-directory: 'output'
-          destination-github-username: 'bae-sh'
-          destination-repository-name: 'reduck-deploy'
+          destination-github-username: bae-sh
+          destination-repository-name: reduck-deploy
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main

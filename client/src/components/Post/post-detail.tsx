@@ -14,7 +14,7 @@ export default function PostDetail({ data }: PostDetail) {
   useEffect(() => {
     setHTML(data?.postContent);
   }, []);
-    
+
   return (
     <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <h1 className="text-xl font-bold mb-4">{data.postTitle}</h1>

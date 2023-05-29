@@ -18,14 +18,14 @@ export async function boardUpdate({
     Authorization: `Bearer ${accessToken}`,
   };
 
-  const obj = {
+  const data = {
     title,
     content,
     postOriginId,
     postType: 'qna',
   };
 
-  const result = await axios_put({ suburl, headers, obj });
+  const result = await axios_put({ suburl, headers, data });
 
   return result.isOkay;
 }

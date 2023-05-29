@@ -30,6 +30,7 @@ export default function ModifyCommentButton({
       content: comment,
       commentOriginId: id,
     });
+
     if (res) {
       openModal({
         type: ModalType.SUCCESS,

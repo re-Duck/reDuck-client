@@ -20,7 +20,7 @@ interface IAxiosPost {
 interface IAxiosPut {
   suburl: string;
   headers?: object;
-  obj: object;
+  data: object;
 }
 interface IAxiosDelete {
   suburl: string;
@@ -92,9 +92,9 @@ export async function axios_post({
   }
 }
 
-export async function axios_put({ suburl, headers = {}, obj }: IAxiosPut) {
+export async function axios_put({ suburl, headers = {}, data }: IAxiosPut) {
   try {
-    const response = await axios.put(`${BASE_URL}${suburl}`, obj, {
+    const response = await axios.put(`${BASE_URL}${suburl}`, data, {
       headers,
     });
     const RESPONSE_OK = response.status === 200;

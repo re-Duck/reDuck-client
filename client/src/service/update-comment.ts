@@ -17,8 +17,8 @@ export const updateCommtent = async ({
   const headers = {
     Authorization: `Bearer ${token}`,
   };
-  const obj = { content, commentOriginId, postOriginId };
-  const response = await axios_put({ suburl, headers, obj });
+  const data = { content, commentOriginId, postOriginId };
+  const response = await axios_put({ suburl, headers, data });
 
   return response.isOkay;
 };

@@ -11,7 +11,7 @@ interface INavigator {
 }
 
 export function Navigator({ setisClickedHamburger }: INavigator) {
-  const authState = useSelector((state) => state.auth);
+  const authState = useSelector((state: any) => state.auth);
   return (
     <nav className="w-full h-14 border-b-2 border-gray-100 fixed top-0 left-0 bg-white z-10">
       <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">

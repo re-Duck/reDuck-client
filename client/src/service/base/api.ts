@@ -65,11 +65,7 @@ export async function axios_get({
   }
 }
 
-export async function axios_post({
-  suburl,
-  data,
-  headers = {},
-}: IAxiosPost): Promise<IResponse> {
+export async function axios_post({ suburl, data, headers = {} }: IAxiosPost) {
   try {
     const response = await axios.post(`${BASE_URL}${suburl}`, data, {
       headers,

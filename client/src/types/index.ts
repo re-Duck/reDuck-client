@@ -37,7 +37,7 @@ export interface IUserInfo {
   school?: string;
   schoolEmail?: string;
   schoolEmailAuthentication?: boolean;
-  userId?: string;
+  userId: string;
   userProfileImgPath?: string;
 }
 

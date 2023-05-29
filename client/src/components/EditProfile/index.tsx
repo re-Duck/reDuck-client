@@ -12,15 +12,21 @@ import { Avatar, LoadingIcon } from '..';
 // service
 import { BASE_URL } from '@/service/base/api';
 import {
-  IMAGE_FILE_MAX_SIZE,
-  developExperience,
-  errorMessage,
-} from '@/constant';
-import { IUserInfo, EmailState } from '@/types';
-import {
   certificationNumberCheck,
+  editProfile,
   sendEditEmail,
 } from '@/service/edit-profile';
+
+// constant, type
+import {
+  IMAGE_FILE_MAX_SIZE,
+  ModalType,
+  developExperience,
+  errorMessage,
+  successMessage,
+} from '@/constant';
+import { IUserInfo, EmailState } from '@/types';
+import { useModal } from '@/hooks';
 
 interface ICheckEmailDto {
   email: string;
@@ -46,7 +52,7 @@ const ValidationSchema = Yup.object().shape({
   companyEmail: Yup.string().email(errorMessage.invalidFormatEmail),
 });
 
-export default function EditProfile({ userData }: { userData: object }) {
+export default function EditProfile({ userData }: { userData: IUserInfo }) {
   const {
     company,
     companyEmail,
@@ -63,6 +69,8 @@ export default function EditProfile({ userData }: { userData: object }) {
 
   const { data } = useSession();
   const accessToken = data?.user.token;
+
+  const { openModal } = useModal();
 
   const handleLogout = () => {
     logOut();
@@ -235,7 +243,8 @@ export default function EditProfile({ userData }: { userData: object }) {
   };
 
   const initialValues = {
-    currentPassword: '',
+    name: name,
+    password: '',
     newPassword: '',
     newPasswordConfirm: '',
     email: email,
@@ -246,28 +255,72 @@ export default function EditProfile({ userData }: { userData: object }) {
     developAnnual: developAnnual,
   };
 
+  const handleSubmit = async (inputData: object, setSubmitting: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { newPasswordConfirm, ...modifyUserDto } = inputData;
+
+    const data = {
+      modifyUserDto: {
+        ...modifyUserDto,
+        emailAuthToken:
+          userEmailState === EmailState.Submitted
+            ? authToken.emailAuthToken
+            : '',
+        schoolEmailAuthToken:
+          schoolEmailState === EmailState.Submitted
+            ? authToken.schoolEmailAuthToken
+            : '',
+        companyEmailAuthToken:
+          companyEmailState === EmailState.Submitted
+            ? authToken.companyEmailAuthToken
+            : '',
+      },
+      file: imgFile,
+    };
+    setSubmitting(true);
+    const result = await editProfile({ data, userId, accessToken });
+    if (result.isOkay) {
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.profileUpdateSuccess,
+      });
+    } else {
+      // TODO: 메세지 커스텀
+      openModal({
+        type: ModalType.ERROR,
+        message: result.message,
+      });
+    }
+    setSubmitting(false);
+  };
   return (
     <>
       <Formik
         initialValues={initialValues}
         validationSchema={ValidationSchema}
-        onSubmit={() => console.log('submit')}
+        onSubmit={(data, { setSubmitting }) =>
+          handleSubmit(data, setSubmitting)
+        }
       >
         {({ values, errors, touched, isSubmitting }) => (
           <Form className="flex flex-1 flex-col p-8 gap-4">
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">이름</label>
-              <span>{name}</span>
-            </div>
             <div className="flex items-center">
               <label className="w-24 min-w-fit">아이디</label>
               <span>{userId}</span>
             </div>
             <div className="flex items-center">
+              <label className="w-24 min-w-fit">이름</label>
+              <Field
+                type="text"
+                name="name"
+                className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+              />
+            </div>
+            <div className="flex items-center">
               <label className="w-24 min-w-fit">현재 비밀빈호</label>
               <Field
                 type="password"
-                name="currentPassword"
+                name="password"
                 className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
               />
             </div>

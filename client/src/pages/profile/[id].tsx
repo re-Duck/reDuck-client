@@ -18,14 +18,14 @@ import { sideBarList } from '@/constant';
 
 export default function Profile({ pageProps }: { pageProps: object }) {
   const router = useRouter();
-  const authState = useSelector((state) => state.auth);
+  const authState: any = useSelector((state: { auth: object }) => state.auth);
 
   const isMyPage = router.query.id === authState.userId;
 
   const [selectedMenu, setSelectedMenu] = useState('내 정보');
 
-  const { userData } = pageProps;
-  const { company, name, posts, school, userProfileImgPath } = userData;
+  const { userData }: { userData?: any } = pageProps;
+  const { company, name, school, userProfileImgPath } = userData;
   //TODO: 반응형 디자인 고려하기 (모바일 디자인)
   return (
     <Layout>

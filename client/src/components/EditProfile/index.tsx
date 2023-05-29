@@ -386,7 +386,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                       className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                     >
                       {userEmailState === EmailState.Submitting ? (
-                        <LoadingIcon />
+                        <LoadingIcon size={'25px'} />
                       ) : (
                         '인증번호 전송'
                       )}
@@ -452,7 +452,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                   >
                     {schoolEmailState === EmailState.Submitting ? (
-                      <LoadingIcon />
+                      <LoadingIcon size={'25px'} />
                     ) : (
                       '인증번호 전송'
                     )}
@@ -517,7 +517,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                   >
                     {companyEmailState === EmailState.Submitting ? (
-                      <LoadingIcon />
+                      <LoadingIcon size={'25px'} />
                     ) : (
                       '인증번호 전송'
                     )}

@@ -1,5 +1,5 @@
 #!/bin/sh
 cd ../
 mkdir output
-cp -R ./reduck-client/* ./output
-cp -R ./output ./reduck-client/
+cp -R ./client/* ./output
+cp -R ./output ./client/

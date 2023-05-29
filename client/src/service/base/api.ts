@@ -88,7 +88,7 @@ export async function axios_post({ suburl, data, headers = {} }: IAxiosPost) {
   }
 }
 
-export async function axios_put({ suburl, data, headers = {} }: IAxiosPut): Promise<IResponse> {
+export async function axios_put({ suburl, data, headers = {} }: IAxiosPost) {
   try {
     const response = await axios.put(`${BASE_URL}${suburl}`, data, {
       headers,

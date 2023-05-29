@@ -1,10 +1,10 @@
 import Layout from '@/components/Layout';
 import React from 'react';
 
-export default function Board() {
+export default function Chatroom() {
   return (
     <Layout>
-      <h2>게시판</h2>
+      <div>채팅룸</div>
     </Layout>
   );
 }

@@ -7,51 +7,58 @@ import { Layout, PostDetail, Comment, CommentUpload } from '@/components';
 import { axios_get } from '@/service/base/api';
 
 //types
-import { IPostInformation } from '@/types';
+import { IComment } from '@/types';
 
 //next-auth
 import { useSession } from 'next-auth/react';
+import { useQuery } from '@tanstack/react-query';
 
-interface IPostDetailPage {
+interface IProps {
   pageProps: {
-    data: IPostInformation;
+    postOriginId: string;
   };
 }
-
-interface IComment {
-  commentOriginId: number;
-  commentContent: string;
-  commentCreatedAt: string;
-  commentUpdatedAt: string;
-  commentAuthorId: string;
-  commentAuthorName: string;
-}
-export default function PostDetailPage({ pageProps }: IPostDetailPage) {
+export default function PostDetailPage({ pageProps }: IProps) {
   const session = useSession();
-  const user = session.data?.user;
-  const data: IPostInformation = pageProps.data;
-  const comments: IComment[] | null = data?.comments;
 
+  const user = session.data?.user;
+  const suburl = `/post/detail/${pageProps.postOriginId}`;
+  const { data, isLoading, refetch } = useQuery(['detail-post'], async () => {
+    const res = await axios_get({ suburl });
+    return res.data;
+  });
+  const comments = data?.comments;
+  const IS_POST_AUTHOR = user?.id === data?.postAuthorId;
   return (
     <Layout>
-      <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
-        <PostDetail data={data} />
-        <h3 className="text-2xl font-bold pl-3">댓글 3</h3>
-        <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
-          <CommentUpload user={user} />
-          {comments?.map((comment: IComment) => (
-            <Comment key={comment.commentOriginId} data={comment} />
-          ))}
+      {!isLoading && (
+        <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
+          <PostDetail
+            data={data}
+            IS_AUTHOR={IS_POST_AUTHOR}
+            token={user ? user.token : ''}
+          />
+          <h3 className="text-2xl font-bold pl-3">댓글 {comments?.length}</h3>
+          <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
+            <CommentUpload user={user} refetch={refetch} />
+            {comments?.map((comment: IComment) => (
+              <Comment
+                key={comment.commentOriginId}
+                data={comment}
+                token={user ? user.token : ''}
+                IS_AUTHOR={user?.id === comment.commentAuthorId}
+                postOriginId={pageProps.postOriginId}
+                refetch={refetch}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </Layout>
   );
 }
-
 export async function getServerSideProps(context: any) {
   const postOriginId = context.params.id;
-  const suburl = `/post/detail/${postOriginId}`;
-  const res = await axios_get({ suburl });
 
-  return { props: { data: res.data } };
+  return { props: { postOriginId } };
 }

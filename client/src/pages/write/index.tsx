@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -8,18 +8,15 @@ import { QuillEditBox } from '@/components';
 // form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import {
-  MODAL_TITLE,
-  ModalType,
-  errorMessage,
-  successMessage,
-} from '@/constant';
+import { ModalType, errorMessage, successMessage } from '@/constant';
 
 //service
 import { boardPost } from '@/service/board-post';
 import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
 import { useModal } from '@/hooks';
+import { axios_get } from '@/service/base/api';
+import { boardUpdate } from '@/service/board-update';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -27,8 +24,11 @@ const ValidationSchema = Yup.object().shape({
 });
 
 export default function Write() {
+  const [initTitle, setInitTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
+
   const router = useRouter();
+  const postOriginId = router.query.postOriginId as string;
 
   const { data } = useSession();
   const accessToken = data?.user.token;
@@ -43,31 +43,55 @@ export default function Write() {
       }
 
       setSubmitting(true);
-      await boardPost({ title, content, accessToken });
-      setSubmitting(false);
-      openModal({
-        type: ModalType.SUCCESS,
-        message: successMessage.postSuccess,
-      });
-      router.replace('/');
+
+      if (postOriginId) {
+        await boardUpdate({ title, content, accessToken, postOriginId });
+        openModal({
+          type: ModalType.SUCCESS,
+          message: successMessage.postUpdateSuccess,
+        });
+        setSubmitting(false);
+        router.replace(`/board/${postOriginId}`);
+      } else {
+        await boardPost({ title, content, accessToken });
+        openModal({
+          type: ModalType.SUCCESS,
+          message: successMessage.postSuccess,
+        });
+        setSubmitting(false);
+        router.replace('/');
+      }
     },
     [content]
   );
 
+  const getPostData = async () => {
+    const suburl = `/post/detail/${postOriginId}`;
+    const res = await axios_get({ suburl });
+    const { postTitle, postContent } = res.data;
+
+    setInitTitle(postTitle);
+    setContent(postContent);
+  };
+  useEffect(() => {
+    if (!postOriginId && initTitle === '') return;
+    getPostData();
+  }, []);
   return (
     <div className="bg-gray-50 h-screen">
       {
         <Formik
-          initialValues={{ title: '' }}
+          enableReinitialize={true}
+          initialValues={{ title: initTitle }}
           validationSchema={ValidationSchema}
           onSubmit={({ title }, { setSubmitting }) =>
             handleSubmit(title, setSubmitting)
           }
         >
-          {({ errors, touched, isSubmitting }) => (
+          {({ errors, isSubmitting }) => (
             <Form className="flex flex-col p-10 m-auto gap-y-5 max-w-5xl pb-20">
               <div className="flex justify-between">
-                <Link href="/">
+                <Link href={postOriginId ? `board/${postOriginId}` : '/'}>
                   <Icon
                     icon="material-symbols:arrow-back-rounded"
                     style={{ fontSize: '30px' }}
@@ -94,8 +118,9 @@ export default function Write() {
                 placeholder="제목을 입력하세요"
                 className="text-4xl p-3 border-2 rounded-md border-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700 bg-transparent"
               />
-
-              <QuillEditBox content={content} handleContent={handleContent} />
+              <div className=" border-2">
+                <QuillEditBox content={content} handleContent={handleContent} />
+              </div>
             </Form>
           )}
         </Formik>

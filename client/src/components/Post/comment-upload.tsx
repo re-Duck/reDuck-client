@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 //next
 import { useRouter } from 'next/router';
@@ -9,7 +9,7 @@ import { BASE_URL } from '@/service/base/api';
 import { commentPost } from '@/service/comment-post';
 
 //assets
-import googleLogo from '@/assets/images/google_logo.png';
+import user_icon from '@/assets/images/user_icon.png';
 import { ModalType, errorMessage, successMessage } from '@/constant';
 import { useModal } from '@/hooks';
 
@@ -26,6 +26,7 @@ interface IUser {
 
 interface IComentUpload {
   user: IUser | undefined;
+  refetch: () => void;
 }
 
 interface IHnadlerComment {
@@ -38,14 +39,14 @@ const ValidationSchema = Yup.object().shape({
   content: Yup.string().required(errorMessage.blankTitle),
 });
 
-export default function CommentUpload({ user }: IComentUpload) {
+export default function CommentUpload({ user, refetch }: IComentUpload) {
   const router = useRouter();
   const postOriginId = router.query.id;
 
   const { openModal } = useModal();
   const comentImgSrc = user
     ? `${BASE_URL}${user.userProfileImgPath}`
-    : googleLogo;
+    : user_icon;
 
   const handleComment = async ({
     content,
@@ -64,6 +65,7 @@ export default function CommentUpload({ user }: IComentUpload) {
       type: ModalType.SUCCESS,
       message: successMessage.commentSuccess,
     });
+    refetch();
   };
   return (
     <Formik
@@ -78,9 +80,9 @@ export default function CommentUpload({ user }: IComentUpload) {
           <Image
             src={comentImgSrc}
             alt="img"
-            width={30}
-            height={30}
-            className="rounded-full"
+            width="0"
+            height="0"
+            className="rounded-full w-9 h-9"
           />
           <Field
             name="content"

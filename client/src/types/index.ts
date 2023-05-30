@@ -42,3 +42,8 @@ export enum EmailState {
   Submitting,
   Submitted,
 }
+
+export interface IFlexLabelContent {
+  label: string;
+  content: React.ReactNode | string;
+}

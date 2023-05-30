@@ -21,3 +21,29 @@ export interface IPostInformation {
   postType: string;
   postUpdatedAt: string;
 }
+
+export interface IUserInfo {
+  company?: string;
+  companyEmail?: string;
+  companyEmailAuthentication?: boolean;
+  developAnnual?: number;
+  email?: string;
+  name?: string;
+  post?: Array<object>;
+  school?: string;
+  schoolEmail?: string;
+  schoolEmailAuthentication?: boolean;
+  userId: string;
+  userProfileImgPath?: string;
+}
+
+export enum EmailState {
+  None,
+  Submitting,
+  Submitted,
+}
+
+export interface IFlexLabelContent {
+  label: string;
+  content: React.ReactNode | string;
+}

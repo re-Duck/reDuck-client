@@ -40,6 +40,7 @@ export const successMessage = Object.freeze({
   postDeleteSuccess: '게시글이 삭제되었습니다.',
   postUpdateSuccess: '게시글이 수정되었습니다.',
   signUpSuccess: '회원가입에 성공했습니다. 다시 로그인해주세요.',
+  profileUpdateSuccess: '회원정보 수정이 완료되었습니다.',
 });
 
 export const warningMessage = Object.freeze({
@@ -95,11 +96,26 @@ export const POSTS_INISIATE_VALUE = Object.freeze({
 });
 
 export const sideBarList = [
-  '내 정보',
-  '활동기록',
-  '친구목록',
-  '덕력치',
-  '회원탈퇴',
+  {
+    content: '내 정보',
+    iconName: 'user',
+  },
+  {
+    content: '활동기록',
+    iconName: 'activity',
+  },
+  {
+    content: '친구목록',
+    iconName: 'users',
+  },
+  {
+    content: '덕력치',
+    iconName: 'bar-chart',
+  },
+  {
+    content: '회원탈퇴',
+    iconName: 'log-out',
+  },
 ];
 
 export enum ModalType {

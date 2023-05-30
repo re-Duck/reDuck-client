@@ -10,3 +10,5 @@ export { default as LoadingIcon } from '@/components/LoadingIcon';
 export { default as Icon } from '@/components/Icon';
 export { default as Modal } from '@/components/Modal';
 export { default as AuthComponent } from '@/components/AuthComponent';
+export { default as EditProfile } from '@/components/EditProfile';
+export { default as UserInfo } from '@/components/UserInfo';

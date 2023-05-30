@@ -82,31 +82,35 @@ export async function axios_post({ suburl, data, headers = {} }: IAxiosPost) {
   } catch (e: any) {
     return {
       isOkay: false,
-      data: e.response.data,
-      message: e.response.message,
+      data: e.response?.data,
+      message: e.response?.message,
     };
   }
 }
 
-export async function axios_put({ suburl, headers = {}, data }: IAxiosPut) {
+export async function axios_put({ suburl, data, headers = {} }: IAxiosPost) {
   try {
     const response = await axios.put(`${BASE_URL}${suburl}`, data, {
       headers,
     });
-    const RESPONSE_OK = response.status === 200;
+    const RESPONSE_OK = response.status === 200 || response.status === 201;
 
     if (RESPONSE_OK) {
       return {
         isOkay: true,
+        data: response.data,
       };
     }
     throw new Error('AXIOS PUT 통신 에러');
   } catch (e: any) {
     return {
       isOkay: false,
+      data: e.response?.data,
+      message: e.response?.message,
     };
   }
 }
+
 export async function axios_delete({ suburl, headers = {} }: IAxiosDelete) {
   try {
     const response = await axios.delete(`${BASE_URL}${suburl}`, {

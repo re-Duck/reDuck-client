@@ -68,7 +68,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
         {IS_AUTHOR && (
           <div className="flex gap-1 font-normal text-gray-500">
             <ModifyCotentButton postOriginId={data.postOriginId} />
-            <DeleteButton token={token} id={data.postAuthorId} type="post" />
+            <DeleteButton token={token} id={data.postOriginId} type="post" />
           </div>
         )}
       </div>

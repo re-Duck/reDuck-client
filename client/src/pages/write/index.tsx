@@ -90,7 +90,7 @@ export default function Write() {
           }
         >
           {({ errors, isSubmitting }) => (
-            <Form className="flex flex-col p-10 m-auto gap-y-5 max-w-5xl pb-20">
+            <Form className="flex flex-col p-10 m-auto gap-y-5 max-w-5xl">
               <div className="flex justify-between">
                 <Link href={postOriginId ? `board/${postOriginId}` : '/'}>
                   <Icon
@@ -119,7 +119,7 @@ export default function Write() {
                 placeholder="제목을 입력하세요"
                 className="text-4xl p-3 border-2 rounded-md border-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700 bg-transparent"
               />
-              <div className=" border-2">
+              <div className="border-2">
                 <QuillEditBox content={content} handleContent={handleContent} />
               </div>
             </Form>

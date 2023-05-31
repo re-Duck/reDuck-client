@@ -8,7 +8,14 @@ import { ModalType, successMessage, warningMessage } from '@/constant';
 import { deleteCommtent } from '@/service/delete-comment';
 import { deletePost } from '@/service/delete-post';
 
-export default function DeleteButton({ id, token, type, refetch }: any) {
+interface IProps {
+  id: string;
+  token: string;
+  type: string;
+  refetch: () => void;
+}
+
+export default function DeleteButton({ id, token, type, refetch }: IProps) {
   const { openModal } = useModal();
   const router = useRouter();
   const IS_CHECK_MODAL_MESSAGE =

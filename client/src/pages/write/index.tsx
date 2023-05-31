@@ -77,6 +77,7 @@ export default function Write() {
     if (!postOriginId && initTitle === '') return;
     getPostData();
   }, []);
+
   return (
     <div className="bg-gray-50 h-screen">
       {

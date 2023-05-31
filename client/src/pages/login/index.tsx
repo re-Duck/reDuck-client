@@ -165,7 +165,15 @@ export default function Login() {
                   회원가입
                 </Link>
                 <Divider type="vertical" thin={1} margin={1} />
-                <span className="underline underline-offset-4">
+                <span
+                  className="underline underline-offset-4 cursor-pointer"
+                  onClick={() =>
+                    openModal({
+                      type: ModalType.ERROR,
+                      message: errorMessage.notComplete,
+                    })
+                  }
+                >
                   비밀번호찾기
                 </span>
               </div>

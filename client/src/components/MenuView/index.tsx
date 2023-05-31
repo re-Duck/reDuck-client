@@ -19,7 +19,7 @@ export default function MenuView({ isClickedHamburger }: IMenuView) {
           <ul className="flex flex-col text-2xl">
             {linkList.map(({ name, href }) => (
               <li
-                className="flex justify-center items-center h-16 border-b-2 border-gray-100 text-gray-500 cursor-pointer"
+                className="flex justify-center items-center h-16 border-b-2 border-gray-100 text-gray-500 cursor-pointer hover:bg-slate-100"
                 key={name}
                 onClick={() =>
                   openModal({
@@ -32,7 +32,7 @@ export default function MenuView({ isClickedHamburger }: IMenuView) {
                 {/* <Link href={href}>{name}</Link> */}
               </li>
             ))}
-            <li className="flex justify-center items-center h-16 border-b-2 border-gray-100 text-gray-500">
+            <li className="flex justify-center items-center h-16 border-b-2 border-gray-100 text-gray-500 hover:bg-slate-100">
               {authState.isLogin ? (
                 <Link href={`/profile/${authState.userId}`}>마이페이지</Link>
               ) : (

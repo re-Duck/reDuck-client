@@ -8,7 +8,12 @@ import { QuillEditBox } from '@/components';
 // form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { ModalType, errorMessage, successMessage } from '@/constant';
+import {
+  ModalType,
+  errorMessage,
+  successMessage,
+  warningMessage,
+} from '@/constant';
 
 //service
 import { boardPost } from '@/service/board-post';
@@ -32,7 +37,7 @@ export default function Write() {
 
   const { data } = useSession();
   const accessToken = data?.user.token;
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const handleContent = useCallback((value: string) => setContent(value), []);
   const handleSubmit = useCallback(
@@ -92,12 +97,27 @@ export default function Write() {
           {({ errors, isSubmitting }) => (
             <Form className="flex flex-col p-10 m-auto gap-y-5 max-w-5xl">
               <div className="flex justify-between">
-                <Link href={postOriginId ? `board/${postOriginId}` : '/'}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    openModal({
+                      type: ModalType.WARNING,
+                      message: warningMessage.confirmGoOut,
+                      callback: () => {
+                        closeModal();
+                        router.push(
+                          postOriginId ? `board/${postOriginId}` : '/'
+                        );
+                      },
+                    })
+                  }
+                >
                   <Icon
                     icon="material-symbols:arrow-back-rounded"
                     style={{ fontSize: '30px' }}
                   />
-                </Link>
+                </button>
+
                 <button
                   className="rounded-md w-15 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
                   type="submit"

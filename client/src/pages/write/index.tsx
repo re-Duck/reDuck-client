@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 //react-quill component

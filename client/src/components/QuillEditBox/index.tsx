@@ -108,7 +108,7 @@ export default function QuillEditBox({
       modules={quillModules}
       formats={quillFormats}
       theme="snow"
-      style={{ height: '500px' }}
+      style={{ height: '70vh' }}
       placeholder={'내용을 입력해주세요.'}
       value={content}
       onChange={handleContent}

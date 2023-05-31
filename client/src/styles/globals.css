@@ -15,3 +15,7 @@
 .ql-toolbar {
   border-bottom: 1px solid #e5e7eb !important;
 }
+
+.ql-container {
+  height: 63vh !important;
+}

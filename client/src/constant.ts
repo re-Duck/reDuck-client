@@ -2,6 +2,7 @@ export const linkList = [
   { name: '게시판', href: '/board' },
   { name: 'Q&A', href: '/qna' },
   { name: '채팅방', href: '/chatroom' },
+  { name: 'GPT', href: '/gpt' },
 ];
 
 export const initialLoginValue = Object.freeze({ userId: '', password: '' });
@@ -23,6 +24,7 @@ export const errorMessage = Object.freeze({
   checkCertificateEmail: '이메일 인증을 진행해주세요',
   needLogin: '로그인이 필요합니다.',
   blankComment: '댓글을 입력해주세요.',
+  notComplete: '준비 중인 기능입니다.',
   error: '에러입니다.',
 });
 

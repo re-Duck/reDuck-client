@@ -51,17 +51,17 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
     setHTML(data.postContent);
   }, [data]);
   return (
-    <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-4">
+    <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-3">
       <h1 className="text-xl font-bold">{data.postTitle}</h1>
       <h2 className="text-md font-semibold"></h2>
       <div className="flex justify-between mb-5">
-        <div className="flex gap-2 font-semibold">
+        <div className="flex gap-2 font-semibold items-center">
           <Image
             src={url}
             alt="user_icon"
-            width="0"
-            height="0"
-            className="rounded-full w-6 h-6"
+            width="80"
+            height="80"
+            className="rounded-full w-7 h-7 border-[1px] p-0.5"
           />
           <p>{data.postAuthorName}</p>
         </div>

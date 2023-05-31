@@ -33,13 +33,13 @@ export default function Comment({
   return (
     <article className="flex flex-col w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
       <div className="flex justify-between">
-        <div className="flex gap-4">
+        <div className="flex gap-2 items-center">
           <Image
             src={`${BASE_URL}${data.commentAuthorProfileImgPath}` || user_icon}
             alt="user_icon"
-            width="0"
-            height="0"
-            className="rounded-full w-8 h-8"
+            width="80"
+            height="80"
+            className="rounded-full w-8 h-8 border-[1px] p-0.5"
           />
           <span className=" font-semibold">{data.commentAuthorName}</span>
         </div>

@@ -20,9 +20,9 @@ export function WritePostButton() {
       <Image
         src={imgPath}
         alt="user_icon"
-        width="0"
-        height="0"
-        className="rounded-full w-10 h-10"
+        width="80"
+        height="80"
+        className="rounded-full w-12 h-12 border-[1px] p-1"
       />
       <button className=" border-[1px] rounded-md w-11/12 bg-gray-50 h-12">
         {data?.user.token ? (

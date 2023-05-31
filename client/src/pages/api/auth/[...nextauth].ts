@@ -47,7 +47,7 @@ export default NextAuth({
       return props;
     },
 
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       session = {
         expires: session.expires,
         user: {

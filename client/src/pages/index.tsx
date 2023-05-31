@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Head from 'next/head';
 // import { useSelector } from 'react-redux';
 
 //components
@@ -11,6 +10,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/get-posts';
 
 import LoadingIcon from '@/components/LoadingIcon';
+import { IPostInformation } from '@/types';
 
 export default function Home() {
   // TODO: 유저정보 필요시 사용
@@ -53,7 +53,7 @@ export default function Home() {
               <>
                 {data?.pages.map((group, i) => (
                   <React.Fragment key={i}>
-                    {group?.data.map((props: any) => (
+                    {group?.data.map((props: IPostInformation) => (
                       <Post key={props.postOriginId} {...props} />
                     ))}
                   </React.Fragment>

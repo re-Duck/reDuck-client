@@ -38,7 +38,7 @@ export default function Home() {
     <>
       <Layout>
         <div className=" mx-auto flex justify-between max-w-5xl">
-          <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-[1px] gap-3">
+          <div className="flex flex-col w-full md:w-8/12 gap-3">
             <WritePostButton />
 
             {IS_LOADING ? (

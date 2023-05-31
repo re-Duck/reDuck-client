@@ -16,13 +16,13 @@ export function WritePostButton() {
   const { openModal } = useModal();
 
   return (
-    <article className="flex justify-between w-full items-center bg-white border-gray-100 border-[1px] h-25 p-6 ">
+    <article className="flex justify-between w-full items-center bg-white border-gray-100 border-[1px] h-25 p-6 gap-2">
       <Image
         src={imgPath}
         alt="user_icon"
         width="80"
         height="80"
-        className="rounded-full w-12 h-12 border-[1px] p-1"
+        className="rounded-full w-12 h-12 border-[1px] p-1.5"
       />
       <button className=" border-[1px] rounded-md w-11/12 bg-gray-50 h-12">
         {data?.user.token ? (

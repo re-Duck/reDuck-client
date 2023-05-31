@@ -76,13 +76,13 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
       }
     >
       {({ errors, isSubmitting }) => (
-        <Form className="flex justify-between items-center gap-1 h-16 bg-white border-gray-100 border-[1px] px-10">
+        <Form className="flex justify-between items-center gap-0.5 h-16 bg-white border-gray-100 border-[1px] px-10">
           <Image
             src={comentImgSrc}
             alt="img"
-            width="0"
-            height="0"
-            className="rounded-full w-9 h-9"
+            width="80"
+            height="80"
+            className="rounded-full w-10 h-10 border-[1px] p-1"
           />
           <Field
             name="content"

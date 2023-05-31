@@ -63,7 +63,15 @@ export default function Login() {
         <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
           <li>
             <Link href="/" className="text-2xl font-bold">
-              reDuck🐥
+              <div className="flex">
+                reDuck
+                <Image
+                  src="/main-duck.png"
+                  alt="reDuck"
+                  width={30}
+                  height={30}
+                />
+              </div>
             </Link>
           </li>
         </ul>

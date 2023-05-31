@@ -12,23 +12,31 @@ import { IComment } from '@/types';
 //next-auth
 import { useSession } from 'next-auth/react';
 import { useQuery } from '@tanstack/react-query';
+import { IPostInformation } from '../../types/index';
 
 interface IProps {
   pageProps: {
+    suburl: string;
     postOriginId: string;
+    data: IPostInformation;
   };
 }
 export default function PostDetailPage({ pageProps }: IProps) {
   const session = useSession();
 
   const user = session.data?.user;
-  const suburl = `/post/detail/${pageProps.postOriginId}`;
-  const { data, isLoading, refetch } = useQuery(['detail-post'], async () => {
-    const res = await axios_get({ suburl });
-    return res.data;
+  const suburl = pageProps.suburl;
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['detail-post'],
+    queryFn: async () => {
+      const res = await axios_get({ suburl });
+      return res.data;
+    },
+    initialData: pageProps.data,
   });
   const comments = data?.comments;
   const IS_POST_AUTHOR = user?.id === data?.postAuthorId;
+
   return (
     <Layout>
       {!isLoading && (
@@ -59,6 +67,7 @@ export default function PostDetailPage({ pageProps }: IProps) {
 }
 export async function getServerSideProps(context: any) {
   const postOriginId = context.params.id;
-
-  return { props: { postOriginId } };
+  const suburl = `/post/detail/${postOriginId}`;
+  const res = await axios_get({ suburl });
+  return { props: { suburl, postOriginId, data: res.data } };
 }

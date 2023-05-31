@@ -27,14 +27,12 @@ export default function Home() {
     const handleScroll = async (e: any) => {
       const { scrollHeight, scrollTop, clientHeight } =
         e.target.scrollingElement;
+      console.log(124);
       if (!isFetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
         await fetchNextPage();
       }
     };
     document.addEventListener('scroll', handleScroll);
-    return () => {
-      document.removeEventListener('scroll', handleScroll);
-    };
   }, [fetchNextPage, hasNextPage]);
 
   return (

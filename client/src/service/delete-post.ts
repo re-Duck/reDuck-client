@@ -5,11 +5,11 @@ interface IDeletePost {
   token: string;
   callback: () => void;
 }
-export const deletePost = async ({
+export async function deletePost({
   postOriginId,
   token,
   callback,
-}: IDeletePost) => {
+}: IDeletePost) {
   const suburl = `/post/${postOriginId}`;
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -19,4 +19,4 @@ export const deletePost = async ({
   if (response.isOkay) {
     callback();
   }
-};
+}

@@ -63,7 +63,15 @@ export default function Login() {
         <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
           <li>
             <Link href="/" className="text-2xl font-bold">
-              reDuck🐥
+              <div className="flex">
+                reDuck
+                <Image
+                  src="/main-duck.png"
+                  alt="reDuck"
+                  width={30}
+                  height={30}
+                />
+              </div>
             </Link>
           </li>
         </ul>
@@ -122,6 +130,12 @@ export default function Login() {
               <button
                 type="button"
                 className="flex text-center gap-x-2 rounded-md shadow-md bg-white px-3 py-2 text-sm font-semibold text-gray hover:shadow-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() =>
+                  openModal({
+                    type: ModalType.ERROR,
+                    message: errorMessage.notComplete,
+                  })
+                }
               >
                 <Image
                   src={googleLogo}
@@ -133,6 +147,12 @@ export default function Login() {
               <button
                 type="button"
                 className="group relative flex gap-x-2 rounded-md bg-black px-3 py-2 text-sm font-semibold text-white hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() =>
+                  openModal({
+                    type: ModalType.ERROR,
+                    message: errorMessage.notComplete,
+                  })
+                }
               >
                 <Icon icon="mdi:github" style={{ fontSize: '20px' }} />
                 <span className="flex-grow">깃허브 계정으로 로그인</span>
@@ -145,7 +165,15 @@ export default function Login() {
                   회원가입
                 </Link>
                 <Divider type="vertical" thin={1} margin={1} />
-                <span className="underline underline-offset-4">
+                <span
+                  className="underline underline-offset-4 cursor-pointer"
+                  onClick={() =>
+                    openModal({
+                      type: ModalType.ERROR,
+                      message: errorMessage.notComplete,
+                    })
+                  }
+                >
                   비밀번호찾기
                 </span>
               </div>

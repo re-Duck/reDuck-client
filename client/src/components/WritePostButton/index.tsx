@@ -16,33 +16,33 @@ export function WritePostButton() {
   const { openModal } = useModal();
 
   return (
-    <article className="flex justify-between w-full items-center bg-white border-gray-100 border-[1px] h-25 p-6 ">
+    <article className="flex justify-center w-full items-center bg-white border-gray-100 border-[1px] h-25 p-6 gap-4">
       <Image
         src={imgPath}
         alt="user_icon"
-        width="0"
-        height="0"
-        className="rounded-full w-10 h-10"
+        width="80"
+        height="80"
+        className="rounded-full w-12 h-12 border-[1px] p-1.5"
       />
-      <button className=" border-[1px] rounded-md w-11/12 bg-gray-50 h-12">
-        {data?.user.token ? (
-          <Link href={'/write'}>
+      {data?.user.token ? (
+        <Link href={'/write'} className="w-10/12">
+          <button className=" border-[1px] rounded-md w-full bg-gray-50 h-11">
             <p className=" text-gray-400">나누고 싶은 생각이 있으신가요?</p>
-          </Link>
-        ) : (
-          <p
-            className=" text-gray-400"
-            onClick={() =>
-              openModal({
-                type: ModalType.ERROR,
-                message: errorMessage.needLogin,
-              })
-            }
-          >
-            로그인 후 게시글을 작성해 주세요
-          </p>
-        )}
-      </button>
+          </button>
+        </Link>
+      ) : (
+        <button
+          className=" border-[1px] rounded-md w-10/12 bg-gray-50 h-11"
+          onClick={() =>
+            openModal({
+              type: ModalType.ERROR,
+              message: errorMessage.needLogin,
+            })
+          }
+        >
+          <p className=" text-gray-400">로그인 후 게시글을 작성해 주세요</p>
+        </button>
+      )}
     </article>
   );
 }

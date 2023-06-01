@@ -7,12 +7,12 @@ interface updateCommtent {
   content: string;
 }
 
-export const updateCommtent = async ({
+export async function updateCommtent({
   commentOriginId,
   postOriginId,
   token,
   content,
-}: updateCommtent) => {
+}: updateCommtent) {
   const suburl = `/post/comment/${commentOriginId}`;
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -21,4 +21,4 @@ export const updateCommtent = async ({
   const response = await axios_put({ suburl, headers, data });
 
   return response.isOkay;
-};
+}

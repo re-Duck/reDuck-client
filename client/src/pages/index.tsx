@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Head from 'next/head';
 // import { useSelector } from 'react-redux';
 
 //components
@@ -11,6 +10,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/get-posts';
 
 import LoadingIcon from '@/components/LoadingIcon';
+import { IPostInformation } from '@/types';
 
 export default function Home() {
   // TODO: 유저정보 필요시 사용
@@ -32,16 +32,13 @@ export default function Home() {
       }
     };
     document.addEventListener('scroll', handleScroll);
-    return () => {
-      document.removeEventListener('scroll', handleScroll);
-    };
   }, [fetchNextPage, hasNextPage]);
 
   return (
     <>
       <Layout>
         <div className=" mx-auto flex justify-between max-w-5xl">
-          <div className="flex flex-col w-full md:w-8/12 border-gray-100 border-[1px] gap-3">
+          <div className="flex flex-col w-full md:w-8/12 gap-3">
             <WritePostButton />
 
             {IS_LOADING ? (
@@ -53,7 +50,7 @@ export default function Home() {
               <>
                 {data?.pages.map((group, i) => (
                   <React.Fragment key={i}>
-                    {group?.data.map((props: any) => (
+                    {group?.data.map((props: IPostInformation) => (
                       <Post key={props.postOriginId} {...props} />
                     ))}
                   </React.Fragment>

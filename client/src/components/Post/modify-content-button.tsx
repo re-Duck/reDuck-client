@@ -2,7 +2,10 @@ import React from 'react';
 
 import { useRouter } from 'next/router';
 
-export default function ModifyCotentButton({ postOriginId }: any) {
+interface IProps {
+  postOriginId: string;
+}
+export default function ModifyCotentButton({ postOriginId }: IProps) {
   const router = useRouter();
 
   return (

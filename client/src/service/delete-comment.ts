@@ -6,11 +6,11 @@ interface deleteCommtent {
   callback: () => void;
 }
 
-export const deleteCommtent = async ({
+export async function deleteCommtent({
   commentOriginId,
   token,
   callback,
-}: deleteCommtent) => {
+}: deleteCommtent) {
   const suburl = `/post/comment/${commentOriginId}`;
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -20,4 +20,4 @@ export const deleteCommtent = async ({
   if (response.isOkay) {
     callback();
   }
-};
+}

@@ -25,6 +25,11 @@ export const errorMessage = Object.freeze({
   needLogin: '로그인이 필요합니다.',
   blankComment: '댓글을 입력해주세요.',
   notComplete: '준비 중인 기능입니다.',
+  imageCapacityExceeded: '이미지 용량 초과 입니다.',
+  failedSendingEmail: '이메일 전송에 실패했습니다. 다시 시도해주세요',
+  notmatchConfirmNumber:
+    '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요.',
+  failedSignUp: '회원가입에 실패했습니다. 다시 시도해주세요.',
   error: '에러입니다.',
 });
 
@@ -43,6 +48,10 @@ export const successMessage = Object.freeze({
   postUpdateSuccess: '게시글이 수정되었습니다.',
   signUpSuccess: '회원가입에 성공했습니다. 다시 로그인해주세요.',
   profileUpdateSuccess: '회원정보 수정이 완료되었습니다.',
+  availableIdSuccess: '사용할 수 있는 아이디입니다.',
+  sendingEmailSuccess:
+    '이메일이 전송됐습니다. 메일함을 확인하시고 5분 이내로 인증번호를 입력하고 확인해주세요.',
+  confirmNumberSuccess: '정상적으로 인증 완료됐습니다.',
 });
 
 export const warningMessage = Object.freeze({

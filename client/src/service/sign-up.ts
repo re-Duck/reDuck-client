@@ -31,7 +31,7 @@ export async function SignupPost(data: ISignUpProp): Promise<boolean> {
   return result.isOkay;
 }
 
-export async function checkID(id: string): Promise<object> {
+export async function checkID(id: string) {
   const suburl = `/user/duplicate/${id}`;
 
   const result = await axios_get({ suburl });

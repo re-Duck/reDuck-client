@@ -4,8 +4,14 @@ import { axios_get, axios_post } from './base/api';
 // util
 import { makeJsonToBlob } from '@/util';
 
+import { ICheckID, ISignupData } from '@/types';
+
+interface singupDto extends ISignupData {
+  emailAuthToken: string;
+}
+
 interface ISignUpProp {
-  signUpDto: object;
+  signUpDto: singupDto;
   file: Blob | null;
 }
 
@@ -22,6 +28,8 @@ export async function SignupPost(data: ISignUpProp): Promise<boolean> {
   formData.append('signUpDto', signUpDto);
   if (data.file !== null) {
     formData.append('file', data.file);
+  } else {
+    formData.append('file', '');
   }
   const headers = {
     'Content-Type': 'multipart/form-data',
@@ -31,7 +39,7 @@ export async function SignupPost(data: ISignUpProp): Promise<boolean> {
   return result.isOkay;
 }
 
-export async function checkID(id: string) {
+export async function checkID(id: string): Promise<ICheckID> {
   const suburl = `/user/duplicate/${id}`;
 
   const result = await axios_get({ suburl });

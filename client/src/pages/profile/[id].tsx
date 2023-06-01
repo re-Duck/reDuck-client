@@ -34,7 +34,7 @@ export default function Profile({ pageProps }: { pageProps: object }) {
           <Avatar
             src={`${BASE_URL}${userProfileImgPath}`}
             alt="profileImg"
-            size="lg"
+            size="xl"
           />
           <div className="mt-4">
             <p>{name}</p>

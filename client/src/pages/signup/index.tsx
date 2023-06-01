@@ -90,7 +90,7 @@ export default function SignUp() {
         setCheckedId('');
         openModal({
           type: ModalType.ERROR,
-          mesasge: response.isDuplicate
+          message: response.isDuplicate
             ? errorMessage.duplicateId
             : errorMessage.network,
         });

@@ -10,7 +10,7 @@ import { commentPost } from '@/service/comment-post';
 
 //assets
 import user_icon from '@/assets/images/user_icon.png';
-import { ModalType, errorMessage, successMessage } from '@/constant';
+import { ModalType, errorMessage } from '@/constant';
 import { useModal } from '@/hooks';
 
 //form
@@ -61,10 +61,6 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
     await commentPost({ content, postOriginId, token: user.token });
     resetForm();
     setSubmitting(false);
-    openModal({
-      type: ModalType.SUCCESS,
-      message: successMessage.commentSuccess,
-    });
     refetch();
   };
   return (

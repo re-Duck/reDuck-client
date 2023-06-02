@@ -47,24 +47,16 @@ export default function Write() {
       }
 
       setSubmitting(true);
+      let returnPostOriginId = postOriginId;
 
-      if (postOriginId) {
+      if (returnPostOriginId) {
         await boardUpdate({ title, content, accessToken, postOriginId });
-        openModal({
-          type: ModalType.SUCCESS,
-          message: successMessage.postUpdateSuccess,
-        });
-        setSubmitting(false);
-        router.replace(`/board/${postOriginId}`);
       } else {
-        await boardPost({ title, content, accessToken });
-        openModal({
-          type: ModalType.SUCCESS,
-          message: successMessage.postSuccess,
-        });
-        setSubmitting(false);
-        router.replace('/');
+        returnPostOriginId = await boardPost({ title, content, accessToken });
       }
+
+      setSubmitting(false);
+      router.replace(`/board/${returnPostOriginId}`);
     },
     [content]
   );

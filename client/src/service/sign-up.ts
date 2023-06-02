@@ -23,13 +23,12 @@ interface ICheckEmail {
 export async function SignupPost(data: ISignUpProp): Promise<boolean> {
   const suburl = '/user';
   const formData = new FormData();
-  console.log(data);
   const signUpDto = makeJsonToBlob(data.signUpDto);
   formData.append('signUpDto', signUpDto);
   if (data.file !== null) {
     formData.append('file', data.file);
   } else {
-    formData.append('file', '');
+    formData.append('file', new Blob());
   }
   const headers = {
     'Content-Type': 'multipart/form-data',

@@ -9,24 +9,24 @@ import * as Yup from 'yup';
 // components
 import { Divider, Avatar, LoadingIcon } from '@/components';
 
-// service
+// constant
 import {
   IMAGE_FILE_MAX_SIZE,
   developExperience,
+  ModalType,
   successMessage,
   errorMessage,
   initialSignupValue,
 } from '@/constant';
+
+// types
+import { ICheckID, ISignupData } from '@/types';
+
+// service
 import { SignupPost, checkEmail, checkID, sendEmail } from '@/service/sign-up';
 
 // hooks
 import { useModal } from '@/hooks';
-
-enum ModalType {
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-}
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string()
@@ -79,7 +79,7 @@ export default function SignUp() {
         message: errorMsg ? errorMsg : errorMessage.blankID,
       });
     } else {
-      const response: any = await checkID(userId);
+      const response: ICheckID = await checkID(userId);
       if (response.state && !response.isDuplicate) {
         setCheckedId(userId);
         openModal({
@@ -99,7 +99,7 @@ export default function SignUp() {
   };
 
   const handleChooseFile = () => {
-    imgRef.current!.click();
+    imgRef.current?.click();
   };
 
   const handleImgInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -190,7 +190,10 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = async (sendData: any, setSubmitting: any) => {
+  const handleSubmit = async (
+    sendData: ISignupData,
+    setSubmitting: (value: boolean) => void
+  ) => {
     // 아이디 / 이메일 인증확인
     if (checkedId !== sendData.userId || emailAuthToken === '') {
       openModal({
@@ -213,6 +216,7 @@ export default function SignUp() {
         type: ModalType.SUCCESS,
         message: successMessage.signUpSuccess,
         callback: () => {
+          // TODO 로그인 화면으로 안넘어가짐
           closeModal();
           router.push('/login');
         },
@@ -335,12 +339,7 @@ export default function SignUp() {
                   프로필 이미지
                 </label>
                 <div className="flex gap-x-4 items-baseline flex-wrap">
-                  <Avatar
-                    src={profileImg}
-                    alt="profileImg"
-                    hasDot={false}
-                    size="sm"
-                  />
+                  <Avatar src={profileImg} alt="profileImg" size="md" />
                   <input
                     type="file"
                     accept="image/*"
@@ -349,6 +348,7 @@ export default function SignUp() {
                     onChange={handleImgInput}
                   />
                   <button
+                    type="button"
                     onClick={handleChooseFile}
                     className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
                   >

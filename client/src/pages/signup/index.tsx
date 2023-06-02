@@ -214,7 +214,7 @@ export default function SignUp() {
   };
 
   return (
-    <Layout>
+    <Layout viewList={false}>
       {/* {modalOpen && (
         <Modal
           type={modalType}

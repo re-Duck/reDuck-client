@@ -17,7 +17,7 @@ export async function deleteCommtent({
   };
   const response = await axios_delete({ suburl, headers });
 
-  if (response.isOkay) {
+  if (!response.isOkay) {
     callback();
   }
 }

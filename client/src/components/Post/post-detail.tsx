@@ -31,7 +31,7 @@ const Content = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
     const component = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
-      <RQ ref={forwardedRef} {...props} readOnly className="border-red-300" />
+      <RQ ref={forwardedRef} {...props} readOnly id="postContent" />
     );
     return component;
   },
@@ -50,6 +50,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   useEffect(() => {
     setHTML(data.postContent);
   }, [data]);
+
   return (
     <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-3">
       <h1 className="text-xl font-bold">{data.postTitle}</h1>

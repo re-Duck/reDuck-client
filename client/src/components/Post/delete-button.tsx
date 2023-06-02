@@ -7,6 +7,7 @@ import { ModalType, successMessage, warningMessage } from '@/constant';
 //service
 import { deleteCommtent } from '@/service/delete-comment';
 import { deletePost } from '@/service/delete-post';
+import { errorMessage } from '../../constant';
 
 export default function DeleteButton({ id, token, type, refetch }: any) {
   const { openModal } = useModal();
@@ -35,8 +36,8 @@ export default function DeleteButton({ id, token, type, refetch }: any) {
         commentOriginId: id,
         callback: () =>
           openModal({
-            type: ModalType.SUCCESS,
-            message: successMessage.commentDeleteSuccess,
+            type: ModalType.ERROR,
+            message: errorMessage.error,
           }),
       });
       refetch();

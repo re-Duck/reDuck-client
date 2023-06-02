@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import googleLogo from '../../assets/images/google_logo.png';
 
 // components
-import { Divider } from '@/components';
+import { Divider, Layout } from '@/components';
 
 // service
 import { signIn } from 'next-auth/react';
@@ -58,24 +58,7 @@ export default function Login() {
     setSubmitting(false);
   };
   return (
-    <>
-      <nav className="w-full h-14 border-b-2 border-gray-100">
-        <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
-          <li>
-            <Link href="/" className="text-2xl font-bold">
-              <div className="flex">
-                reDuck
-                <Image
-                  src="/main-duck.png"
-                  alt="reDuck"
-                  width={30}
-                  height={30}
-                />
-              </div>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+    <Layout viewList={false}>
       <div className="flex flex-col h-[calc(100vh-3.5rem)] justify-center items-center">
         <h1 className="text-2xl font-bold">로그인</h1>
         <Formik
@@ -181,6 +164,6 @@ export default function Login() {
           )}
         </Formik>
       </div>
-    </>
+    </Layout>
   );
 }

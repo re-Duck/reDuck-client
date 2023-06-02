@@ -10,9 +10,10 @@ import { useModal } from '@/hooks';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
+  viewList: boolean;
 }
 
-export function Navigator({ setisClickedHamburger }: INavigator) {
+export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
   const authState = useSelector((state: any) => state.auth);
   const { openModal } = useModal();
   return (
@@ -29,48 +30,55 @@ export function Navigator({ setisClickedHamburger }: INavigator) {
             </div>
           </Link>
         </li>
-
-        <li className="flex-auto pl-8">
-          <ul className="hidden sm:flex gap-8 text-gray-500">
-            {linkList.map(({ name, href }) => (
-              <li
-                key={name}
-                onClick={() =>
-                  openModal({
-                    type: ModalType.ERROR,
-                    message: errorMessage.notComplete,
-                  })
-                }
-                className=" hover:cursor-pointer"
-              >
-                {name}
-                {/* <Link href={href}>{name}</Link> */}
-              </li>
-            ))}
-          </ul>
-        </li>
-
-        <li>
-          <ul>
-            <li className="hidden sm:block font-bold">
-              {authState.isLogin ? (
-                <Link href={`/profile/${authState.userId}`}>마이페이지</Link>
-              ) : (
-                <Link href="/login">로그인</Link>
-              )}
+        {viewList && (
+          <>
+            <li className="flex-auto pl-8">
+              <ul className="hidden sm:flex gap-8 text-gray-500">
+                {linkList.map(({ name, href }) => (
+                  <li
+                    key={name}
+                    onClick={() =>
+                      openModal({
+                        type: ModalType.ERROR,
+                        message: errorMessage.notComplete,
+                      })
+                    }
+                    className=" hover:cursor-pointer"
+                  >
+                    {name}
+                    {/* <Link href={href}>{name}</Link> */}
+                  </li>
+                ))}
+              </ul>
             </li>
-            <li className="sm:hidden">
-              {
-                <button onClick={() => setisClickedHamburger((prev) => !prev)}>
-                  <Icon
-                    icon="material-symbols:menu-rounded"
-                    style={{ fontSize: '25px' }}
-                  />
-                </button>
-              }
+
+            <li>
+              <ul>
+                <li className="hidden sm:block font-bold">
+                  {authState.isLogin ? (
+                    <Link href={`/profile/${authState.userId}`}>
+                      마이페이지
+                    </Link>
+                  ) : (
+                    <Link href="/login">로그인</Link>
+                  )}
+                </li>
+                <li className="sm:hidden">
+                  {
+                    <button
+                      onClick={() => setisClickedHamburger((prev) => !prev)}
+                    >
+                      <Icon
+                        icon="material-symbols:menu-rounded"
+                        style={{ fontSize: '25px' }}
+                      />
+                    </button>
+                  }
+                </li>
+              </ul>
             </li>
-          </ul>
-        </li>
+          </>
+        )}
       </ul>
     </nav>
   );

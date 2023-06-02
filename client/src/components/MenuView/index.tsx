@@ -7,14 +7,15 @@ import { useSelector } from 'react-redux';
 
 interface IMenuView {
   isClickedHamburger: boolean;
+  viewList: boolean;
 }
 
-export default function MenuView({ isClickedHamburger }: IMenuView) {
+export default function MenuView({ isClickedHamburger, viewList }: IMenuView) {
   const authState = useSelector((state: any) => state.auth);
   const { openModal } = useModal();
   return (
     <>
-      {isClickedHamburger && (
+      {isClickedHamburger && viewList && (
         <div className="fixed top-14 z-10 w-screen h-screen sm:hidden bg-white">
           <ul className="flex flex-col text-2xl">
             {linkList.map(({ name, href }) => (

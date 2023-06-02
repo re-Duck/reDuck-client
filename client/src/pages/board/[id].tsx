@@ -27,7 +27,7 @@ export default function PostDetailPage({ pageProps }: IProps) {
   const user = session.data?.user;
   const suburl = `/post/detail/${pageProps.postOriginId}`;
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['detail-post'],
+    queryKey: [`${pageProps.postOriginId}`],
     queryFn: async () => {
       const res = await axios_get({ suburl });
       return res.data;

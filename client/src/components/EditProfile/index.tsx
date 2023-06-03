@@ -66,6 +66,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userId,
     userProfileImgPath,
   }: IUserInfo = userData;
+  console.log(userData);
 
   const { data } = useSession();
   const accessToken = data?.user.token;
@@ -80,7 +81,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   // profileImg 관련
   const imgRef = useRef<HTMLInputElement>(null);
   const [profileImg, setProfileImg] = useState<string>(
-    `${BASE_URL}${userProfileImgPath}`
+    `${BASE_URL}${userProfileImgPath === undefined ? '' : userProfileImgPath}`
   );
   const [imgFile, setImgFile] = useState<Blob | null>(null);
 

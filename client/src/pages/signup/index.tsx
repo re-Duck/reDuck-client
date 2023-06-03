@@ -53,7 +53,7 @@ export default function SignUp() {
 
   const imgRef = useRef<HTMLInputElement>(null);
   const certificateNumberRef = useRef<HTMLInputElement>(null);
-  const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [profileImg, setProfileImg] = useState<string>('');
   const [imgFile, setImgFile] = useState<Blob | null>(null);
   const [certificateNumber, setCertificateNumber] = useState<string>('');
 

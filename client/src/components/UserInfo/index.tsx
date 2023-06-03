@@ -33,7 +33,9 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
       label: '프로필이미지',
       content: (
         <Avatar
-          src={`${BASE_URL}${userProfileImgPath}`}
+          src={`${BASE_URL}${
+            userProfileImgPath === undefined ? '' : userProfileImgPath
+          }`}
           alt="profileImg"
           size="sm"
         />

@@ -12,7 +12,7 @@ import { Avatar } from '@/components';
 
 export function WritePostButton() {
   const { data } = useSession();
-  const imgPath = data ? `${BASE_URL}${data.user.userProfileImgPath}` : null;
+  const imgPath = data ? `${BASE_URL}${data.user.userProfileImgPath}` : '';
   const { openModal } = useModal();
 
   return (

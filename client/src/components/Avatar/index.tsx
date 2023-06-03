@@ -4,8 +4,11 @@ import user_icon from '@/assets/images/user_icon.png';
 
 import { positionStyle, avatarSizeStyle } from '@/styles/styleConstant';
 
+// service
+import { BASE_URL } from '@/service/base/api';
+
 interface IAvatarProp {
-  src: string | null;
+  src: string;
   alt: string;
   size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   hasDot?: boolean;
@@ -23,7 +26,7 @@ export default function Avatar({
   return (
     <div className={avatarStyle}>
       <Image
-        src={src ? src : user_icon}
+        src={src === `${BASE_URL}` || src === '' ? user_icon : src}
         width={80}
         height={80}
         alt={alt}

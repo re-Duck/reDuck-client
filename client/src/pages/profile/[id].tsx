@@ -32,7 +32,9 @@ export default function Profile({ pageProps }: { pageProps: object }) {
       <div className="flex mx-auto max-w-5xl p-8 gap-x-16">
         <div className="flex-none text-center">
           <Avatar
-            src={`${BASE_URL}${userProfileImgPath}`}
+            src={`${BASE_URL}${
+              userProfileImgPath === undefined ? '' : userProfileImgPath
+            }`}
             alt="profileImg"
             size="xl"
           />

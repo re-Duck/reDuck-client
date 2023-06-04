@@ -37,3 +37,30 @@
   height: 90% !important;
   font-family: 'Noto Sans KR', sans-serif !important;
 }
+
+.ql-editor {
+  font-size: 1.1rem !important;
+  font-weight: 500;
+  line-height: 1.7;
+
+  > h1 {
+    font-size: 2rem !important;
+    font-weight: 600;
+    line-height: 2.5;
+  }
+  > h2 {
+    font-size: 1.6rem !important;
+    font-weight: 600;
+    line-height: 2.5;
+  }
+  > h3 {
+    font-size: 1.4rem !important;
+    font-weight: 600;
+    line-height: 2.5;
+  }
+  > blockquote {
+    font-size: 1.2rem !important;
+    font-weight: 500;
+    margin-bottom: 24px !important;
+  }
+}

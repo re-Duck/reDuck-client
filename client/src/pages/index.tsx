@@ -32,7 +32,10 @@ export default function Home() {
       }
     };
     document.addEventListener('scroll', handleScroll);
-  }, [fetchNextPage, hasNextPage]);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [hasNextPage, isFetching]);
 
   return (
     <>

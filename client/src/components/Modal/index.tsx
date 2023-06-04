@@ -50,7 +50,13 @@ export default function Modal() {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   {IS_CONFIRM_MODAL ? (
                     <>
-                      <ModalButton type="yes" onClick={callback} />
+                      <ModalButton
+                        type="yes"
+                        onClick={() => {
+                          closeModal();
+                          callback();
+                        }}
+                      />
                       <ModalButton type="cancle" onClick={closeModal} />
                     </>
                   ) : (

@@ -216,7 +216,6 @@ export default function SignUp() {
         type: ModalType.SUCCESS,
         message: successMessage.signUpSuccess,
         callback: () => {
-          // TODO 로그인 화면으로 안넘어가짐
           closeModal();
           router.push('/login');
         },
@@ -231,7 +230,7 @@ export default function SignUp() {
   };
 
   return (
-    <Layout>
+    <Layout viewList={false}>
       <div className="max-w-xl m-auto">
         <div>
           <h2 className="text-2xl font-bold text-center">회원가입</h2>

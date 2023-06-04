@@ -66,7 +66,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userId,
     userProfileImgPath,
   }: IUserInfo = userData;
-  console.log(userData);
 
   const { data } = useSession();
   const accessToken = data?.user.token;

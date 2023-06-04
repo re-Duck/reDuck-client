@@ -54,7 +54,10 @@ export default function Modal() {
                       <ModalButton type="cancle" onClick={closeModal} />
                     </>
                   ) : (
-                    <ModalButton type="check" onClick={closeModal} />
+                    <ModalButton
+                      type="check"
+                      onClick={callback === null ? closeModal : callback}
+                    />
                   )}
                 </div>
               </div>

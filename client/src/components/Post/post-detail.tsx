@@ -52,9 +52,8 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   }, [data]);
 
   return (
-    <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-3">
-      <h1 className="text-xl font-bold">{data.postTitle}</h1>
-      <h2 className="text-md font-semibold"></h2>
+    <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-16 gap-8">
+      <h1 className="text-4xl font-extrabold">{data.postTitle}</h1>
       <div className="flex justify-between mb-5">
         <div className="flex gap-2 font-semibold items-center">
           <Image

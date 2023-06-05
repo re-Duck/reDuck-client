@@ -80,7 +80,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   // profileImg 관련
   const imgRef = useRef<HTMLInputElement>(null);
   const [profileImg, setProfileImg] = useState<string>(
-    `${BASE_URL}${userProfileImgPath}`
+    `${BASE_URL}${userProfileImgPath === undefined ? '' : userProfileImgPath}`
   );
   const [imgFile, setImgFile] = useState<Blob | null>(null);
 
@@ -342,12 +342,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
             <div className="flex items-center">
               <label className="w-24 min-w-fit">프로필이미지</label>
               <div className="flex gap-x-4 items-baseline flex-wrap">
-                <Avatar
-                  src={profileImg}
-                  alt="profileImg"
-                  hasDot={false}
-                  size="sm"
-                />
+                <Avatar src={profileImg} alt="profileImg" size="md" />
                 <input
                   type="file"
                   accept="image/*"

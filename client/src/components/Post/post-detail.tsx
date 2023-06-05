@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 //next
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
 //react-quill
@@ -12,11 +11,11 @@ import { IPostInformation } from '@/types';
 
 //component
 import { DeleteButton, ModifyCotentButton } from './';
+import { Avatar } from '../';
 
 //util and constant
 import { parseDate } from '@/util';
 import { BASE_URL } from '@/service/base/api';
-import user_icon from '@/assets/images/user_icon.png';
 
 interface PostDetail {
   data: IPostInformation;
@@ -45,7 +44,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   const [html, setHTML] = useState<string>('');
   const url = data.postAuthorId
     ? `${BASE_URL}${data.postAuthorProfileImgPath}`
-    : user_icon;
+    : '';
 
   useEffect(() => {
     setHTML(data.postContent);
@@ -56,13 +55,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
       <h1 className="text-4xl font-extrabold">{data.postTitle}</h1>
       <div className="flex justify-between mb-5">
         <div className="flex gap-2 font-semibold items-center">
-          <Image
-            src={url}
-            alt="user_icon"
-            width="80"
-            height="80"
-            className="rounded-full w-7 h-7 border-[1px] p-0.5"
-          />
+          <Avatar src={url} alt="user_icon" size="xs" />
           <p>{data.postAuthorName}</p>
         </div>
         {IS_AUTHOR && (

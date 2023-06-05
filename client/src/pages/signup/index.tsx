@@ -7,23 +7,26 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Divider, Avatar, Modal, LoadingIcon } from '@/components';
+import { Divider, Avatar, LoadingIcon } from '@/components';
 
-// service
+// constant
 import {
   IMAGE_FILE_MAX_SIZE,
   developExperience,
+  ModalType,
+  successMessage,
   errorMessage,
   initialSignupValue,
-  MODAL_TITLE,
 } from '@/constant';
+
+// types
+import { ICheckID, ISignupData } from '@/types';
+
+// service
 import { SignupPost, checkEmail, checkID, sendEmail } from '@/service/sign-up';
 
-enum ModalType {
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-}
+// hooks
+import { useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string()
@@ -50,14 +53,12 @@ export default function SignUp() {
 
   const imgRef = useRef<HTMLInputElement>(null);
   const certificateNumberRef = useRef<HTMLInputElement>(null);
-  const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [profileImg, setProfileImg] = useState<string>('');
   const [imgFile, setImgFile] = useState<Blob | null>(null);
   const [certificateNumber, setCertificateNumber] = useState<string>('');
 
   // Modal
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalType, setModalType] = useState<ModalType>(ModalType.SUCCESS);
-  const [modalMessage, setModalMessage] = useState<string>('');
+  const { openModal, closeModal } = useModal();
 
   // 아이디 중복 체크 여부
   const [checkedId, setCheckedId] = useState<string>('');
@@ -67,40 +68,38 @@ export default function SignUp() {
   const [sendingEmail, setSendingEmail] = useState<boolean>(false);
   const [emailAuthToken, setEmailAuthToken] = useState<string>('');
 
-  const handleModalButton = () => {
-    setModalOpen(false);
-    if (modalMessage === '회원가입에 성공했습니다. 다시 로그인해주세요.') {
-      router.push('/login');
-    }
-  };
-
   const checkDuplicateID = async (
     userId: string,
     isTouched: boolean | undefined,
     errorMsg: string | undefined
   ) => {
     if (!isTouched || errorMsg) {
-      setModalType(ModalType.ERROR);
-      setModalMessage(errorMsg ? errorMsg : errorMessage.blankID);
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMsg ? errorMsg : errorMessage.blankID,
+      });
     } else {
-      const response: any = await checkID(userId);
+      const response: ICheckID = await checkID(userId);
       if (response.state && !response.isDuplicate) {
         setCheckedId(userId);
-        setModalType(ModalType.SUCCESS);
-        setModalMessage('사용할 수 있는 아이디입니다.');
+        openModal({
+          type: ModalType.SUCCESS,
+          message: successMessage.availableIdSuccess,
+        });
       } else {
         setCheckedId('');
-        setModalType(ModalType.ERROR);
-        setModalMessage(
-          response.isDuplicate ? errorMessage.duplicateId : errorMessage.network
-        );
+        openModal({
+          type: ModalType.ERROR,
+          message: response.isDuplicate
+            ? errorMessage.duplicateId
+            : errorMessage.network,
+        });
       }
     }
-    setModalOpen(true);
   };
 
   const handleChooseFile = () => {
-    imgRef.current!.click();
+    imgRef.current?.click();
   };
 
   const handleImgInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,7 +107,10 @@ export default function SignUp() {
       const file = e.target.files[0];
       const fileSize = file.size;
       if (fileSize > IMAGE_FILE_MAX_SIZE) {
-        setModalOpen(true);
+        openModal({
+          type: ModalType.ERROR,
+          message: errorMessage.imageCapacityExceeded,
+        });
         return;
       }
       const reader = new FileReader();
@@ -139,24 +141,27 @@ export default function SignUp() {
     errorMsg: string | undefined
   ) => {
     if (!isTouched || errorMsg) {
-      setModalType(ModalType.ERROR);
-      setModalMessage(errorMsg ? errorMsg : errorMessage.blankEmail);
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMsg ? errorMsg : errorMessage.blankEmail,
+      });
     } else {
       setSendingEmail(true);
       const status = await sendEmail({ email });
       if (status) {
         setIsSendEmail(true);
-        setModalType(ModalType.SUCCESS);
-        setModalMessage(
-          '이메일이 전송됐습니다. 메일함을 확인하시고 5분 이내로 인증번호를 입력해주세요'
-        );
+        openModal({
+          type: ModalType.SUCCESS,
+          message: successMessage.sendingEmailSuccess,
+        });
       } else {
-        setModalType(ModalType.ERROR);
-        setModalMessage('이메일 전송에 실패했습니다. 다시 시도해주세요.');
+        openModal({
+          type: ModalType.ERROR,
+          message: errorMessage.failedSendingEmail,
+        });
       }
       setSendingEmail(false);
     }
-    setModalOpen(true);
   };
 
   const handleCertificateNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,28 +177,32 @@ export default function SignUp() {
     const result = await checkEmail(data);
     if (result.status) {
       setEmailAuthToken(result.value);
-      setModalType(ModalType.SUCCESS);
-      setModalMessage('정상적으로 인증 완료됐습니다.');
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.confirmNumberSuccess,
+      });
     } else {
       setEmailAuthToken('');
-      setModalType(ModalType.ERROR);
-      setModalMessage(
-        '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요'
-      );
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.notmatchConfirmNumber,
+      });
     }
-    setModalOpen(true);
   };
 
-  const handleSubmit = async (sendData: any, setSubmitting: any) => {
+  const handleSubmit = async (
+    sendData: ISignupData,
+    setSubmitting: (value: boolean) => void
+  ) => {
     // 아이디 / 이메일 인증확인
     if (checkedId !== sendData.userId || emailAuthToken === '') {
-      setModalType(ModalType.ERROR);
-      setModalMessage(
-        checkedId !== sendData.userId
-          ? errorMessage.checkDuplicateId
-          : errorMessage.checkCertificateEmail
-      );
-      setModalOpen(true);
+      openModal({
+        type: ModalType.ERROR,
+        message:
+          checkedId !== sendData.userId
+            ? errorMessage.checkDuplicateId
+            : errorMessage.checkCertificateEmail,
+      });
       return;
     }
     setSubmitting(true);
@@ -203,27 +212,25 @@ export default function SignUp() {
     };
     const status = await SignupPost(data);
     if (status) {
-      setModalType(ModalType.SUCCESS);
-      setModalMessage('회원가입에 성공했습니다. 다시 로그인해주세요.');
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.signUpSuccess,
+        callback: () => {
+          closeModal();
+          router.push('/login');
+        },
+      });
     } else {
-      setModalType(ModalType.ERROR);
-      setModalMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.failedSignUp,
+      });
     }
-    setModalOpen(true);
     setSubmitting(false);
   };
 
   return (
     <Layout viewList={false}>
-      {/* {modalOpen && (
-        <Modal
-          type={modalType}
-          title={MODAL_TITLE[modalType]}
-          content={modalMessage}
-          buttonType="check"
-          handleModalButton={handleModalButton}
-        />
-      )} */}
       <div className="max-w-xl m-auto">
         <div>
           <h2 className="text-2xl font-bold text-center">회원가입</h2>
@@ -331,12 +338,7 @@ export default function SignUp() {
                   프로필 이미지
                 </label>
                 <div className="flex gap-x-4 items-baseline flex-wrap">
-                  <Avatar
-                    src={profileImg}
-                    alt="profileImg"
-                    hasDot={false}
-                    size="sm"
-                  />
+                  <Avatar src={profileImg} alt="profileImg" size="md" />
                   <input
                     type="file"
                     accept="image/*"
@@ -345,6 +347,7 @@ export default function SignUp() {
                     onChange={handleImgInput}
                   />
                   <button
+                    type="button"
                     onClick={handleChooseFile}
                     className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
                   >
@@ -378,7 +381,11 @@ export default function SignUp() {
                         )
                       }
                     >
-                      {/* {sendingEmail ? <LoadingIcon /> : '인증번호발송'} */}
+                      {sendingEmail ? (
+                        <LoadingIcon size="25px" />
+                      ) : (
+                        '인증번호발송'
+                      )}
                     </button>
                   </div>
                   {isSendEmail && (

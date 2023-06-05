@@ -1,10 +1,16 @@
 import React from 'react';
+import Image from 'next/image';
+import user_icon from '@/assets/images/user_icon.png';
+
 import { positionStyle, avatarSizeStyle } from '@/styles/styleConstant';
 
+// service
+import { BASE_URL } from '@/service/base/api';
+
 interface IAvatarProp {
-  src: string | null;
+  src: string;
   alt: string;
-  size: 'sm' | 'md' | 'lg';
+  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   hasDot?: boolean;
   position?: 'topRight' | 'bottomRight' | 'topLeft' | 'bottomLeft';
 }
@@ -13,16 +19,19 @@ export default function Avatar({
   src,
   alt,
   size = 'sm',
-  hasDot,
+  hasDot = false,
   position,
 }: IAvatarProp) {
-  const backgroundColor = src ? '' : 'bg-slate-400';
-  const avatarStyle = `relative rounded-full ${backgroundColor} border border-slate-200 ${avatarSizeStyle[size]} max-w-[200px] max-h-[200px] overflow-hidden`;
+  const avatarStyle = `relative rounded-full border border-slate-200 ${avatarSizeStyle[size]} max-w-[200px] max-h-[200px] overflow-hidden`;
   return (
     <div className={avatarStyle}>
-      {src && (
-        <img src={src} alt={alt} className="w-full h-full object-cover" />
-      )}
+      <Image
+        src={src === `${BASE_URL}` || src === '' ? user_icon : src}
+        width={80}
+        height={80}
+        alt={alt}
+        className="w-full h-full object-cover"
+      />
       {hasDot && (
         <div
           className={`${

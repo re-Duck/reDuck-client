@@ -37,6 +37,22 @@ export interface IUserInfo {
   userProfileImgPath?: string;
 }
 
+export interface ISignupData {
+  userId: string;
+  password: string;
+  name: string;
+  email: string;
+  company: string;
+  school: string;
+  developYear: string;
+}
+
+export interface ICheckID {
+  state: boolean;
+  isDuplicate?: boolean;
+  message?: string;
+}
+
 export enum EmailState {
   None,
   Submitting,

@@ -72,7 +72,7 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
       }
     >
       {({ errors, isSubmitting }) => (
-        <Form className="flex justify-between items-center gap-0.5 h-16 bg-white border-gray-100 border-[1px] px-10">
+        <Form className="flex justify-between items-center gap-0.5 h-16 bg-white border-gray-100 border-[1px] px-4 sm:px-10">
           <Image
             src={comentImgSrc}
             alt="img"
@@ -83,7 +83,7 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
           <Field
             name="content"
             type="text"
-            className=" border-b-gray-200 border-b-[1px] p-2 pl-3 w-9/12"
+            className=" border-b-gray-200 border-b-[1px] p-2 pl-3 w-8/12"
             placeholder="댓글을 입력해 보세요."
           />
           <button

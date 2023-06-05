@@ -44,7 +44,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   const [html, setHTML] = useState<string>('');
   const url = data.postAuthorId
     ? `${BASE_URL}${data.postAuthorProfileImgPath}`
-    : null;
+    : '';
 
   useEffect(() => {
     setHTML(data.postContent);

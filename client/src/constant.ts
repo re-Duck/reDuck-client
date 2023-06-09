@@ -50,13 +50,15 @@ export const successMessage = Object.freeze({
   sendingEmailSuccess:
     '이메일이 전송됐습니다. 메일함을 확인하시고 5분 이내로 인증번호를 입력하고 확인해주세요.',
   confirmNumberSuccess: '정상적으로 인증 완료됐습니다.',
+  withdrawalSuccess:
+    '정상적으로 탈퇴됐습니다. 지금까지 reDuck을 이용해주셔서 감사합니다.',
 });
 
 export const warningMessage = Object.freeze({
   confirmDeletePost: '정말로 게시글을 삭제하시겠습니까?',
   confirmDeleteComment: '정말로 댓글을 삭제하시겠습니까?',
   confirmGoOut: '정말로 나가시겠습니까?',
-  confirmWithdrwal:
+  confirmWithdrawal:
     '정말 회원 탈퇴하시겠습니까? 회원님의 모든 활동기록과 정보가 사라집니다.',
 });
 export const initialSignupValue = {

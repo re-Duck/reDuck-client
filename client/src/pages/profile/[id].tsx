@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import { useModal } from '@/hooks';
+import { useSession } from 'next-auth/react';
 
 // components
 import {
@@ -15,14 +15,26 @@ import {
 
 // service
 import { BASE_URL, axios_get } from '@/service/base/api';
-import { ModalType, sideBarList, warningMessage } from '@/constant';
+import { withdrawal } from '@/service/withdrawal';
+
+// constant
+import {
+  ModalType,
+  errorMessage,
+  sideBarList,
+  successMessage,
+  warningMessage,
+} from '@/constant';
 
 export default function Profile({ pageProps }: { pageProps: object }) {
   const router = useRouter();
-  const authState: any = useSelector((state: { auth: object }) => state.auth);
-  const { openModal } = useModal();
 
-  const isMyPage = router.query.id === authState.userId;
+  const session = useSession();
+  const user = session.data?.user;
+
+  const { openModal, closeModal } = useModal();
+
+  const isMyPage = router.query.id === user?.id;
 
   const [selectedMenu, setSelectedMenu] = useState<string>('내 정보');
 
@@ -33,9 +45,22 @@ export default function Profile({ pageProps }: { pageProps: object }) {
     if (content === '회원탈퇴') {
       openModal({
         type: ModalType.WARNING,
-        message: warningMessage.confirmWithdrwal,
-        callback: () => {
-          console.log('회원탈퇴');
+        message: warningMessage.confirmWithdrawal,
+        callback: async () => {
+          const flag = await withdrawal(user ? user.token : '');
+          closeModal();
+          flag
+            ? openModal({
+                type: ModalType.SUCCESS,
+                message: successMessage.withdrawalSuccess,
+                callback: () => {
+                  router.replace('/');
+                },
+              })
+            : openModal({
+                type: ModalType.ERROR,
+                message: errorMessage.error,
+              });
         },
       });
     } else {

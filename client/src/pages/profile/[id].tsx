@@ -26,7 +26,16 @@ import {
   warningMessage,
 } from '@/constant';
 
-export default function Profile({ pageProps }: { pageProps: object }) {
+// types
+import { IUserInfo } from '@/types';
+
+export default function Profile({
+  pageProps,
+}: {
+  pageProps: {
+    userData: IUserInfo;
+  };
+}) {
   const router = useRouter();
 
   const session = useSession();
@@ -38,7 +47,7 @@ export default function Profile({ pageProps }: { pageProps: object }) {
 
   const [selectedMenu, setSelectedMenu] = useState<string>('내 정보');
 
-  const { userData }: { userData?: any } = pageProps;
+  const { userData } = pageProps;
   const { company, name, school, userProfileImgPath } = userData;
 
   const handleSelectMenu = (content: string) => {

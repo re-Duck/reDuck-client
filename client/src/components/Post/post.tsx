@@ -5,6 +5,7 @@ import React from 'react';
 import { IPostInformation } from '@/types';
 import Avatar from '../Avatar';
 import { BASE_URL } from '@/service/base/api';
+import { parseDate } from '@/util';
 
 export function Post(props: IPostInformation) {
   const url = props.postAuthorId
@@ -22,8 +23,9 @@ export function Post(props: IPostInformation) {
           className="text-md text-gray-500 line-clamp-3"
           dangerouslySetInnerHTML={{ __html: props.postContent }}
         />
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-1">
           <p className="text-gray-400 text-sm">좋아요 0 | 조회 0</p>
+          <p className="text-gray-400">{parseDate(props?.postCreatedAt)}</p>
         </div>
       </article>
     </Link>

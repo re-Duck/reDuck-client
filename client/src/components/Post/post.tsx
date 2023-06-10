@@ -20,7 +20,7 @@ export function Post(props: IPostInformation) {
           <p>{props.postAuthorName}</p>
         </div>
         <p
-          className="text-md text-gray-500 line-clamp-3"
+          className="text-md text-gray-500 line-clamp-3 mb-3"
           dangerouslySetInnerHTML={{ __html: props.postContent }}
         />
         <div className="flex flex-col gap-1">

@@ -63,6 +63,7 @@ export default function Profile({
                 type: ModalType.SUCCESS,
                 message: successMessage.withdrawalSuccess,
                 callback: () => {
+                  closeModal();
                   router.replace('/');
                 },
               })

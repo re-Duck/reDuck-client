@@ -16,6 +16,7 @@ import { useModal } from '@/hooks';
 //form
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import Avatar from '../Avatar';
 
 interface IUser {
   id: string;
@@ -44,9 +45,7 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
   const postOriginId = router.query.id;
 
   const { openModal } = useModal();
-  const comentImgSrc = user
-    ? `${BASE_URL}${user.userProfileImgPath}`
-    : user_icon;
+  const comentImgSrc = `${BASE_URL}${user?.userProfileImgPath}`;
 
   const handleComment = async ({
     content,
@@ -73,13 +72,7 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
     >
       {({ errors, isSubmitting }) => (
         <Form className="flex justify-between items-center gap-0.5 h-16 bg-white border-gray-100 border-[1px] px-4 sm:px-10">
-          <Image
-            src={comentImgSrc}
-            alt="img"
-            width="80"
-            height="80"
-            className="rounded-full w-10 h-10 border-[1px] p-1"
-          />
+          <Avatar src={comentImgSrc} alt="user_icon" size="sm" />
           <Field
             name="content"
             type="text"

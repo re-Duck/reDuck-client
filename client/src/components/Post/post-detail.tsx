@@ -59,8 +59,11 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
           className="flex gap-2 font-semibold items-center"
           href={`/profile/${data.postAuthorId}`}
         >
-          <Avatar src={url} alt="user_icon" size="xs" />
-          <p>{data.postAuthorName}</p>
+          <Avatar src={url} alt="user_icon" size="sm" />
+          <div className="flex flex-col font-bold gap-1">
+            <span className="text-md ">{data.postAuthorName}</span>
+            <span className="text-xs text-gray-400">{`${data.postAuthorDevelopAnnual}년차 개발자 `}</span>
+          </div>
         </Link>
 
         {IS_AUTHOR && (

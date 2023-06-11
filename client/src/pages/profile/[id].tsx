@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useModal } from '@/hooks';
+import { useSession } from 'next-auth/react';
 
 // components
 import {
@@ -14,18 +15,68 @@ import {
 
 // service
 import { BASE_URL, axios_get } from '@/service/base/api';
-import { sideBarList } from '@/constant';
+import { withdrawal } from '@/service/withdrawal';
 
-export default function Profile({ pageProps }: { pageProps: object }) {
+// constant
+import {
+  ModalType,
+  errorMessage,
+  sideBarList,
+  successMessage,
+  warningMessage,
+} from '@/constant';
+
+// types
+import { IUserInfo } from '@/types';
+
+export default function Profile({
+  pageProps,
+}: {
+  pageProps: {
+    userData: IUserInfo;
+  };
+}) {
   const router = useRouter();
-  const authState: any = useSelector((state: { auth: object }) => state.auth);
 
-  const isMyPage = router.query.id === authState.userId;
+  const session = useSession();
+  const user = session.data?.user;
 
-  const [selectedMenu, setSelectedMenu] = useState('내 정보');
+  const { openModal, closeModal } = useModal();
 
-  const { userData }: { userData?: any } = pageProps;
+  const isMyPage = router.query.id === user?.id;
+
+  const [selectedMenu, setSelectedMenu] = useState<string>('내 정보');
+
+  const { userData } = pageProps;
   const { company, name, school, userProfileImgPath } = userData;
+
+  const handleSelectMenu = (content: string) => {
+    if (content === '회원탈퇴') {
+      openModal({
+        type: ModalType.WARNING,
+        message: warningMessage.confirmWithdrawal,
+        callback: async () => {
+          const flag = await withdrawal(user ? user.token : '');
+          closeModal();
+          flag
+            ? openModal({
+                type: ModalType.SUCCESS,
+                message: successMessage.withdrawalSuccess,
+                callback: () => {
+                  closeModal();
+                  router.replace('/');
+                },
+              })
+            : openModal({
+                type: ModalType.ERROR,
+                message: errorMessage.error,
+              });
+        },
+      });
+    } else {
+      setSelectedMenu(content);
+    }
+  };
   //TODO: 반응형 디자인 고려하기 (모바일 디자인)
   return (
     <Layout>
@@ -52,7 +103,7 @@ export default function Profile({ pageProps }: { pageProps: object }) {
                   content === selectedMenu &&
                   'before:block before:absolute before:w-1 before:h-8 before:translate-x-[-15px] before:bg-indigo-600 before:rounded-sm bg-gray-200'
                 } text-left rounded-md p-2 text-sm font-semibold text-black hover:bg-gray-200 flex items-center`}
-                onClick={() => setSelectedMenu(content)}
+                onClick={() => handleSelectMenu(content)}
               >
                 <Icon name={iconName} size={15} strokeWidth={3} color="black" />
                 <span className="ml-4">{content}</span>

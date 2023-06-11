@@ -44,7 +44,7 @@ export default function Comment({
             alt="user_icon"
             size="sm"
           />
-          <div className="flex flex-col font-bold gap-0">
+          <div className="flex flex-col font-bold">
             <span className="text-md ">{data.commentAuthorName}</span>
             <span className="text-xs text-gray-400">{`${data.commentAuthorDevelopAnnual}년차 개발자 `}</span>
           </div>

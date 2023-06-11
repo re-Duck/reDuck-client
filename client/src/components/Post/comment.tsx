@@ -42,7 +42,7 @@ export default function Comment({
           <Avatar
             src={`${BASE_URL}${data.commentAuthorProfileImgPath}`}
             alt="user_icon"
-            size="xs"
+            size="sm"
           />
           <div className="flex flex-col font-bold gap-0">
             <span className="text-md ">{data.commentAuthorName}</span>

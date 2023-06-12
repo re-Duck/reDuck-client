@@ -67,8 +67,8 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userProfileImgPath,
   }: IUserInfo = userData;
 
-  const { data } = useSession();
-  const accessToken = data?.user.token;
+  const { data: session } = useSession();
+  const accessToken = session?.user.token;
 
   const { openModal } = useModal();
 
@@ -283,6 +283,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         type: ModalType.SUCCESS,
         message: successMessage.profileUpdateSuccess,
       });
+      // TODO : 프로필이미지 업데이트
     } else {
       // TODO: 메세지 커스텀
       openModal({
@@ -293,297 +294,294 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     setSubmitting(false);
   };
   return (
-    <>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={ValidationSchema}
-        onSubmit={(data, { setSubmitting }) =>
-          handleSubmit(data, setSubmitting)
-        }
-      >
-        {({ values, errors, touched, isSubmitting }) => (
-          <Form className="flex flex-1 flex-col p-8 gap-4">
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">아이디</label>
-              <span>{userId}</span>
-            </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">이름</label>
-              <Field
-                type="text"
-                name="name"
-                className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-              />
-            </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">현재 비밀빈호</label>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={ValidationSchema}
+      onSubmit={(data, { setSubmitting }) => handleSubmit(data, setSubmitting)}
+    >
+      {({ values, errors, touched, isSubmitting }) => (
+        <Form className="flex flex-1 flex-col p-8 gap-4">
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">아이디</label>
+            <span>{userId}</span>
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">이름</label>
+            <Field
+              type="text"
+              name="name"
+              className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">현재 비밀번호</label>
+            <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
               <Field
                 type="password"
                 name="password"
-                className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
               />
+              <span className="text-xs text-zinc-500 before:content-['*'] before:text-red-500">
+                {` 현재 비밀번호는 필수 입력입니다.`}
+              </span>
             </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">새 비밀빈호</label>
-              <Field
-                type="password"
-                name="newPassword"
-                className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">새 비밀번호</label>
+            <Field
+              type="password"
+              name="newPassword"
+              className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">비밀번호 확인</label>
+            <Field
+              type="password"
+              name="newPasswordConfirm"
+              className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">프로필이미지</label>
+            <div className="flex gap-x-4 items-baseline flex-wrap">
+              <Avatar src={profileImg} alt="profileImg" size="md" />
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                ref={imgRef}
+                onChange={handleImgInput}
               />
+              <button
+                type="button"
+                onClick={handleChooseFile}
+                className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+              >
+                사진 변경
+              </button>
+              <span className="text-xs text-zinc-500">
+                이미지 크기의 최대용량은 10MB 입니다.
+              </span>
             </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">비밀빈호 확인</label>
-              <Field
-                type="password"
-                name="newPasswordConfirm"
-                className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-              />
-            </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">프로필이미지</label>
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">이메일</label>
+            <div>
               <div className="flex gap-x-4 items-baseline flex-wrap">
-                <Avatar src={profileImg} alt="profileImg" size="md" />
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  ref={imgRef}
-                  onChange={handleImgInput}
+                <Field
+                  type="text"
+                  name="email"
+                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                />
+                {initialValues.email !== values.email && (
+                  <button
+                    type="button"
+                    disabled={!(touched.email && !errors.email)}
+                    onClick={() =>
+                      handleSubmitEmail('user', values.email || '')
+                    }
+                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                  >
+                    {userEmailState === EmailState.Submitting ? (
+                      <LoadingIcon size={'25px'} />
+                    ) : (
+                      '인증번호 전송'
+                    )}
+                  </button>
+                )}
+                <span className="text-xs text-zinc-500">
+                  * 변경시 재인증이 필요합니다.
+                </span>
+              </div>
+              {userEmailState === EmailState.Submitted && (
+                <div className="flex flex-none">
+                  <input
+                    type="text"
+                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    ref={userCertificateNumberRef}
+                    onChange={(e) => setUserCertificationNumber(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                    onClick={() => handleCheckEmail('user', values.email || '')}
+                  >
+                    인증번호확인
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">학교</label>
+            <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
+              <Field
+                type="text"
+                name="school"
+                className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+              />
+              {!schoolEmailAuthentication && (
+                <span className="text-xs text-zinc-500">
+                  메일 인증이 필요합니다.
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">학교이메일</label>
+            <div>
+              <div className="flex gap-x-4 items-baseline flex-wrap">
+                <Field
+                  type="text"
+                  name="schoolEmail"
+                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
                 <button
                   type="button"
-                  onClick={handleChooseFile}
-                  className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+                  disabled={!(touched.schoolEmail && !errors.schoolEmail)}
+                  onClick={() =>
+                    handleSubmitEmail('school', values.schoolEmail)
+                  }
+                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                 >
-                  사진 변경
+                  {schoolEmailState === EmailState.Submitting ? (
+                    <LoadingIcon size={'25px'} />
+                  ) : (
+                    '인증번호 전송'
+                  )}
                 </button>
                 <span className="text-xs text-zinc-500">
-                  이미지 크기의 최대용량은 10MB 입니다.
+                  * 변경시 재인증이 필요합니다.
                 </span>
               </div>
-            </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">이메일</label>
-              <div>
-                <div className="flex gap-x-4 items-baseline flex-wrap">
-                  <Field
+              {schoolEmailState === EmailState.Submitted && (
+                <div className="flex flex-none">
+                  <input
                     type="text"
-                    name="email"
-                    className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  />
-                  {initialValues.email !== values.email && (
-                    <button
-                      type="button"
-                      disabled={!(touched.email && !errors.email)}
-                      onClick={() =>
-                        handleSubmitEmail('user', values.email || '')
-                      }
-                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                    >
-                      {userEmailState === EmailState.Submitting ? (
-                        <LoadingIcon size={'25px'} />
-                      ) : (
-                        '인증번호 전송'
-                      )}
-                    </button>
-                  )}
-                  <span className="text-xs text-zinc-500">
-                    * 변경시 재인증이 필요합니다.
-                  </span>
-                </div>
-                {userEmailState === EmailState.Submitted && (
-                  <div className="flex flex-none">
-                    <input
-                      type="text"
-                      className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                      ref={userCertificateNumberRef}
-                      onChange={(e) =>
-                        setUserCertificationNumber(e.target.value)
-                      }
-                    />
-                    <button
-                      type="button"
-                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                      onClick={() =>
-                        handleCheckEmail('user', values.email || '')
-                      }
-                    >
-                      인증번호확인
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">학교</label>
-              <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
-                <Field
-                  type="text"
-                  name="school"
-                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                />
-                {!schoolEmailAuthentication && (
-                  <span className="text-xs text-zinc-500">
-                    메일 인증이 필요합니다.
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">학교이메일</label>
-              <div>
-                <div className="flex gap-x-4 items-baseline flex-wrap">
-                  <Field
-                    type="text"
-                    name="schoolEmail"
-                    className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    ref={schoolCertificateNumberRef}
+                    onChange={(e) =>
+                      setSchoolCertificationNumber(e.target.value)
+                    }
                   />
                   <button
                     type="button"
-                    disabled={!(touched.schoolEmail && !errors.schoolEmail)}
-                    onClick={() =>
-                      handleSubmitEmail('school', values.schoolEmail)
-                    }
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                    onClick={() =>
+                      handleCheckEmail('school', values.schoolEmail)
+                    }
                   >
-                    {schoolEmailState === EmailState.Submitting ? (
-                      <LoadingIcon size={'25px'} />
-                    ) : (
-                      '인증번호 전송'
-                    )}
+                    인증번호확인
                   </button>
-                  <span className="text-xs text-zinc-500">
-                    * 변경시 재인증이 필요합니다.
-                  </span>
                 </div>
-                {schoolEmailState === EmailState.Submitted && (
-                  <div className="flex flex-none">
-                    <input
-                      type="text"
-                      className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                      ref={schoolCertificateNumberRef}
-                      onChange={(e) =>
-                        setSchoolCertificationNumber(e.target.value)
-                      }
-                    />
-                    <button
-                      type="button"
-                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                      onClick={() =>
-                        handleCheckEmail('school', values.schoolEmail)
-                      }
-                    >
-                      인증번호확인
-                    </button>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">회사</label>
-              <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">회사</label>
+            <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
+              <Field
+                type="text"
+                name="company"
+                className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+              />
+              {!companyEmailAuthentication && (
+                <span className="text-xs text-zinc-500">
+                  메일 인증이 필요합니다.
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">회사이메일</label>
+            <div>
+              <div className="flex gap-x-4 items-baseline flex-wrap">
                 <Field
                   type="text"
-                  name="company"
+                  name="companyEmail"
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
-                {!companyEmailAuthentication && (
-                  <span className="text-xs text-zinc-500">
-                    메일 인증이 필요합니다.
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">회사이메일</label>
-              <div>
-                <div className="flex gap-x-4 items-baseline flex-wrap">
-                  <Field
-                    type="text"
-                    name="companyEmail"
-                    className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  />
-                  <button
-                    type="button"
-                    disabled={!(touched.companyEmail && !errors.companyEmail)}
-                    onClick={() =>
-                      handleSubmitEmail('company', values.companyEmail)
-                    }
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                  >
-                    {companyEmailState === EmailState.Submitting ? (
-                      <LoadingIcon size={'25px'} />
-                    ) : (
-                      '인증번호 전송'
-                    )}
-                  </button>
-                  <span className="text-xs text-zinc-500">
-                    * 변경시 재인증이 필요합니다.
-                  </span>
-                </div>
-                {companyEmailState === EmailState.Submitted && (
-                  <div className="flex flex-none">
-                    <input
-                      type="text"
-                      className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                      ref={companyCertificateNumberRef}
-                      onChange={(e) =>
-                        setCompanyCertificationNumber(e.target.value)
-                      }
-                    />
-                    <button
-                      type="button"
-                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                      onClick={() =>
-                        handleCheckEmail('company', values.companyEmail)
-                      }
-                    >
-                      인증번호확인
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center">
-              <label className="w-24 min-w-fit">개발연차</label>
-              <div className="flex flex-col grow self-baseline">
-                <Field
-                  as="select"
-                  name="developYear"
-                  default={developAnnual}
-                  disabled={values.company === ''}
-                  className={`${
-                    values.company === '' && 'opacity-30'
-                  } grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
+                <button
+                  type="button"
+                  disabled={!(touched.companyEmail && !errors.companyEmail)}
+                  onClick={() =>
+                    handleSubmitEmail('company', values.companyEmail)
+                  }
+                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                 >
-                  {developExperience.map((val) => (
-                    <option value={val} key={val}>
-                      {val}
-                    </option>
-                  ))}
-                </Field>
-                <span className="text-gray-500 text-xs">
-                  개발 시작연도는 실제 직장에 입사한 연도입니다.
+                  {companyEmailState === EmailState.Submitting ? (
+                    <LoadingIcon size={'25px'} />
+                  ) : (
+                    '인증번호 전송'
+                  )}
+                </button>
+                <span className="text-xs text-zinc-500">
+                  * 변경시 재인증이 필요합니다.
                 </span>
               </div>
+              {companyEmailState === EmailState.Submitted && (
+                <div className="flex flex-none">
+                  <input
+                    type="text"
+                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    ref={companyCertificateNumberRef}
+                    onChange={(e) =>
+                      setCompanyCertificationNumber(e.target.value)
+                    }
+                  />
+                  <button
+                    type="button"
+                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                    onClick={() =>
+                      handleCheckEmail('company', values.companyEmail)
+                    }
+                  >
+                    인증번호확인
+                  </button>
+                </div>
+              )}
             </div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-none rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-            >
-              정보수정
-            </button>
-            <button
-              type="button"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-              onClick={handleLogout}
-            >
-              로그아웃
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </>
+          </div>
+          <div className="flex items-center">
+            <label className="w-28 min-w-fit">개발연차</label>
+            <div className="flex flex-col grow self-baseline">
+              <Field
+                as="select"
+                name="developYear"
+                default={developAnnual}
+                disabled={values.company === ''}
+                className={`${
+                  values.company === '' && 'opacity-30'
+                } grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
+              >
+                {developExperience.map((val) => (
+                  <option value={val} key={val}>
+                    {val}
+                  </option>
+                ))}
+              </Field>
+              <span className="text-gray-500 text-xs">
+                개발 시작연도는 실제 직장에 입사한 연도입니다.
+              </span>
+            </div>
+          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="flex-none rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
+          >
+            정보수정
+          </button>
+          <button
+            type="button"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
+            onClick={handleLogout}
+          >
+            로그아웃
+          </button>
+        </Form>
+      )}
+    </Formik>
   );
 }

@@ -1,10 +1,12 @@
 // services
 import { makeJsonToBlob } from '@/util';
 import { axios_post, axios_put } from './base/api';
+import { IUserInfo } from '@/types';
 
 interface IEditProfile {
   isOkay: boolean;
-  message: 'INVALID_PASSWORD' | 'UNAUTHENTICATED_EMAIL' | '';
+  data?: IUserInfo;
+  code: 'INVALID_PASSWORD' | 'UNAUTHENTICATED_EMAIL' | '';
 }
 
 export async function editProfile({
@@ -29,18 +31,21 @@ export async function editProfile({
   formData.append('modifyUserDto', modifyUserDto);
   if (data.file !== null) {
     formData.append('file', data.file);
+  } else {
+    formData.append('file', new Blob());
   }
 
   const result = await axios_put({ suburl, data: formData, headers });
   if (result.isOkay) {
     return {
       isOkay: result.isOkay,
-      message: '',
+      data: result.data,
+      code: '',
     };
   } else {
     return {
       isOkay: result.isOkay,
-      message: result.data.message,
+      code: result.data.code,
     };
   }
 }

@@ -36,10 +36,12 @@ interface ICheckEmailDto {
 }
 
 const ValidationSchema = Yup.object().shape({
-  currentPassword: Yup.string().matches(
-    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
-    errorMessage.invalidFormatPassword
-  ),
+  password: Yup.string()
+    .required(errorMessage.blankPassword)
+    .matches(
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
+      errorMessage.invalidFormatPassword
+    ),
   newPassword: Yup.string().matches(
     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
     errorMessage.invalidFormatPassword
@@ -68,7 +70,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userProfileImgPath,
   }: IUserInfo = userData;
 
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const accessToken = session?.user.token;
 
   const { openModal } = useModal();
@@ -280,15 +282,23 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     setSubmitting(true);
     const result = await editProfile({ data, userId, accessToken });
     if (result.isOkay) {
+      await update({
+        ...session,
+        user: {
+          ...session?.user,
+          name: result.data?.name,
+          email: result.data?.email,
+          userProfileImgPath: result.data?.userProfileImgPath,
+        },
+      });
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.profileUpdateSuccess,
       });
-      // TODO : 프로필이미지 업데이트
     } else {
       openModal({
         type: ModalType.ERROR,
-        message: errorCodeToMessage[result.message],
+        message: errorCodeToMessage[result.code],
       });
     }
     setSubmitting(false);

@@ -45,8 +45,8 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
   const postOriginId = router.query.id;
 
   const { openModal } = useModal();
-  const comentImgSrc = `${BASE_URL}${user?.userProfileImgPath}`;
-
+  const comentImgSrc = user ? `${BASE_URL}${user.userProfileImgPath}` : '';
+  console.log(comentImgSrc);
   const handleComment = async ({
     content,
     setSubmitting,

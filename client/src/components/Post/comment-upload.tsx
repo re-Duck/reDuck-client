@@ -46,7 +46,6 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
 
   const { openModal } = useModal();
   const comentImgSrc = user ? `${BASE_URL}${user.userProfileImgPath}` : '';
-  console.log(comentImgSrc);
   const handleComment = async ({
     content,
     setSubmitting,

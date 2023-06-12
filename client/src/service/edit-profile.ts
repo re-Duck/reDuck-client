@@ -25,7 +25,6 @@ export async function editProfile({
   };
   const suburl = `/user/${userId}`;
   const formData = new FormData();
-  console.log(data);
   const modifyUserDto = makeJsonToBlob(data.modifyUserDto);
   formData.append('modifyUserDto', modifyUserDto);
   if (data.file !== null) {

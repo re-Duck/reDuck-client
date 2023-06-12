@@ -26,7 +26,7 @@ import {
   errorMessage,
   successMessage,
 } from '@/constant';
-import { IUserInfo, EmailState } from '@/types';
+import { IUserInfo, EmailState, UserInputData } from '@/types';
 import { useModal } from '@/hooks';
 
 interface ICheckEmailDto {
@@ -36,12 +36,10 @@ interface ICheckEmailDto {
 }
 
 const ValidationSchema = Yup.object().shape({
-  password: Yup.string()
-    .required(errorMessage.blankPassword)
-    .matches(
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
-      errorMessage.invalidFormatPassword
-    ),
+  password: Yup.string().matches(
+    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
+    errorMessage.invalidFormatPassword
+  ),
   newPassword: Yup.string().matches(
     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
     errorMessage.invalidFormatPassword
@@ -257,9 +255,16 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     developAnnual: developAnnual,
   };
 
-  const handleSubmit = async (inputData: object, setSubmitting: any) => {
-    const { newPasswordConfirm, ...modifyUserDto }: { [key: string]: any } =
-      inputData;
+  const handleSubmit = async (inputData: UserInputData, setSubmitting: any) => {
+    const { newPasswordConfirm, ...modifyUserDto } = inputData;
+
+    if (inputData.password === '') {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.blankPassword,
+      });
+      return;
+    }
 
     const data = {
       modifyUserDto: {

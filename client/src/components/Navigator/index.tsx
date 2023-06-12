@@ -4,7 +4,10 @@ import { ModalType, errorMessage, linkList } from '@/constant';
 
 // Icons
 import { Icon } from '@iconify/react';
-import { useSelector } from 'react-redux';
+
+// session
+import { useSession } from 'next-auth/react';
+
 import Image from 'next/image';
 import { useModal } from '@/hooks';
 
@@ -14,7 +17,7 @@ interface INavigator {
 }
 
 export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
-  const authState = useSelector((state: any) => state.auth);
+  const { data } = useSession();
   const { openModal } = useModal();
   return (
     <nav
@@ -59,10 +62,8 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
             <li>
               <ul>
                 <li className="hidden sm:block font-bold">
-                  {authState.isLogin ? (
-                    <Link href={`/profile/${authState.userId}`}>
-                      마이페이지
-                    </Link>
+                  {data ? (
+                    <Link href={`/profile/${data.user.id}`}>마이페이지</Link>
                   ) : (
                     <Link href="/login">로그인</Link>
                   )}

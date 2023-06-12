@@ -22,6 +22,7 @@ import {
   IMAGE_FILE_MAX_SIZE,
   ModalType,
   developExperience,
+  errorCodeToMessage,
   errorMessage,
   successMessage,
 } from '@/constant';
@@ -285,10 +286,9 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       });
       // TODO : 프로필이미지 업데이트
     } else {
-      // TODO: 메세지 커스텀
       openModal({
         type: ModalType.ERROR,
-        message: result.message,
+        message: errorCodeToMessage[result.message],
       });
     }
     setSubmitting(false);

@@ -4,7 +4,7 @@ import { axios_post, axios_put } from './base/api';
 
 interface IEditProfile {
   isOkay: boolean;
-  message?: string;
+  message: 'INVALID_PASSWORD' | 'UNAUTHENTICATED_EMAIL' | '';
 }
 
 export async function editProfile({
@@ -35,6 +35,7 @@ export async function editProfile({
   if (result.isOkay) {
     return {
       isOkay: result.isOkay,
+      message: '',
     };
   } else {
     return {

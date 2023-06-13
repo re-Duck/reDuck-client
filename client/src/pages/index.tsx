@@ -24,6 +24,14 @@ export default function Home() {
   const IS_LOADING = status === 'loading';
 
   useEffect(() => {
+    const position = Number(localStorage.getItem('scrollPosition')) || 0;
+    if (position > 0) {
+      window.scrollTo(0, position);
+      localStorage.setItem('scrollPosition', '0');
+    }
+  }, []);
+
+  useEffect(() => {
     const handleScroll = async (e: any) => {
       const { scrollHeight, scrollTop, clientHeight } =
         e.target.scrollingElement;

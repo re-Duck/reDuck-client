@@ -11,7 +11,7 @@ export function Post(props: IPostInformation) {
   const url = props.postAuthorId
     ? `${BASE_URL}${props.postAuthorProfileImgPath}`
     : '';
-  console.log(props);
+
   return (
     <article className="flex flex-col w-full  bg-white border-gray-100 border-2 h-50 p-6  rounded-l gap-3">
       <div className="flex">
@@ -30,6 +30,9 @@ export function Post(props: IPostInformation) {
       <Link
         href={`/board/${props.postOriginId}`}
         className="hover:cursor-pointer"
+        onClick={() => {
+          localStorage.setItem('scrollPosition', window.scrollY.toString());
+        }}
       >
         <h1 className="text-xl font-bold">{props.postTitle}</h1>
 

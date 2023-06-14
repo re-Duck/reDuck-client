@@ -31,7 +31,7 @@ export function Post(props: IPostInformation) {
         href={`/board/${props.postOriginId}`}
         className="hover:cursor-pointer"
         onClick={() => {
-          localStorage.setItem('scrollPosition', window.scrollY.toString());
+          sessionStorage.setItem('scrollPosition', window.scrollY.toString());
         }}
       >
         <h1 className="text-xl font-bold">{props.postTitle}</h1>

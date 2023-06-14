@@ -24,10 +24,10 @@ export default function Home() {
   const IS_LOADING = status === 'loading';
 
   useEffect(() => {
-    const position = Number(localStorage.getItem('scrollPosition')) || 0;
+    const position = Number(sessionStorage.getItem('scrollPosition')) || 0;
     if (position > 0) {
       window.scrollTo(0, position);
-      localStorage.setItem('scrollPosition', '0');
+      sessionStorage.setItem('scrollPosition', '0');
     }
   }, []);
 

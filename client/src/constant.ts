@@ -32,9 +32,12 @@ export const errorMessage = Object.freeze({
 });
 
 export const errorCodeToMessage = Object.freeze({
-  INVALID_TYPING: '잘못된 입력으로 인한 오류입니다. 다시 시도해주세요',
-  USER_NOT_EXIST: '유저가 존재하지 않습니다.',
-  INVALID_PASSWORD: '비밀번호가 맞지 않습니다.',
+  'INVALID_TYPING': '잘못된 입력으로 인한 오류입니다. 다시 시도해주세요',
+  'USER_NOT_EXIST': '유저가 존재하지 않습니다.',
+  'INVALID_PASSWORD': '비밀번호가 맞지 않습니다.',
+  'UNAUTHENTICATED_EMAIL': '이메일 인증이 필요합니다.',
+  '': '알 수 없는 오류입니다.',
+  'undefined': '알 수 없는 오류입니다.',
 });
 
 export const successMessage = Object.freeze({
@@ -152,4 +155,8 @@ export const iconInfo = Object.freeze({
     color: 'red',
     shape: 'alert-octagon',
   },
+});
+
+export const regex = Object.freeze({
+  password: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
 });

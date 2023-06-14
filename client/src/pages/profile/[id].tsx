@@ -102,7 +102,8 @@ export default function Profile({
                 className={`${
                   content === selectedMenu &&
                   'before:block before:absolute before:w-1 before:h-8 before:translate-x-[-15px] before:bg-indigo-600 before:rounded-sm bg-gray-200'
-                } text-left rounded-md p-2 text-sm font-semibold text-black hover:bg-gray-200 flex items-center`}
+                } text-left rounded-md p-2 text-sm font-semibold text-black hover:bg-gray-200 flex items-center
+                ${content === '회원탈퇴' && !isMyPage && `hidden`}`}
                 onClick={() => handleSelectMenu(content)}
               >
                 <Icon name={iconName} size={15} strokeWidth={3} color="black" />

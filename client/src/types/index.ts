@@ -37,6 +37,21 @@ export interface IUserInfo {
   userProfileImgPath?: string;
 }
 
+export interface UserInputData {
+  userId?: string;
+  password: string;
+  passwordConfirm?: string;
+  newPassword?: string;
+  newPasswordConfirm?: string;
+  name?: string;
+  email?: string;
+  school?: string;
+  schoolEmail: string;
+  company?: string;
+  companyEmail: string;
+  developAnuual?: number;
+}
+
 export interface ISignupData {
   userId: string;
   password: string;

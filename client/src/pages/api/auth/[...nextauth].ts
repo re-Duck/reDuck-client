@@ -43,11 +43,15 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt(props) {
-      if (!props.user) return props.token;
+      const { token, user, trigger, session } = props;
+      if (trigger === 'update') {
+        return { ...token, ...session };
+      }
+      if (!user) return token;
       return props;
     },
 
-    async session({ session, token }: any) {
+    async session({ token, session }: any) {
       session = {
         expires: session.expires,
         user: {
@@ -58,6 +62,7 @@ export default NextAuth({
           token: token.user.token,
         },
       };
+
       return session;
     },
   },

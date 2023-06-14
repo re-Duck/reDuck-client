@@ -36,5 +36,4 @@ yarn-error.log*
 next-env.d.ts
 
 # 파일관리 편의
-package-lock.json
 .env

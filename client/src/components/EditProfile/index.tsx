@@ -36,6 +36,12 @@ interface ICheckEmailDto {
   type: 'user' | 'company' | 'school';
 }
 
+interface IAuthToken {
+  emailAuthToken?: string;
+  schoolEmailAuthToken?: string;
+  companyEmailAuthToken?: string;
+}
+
 const ValidationSchema = Yup.object().shape({
   password: Yup.string().matches(
     regex.password,
@@ -87,7 +93,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   const [imgFile, setImgFile] = useState<Blob | null>(null);
 
   // TODO 이메일 Custom Hook 만들기
-  const [authToken, setAuthToken] = useState<any>({});
+  const [authToken, setAuthToken] = useState<IAuthToken>({});
 
   // User 이메일 관련
   const userCertificateNumberRef = useRef<HTMLInputElement>(null);
@@ -220,7 +226,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       number: number[type],
       type,
     };
-    const result: any = await certificationNumberCheck({
+    const result = await certificationNumberCheck({
       data: dto,
       accessToken,
     });
@@ -256,7 +262,10 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     developAnnual: developAnnual,
   };
 
-  const handleSubmit = async (inputData: UserInputData, setSubmitting: any) => {
+  const handleSubmit = async (
+    inputData: UserInputData,
+    setSubmitting: (value: boolean) => void
+  ) => {
     const { newPasswordConfirm, ...modifyUserDto } = inputData;
 
     if (inputData.password === '') {

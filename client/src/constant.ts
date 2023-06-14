@@ -156,3 +156,7 @@ export const iconInfo = Object.freeze({
     shape: 'alert-octagon',
   },
 });
+
+export const regex = Object.freeze({
+  password: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
+});

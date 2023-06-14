@@ -24,6 +24,7 @@ import {
   developExperience,
   errorCodeToMessage,
   errorMessage,
+  regex,
   successMessage,
 } from '@/constant';
 import { IUserInfo, EmailState, UserInputData } from '@/types';
@@ -37,11 +38,11 @@ interface ICheckEmailDto {
 
 const ValidationSchema = Yup.object().shape({
   password: Yup.string().matches(
-    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
+    regex.password,
     errorMessage.invalidFormatPassword
   ),
   newPassword: Yup.string().matches(
-    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
+    regex.password,
     errorMessage.invalidFormatPassword
   ),
   newPasswordConfirm: Yup.string().oneOf(

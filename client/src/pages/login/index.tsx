@@ -36,7 +36,10 @@ export default function Login() {
   // Modal
 
   // TODO: any타입 정의하기
-  const handleSubmit = async (sendData: ILogin, setSubmitting: any) => {
+  const handleSubmit = async (
+    sendData: ILogin,
+    setSubmitting: (value: boolean) => void
+  ) => {
     setSubmitting(true);
     try {
       const result = await signIn('credentials', {

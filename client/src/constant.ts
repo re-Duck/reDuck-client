@@ -12,7 +12,9 @@ export const errorMessage = Object.freeze({
   blankEmail: '이메일을 입력해주세요.',
   minIDLength: '아이디는 최소 6자 이상입니다.',
   maxIDLength: '아이디는 최대 12자 이하입니다.',
-  invalidFormatPassword: '비밀번호 양식이 맞지 않습니다.',
+  invalidFormatId: '아이디는 6 ~ 12자 영어 소문자, 숫자로 이뤄집니다',
+  invalidFormatPassword:
+    '비밀번호는 8 ~ 15자 영문, 숫자, 특수문자를 최소 한가지씩 포함 입니다.',
   mismatchPassword: '비밀번호가 일치하지 않습니다.',
   invalidFormatEmail: '이메일 양식이 맞지 않습니다',
   blankTitle: '제목을 입력해 주세요.',
@@ -158,5 +160,6 @@ export const iconInfo = Object.freeze({
 });
 
 export const regex = Object.freeze({
+  id: /^[a-z0-9]{6,12}$/,
   password: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
 });

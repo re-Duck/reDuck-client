@@ -9,7 +9,7 @@ export interface IComment {
   commentUpdatedAt: string;
 }
 export interface IPostInformation {
-  comments: Array<IComment> | null;
+  commentsCount: number;
   postAuthorDevelopAnnual: string;
   postAuthorId: string;
   postAuthorName: string;

@@ -2,14 +2,12 @@ import React from 'react';
 
 //next
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 //service
 import { BASE_URL } from '@/service/base/api';
 import { commentPost } from '@/service/comment-post';
 
 //assets
-import user_icon from '@/assets/images/user_icon.png';
 import { ModalType, errorMessage } from '@/constant';
 import { useModal } from '@/hooks';
 

@@ -35,7 +35,6 @@ export default function PostDetailPage({ pageProps }: IProps) {
   });
   const comments = data?.comments;
   const IS_POST_AUTHOR = user?.id === data?.postAuthorId;
-
   return (
     <Layout>
       {!isLoading && (
@@ -47,7 +46,16 @@ export default function PostDetailPage({ pageProps }: IProps) {
           />
           <h3 className="text-2xl font-bold pl-3">댓글 {comments?.length}</h3>
           <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
-            <CommentUpload user={user} refetch={refetch} />
+            <CommentUpload
+              user={user}
+              refetch={() => {
+                refetch();
+                setTimeout(
+                  () => window.scrollTo(0, document.body.scrollHeight),
+                  100
+                );
+              }}
+            />
             {comments?.map((comment: IComment) => (
               <Comment
                 key={comment.commentOriginId}

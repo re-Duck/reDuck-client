@@ -17,6 +17,7 @@ import {
   successMessage,
   errorMessage,
   initialSignupValue,
+  regex,
 } from '@/constant';
 
 // types
@@ -31,14 +32,10 @@ import { useModal } from '@/hooks';
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string()
     .required(errorMessage.blankID)
-    .min(6, errorMessage.minIDLength)
-    .max(12, errorMessage.maxIDLength),
+    .matches(regex.id, errorMessage.invalidFormatId),
   password: Yup.string()
     .required(errorMessage.blankPassword)
-    .matches(
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
-      errorMessage.invalidFormatPassword
-    ),
+    .matches(regex.password, errorMessage.invalidFormatPassword),
   passwordConfirm: Yup.string()
     .required(errorMessage.blankPassword)
     .oneOf([Yup.ref('password')], errorMessage.mismatchPassword),

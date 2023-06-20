@@ -12,3 +12,4 @@ export { default as Modal } from '@/components/Modal';
 export { default as AuthComponent } from '@/components/AuthComponent';
 export { default as EditProfile } from '@/components/EditProfile';
 export { default as UserInfo } from '@/components/UserInfo';
+export { default as Button } from '@/components/Button';

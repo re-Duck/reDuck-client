@@ -4,7 +4,7 @@ interface IButtonProp {
   type: 'button' | 'submit';
   name: string;
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function Button({ type, name, disabled, onClick }: IButtonProp) {

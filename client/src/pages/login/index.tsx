@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import googleLogo from '../../assets/images/google_logo.png';
 
 // components
-import { Divider, Layout } from '@/components';
+import { Divider, Layout, Button } from '@/components';
 
 // service
 import { signIn } from 'next-auth/react';
@@ -104,13 +104,7 @@ export default function Login() {
                   touched.password && errors.password && 'ring-red-600'
                 } relative block w-full rounded-b-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
               />
-              <button
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                로그인
-              </button>
+              <Button type="submit" name="로그인" disabled={isSubmitting} />
               <hr className="border-0 border-t-2 text-center overflow-visible after:content-['OR'] after:relative after:top-[-17px] p-1 after:text-gray-500 after:bg-white" />
               <button
                 type="button"

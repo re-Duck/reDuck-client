@@ -7,7 +7,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Divider, Avatar, LoadingIcon } from '@/components';
+import { Divider, Avatar, LoadingIcon, Button } from '@/components';
 
 // constant
 import {
@@ -253,7 +253,7 @@ export default function SignUp() {
                   <Field
                     type="text"
                     name="userId"
-                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="grow h-full p-2 mr-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     placeholder="아이디를 입력해주세요"
                   />
                   {errors.userId && touched.userId && (
@@ -262,7 +262,7 @@ export default function SignUp() {
                     </span>
                   )}
                 </div>
-                <button
+                <Button
                   type="button"
                   onClick={() =>
                     checkDuplicateID(
@@ -271,10 +271,9 @@ export default function SignUp() {
                       errors.userId
                     )
                   }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
                 >
                   중복확인
-                </button>
+                </Button>
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
                 <label className="text-xs w-20 sm:text-base sm:w-28">
@@ -343,13 +342,9 @@ export default function SignUp() {
                     ref={imgRef}
                     onChange={handleImgInput}
                   />
-                  <button
-                    type="button"
-                    onClick={handleChooseFile}
-                    className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
-                  >
+                  <Button type="button" onClick={handleChooseFile}>
                     파일 업로드
-                  </button>
+                  </Button>
                   <span className="text-xs text-zinc-500">
                     이미지 크기의 최대용량은 10MB 입니다.
                   </span>
@@ -364,12 +359,11 @@ export default function SignUp() {
                     <Field
                       type="text"
                       name="email"
-                      className="flex-1 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                      className="flex-1 p-2 mr-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                       placeholder="예 : reduck12@duckoo.com "
                     />
-                    <button
+                    <Button
                       type="button"
-                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                       onClick={() =>
                         handleRequestEmail(
                           values.email,
@@ -383,7 +377,7 @@ export default function SignUp() {
                       ) : (
                         '인증번호발송'
                       )}
-                    </button>
+                    </Button>
                   </div>
                   {isSendEmail && (
                     <div className="flex flex-none">
@@ -393,13 +387,12 @@ export default function SignUp() {
                         ref={certificateNumberRef}
                         onChange={handleCertificateNumber}
                       />
-                      <button
+                      <Button
                         type="button"
-                        className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                         onClick={() => handleCheckEmail(values.email)}
                       >
                         인증번호확인
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -453,13 +446,9 @@ export default function SignUp() {
               </div>
               <Divider type="horizental" thin={2} margin={1} />
               <div className="text-center">
-                <button
-                  type="submit"
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20"
-                  disabled={isSubmitting}
-                >
+                <Button type="submit" disabled={isSubmitting}>
                   회원가입
-                </button>
+                </Button>
               </div>
             </Form>
           )}

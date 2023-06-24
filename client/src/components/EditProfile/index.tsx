@@ -7,7 +7,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Avatar, LoadingIcon } from '..';
+import { Avatar, LoadingIcon, Button } from '..';
 
 // service
 import { BASE_URL } from '@/service/base/api';
@@ -378,13 +378,9 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 ref={imgRef}
                 onChange={handleImgInput}
               />
-              <button
-                type="button"
-                onClick={handleChooseFile}
-                className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
-              >
+              <Button type="button" onClick={handleChooseFile}>
                 사진 변경
-              </button>
+              </Button>
               <span className="text-xs text-zinc-500">
                 이미지 크기의 최대용량은 10MB 입니다.
               </span>
@@ -400,20 +396,19 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
                 {initialValues.email !== values.email && (
-                  <button
+                  <Button
                     type="button"
                     disabled={!(touched.email && !errors.email)}
                     onClick={() =>
                       handleSubmitEmail('user', values.email || '')
                     }
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                   >
                     {userEmailState === EmailState.Submitting ? (
                       <LoadingIcon size={'25px'} />
                     ) : (
                       '인증번호 전송'
                     )}
-                  </button>
+                  </Button>
                 )}
                 <span className="text-xs text-zinc-500">
                   * 변경시 재인증이 필요합니다.
@@ -427,13 +422,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     ref={userCertificateNumberRef}
                     onChange={(e) => setUserCertificationNumber(e.target.value)}
                   />
-                  <button
+                  <Button
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                     onClick={() => handleCheckEmail('user', values.email || '')}
                   >
                     인증번호확인
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
@@ -462,20 +456,19 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   name="schoolEmail"
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
-                <button
+                <Button
                   type="button"
                   disabled={!(touched.schoolEmail && !errors.schoolEmail)}
                   onClick={() =>
                     handleSubmitEmail('school', values.schoolEmail)
                   }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                 >
                   {schoolEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
-                </button>
+                </Button>
                 <span className="text-xs text-zinc-500">
                   * 변경시 재인증이 필요합니다.
                 </span>
@@ -490,15 +483,14 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                       setSchoolCertificationNumber(e.target.value)
                     }
                   />
-                  <button
+                  <Button
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                     onClick={() =>
                       handleCheckEmail('school', values.schoolEmail)
                     }
                   >
                     인증번호확인
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
@@ -527,20 +519,19 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   name="companyEmail"
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
-                <button
+                <Button
                   type="button"
                   disabled={!(touched.companyEmail && !errors.companyEmail)}
                   onClick={() =>
                     handleSubmitEmail('company', values.companyEmail)
                   }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                 >
                   {companyEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
-                </button>
+                </Button>
                 <span className="text-xs text-zinc-500">
                   * 변경시 재인증이 필요합니다.
                 </span>
@@ -555,15 +546,14 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                       setCompanyCertificationNumber(e.target.value)
                     }
                   />
-                  <button
+                  <Button
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                     onClick={() =>
                       handleCheckEmail('company', values.companyEmail)
                     }
                   >
                     인증번호확인
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
@@ -591,20 +581,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
               </span>
             </div>
           </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex-none rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-          >
+          <Button type="submit" disabled={isSubmitting}>
             정보수정
-          </button>
-          <button
-            type="button"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-            onClick={handleLogout}
-          >
+          </Button>
+          <Button type="button" onClick={handleLogout}>
             로그아웃
-          </button>
+          </Button>
         </Form>
       )}
     </Formik>

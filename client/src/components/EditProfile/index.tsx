@@ -11,11 +11,7 @@ import { Avatar, LoadingIcon, Button } from '..';
 
 // service
 import { BASE_URL } from '@/service/base/api';
-import {
-  certificationNumberCheck,
-  editProfile,
-  sendEditEmail,
-} from '@/service/edit-profile';
+import { editProfile } from '@/service/edit-profile';
 
 // constant, type
 import {
@@ -28,19 +24,7 @@ import {
   successMessage,
 } from '@/constant';
 import { IUserInfo, EmailState, UserInputData } from '@/types';
-import { useModal } from '@/hooks';
-
-interface ICheckEmailDto {
-  email: string;
-  number: string;
-  type: 'user' | 'company' | 'school';
-}
-
-interface IAuthToken {
-  emailAuthToken?: string;
-  schoolEmailAuthToken?: string;
-  companyEmailAuthToken?: string;
-}
+import { useEmailCertification, useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
   password: Yup.string().matches(
@@ -92,32 +76,35 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   );
   const [imgFile, setImgFile] = useState<Blob | null>(null);
 
-  // TODO 이메일 Custom Hook 만들기
-  const [authToken, setAuthToken] = useState<IAuthToken>({});
-
-  // User 이메일 관련
-  const userCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [userEmailState, setUserEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [userCertificationNumber, setUserCertificationNumber] =
-    useState<string>('');
+  // user 이메일 관련
+  const {
+    emailCertificationNumberRef: userCertificateNumberRef,
+    emailState: userEmailState,
+    emailAuthToken: userEmailAuthToken,
+    setCertificationNumber: setUserCertificationNumber,
+    handleSubmitEmail: submitUserEmail,
+    handleCheckEmail: checkUserEmail,
+  } = useEmailCertification({ type: 'user', accessToken });
 
   // School 이메일 관련
-  const schoolCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [schoolEmailState, setSchoolEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [schoolCertificationNumber, setSchoolCertificationNumber] =
-    useState<string>('');
+  const {
+    emailCertificationNumberRef: schoolCertificateNumberRef,
+    emailState: schoolEmailState,
+    emailAuthToken: schoolEmailAuthToken,
+    setCertificationNumber: setSchoolCertificationNumber,
+    handleSubmitEmail: submitSchoolEmail,
+    handleCheckEmail: checkSchoolEmail,
+  } = useEmailCertification({ type: 'school', accessToken });
 
   // Comapny 이메일 관련
-  const companyCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [companyEmailState, setCompanyEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [companyCertificationNumber, setCompanyCertificationNumber] =
-    useState<string>('');
+  const {
+    emailCertificationNumberRef: companyCertificateNumberRef,
+    emailState: companyEmailState,
+    emailAuthToken: companyEmailAuthToken,
+    setCertificationNumber: setCompanyCertificationNumber,
+    handleSubmitEmail: submitCompanyEmail,
+    handleCheckEmail: checkCompanyEmail,
+  } = useEmailCertification({ type: 'user', accessToken });
 
   const handleChooseFile = () => {
     imgRef.current?.click();
@@ -153,102 +140,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     }
   };
 
-  const handleSubmitEmail = async (
-    type: 'user' | 'school' | 'company',
-    email: string
-  ) => {
-    switch (type) {
-      case 'user': {
-        setUserEmailState(EmailState.Submitting);
-        break;
-      }
-      case 'school': {
-        setSchoolEmailState(EmailState.Submitting);
-        break;
-      }
-      case 'company': {
-        setCompanyEmailState(EmailState.Submitting);
-        break;
-      }
-    }
-    try {
-      const flag = await sendEditEmail({
-        data: {
-          email,
-        },
-        accessToken,
-      });
-      switch (type) {
-        case 'user': {
-          flag && setUserEmailState(EmailState.Submitted);
-          break;
-        }
-        case 'school': {
-          flag && setSchoolEmailState(EmailState.Submitted);
-          break;
-        }
-        case 'company': {
-          flag && setCompanyEmailState(EmailState.Submitted);
-          break;
-        }
-      }
-    } catch (e) {
-      alert(e);
-      switch (type) {
-        case 'user': {
-          setUserEmailState(EmailState.None);
-          break;
-        }
-        case 'school': {
-          setSchoolEmailState(EmailState.None);
-          break;
-        }
-        case 'company': {
-          setCompanyEmailState(EmailState.None);
-          break;
-        }
-      }
-    }
-  };
-
-  const handleCheckEmail = async (
-    type: 'user' | 'school' | 'company',
-    email: string
-  ) => {
-    // 인증번호가 일치한다면 토큰 받아옴
-    const number = {
-      user: userCertificationNumber,
-      school: schoolCertificationNumber,
-      company: companyCertificationNumber,
-    };
-    const dto: ICheckEmailDto = {
-      email,
-      number: number[type],
-      type,
-    };
-    const result = await certificationNumberCheck({
-      data: dto,
-      accessToken,
-    });
-    if (result.isOkay) {
-      const addObject = {
-        user: {
-          emailAuthToken: result.data?.emailAuthToken,
-        },
-        school: {
-          schoolEmailAuthToken: result.data?.emailAuthToken,
-        },
-        company: {
-          companyEmailAuthToken: result.data?.emailAuthToken,
-        },
-      };
-      setAuthToken({
-        ...authToken,
-        ...addObject[type],
-      });
-    }
-  };
-
   const initialValues = {
     name: name,
     password: '',
@@ -280,16 +171,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       modifyUserDto: {
         ...modifyUserDto,
         emailAuthToken:
-          userEmailState === EmailState.Submitted
-            ? authToken.emailAuthToken
-            : '',
+          userEmailState === EmailState.Submitted ? userEmailAuthToken : '',
         schoolEmailAuthToken:
-          schoolEmailState === EmailState.Submitted
-            ? authToken.schoolEmailAuthToken
-            : '',
+          schoolEmailState === EmailState.Submitted ? schoolEmailAuthToken : '',
         companyEmailAuthToken:
           companyEmailState === EmailState.Submitted
-            ? authToken.companyEmailAuthToken
+            ? companyEmailAuthToken
             : '',
       },
       file: imgFile,
@@ -399,9 +286,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   <Button
                     type="button"
                     disabled={!(touched.email && !errors.email)}
-                    onClick={() =>
-                      handleSubmitEmail('user', values.email || '')
-                    }
+                    onClick={() => submitUserEmail(values.email || '')}
                   >
                     {userEmailState === EmailState.Submitting ? (
                       <LoadingIcon size={'25px'} />
@@ -424,7 +309,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   />
                   <Button
                     type="button"
-                    onClick={() => handleCheckEmail('user', values.email || '')}
+                    onClick={() => checkUserEmail(values.email || '')}
                   >
                     인증번호확인
                   </Button>
@@ -459,9 +344,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 <Button
                   type="button"
                   disabled={!(touched.schoolEmail && !errors.schoolEmail)}
-                  onClick={() =>
-                    handleSubmitEmail('school', values.schoolEmail)
-                  }
+                  onClick={() => submitSchoolEmail(values.schoolEmail)}
                 >
                   {schoolEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
@@ -485,9 +368,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   />
                   <Button
                     type="button"
-                    onClick={() =>
-                      handleCheckEmail('school', values.schoolEmail)
-                    }
+                    onClick={() => checkSchoolEmail(values.schoolEmail)}
                   >
                     인증번호확인
                   </Button>
@@ -522,9 +403,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 <Button
                   type="button"
                   disabled={!(touched.companyEmail && !errors.companyEmail)}
-                  onClick={() =>
-                    handleSubmitEmail('company', values.companyEmail)
-                  }
+                  onClick={() => submitCompanyEmail(values.companyEmail)}
                 >
                   {companyEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
@@ -548,9 +427,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   />
                   <Button
                     type="button"
-                    onClick={() =>
-                      handleCheckEmail('company', values.companyEmail)
-                    }
+                    onClick={() => checkCompanyEmail(values.companyEmail)}
                   >
                     인증번호확인
                   </Button>

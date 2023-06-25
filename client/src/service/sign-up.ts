@@ -15,11 +15,6 @@ interface ISignUpProp {
   file: Blob | null;
 }
 
-interface ICheckEmail {
-  status: boolean;
-  value: string;
-}
-
 export async function SignupPost(data: ISignUpProp): Promise<boolean> {
   const suburl = '/user';
   const formData = new FormData();
@@ -62,15 +57,12 @@ export async function sendEmail(data: object) {
   return result.isOkay;
 }
 
-export async function checkEmail(data: object): Promise<ICheckEmail> {
+export async function checkEmail(data: object) {
   const suburl = '/auth/email/user';
 
   const result = await axios_post({ suburl, data });
-  const value = result.isOkay
-    ? result.data.emailAuthToken
-    : result.data.message;
   return {
-    status: result.isOkay,
-    value,
+    isOkay: result.isOkay,
+    data: result.data,
   };
 }

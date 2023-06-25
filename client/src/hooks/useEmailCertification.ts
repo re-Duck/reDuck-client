@@ -1,4 +1,4 @@
-// email
+// react
 import { useState, useRef } from 'react';
 
 // hooks
@@ -41,7 +41,6 @@ export default function useEmailCertification({
 
   const handleSubmitEmail = async (email: string) => {
     setEmailState(EmailState.Submitting);
-    // TODO: 이메일 전송확인 모달
     try {
       accessToken
         ? await sendEditEmail({

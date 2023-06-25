@@ -21,13 +21,13 @@ import {
 } from '@/constant';
 
 // types
-import { ICheckID, ISignupData } from '@/types';
+import { EmailState, ICheckID, ISignupData } from '@/types';
 
 // service
-import { SignupPost, checkEmail, checkID, sendEmail } from '@/service/sign-up';
+import { SignupPost, checkID } from '@/service/sign-up';
 
 // hooks
-import { useModal } from '@/hooks';
+import { useEmailCertification, useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string()
@@ -49,10 +49,8 @@ export default function SignUp() {
   const router = useRouter();
 
   const imgRef = useRef<HTMLInputElement>(null);
-  const certificateNumberRef = useRef<HTMLInputElement>(null);
   const [profileImg, setProfileImg] = useState<string>('');
   const [imgFile, setImgFile] = useState<Blob | null>(null);
-  const [certificateNumber, setCertificateNumber] = useState<string>('');
 
   // Modal
   const { openModal, closeModal } = useModal();
@@ -60,10 +58,15 @@ export default function SignUp() {
   // 아이디 중복 체크 여부
   const [checkedId, setCheckedId] = useState<string>('');
 
-  // 이메일 전송/확인 여부
-  const [isSendEmail, setIsSendEmail] = useState<boolean>(false);
-  const [sendingEmail, setSendingEmail] = useState<boolean>(false);
-  const [emailAuthToken, setEmailAuthToken] = useState<string>('');
+  // 이메일
+  const {
+    emailCertificationNumberRef,
+    emailState,
+    emailAuthToken,
+    setCertificationNumber,
+    handleSubmitEmail,
+    handleCheckEmail,
+  } = useEmailCertification({ type: 'user' });
 
   const checkDuplicateID = async (
     userId: string,
@@ -129,61 +132,6 @@ export default function SignUp() {
           }
         }
       };
-    }
-  };
-
-  const handleRequestEmail = async (
-    email: string,
-    isTouched: boolean | undefined,
-    errorMsg: string | undefined
-  ) => {
-    if (!isTouched || errorMsg) {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMsg ? errorMsg : errorMessage.blankEmail,
-      });
-    } else {
-      setSendingEmail(true);
-      const status = await sendEmail({ email });
-      if (status) {
-        setIsSendEmail(true);
-        openModal({
-          type: ModalType.SUCCESS,
-          message: successMessage.sendingEmailSuccess,
-        });
-      } else {
-        openModal({
-          type: ModalType.ERROR,
-          message: errorMessage.failedSendingEmail,
-        });
-      }
-      setSendingEmail(false);
-    }
-  };
-
-  const handleCertificateNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCertificateNumber(e.target.value);
-  };
-
-  const handleCheckEmail = async (email: string) => {
-    const data = {
-      email,
-      number: certificateNumber,
-      type: 'user',
-    };
-    const result = await checkEmail(data);
-    if (result.status) {
-      setEmailAuthToken(result.value);
-      openModal({
-        type: ModalType.SUCCESS,
-        message: successMessage.confirmNumberSuccess,
-      });
-    } else {
-      setEmailAuthToken('');
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.notmatchConfirmNumber,
-      });
     }
   };
 
@@ -364,28 +312,22 @@ export default function SignUp() {
                     />
                     <Button
                       type="button"
-                      onClick={() =>
-                        handleRequestEmail(
-                          values.email,
-                          touched.email,
-                          errors.email
-                        )
-                      }
+                      onClick={() => handleSubmitEmail(values.email)}
                     >
-                      {sendingEmail ? (
+                      {emailState === EmailState.Submitting ? (
                         <LoadingIcon size="25px" />
                       ) : (
                         '인증번호발송'
                       )}
                     </Button>
                   </div>
-                  {isSendEmail && (
+                  {emailState === EmailState.Submitted && (
                     <div className="flex flex-none">
                       <input
                         type="text"
                         className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                        ref={certificateNumberRef}
-                        onChange={handleCertificateNumber}
+                        ref={emailCertificationNumberRef}
+                        onChange={(e) => setCertificationNumber(e.target.value)}
                       />
                       <Button
                         type="button"

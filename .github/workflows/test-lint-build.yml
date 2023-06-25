@@ -1,0 +1,28 @@
+name: 'test-lint-build'
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Test lint, build
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ${{ env.working-directory }}
+      - run: npm run lint
+        if: ${{ always() }}
+        working-directory: ${{ env.working-directory }}
+      - run: npm run build
+        if: ${{ always() }}
+        working-directory: ${{ env.working-directory }}

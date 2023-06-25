@@ -325,7 +325,7 @@ export default function SignUp() {
                     <div className="flex flex-none">
                       <input
                         type="text"
-                        className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                        className="flex-0 p-2 mr-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                         ref={emailCertificationNumberRef}
                         onChange={(e) => setCertificationNumber(e.target.value)}
                       />

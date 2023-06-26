@@ -21,7 +21,6 @@ import {
 function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
   const [queryClient] = React.useState(() => new QueryClient());
-
   return (
     <>
       <Head>

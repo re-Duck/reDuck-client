@@ -2,5 +2,5 @@
 
 cd ../
 mkdir output
-cp -R ./client/* ./output
-cp -R ./output ./client/
+cp -R ./reDuck-client/* ./output
+cp -R ./output ./reDuck-client/

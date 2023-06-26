@@ -19,7 +19,7 @@ import {
 
 interface IUseEmailCertificationProp {
   type: 'user' | 'school' | 'company';
-  accessToken?: string;
+  accessToken?: string | null;
 }
 
 interface ICheckEmailDto {
@@ -30,7 +30,7 @@ interface ICheckEmailDto {
 
 export default function useEmailCertification({
   type,
-  accessToken,
+  accessToken = null,
 }: IUseEmailCertificationProp) {
   const emailCertificationNumberRef = useRef<HTMLInputElement>(null);
   const [emailState, setEmailState] = useState<EmailState>(EmailState.None);
@@ -42,7 +42,7 @@ export default function useEmailCertification({
   const handleSubmitEmail = async (email: string) => {
     setEmailState(EmailState.Submitting);
     try {
-      accessToken
+      accessToken !== null
         ? await sendEditEmail({
             data: {
               email,
@@ -70,12 +70,13 @@ export default function useEmailCertification({
       number: certificationNumber,
       type,
     };
-    const result = accessToken
-      ? await certificationNumberCheck({
-          data: dto,
-          accessToken,
-        })
-      : await checkEmail(dto);
+    const result =
+      accessToken !== null
+        ? await certificationNumberCheck({
+            data: dto,
+            accessToken,
+          })
+        : await checkEmail(dto);
     if (result.isOkay) {
       setEmailAuthToken(result.data?.emailAuthToken);
       openModal({

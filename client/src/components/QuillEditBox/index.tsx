@@ -1,9 +1,7 @@
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable react/display-name */
 // 동적 import 사용
 import dynamic from 'next/dynamic';
 
-import { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 
 // 상수 호출
 import { quillFormats } from '@/constant';
@@ -24,10 +22,10 @@ interface ForwardedQuillComponent extends ReactQuillProps {
 const QuillNoSSRWrapper = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
-
-    return ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
+    const component = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
       <RQ ref={forwardedRef} {...props} />
     );
+    return component;
   },
 
   {
@@ -110,7 +108,7 @@ export default function QuillEditBox({
       modules={quillModules}
       formats={quillFormats}
       theme="snow"
-      style={{ height: '500px' }}
+      style={{ height: '70vh' }}
       placeholder={'내용을 입력해주세요.'}
       value={content}
       onChange={handleContent}

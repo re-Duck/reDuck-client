@@ -1,6 +1,7 @@
 import React from 'react';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { AuthComponent, Modal } from '@/components';
 
 // packages
@@ -21,18 +22,26 @@ function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
   const [queryClient] = React.useState(() => new QueryClient());
   return (
-    <SessionProvider session={props.session}>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <Hydrate state={props.dehydratedState}>
-            <AuthComponent>
-              <Modal />
-              <Component {...props} />
-            </AuthComponent>
-          </Hydrate>
-        </QueryClientProvider>
-      </Provider>
-    </SessionProvider>
+    <>
+      <Head>
+        <title>reDuck</title>
+        <meta name="description" content="reDuck site" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/main-duck.png" />
+      </Head>
+      <SessionProvider session={props.session}>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={props.dehydratedState}>
+              <AuthComponent>
+                <Modal />
+                <Component {...props} />
+              </AuthComponent>
+            </Hydrate>
+          </QueryClientProvider>
+        </Provider>
+      </SessionProvider>
+    </>
   );
 }
 

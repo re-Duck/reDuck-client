@@ -9,11 +9,7 @@ interface IBoardPost {
   content: string;
   accessToken: string;
 }
-export async function boardPost({
-  title,
-  content,
-  accessToken,
-}: IBoardPost): Promise<void> {
+export async function boardPost({ title, content, accessToken }: IBoardPost) {
   const postOriginId = uuidv4();
   const suburl = '/post';
   const headers = {
@@ -33,4 +29,5 @@ export async function boardPost({
   if (!result.isOkay) {
     alert(result.message);
   }
+  return postOriginId;
 }

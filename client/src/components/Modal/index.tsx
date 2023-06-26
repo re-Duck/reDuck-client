@@ -21,7 +21,6 @@ export default function Modal() {
   const { type, message, callback }: IModal = useSelector(modalSelector);
   const { closeModal } = useModal();
   const IS_CONFIRM_MODAL = type === ModalType.WARNING;
-
   return (
     <>
       {type !== ModalType.CLOSE && (
@@ -51,11 +50,20 @@ export default function Modal() {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   {IS_CONFIRM_MODAL ? (
                     <>
-                      <ModalButton type="yes" onClick={callback} />
+                      <ModalButton
+                        type="yes"
+                        onClick={() => {
+                          closeModal();
+                          callback();
+                        }}
+                      />
                       <ModalButton type="cancle" onClick={closeModal} />
                     </>
                   ) : (
-                    <ModalButton type="check" onClick={closeModal} />
+                    <ModalButton
+                      type="check"
+                      onClick={callback === null ? closeModal : callback}
+                    />
                   )}
                 </div>
               </div>

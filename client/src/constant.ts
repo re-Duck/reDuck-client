@@ -1,7 +1,6 @@
 export const linkList = [
-  { name: '게시판', href: '/board' },
-  { name: 'Q&A', href: '/qna' },
   { name: '채팅방', href: '/chatroom' },
+  { name: 'GPT', href: '/gpt' },
 ];
 
 export const initialLoginValue = Object.freeze({ userId: '', password: '' });
@@ -13,7 +12,9 @@ export const errorMessage = Object.freeze({
   blankEmail: '이메일을 입력해주세요.',
   minIDLength: '아이디는 최소 6자 이상입니다.',
   maxIDLength: '아이디는 최대 12자 이하입니다.',
-  invalidFormatPassword: '비밀번호 양식이 맞지 않습니다.',
+  invalidFormatId: '아이디는 6 ~ 12자 영어 소문자, 숫자로 이뤄집니다',
+  invalidFormatPassword:
+    '비밀번호는 8 ~ 15자 영문, 숫자, 특수문자를 최소 한가지씩 포함 입니다.',
   mismatchPassword: '비밀번호가 일치하지 않습니다.',
   invalidFormatEmail: '이메일 양식이 맞지 않습니다',
   blankTitle: '제목을 입력해 주세요.',
@@ -23,12 +24,22 @@ export const errorMessage = Object.freeze({
   checkCertificateEmail: '이메일 인증을 진행해주세요',
   needLogin: '로그인이 필요합니다.',
   blankComment: '댓글을 입력해주세요.',
+  notComplete: '준비 중인 기능입니다.',
+  imageCapacityExceeded: '이미지 용량 초과 입니다.',
+  failedSendingEmail: '이메일 전송에 실패했습니다. 다시 시도해주세요',
+  notmatchConfirmNumber:
+    '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요.',
+  failedSignUp: '회원가입에 실패했습니다. 다시 시도해주세요.',
+  error: '에러입니다.',
 });
 
 export const errorCodeToMessage = Object.freeze({
-  INVALID_TYPING: '잘못된 입력으로 인한 오류입니다. 다시 시도해주세요',
-  USER_NOT_EXIST: '유저가 존재하지 않습니다.',
-  INVALID_PASSWORD: '비밀번호가 맞지 않습니다.',
+  'INVALID_TYPING': '잘못된 입력으로 인한 오류입니다. 다시 시도해주세요',
+  'USER_NOT_EXIST': '유저가 존재하지 않습니다.',
+  'INVALID_PASSWORD': '비밀번호가 맞지 않습니다.',
+  'UNAUTHENTICATED_EMAIL': '이메일 인증이 필요합니다.',
+  '': '알 수 없는 오류입니다.',
+  'undefined': '알 수 없는 오류입니다.',
 });
 
 export const successMessage = Object.freeze({
@@ -39,8 +50,22 @@ export const successMessage = Object.freeze({
   postDeleteSuccess: '게시글이 삭제되었습니다.',
   postUpdateSuccess: '게시글이 수정되었습니다.',
   signUpSuccess: '회원가입에 성공했습니다. 다시 로그인해주세요.',
+  profileUpdateSuccess: '회원정보 수정이 완료되었습니다.',
+  availableIdSuccess: '사용할 수 있는 아이디입니다.',
+  sendingEmailSuccess:
+    '이메일이 전송됐습니다. 메일함을 확인하시고 5분 이내로 인증번호를 입력하고 확인해주세요.',
+  confirmNumberSuccess: '정상적으로 인증 완료됐습니다.',
+  withdrawalSuccess:
+    '정상적으로 탈퇴됐습니다. 지금까지 reDuck을 이용해주셔서 감사합니다.',
 });
 
+export const warningMessage = Object.freeze({
+  confirmDeletePost: '정말로 게시글을 삭제하시겠습니까?',
+  confirmDeleteComment: '정말로 댓글을 삭제하시겠습니까?',
+  confirmGoOut: '정말로 나가시겠습니까?',
+  confirmWithdrawal:
+    '정말 회원 탈퇴하시겠습니까? 회원님의 모든 활동기록과 정보가 사라집니다.',
+});
 export const initialSignupValue = {
   userId: '',
   password: '',
@@ -90,11 +115,26 @@ export const POSTS_INISIATE_VALUE = Object.freeze({
 });
 
 export const sideBarList = [
-  '내 정보',
-  '활동기록',
-  '친구목록',
-  '덕력치',
-  '회원탈퇴',
+  {
+    content: '내 정보',
+    iconName: 'user',
+  },
+  {
+    content: '활동기록',
+    iconName: 'activity',
+  },
+  {
+    content: '친구목록',
+    iconName: 'users',
+  },
+  {
+    content: '덕력치',
+    iconName: 'bar-chart',
+  },
+  {
+    content: '회원탈퇴',
+    iconName: 'log-out',
+  },
 ];
 
 export enum ModalType {
@@ -117,4 +157,9 @@ export const iconInfo = Object.freeze({
     color: 'red',
     shape: 'alert-octagon',
   },
+});
+
+export const regex = Object.freeze({
+  id: /^[a-z0-9]{6,12}$/,
+  password: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
 });

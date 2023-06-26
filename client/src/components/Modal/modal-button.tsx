@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface IType {
   type: 'check' | 'yes' | 'cancle';
@@ -26,6 +26,16 @@ const CONTENT = {
 export default function ModalButton({ type, onClick }: IType) {
   const { content, className } = CONTENT[type];
 
+  const handdleKeyup = (e: any) => {
+    if ((e.keyCode === 13 || e.keyCode === 27) && type !== 'cancle') {
+      onClick();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keyup', handdleKeyup);
+    return () => document.removeEventListener('keyup', handdleKeyup);
+  }, []);
   return (
     <button type="button" className={className} onClick={onClick}>
       {content}

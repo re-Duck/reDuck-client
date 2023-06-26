@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import googleLogo from '../../assets/images/google_logo.png';
 
 // components
-import { Divider } from '@/components';
+import { Divider, Layout } from '@/components';
 
 // service
 import { signIn } from 'next-auth/react';
@@ -32,11 +32,13 @@ interface ILogin {
 export default function Login() {
   const router = useRouter();
 
-  const { openModal } = useModal();
   // Modal
+  const { openModal } = useModal();
 
-  // TODO: any타입 정의하기
-  const handleSubmit = async (sendData: ILogin, setSubmitting: any) => {
+  const handleSubmit = async (
+    sendData: ILogin,
+    setSubmitting: (value: boolean) => void
+  ) => {
     setSubmitting(true);
     try {
       const result = await signIn('credentials', {
@@ -58,16 +60,7 @@ export default function Login() {
     setSubmitting(false);
   };
   return (
-    <>
-      <nav className="w-full h-14 border-b-2 border-gray-100">
-        <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
-          <li>
-            <Link href="/" className="text-2xl font-bold">
-              reDuck🐥
-            </Link>
-          </li>
-        </ul>
-      </nav>
+    <Layout viewList={false}>
       <div className="flex flex-col h-[calc(100vh-3.5rem)] justify-center items-center">
         <h1 className="text-2xl font-bold">로그인</h1>
         <Formik
@@ -122,6 +115,12 @@ export default function Login() {
               <button
                 type="button"
                 className="flex text-center gap-x-2 rounded-md shadow-md bg-white px-3 py-2 text-sm font-semibold text-gray hover:shadow-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() =>
+                  openModal({
+                    type: ModalType.ERROR,
+                    message: errorMessage.notComplete,
+                  })
+                }
               >
                 <Image
                   src={googleLogo}
@@ -133,6 +132,12 @@ export default function Login() {
               <button
                 type="button"
                 className="group relative flex gap-x-2 rounded-md bg-black px-3 py-2 text-sm font-semibold text-white hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() =>
+                  openModal({
+                    type: ModalType.ERROR,
+                    message: errorMessage.notComplete,
+                  })
+                }
               >
                 <Icon icon="mdi:github" style={{ fontSize: '20px' }} />
                 <span className="flex-grow">깃허브 계정으로 로그인</span>
@@ -145,7 +150,15 @@ export default function Login() {
                   회원가입
                 </Link>
                 <Divider type="vertical" thin={1} margin={1} />
-                <span className="underline underline-offset-4">
+                <span
+                  className="underline underline-offset-4 cursor-pointer"
+                  onClick={() =>
+                    openModal({
+                      type: ModalType.ERROR,
+                      message: errorMessage.notComplete,
+                    })
+                  }
+                >
                   비밀번호찾기
                 </span>
               </div>
@@ -153,6 +166,6 @@ export default function Login() {
           )}
         </Formik>
       </div>
-    </>
+    </Layout>
   );
 }

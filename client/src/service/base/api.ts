@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-export const BASE_URL = 'http://168.188.123.234:8080';
+export const BASE_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://168.188.123.234:8080'
+    : 'https://reduckas.site';
 
 interface IResponse {
   isOkay: boolean;
@@ -15,6 +18,15 @@ interface IAxiosGet {
 interface IAxiosPost {
   suburl: string;
   data: FormData | object;
+  headers?: object;
+}
+interface IAxiosPut {
+  suburl: string;
+  headers?: object;
+  data: object;
+}
+interface IAxiosDelete {
+  suburl: string;
   headers?: object;
 }
 
@@ -32,7 +44,7 @@ export async function axios_get({
   suburl,
   headers = {},
   params = {},
-}: IAxiosGet): Promise<IResponse> {
+}: IAxiosGet) {
   try {
     const response = await axios.get(`${BASE_URL}${suburl}`, {
       params,
@@ -56,11 +68,7 @@ export async function axios_get({
   }
 }
 
-export async function axios_post({
-  suburl,
-  data,
-  headers = {},
-}: IAxiosPost): Promise<IResponse> {
+export async function axios_post({ suburl, data, headers = {} }: IAxiosPost) {
   try {
     const response = await axios.post(`${BASE_URL}${suburl}`, data, {
       headers,
@@ -77,10 +85,51 @@ export async function axios_post({
   } catch (e: any) {
     return {
       isOkay: false,
-      data: e.response.data,
-      message: e.response.message,
+      data: e.response?.data,
+      message: e.response?.message,
     };
   }
 }
 
-// TODO: axios_put, axios_delete 구현
+export async function axios_put({ suburl, data, headers = {} }: IAxiosPut) {
+  try {
+    const response = await axios.put(`${BASE_URL}${suburl}`, data, {
+      headers,
+    });
+    const RESPONSE_OK = response.status === 200 || response.status === 201;
+
+    if (RESPONSE_OK) {
+      return {
+        isOkay: true,
+        data: response.data,
+      };
+    }
+    throw new Error('AXIOS PUT 통신 에러');
+  } catch (e: any) {
+    return {
+      isOkay: false,
+      data: e.response?.data,
+      message: e.response?.message,
+    };
+  }
+}
+
+export async function axios_delete({ suburl, headers = {} }: IAxiosDelete) {
+  try {
+    const response = await axios.delete(`${BASE_URL}${suburl}`, {
+      headers,
+    });
+    const RESPONSE_OK = response.status === 204;
+
+    if (RESPONSE_OK) {
+      return {
+        isOkay: true,
+      };
+    }
+    throw new Error('AXIOS DELTE 통신 에러');
+  } catch (e: any) {
+    return {
+      isOkay: false,
+    };
+  }
+}

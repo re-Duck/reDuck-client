@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 //next
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 //service
 import { BASE_URL } from '@/service/base/api';
 import { commentPost } from '@/service/comment-post';
 
 //assets
-import googleLogo from '@/assets/images/google_logo.png';
-import { ModalType, errorMessage, successMessage } from '@/constant';
+import { ModalType, errorMessage } from '@/constant';
 import { useModal } from '@/hooks';
 
 //form
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import Avatar from '../Avatar';
 
 interface IUser {
   id: string;
@@ -26,6 +25,7 @@ interface IUser {
 
 interface IComentUpload {
   user: IUser | undefined;
+  refetch: () => void;
 }
 
 interface IHnadlerComment {
@@ -38,15 +38,12 @@ const ValidationSchema = Yup.object().shape({
   content: Yup.string().required(errorMessage.blankTitle),
 });
 
-export default function CommentUpload({ user }: IComentUpload) {
+export default function CommentUpload({ user, refetch }: IComentUpload) {
   const router = useRouter();
   const postOriginId = router.query.id;
 
   const { openModal } = useModal();
-  const comentImgSrc = user
-    ? `${BASE_URL}${user.userProfileImgPath}`
-    : googleLogo;
-
+  const comentImgSrc = user ? `${BASE_URL}${user.userProfileImgPath}` : '';
   const handleComment = async ({
     content,
     setSubmitting,
@@ -60,10 +57,7 @@ export default function CommentUpload({ user }: IComentUpload) {
     await commentPost({ content, postOriginId, token: user.token });
     resetForm();
     setSubmitting(false);
-    openModal({
-      type: ModalType.SUCCESS,
-      message: successMessage.commentSuccess,
-    });
+    refetch();
   };
   return (
     <Formik
@@ -74,18 +68,12 @@ export default function CommentUpload({ user }: IComentUpload) {
       }
     >
       {({ errors, isSubmitting }) => (
-        <Form className="flex justify-between items-center gap-1 h-16 bg-white border-gray-100 border-[1px] px-10">
-          <Image
-            src={comentImgSrc}
-            alt="img"
-            width={30}
-            height={30}
-            className="rounded-full"
-          />
+        <Form className="flex justify-between items-center gap-0.5 h-16 bg-white border-gray-100 border-[1px] px-4 sm:px-10">
+          <Avatar src={comentImgSrc} alt="user_icon" size="sm" />
           <Field
             name="content"
             type="text"
-            className=" border-b-gray-200 border-b-[1px] p-2 pl-3 w-9/12"
+            className=" border-b-gray-200 border-b-[1px] p-2 pl-3 w-8/12"
             placeholder="댓글을 입력해 보세요."
           />
           <button

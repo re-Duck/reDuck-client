@@ -7,7 +7,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Divider, Avatar, LoadingIcon, Button } from '@/components';
+import { Divider, Avatar, LoadingIcon, Button, InputForm } from '@/components';
 
 // constant
 import {
@@ -223,60 +223,51 @@ export default function SignUp() {
                   중복확인
                 </Button>
               </div>
-              <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
-                  비밀번호 <span className="text-red-500">*</span>
-                </label>
-                <div className="flex flex-col grow">
-                  <Field
-                    type="password"
-                    name="password"
-                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                    placeholder="비밀번호를 입력해주세요 "
-                  />
-                  {errors.password && touched.password && (
+              <InputForm
+                labelName="비밀번호"
+                inputType="password"
+                name="password"
+                required={true}
+                placeholder="비밀번호를 입력해주세요"
+                errorMessage={
+                  errors.password &&
+                  touched.password && (
                     <span className="text-xs text-red-500 translate-y-2 h-0">
                       {errors.password}
                     </span>
-                  )}
-                </div>
-              </div>
-              <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
-                  비밀번호 확인 <span className="text-red-500">*</span>
-                </label>
-                <div className="flex flex-col grow">
-                  <Field
-                    type="password"
-                    name="passwordConfirm"
-                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                    placeholder="비밀번호를 한번 더 입력해주세요 "
-                  />
-                  {errors.passwordConfirm && touched.passwordConfirm && (
+                  )
+                }
+              />
+              <InputForm
+                labelName="비밀번호 확인"
+                inputType="password"
+                name="passwordConfirm"
+                required={true}
+                placeholder="비밀번호를 한번 더 입력해주세요"
+                errorMessage={
+                  errors.passwordConfirm &&
+                  touched.passwordConfirm && (
                     <span className="text-xs text-red-500 translate-y-2 h-0">
                       {errors.passwordConfirm}
                     </span>
-                  )}
-                </div>
-              </div>
-              <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
-                  이름 <span className="text-red-500">*</span>
-                </label>
-                <div className="flex flex-col grow">
-                  <Field
-                    type="text"
-                    name="name"
-                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                    placeholder="이름을 입력해주세요."
-                  />
-                  {errors.name && touched.name && (
+                  )
+                }
+              />
+              <InputForm
+                labelName="이름"
+                inputType="text"
+                name="name"
+                required={true}
+                placeholder="이름을 입력해주세요"
+                errorMessage={
+                  errors.name &&
+                  touched.name && (
                     <span className="text-xs text-red-500 translate-y-2 h-0">
                       {errors.name}
                     </span>
-                  )}
-                </div>
-              </div>
+                  )
+                }
+              />
               <div className="inline-flex w-full items-center">
                 <label className="text-xs w-28 sm:text-base sm:w-28">
                   프로필 이미지
@@ -339,28 +330,18 @@ export default function SignUp() {
                   )}
                 </div>
               </div>
-              <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
-                  학교
-                </label>
-                <Field
-                  type="text"
-                  name="school"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  placeholder="학교를 선택해주세요"
-                />
-              </div>
-              <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
-                  직장
-                </label>
-                <Field
-                  type="text"
-                  name="company"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                  placeholder="직장을 선택해주세요"
-                />
-              </div>
+              <InputForm
+                labelName="학교"
+                inputType="text"
+                name="school"
+                placeholder="학교를 선택해주세요"
+              />
+              <InputForm
+                labelName="직장"
+                inputType="text"
+                name="company"
+                placeholder="직장을 선택해주세요"
+              />
               <div className="inline-flex w-full h-[38px] items-center">
                 <label className="text-xs w-20 sm:text-base sm:w-28">
                   개발시작연도

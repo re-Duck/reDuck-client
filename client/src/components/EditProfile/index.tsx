@@ -7,15 +7,11 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Avatar, LoadingIcon } from '..';
+import { Avatar, LoadingIcon, Button } from '..';
 
 // service
 import { BASE_URL } from '@/service/base/api';
-import {
-  certificationNumberCheck,
-  editProfile,
-  sendEditEmail,
-} from '@/service/edit-profile';
+import { editProfile } from '@/service/edit-profile';
 
 // constant, type
 import {
@@ -28,19 +24,7 @@ import {
   successMessage,
 } from '@/constant';
 import { IUserInfo, EmailState, UserInputData } from '@/types';
-import { useModal } from '@/hooks';
-
-interface ICheckEmailDto {
-  email: string;
-  number: string;
-  type: 'user' | 'company' | 'school';
-}
-
-interface IAuthToken {
-  emailAuthToken?: string;
-  schoolEmailAuthToken?: string;
-  companyEmailAuthToken?: string;
-}
+import { useEmailCertification, useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
   password: Yup.string().matches(
@@ -92,32 +76,35 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   );
   const [imgFile, setImgFile] = useState<Blob | null>(null);
 
-  // TODO 이메일 Custom Hook 만들기
-  const [authToken, setAuthToken] = useState<IAuthToken>({});
-
-  // User 이메일 관련
-  const userCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [userEmailState, setUserEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [userCertificationNumber, setUserCertificationNumber] =
-    useState<string>('');
+  // user 이메일 관련
+  const {
+    emailCertificationNumberRef: userCertificateNumberRef,
+    emailState: userEmailState,
+    emailAuthToken: userEmailAuthToken,
+    setCertificationNumber: setUserCertificationNumber,
+    handleSubmitEmail: submitUserEmail,
+    handleCheckEmail: checkUserEmail,
+  } = useEmailCertification({ type: 'user', accessToken });
 
   // School 이메일 관련
-  const schoolCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [schoolEmailState, setSchoolEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [schoolCertificationNumber, setSchoolCertificationNumber] =
-    useState<string>('');
+  const {
+    emailCertificationNumberRef: schoolCertificateNumberRef,
+    emailState: schoolEmailState,
+    emailAuthToken: schoolEmailAuthToken,
+    setCertificationNumber: setSchoolCertificationNumber,
+    handleSubmitEmail: submitSchoolEmail,
+    handleCheckEmail: checkSchoolEmail,
+  } = useEmailCertification({ type: 'school', accessToken });
 
   // Comapny 이메일 관련
-  const companyCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [companyEmailState, setCompanyEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [companyCertificationNumber, setCompanyCertificationNumber] =
-    useState<string>('');
+  const {
+    emailCertificationNumberRef: companyCertificateNumberRef,
+    emailState: companyEmailState,
+    emailAuthToken: companyEmailAuthToken,
+    setCertificationNumber: setCompanyCertificationNumber,
+    handleSubmitEmail: submitCompanyEmail,
+    handleCheckEmail: checkCompanyEmail,
+  } = useEmailCertification({ type: 'user', accessToken });
 
   const handleChooseFile = () => {
     imgRef.current?.click();
@@ -153,102 +140,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     }
   };
 
-  const handleSubmitEmail = async (
-    type: 'user' | 'school' | 'company',
-    email: string
-  ) => {
-    switch (type) {
-      case 'user': {
-        setUserEmailState(EmailState.Submitting);
-        break;
-      }
-      case 'school': {
-        setSchoolEmailState(EmailState.Submitting);
-        break;
-      }
-      case 'company': {
-        setCompanyEmailState(EmailState.Submitting);
-        break;
-      }
-    }
-    try {
-      const flag = await sendEditEmail({
-        data: {
-          email,
-        },
-        accessToken,
-      });
-      switch (type) {
-        case 'user': {
-          flag && setUserEmailState(EmailState.Submitted);
-          break;
-        }
-        case 'school': {
-          flag && setSchoolEmailState(EmailState.Submitted);
-          break;
-        }
-        case 'company': {
-          flag && setCompanyEmailState(EmailState.Submitted);
-          break;
-        }
-      }
-    } catch (e) {
-      alert(e);
-      switch (type) {
-        case 'user': {
-          setUserEmailState(EmailState.None);
-          break;
-        }
-        case 'school': {
-          setSchoolEmailState(EmailState.None);
-          break;
-        }
-        case 'company': {
-          setCompanyEmailState(EmailState.None);
-          break;
-        }
-      }
-    }
-  };
-
-  const handleCheckEmail = async (
-    type: 'user' | 'school' | 'company',
-    email: string
-  ) => {
-    // 인증번호가 일치한다면 토큰 받아옴
-    const number = {
-      user: userCertificationNumber,
-      school: schoolCertificationNumber,
-      company: companyCertificationNumber,
-    };
-    const dto: ICheckEmailDto = {
-      email,
-      number: number[type],
-      type,
-    };
-    const result = await certificationNumberCheck({
-      data: dto,
-      accessToken,
-    });
-    if (result.isOkay) {
-      const addObject = {
-        user: {
-          emailAuthToken: result.data?.emailAuthToken,
-        },
-        school: {
-          schoolEmailAuthToken: result.data?.emailAuthToken,
-        },
-        company: {
-          companyEmailAuthToken: result.data?.emailAuthToken,
-        },
-      };
-      setAuthToken({
-        ...authToken,
-        ...addObject[type],
-      });
-    }
-  };
-
   const initialValues = {
     name: name,
     password: '',
@@ -280,16 +171,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       modifyUserDto: {
         ...modifyUserDto,
         emailAuthToken:
-          userEmailState === EmailState.Submitted
-            ? authToken.emailAuthToken
-            : '',
+          userEmailState === EmailState.Submitted ? userEmailAuthToken : '',
         schoolEmailAuthToken:
-          schoolEmailState === EmailState.Submitted
-            ? authToken.schoolEmailAuthToken
-            : '',
+          schoolEmailState === EmailState.Submitted ? schoolEmailAuthToken : '',
         companyEmailAuthToken:
           companyEmailState === EmailState.Submitted
-            ? authToken.companyEmailAuthToken
+            ? companyEmailAuthToken
             : '',
       },
       file: imgFile,
@@ -378,13 +265,9 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 ref={imgRef}
                 onChange={handleImgInput}
               />
-              <button
-                type="button"
-                onClick={handleChooseFile}
-                className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
-              >
+              <Button type="button" onClick={handleChooseFile}>
                 사진 변경
-              </button>
+              </Button>
               <span className="text-xs text-zinc-500">
                 이미지 크기의 최대용량은 10MB 입니다.
               </span>
@@ -400,20 +283,17 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
                 {initialValues.email !== values.email && (
-                  <button
+                  <Button
                     type="button"
                     disabled={!(touched.email && !errors.email)}
-                    onClick={() =>
-                      handleSubmitEmail('user', values.email || '')
-                    }
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                    onClick={() => submitUserEmail(values.email || '')}
                   >
                     {userEmailState === EmailState.Submitting ? (
                       <LoadingIcon size={'25px'} />
                     ) : (
                       '인증번호 전송'
                     )}
-                  </button>
+                  </Button>
                 )}
                 <span className="text-xs text-zinc-500">
                   * 변경시 재인증이 필요합니다.
@@ -423,17 +303,16 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 <div className="flex flex-none">
                   <input
                     type="text"
-                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="flex-0 p-2 mr-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={userCertificateNumberRef}
                     onChange={(e) => setUserCertificationNumber(e.target.value)}
                   />
-                  <button
+                  <Button
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                    onClick={() => handleCheckEmail('user', values.email || '')}
+                    onClick={() => checkUserEmail(values.email || '')}
                   >
                     인증번호확인
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
@@ -462,20 +341,17 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   name="schoolEmail"
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
-                <button
+                <Button
                   type="button"
                   disabled={!(touched.schoolEmail && !errors.schoolEmail)}
-                  onClick={() =>
-                    handleSubmitEmail('school', values.schoolEmail)
-                  }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                  onClick={() => submitSchoolEmail(values.schoolEmail)}
                 >
                   {schoolEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
-                </button>
+                </Button>
                 <span className="text-xs text-zinc-500">
                   * 변경시 재인증이 필요합니다.
                 </span>
@@ -484,21 +360,18 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 <div className="flex flex-none">
                   <input
                     type="text"
-                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="flex-0 p-2 mr-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={schoolCertificateNumberRef}
                     onChange={(e) =>
                       setSchoolCertificationNumber(e.target.value)
                     }
                   />
-                  <button
+                  <Button
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                    onClick={() =>
-                      handleCheckEmail('school', values.schoolEmail)
-                    }
+                    onClick={() => checkSchoolEmail(values.schoolEmail)}
                   >
                     인증번호확인
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
@@ -527,20 +400,17 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   name="companyEmail"
                   className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                 />
-                <button
+                <Button
                   type="button"
                   disabled={!(touched.companyEmail && !errors.companyEmail)}
-                  onClick={() =>
-                    handleSubmitEmail('company', values.companyEmail)
-                  }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                  onClick={() => submitCompanyEmail(values.companyEmail)}
                 >
                   {companyEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
-                </button>
+                </Button>
                 <span className="text-xs text-zinc-500">
                   * 변경시 재인증이 필요합니다.
                 </span>
@@ -549,21 +419,18 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 <div className="flex flex-none">
                   <input
                     type="text"
-                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="flex-0 p-2 mr-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={companyCertificateNumberRef}
                     onChange={(e) =>
                       setCompanyCertificationNumber(e.target.value)
                     }
                   />
-                  <button
+                  <Button
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                    onClick={() =>
-                      handleCheckEmail('company', values.companyEmail)
-                    }
+                    onClick={() => checkCompanyEmail(values.companyEmail)}
                   >
                     인증번호확인
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
@@ -591,20 +458,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
               </span>
             </div>
           </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex-none rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-          >
+          <Button type="submit" disabled={isSubmitting}>
             정보수정
-          </button>
-          <button
-            type="button"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-            onClick={handleLogout}
-          >
+          </Button>
+          <Button type="button" onClick={handleLogout}>
             로그아웃
-          </button>
+          </Button>
         </Form>
       )}
     </Formik>

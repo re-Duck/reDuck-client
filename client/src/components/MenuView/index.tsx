@@ -1,5 +1,4 @@
-import { ModalType, errorMessage, linkList } from '@/constant';
-import { useModal } from '@/hooks';
+import { linkList } from '@/constant';
 import Link from 'next/link';
 import React from 'react';
 
@@ -12,7 +11,6 @@ interface IMenuView {
 
 export default function MenuView({ isClickedHamburger, viewList }: IMenuView) {
   const authState = useSelector((state: any) => state.auth);
-  const { openModal } = useModal();
   return (
     <>
       {isClickedHamburger && viewList && (
@@ -22,15 +20,8 @@ export default function MenuView({ isClickedHamburger, viewList }: IMenuView) {
               <li
                 className="flex justify-center items-center h-16 border-b-2 border-gray-100 text-gray-500 cursor-pointer hover:bg-slate-100"
                 key={name}
-                onClick={() =>
-                  openModal({
-                    type: ModalType.ERROR,
-                    message: errorMessage.notComplete,
-                  })
-                }
               >
-                {name}
-                {/* <Link href={href}>{name}</Link> */}
+                <Link href={href}>{name}</Link>
               </li>
             ))}
             <li className="flex justify-center items-center h-16 border-b-2 border-gray-100 text-gray-500 hover:bg-slate-100">

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ModalType, errorMessage, linkList } from '@/constant';
+import { linkList } from '@/constant';
 
 // Icons
 import { Icon } from '@iconify/react';
@@ -9,7 +9,6 @@ import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
 
 import Image from 'next/image';
-import { useModal } from '@/hooks';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +17,6 @@ interface INavigator {
 
 export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
   const { data } = useSession();
-  const { openModal } = useModal();
   return (
     <nav
       className="w-full h-14 border-b-2 border-gray-100 fixed top-0 left-0 bg-white z-10"
@@ -42,18 +40,8 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
             <li className="flex-auto pl-8">
               <ul className="hidden sm:flex gap-8 text-gray-500">
                 {linkList.map(({ name, href }) => (
-                  <li
-                    key={name}
-                    onClick={() =>
-                      openModal({
-                        type: ModalType.ERROR,
-                        message: errorMessage.notComplete,
-                      })
-                    }
-                    className=" hover:cursor-pointer"
-                  >
-                    {name}
-                    {/* <Link href={href}>{name}</Link> */}
+                  <li key={name} className=" hover:cursor-pointer">
+                    <Link href={href}>{name}</Link>
                   </li>
                 ))}
               </ul>

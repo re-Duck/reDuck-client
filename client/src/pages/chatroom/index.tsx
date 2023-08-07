@@ -1,21 +1,25 @@
 import Layout from '@/components/Layout';
 import React, { useEffect } from 'react';
 
-import { Client, Stomp } from '@stomp/stompjs';
+import { Stomp } from '@stomp/stompjs';
+
+// project
+import { ChatUserList } from '@/components/Chat';
 
 export default function Chatroom() {
   // STOMP 클라이언트 생성
-  // ws://168.188.123.234:8080/ws-connection
   const client = Stomp.client('ws://168.188.123.234:8080/ws-connection');
 
   useEffect(() => {
     // 연결이벤트 핸들러
     client.onConnect = (frame) => {
+      // TODO: 채팅방 내역을 불러온다.
       console.log('연결됐어!', frame);
     };
 
     // 에러 이벤트 핸들러
     client.onStompError = (frame) => {
+      // TODO: 채팅방 내역 불러오는 재시도를 한다.
       console.log('Broker reported error: ', frame.headers['message']);
       console.log('Additional details: ', frame.body);
     };
@@ -31,29 +35,10 @@ export default function Chatroom() {
   return (
     <Layout>
       <div className="mx-auto flex max-w-5xl h-screen">
-        <section className="relative border border-black min-w-[30%] h-5/6 text-center">
-          <span>채팅방 목록</span>
-          <ul>
-            <li>dummy</li>
-            <li>dummy</li>
-            <li>dummy</li>
-            <li>dummy</li>
-          </ul>
-          <div className="absolute bottom-0 left-0 right-0 flex m-2.5">
-            <button
-              onClick={handleConnect}
-              className="flex-1 rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
-            >
-              연결
-            </button>
-            <button
-              onClick={handleDisconnect}
-              className="flex-1 rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
-            >
-              연결해제
-            </button>
-          </div>
-        </section>
+        <ChatUserList
+          handleConnect={handleConnect}
+          handleDisconnect={handleDisconnect}
+        />
         <section className="relative flex-1 ml-4 border border-black h-5/6">
           채팅
           <div className="flex m-2.5 absolute bottom-0 left-0 right-0">

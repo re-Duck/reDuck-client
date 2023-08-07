@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 
 // components
 import { Avatar } from '@/components';
@@ -9,6 +10,7 @@ import { BASE_URL } from '@/service/base/api';
 import { IUserInfo } from '@/types';
 
 export default function UserInfo({ userData }: { userData: IUserInfo }) {
+  const router = useRouter();
   const {
     company,
     companyEmail,
@@ -66,11 +68,31 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
       content: <span>{developAnnual}</span>,
     },
   ];
+
+  const handleChatRoute = () => {
+    router.push({
+      pathname: '/chatroom',
+      query: {
+        otherId: userId,
+      },
+    });
+  };
+
   return (
-    <div className="flex flex-col p-8 gap-4">
-      {labelContent.map(({ label, content }) => (
-        <FlexLabelContent key={label} label={label} content={content} />
-      ))}
-    </div>
+    <>
+      <div className="flex flex-1 flex-col p-8 gap-4">
+        {labelContent.map(({ label, content }) => (
+          <FlexLabelContent key={label} label={label} content={content} />
+        ))}
+      </div>
+      <div className="flex items-baseline">
+        <button
+          onClick={handleChatRoute}
+          className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+        >
+          채팅연결
+        </button>
+      </div>
+    </>
   );
 }

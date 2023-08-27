@@ -78,3 +78,12 @@ export interface IFlexLabelContent {
   label: string;
   content: React.ReactNode | string;
 }
+
+export interface IChatMessage {
+  type: string;
+  messageId: string;
+  userId: string;
+  name: string;
+  userProfileImgPath: string;
+  message: string;
+}

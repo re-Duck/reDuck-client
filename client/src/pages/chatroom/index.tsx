@@ -9,9 +9,12 @@ import { Stomp, Client } from '@stomp/stompjs';
 import { ChatUserList } from '@/components/Chat';
 import ChatMessage from '@/components/Chat/chat-message';
 
+// chat-id
+import { v4 } from 'uuid';
+
+let roomId = '';
+
 export default function Chatroom() {
-  // STOMP 클라이언트 생성
-  // const client = Stomp.client('ws://168.188.123.234:8080/ws-connection');
   const session = useSession();
   const router = useRouter();
 
@@ -33,26 +36,27 @@ export default function Chatroom() {
       router.push('/');
     }
     const client = Stomp.client('ws://168.188.123.234:8080/ws-connection');
+    // 연결이벤트 핸들러
+
     clientRef.current = client;
 
-    // 연결이벤트 핸들러
-    client.onConnect = (frame) => {
-      // STOMP 클라이언트의 연결 상태 확인
-      if (client.connected) {
-        console.log('STOMP 연결 상태: 연결됨');
-      } else {
-        console.log('STOMP 연결 상태: 연결 안 됨');
-      }
-      // TODO: 채팅방 내역을 불러온다.
-      console.log('연결됐어!', frame);
-      client.subscribe('/sub/chat/room/1', () => {
-        console.log('aa');
-      });
-      setOpenChat(true);
-    };
+    // client.onConnect = ({ headers }) => {
+    //   console.log('onConnet 시작');
+    //   // STOMP 클라이언트의 연결 상태 확인
+    //   if (!client.connected) {
+    //     console.log('STOMP 연결 상태: 연결 안 됨');
+    //     return;
+    //   }
+    //   console.log('roomId', roomId);
+    //   client.subscribe(`/sub/chat/room/${roomId}`, () => {
+    //     // TODO: 채팅방 내역을 불러온다.
+    //     console.log('aa');
+    //   });
+    //   setOpenChat(true);
+    // };
 
     client.disconnect = (frame) => {
-      console.log('연결해제', frame);
+      console.log('연결해제 실행', frame);
     };
 
     // 에러 이벤트 핸들러
@@ -68,13 +72,36 @@ export default function Chatroom() {
     };
   }, []);
 
-  const handleConnect = useCallback(() => {
+  const handleConnect = (id: string) => {
+    roomId = id;
     const client = clientRef.current;
     if (client && !client.connected) {
       // 연결 시도
-      client.activate();
+      // client.activate();
+      const headers = {
+        Authorization: `Bearer ${session.data?.user.token}}`,
+      };
+      const connectCallback = () => {
+        console.log('onConnet 시작');
+        // STOMP 클라이언트의 연결 상태 확인
+        if (!client.connected) {
+          console.log('STOMP 연결 상태: 연결 안 됨');
+          return;
+        }
+        console.log('roomId', roomId);
+        const subscribeCallback = () => {
+          console.log('구독완료');
+        };
+        client.subscribe(
+          `/sub/chat/room/${roomId}`,
+          subscribeCallback,
+          headers
+        );
+        setOpenChat(true);
+      };
+      client.connect(headers, connectCallback);
     }
-  }, []);
+  };
 
   const handleDisconnect = useCallback(() => {
     const client = clientRef.current;
@@ -91,8 +118,9 @@ export default function Chatroom() {
         Authorization: `Bearer ${session.data?.user.token}`,
       };
       const objectbody = {
-        roomId: '1',
+        roomId,
         message: chatMessage,
+        messageId: v4(),
         userId: session.data?.user.id,
         type: 'CHAT',
       };
@@ -100,7 +128,7 @@ export default function Chatroom() {
       const body = JSON.stringify(objectbody);
 
       client.publish({
-        destination: 'pub/chat/message',
+        destination: '/pub/chat/message',
         body,
         headers,
       });

@@ -19,15 +19,18 @@ const createChatRoom = async ({
   const headers = {
     Authorization: `Bearer ${accessToken}`,
   };
+  const roomId = v4();
   const data = {
-    roomId: '1',
+    roomId,
     otherIds,
     roomName,
   };
 
+  // TODO: roomId 수정
+
   const result = await axios_post({ suburl, headers, data });
 
-  return result;
+  return { ...result, roomId };
 };
 
 export { createChatRoom };

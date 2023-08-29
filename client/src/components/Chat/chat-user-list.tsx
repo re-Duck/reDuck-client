@@ -13,7 +13,7 @@ import { IUserInfo } from '@/types';
 
 interface IChatUserList {
   userId: string;
-  handleConnect: () => void;
+  handleConnect: (roomId: string) => void;
   handleDisconnect: () => void;
 }
 export default function ChatUserList({
@@ -27,12 +27,12 @@ export default function ChatUserList({
       'userId' | 'name' | 'company' | 'developAnnual' | 'userProfileImgPath'
     >[]
   >([]);
-  const [chatlist, setChatList] = useState();
+  const [chatlist, setChatList] = useState([]);
   const session = useSession();
   const user = session.data?.user;
   const accessToken = user ? user.token : '';
 
-  const loadUserChatRoom = async () => {
+  const loadUserChatList = async () => {
     const recommandData = await getRecommandUser();
     const listData = await getUserChatRoom({
       userId,
@@ -43,8 +43,18 @@ export default function ChatUserList({
     console.log(listData);
   };
 
+  const handleEnterRoom = (roomId: string) => {
+    handleConnect(roomId);
+    // if (data !== '') {
+    //   // 새로운 채팅방 개설시
+    //   setChatList([...chatlist]);
+    // } else {
+    //   // 기존 채팅방 입장시
+    // }
+  };
+
   useEffect(() => {
-    loadUserChatRoom();
+    loadUserChatList();
   }, []);
   // uid를 넘겨받아서 유저가 가지고 있는 채팅방 목록을 불러온다.
   // 채팅방 목록중에 하나를 탭하면 소켓연결을 시작하며 채팅방 내역을 불러온다.
@@ -69,8 +79,8 @@ export default function ChatUserList({
             userId={user.userId}
             src={user.userProfileImgPath}
             name={user.name}
-            developAnnual={user.developAnnual}
-            handleConnect={handleConnect}
+            description={`${user.developAnnual}년차 개발자`}
+            handleEnterRoom={handleEnterRoom}
             type="recommand"
           />
         ))}

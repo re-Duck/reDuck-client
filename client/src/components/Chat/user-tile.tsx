@@ -1,25 +1,32 @@
+// react, next
 import React from 'react';
 
+// components
 import { Avatar, Icon } from '../';
 
+// services
 import { createChatRoom } from '@/service/chat-post';
+import { getRoomChat } from '@/service/chat-get';
 import { BASE_URL } from '@/service/base/api';
 
+// types
+import { IChatMessage } from '@/types';
+
 interface IUserTile {
-  key: string;
+  roomId?: string;
   src?: string;
   accessToken: string;
   userId: string;
   name?: string;
   description: string;
-  handleEnterRoom: (roomId: string) => void;
+  handleEnterRoom: (roomId: string, chatMessages: IChatMessage[]) => void;
   type: 'recommand' | 'room';
   lastChatMessageTime?: string;
   unReadMessageCount?: number;
 }
 
 const UserTile = ({
-  key,
+  roomId,
   src,
   accessToken,
   userId,
@@ -30,20 +37,28 @@ const UserTile = ({
   lastChatMessageTime,
   unReadMessageCount,
 }: IUserTile) => {
-  const handleCreateRoom = async () => {
-    const otherIds = [userId];
-    const result = await createChatRoom({
-      otherIds,
-      roomName: '',
-      accessToken,
-    });
-    const { isOkay, data } = result;
-    // data는 채팅내역 array와 roomId
+  const handleRoomCheck = async () => {
+    if (type === 'room') {
+      const data = await getRoomChat({
+        roomId: roomId as string,
+        accessToken,
+      });
+      const { roomId: id, chatMessages } = data;
+      handleEnterRoom(id, chatMessages);
+    } else {
+      const otherIds = [userId];
+      const result = await createChatRoom({
+        otherIds,
+        roomName: '',
+        accessToken,
+      });
+      const { isOkay, data } = result;
+      const { chatMessages, roomId } = data;
 
-    if (isOkay) {
-      handleEnterRoom(data.roomId);
+      if (isOkay) {
+        handleEnterRoom(roomId, chatMessages);
+      }
     }
-    // result로 채팅 내역을 불러옴 (이미 방 있을 때)
   };
 
   const url = src ? `${BASE_URL}${src}` : ''; // 프로필 이미지
@@ -74,7 +89,7 @@ const UserTile = ({
   return (
     <div
       className="flex gap-2 font-semibold items-center mb-4"
-      onDoubleClick={() => handleEnterRoom(key)}
+      onDoubleClick={handleRoomCheck}
     >
       <Avatar src={url} alt="user_icon" size="sm" />
       <div className="flex flex-col text-left">
@@ -83,7 +98,7 @@ const UserTile = ({
       </div>
       <div className="absolute right-0 disabled:opacity-70 w-8 h-8 sm:w-10 sm:h-10">
         {type === 'recommand' ? (
-          <button onClick={handleCreateRoom}>
+          <button onClick={handleRoomCheck}>
             <Icon
               name="message-circle"
               size={30}

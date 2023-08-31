@@ -27,4 +27,22 @@ const getUserChatRoom = async ({
   return data;
 };
 
-export { getRecommandUser, getUserChatRoom };
+const getRoomChat = async ({
+  roomId,
+  accessToken,
+}: {
+  roomId: string;
+  accessToken: string;
+}) => {
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const suburl = `/chat/room/${roomId}`;
+
+  const response = await axios_get({ suburl, headers });
+  const data = response.data;
+
+  return data;
+};
+
+export { getRecommandUser, getUserChatRoom, getRoomChat };

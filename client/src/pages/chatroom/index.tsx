@@ -11,6 +11,9 @@ import { ChatUserList } from '@/components/Chat';
 // for chat-id
 import { v4 } from 'uuid';
 
+// types
+import { IChatMessage } from '@/types';
+
 export default function Chatroom() {
   const session = useSession();
   const router = useRouter();
@@ -20,7 +23,7 @@ export default function Chatroom() {
   const [roomId, setRoomId] = useState<string>('');
   const messageRef = useRef<HTMLInputElement>(null);
 
-  const [chatList, setChatList] = useState<string[]>([]);
+  const [chatList, setChatList] = useState<IChatMessage[]>([]);
 
   const clientRef = useRef<CompatClient>();
 
@@ -55,8 +58,9 @@ export default function Chatroom() {
   }, []);
 
   // 채팅방 연결
-  const handleConnect = (id: string) => {
+  const handleConnect = (id: string, chatMessages: IChatMessage[]) => {
     setRoomId(id);
+    setChatList(chatMessages);
     const client = clientRef.current;
     if (client && !client.connected) {
       const headers = {
@@ -109,7 +113,9 @@ export default function Chatroom() {
         headers,
       });
 
-      setChatList([...chatList, chatMessage]);
+      // TODO: IChatMessageType으로 추가
+
+      setChatList([...chatList]);
 
       setChatMessage('');
     }
@@ -125,12 +131,12 @@ export default function Chatroom() {
         {openChat && (
           <section className="relative flex-1 ml-4 border border-black h-5/6">
             {chatList.map((val, idx) => (
-              <span key={idx}>{val}</span>
+              <span key={idx}>{val.message}</span>
             ))}
             <div className="flex m-2.5 absolute bottom-0 left-0 right-0">
               <input
                 type="text"
-                className="relative border border-black flex-1"
+                className="relative border border-black flex-1 p-"
                 ref={messageRef}
                 onChange={handleMessageChange}
               />

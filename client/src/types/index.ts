@@ -86,4 +86,5 @@ export interface IChatMessage {
   name: string;
   userProfileImgPath: string;
   message: string;
+  messageTime: string;
 }

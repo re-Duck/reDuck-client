@@ -3,17 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 // services
-import { getRecommandUser, getUserChatRoom } from '@/service/chat-get-user';
+import { getRecommandUser, getUserChatRoom } from '@/service/chat-get';
 
 // components
 import UserTile from './user-tile';
 
 // types
-import { IUserInfo } from '@/types';
+import { IUserInfo, IChatMessage } from '@/types';
 
 interface IChatUserList {
   userId: string;
-  handleConnect: (roomId: string) => void;
+  handleConnect: (roomId: string, chatMessages: IChatMessage[]) => void;
   handleDisconnect: () => void;
 }
 export default function ChatUserList({
@@ -43,8 +43,8 @@ export default function ChatUserList({
     console.log(listData);
   };
 
-  const handleEnterRoom = (roomId: string) => {
-    handleConnect(roomId);
+  const handleEnterRoom = (roomId: string, chatMessages: IChatMessage[]) => {
+    handleConnect(roomId, chatMessages);
     // if (data !== '') {
     //   // 새로운 채팅방 개설시
     //   setChatList([...chatlist]);
@@ -75,6 +75,7 @@ export default function ChatUserList({
           return (
             <UserTile
               key={roomId}
+              roomId={roomId}
               accessToken={accessToken}
               userId={otherId}
               src={userProfileImgPath}

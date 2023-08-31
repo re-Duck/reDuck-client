@@ -27,7 +27,7 @@ export default function ChatUserList({
       'userId' | 'name' | 'company' | 'developAnnual' | 'userProfileImgPath'
     >[]
   >([]);
-  const [chatlist, setChatList] = useState([]);
+  const [chatUserList, setChatUserList] = useState([]);
   const session = useSession();
   const user = session.data?.user;
   const accessToken = user ? user.token : '';
@@ -39,7 +39,7 @@ export default function ChatUserList({
       accessToken,
     });
     setRecommandUser(recommandData);
-    setChatList(listData);
+    setChatUserList(listData);
     console.log(listData);
   };
 
@@ -60,16 +60,34 @@ export default function ChatUserList({
   // 채팅방 목록중에 하나를 탭하면 소켓연결을 시작하며 채팅방 내역을 불러온다.
   return (
     <section className="relative border border-black min-w-[30%] h-5/6 text-center">
-      <span>채팅방 목록</span>
-      <ul>
-        {/* TODO: 채팅방 목록 불러오기
-        채팅방 개설시에 개설된 채팅방 임의로 추가하기
-        */}
-        <li>dummy</li>
-        <li>dummy</li>
-        <li>dummy</li>
-        <li>dummy</li>
-      </ul>
+      <section className="flex flex-col m-2.5">
+        <span>채팅방 목록</span>
+        {chatUserList.map((dto) => {
+          const {
+            lastChatMessage,
+            lastChatMessageTime,
+            otherUserDto,
+            roomId,
+            unReadMessageCount,
+          } = dto;
+          // TODO: 그룹채팅때문에 배열로 내려옴 그룹채팅 추가시 수정
+          const { name, uesrId: otherId, userProfileImgPath } = otherUserDto[0];
+          return (
+            <UserTile
+              key={roomId}
+              accessToken={accessToken}
+              userId={otherId}
+              src={userProfileImgPath}
+              name={name}
+              description={lastChatMessage}
+              handleEnterRoom={handleEnterRoom}
+              type="room"
+              lastChatMessageTime={lastChatMessageTime}
+              unReadMessageCount={unReadMessageCount}
+            />
+          );
+        })}
+      </section>
       <section className="absolute bottom-0 left-0 right-0 flex flex-col m-2.5">
         <p>채팅 추천 유저 목록</p>
         {recommandUser.map((user) => (

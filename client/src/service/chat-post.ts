@@ -30,7 +30,7 @@ const createChatRoom = async ({
 
   const result = await axios_post({ suburl, headers, data });
 
-  return { ...result, roomId };
+  return result;
 };
 
 export { createChatRoom };

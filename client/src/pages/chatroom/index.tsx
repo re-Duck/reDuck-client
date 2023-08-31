@@ -3,16 +3,13 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
-import { Stomp, Client } from '@stomp/stompjs';
+import { Stomp, CompatClient } from '@stomp/stompjs';
 
 // project
 import { ChatUserList } from '@/components/Chat';
-import ChatMessage from '@/components/Chat/chat-message';
 
-// chat-id
+// for chat-id
 import { v4 } from 'uuid';
-
-let roomId = '';
 
 export default function Chatroom() {
   const session = useSession();
@@ -20,11 +17,12 @@ export default function Chatroom() {
 
   const [openChat, setOpenChat] = useState<boolean>(false);
   const [chatMessage, setChatMessage] = useState<string>('');
+  const [roomId, setRoomId] = useState<string>('');
   const messageRef = useRef<HTMLInputElement>(null);
 
   const [chatList, setChatList] = useState<string[]>([]);
 
-  const clientRef = useRef<Client | null>(null);
+  const clientRef = useRef<CompatClient>();
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChatMessage(e.target.value);
@@ -36,24 +34,8 @@ export default function Chatroom() {
       router.push('/');
     }
     const client = Stomp.client('ws://168.188.123.234:8080/ws-connection');
-    // 연결이벤트 핸들러
 
     clientRef.current = client;
-
-    // client.onConnect = ({ headers }) => {
-    //   console.log('onConnet 시작');
-    //   // STOMP 클라이언트의 연결 상태 확인
-    //   if (!client.connected) {
-    //     console.log('STOMP 연결 상태: 연결 안 됨');
-    //     return;
-    //   }
-    //   console.log('roomId', roomId);
-    //   client.subscribe(`/sub/chat/room/${roomId}`, () => {
-    //     // TODO: 채팅방 내역을 불러온다.
-    //     console.log('aa');
-    //   });
-    //   setOpenChat(true);
-    // };
 
     client.disconnect = (frame) => {
       console.log('연결해제 실행', frame);
@@ -72,34 +54,28 @@ export default function Chatroom() {
     };
   }, []);
 
+  // 채팅방 연결
   const handleConnect = (id: string) => {
-    roomId = id;
+    setRoomId(id);
     const client = clientRef.current;
     if (client && !client.connected) {
-      // 연결 시도
-      // client.activate();
       const headers = {
         Authorization: `Bearer ${session.data?.user.token}}`,
       };
-      const connectCallback = () => {
-        console.log('onConnet 시작');
+      const connect_callback = () => {
+        console.log('onConnet 시작', roomId);
         // STOMP 클라이언트의 연결 상태 확인
         if (!client.connected) {
           console.log('STOMP 연결 상태: 연결 안 됨');
           return;
         }
-        console.log('roomId', roomId);
-        const subscribeCallback = () => {
+        const subscribe_callback = () => {
           console.log('구독완료');
         };
-        client.subscribe(
-          `/sub/chat/room/${roomId}`,
-          subscribeCallback,
-          headers
-        );
+        client.subscribe(`/sub/chat/room/${id}`, subscribe_callback, headers);
         setOpenChat(true);
       };
-      client.connect(headers, connectCallback);
+      client.connect(headers, connect_callback);
     }
   };
 

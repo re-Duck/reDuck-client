@@ -95,7 +95,7 @@ const UserTile = ({
           <>
             <p className="text-sm text-slate-400">{formatDateString()}</p>
             {unReadMessageCount !== 0 && (
-              <div className="bg-red-500 rounded-full text-white text-sm text-center m-auto">
+              <div className="bg-red-500 rounded-full text-white text-sm text-center m-auto w-fit px-2">
                 {unReadMessageCount}
               </div>
             )}

@@ -93,15 +93,18 @@ export default function Chatroom() {
 
   const handleSendMessage = useCallback(() => {
     const client = clientRef.current;
+
+    const { name, userProfileImgPath, id, token } = session.data!.user;
+
     if (client && client.connected) {
       const headers = {
-        Authorization: `Bearer ${session.data?.user.token}`,
+        Authorization: `Bearer ${token}`,
       };
       const objectbody = {
         roomId,
         message: chatMessage,
         messageId: v4(),
-        userId: session.data?.user.id,
+        userId: id,
         type: 'CHAT',
       };
 
@@ -113,9 +116,16 @@ export default function Chatroom() {
         headers,
       });
 
+      const chat = {
+        ...objectbody,
+        messageTime: `${new Date()}`,
+        userProfileImgPath,
+        name,
+      };
+
       // TODO: IChatMessageType으로 추가
 
-      setChatList([...chatList]);
+      setChatList([chat, ...chatList]);
 
       setChatMessage('');
     }
@@ -130,13 +140,21 @@ export default function Chatroom() {
         />
         {openChat && (
           <section className="relative flex-1 ml-4 border border-black h-5/6">
-            {chatList.map((val, idx) => (
-              <span key={idx}>{val.message}</span>
-            ))}
+            {chatList.map((val) => {
+              const {
+                messageId,
+                message,
+                userId: senderId,
+                name,
+                userProfileImgPath,
+              } = val;
+              return <p key={messageId}>{message}</p>;
+            })}
             <div className="flex m-2.5 absolute bottom-0 left-0 right-0">
               <input
                 type="text"
-                className="relative border border-black flex-1 p-"
+                className="relative border border-black flex-1 p-1"
+                value={chatMessage}
                 ref={messageRef}
                 onChange={handleMessageChange}
               />

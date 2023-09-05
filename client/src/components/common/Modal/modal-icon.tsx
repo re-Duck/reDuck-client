@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '../Icon';
+import Icon from '../../base/Icon';
 import { ModalType, iconInfo } from '@/constants/constant';
 
 interface IType {

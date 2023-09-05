@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Navigator from '../Navigator';
-import MenuView from '../MenuView';
+import Navigator from '../../common/Navigator';
+import MenuView from '../../common/MenuView';
 
 interface IProps {
   children: React.ReactNode;

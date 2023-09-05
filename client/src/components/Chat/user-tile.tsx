@@ -96,9 +96,9 @@ const UserTile = ({
         <span className="text-md">{name}</span>
         <span className="text-xs text-gray-400">{description}</span>
       </div>
-      <div className="absolute right-0 disabled:opacity-70 w-8 h-8 sm:w-10 sm:h-10">
+      <div className="absolute right-0 disabled:opacity-70 w-8 h-8 sm:w-14 sm:h-10 inline-block">
         {type === 'recommand' ? (
-          <button onClick={handleRoomCheck}>
+          <button className="w-8 sm:w-14 text-right" onClick={handleRoomCheck}>
             <Icon
               name="message-circle"
               size={30}

@@ -7,7 +7,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Avatar, LoadingIcon } from '..';
+import { Avatar, LoadingIcon } from '@/components';
 
 // service
 import { BASE_URL } from '@/service/base/api';

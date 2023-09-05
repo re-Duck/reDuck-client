@@ -11,7 +11,7 @@ import { IPostInformation } from '@/types';
 
 //component
 import { DeleteButton, ModifyCotentButton } from './';
-import { Avatar } from '../';
+import { Avatar } from '@/components';
 
 //util and constant
 import { parseDate } from '@/util';

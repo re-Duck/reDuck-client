@@ -11,7 +11,7 @@ import {
 //service
 import { deleteCommtent } from '@/service/delete-comment';
 import { deletePost } from '@/service/delete-post';
-import { errorMessage } from '../../constant';
+import { errorMessage } from '@/constants/constant';
 
 export default function DeleteButton({ id, token, type, refetch }: any) {
   const { openModal } = useModal();

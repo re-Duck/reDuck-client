@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 //components
 import { ModifyCommentButton, DeleteButton } from './';
@@ -25,8 +25,8 @@ export default function Comment({
   postOriginId,
   refetch,
 }: ICommentProps) {
-  const [isModifying, setIsModifying] = React.useState<boolean>(false);
-  const [comment, setComment] = React.useState<string>(data.commentContent);
+  const [isModifying, setIsModifying] = useState(false);
+  const [comment, setComment] = useState(data.commentContent);
 
   return (
     <article className="flex flex-col w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">

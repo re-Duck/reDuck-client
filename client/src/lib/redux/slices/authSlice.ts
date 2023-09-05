@@ -1,13 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { HYDRATE } from 'next-redux-wrapper';
-
-interface IUserState {
-  userId: string;
-  userName: string;
-  userProfileImgPath: string;
-  isLogin: boolean;
-}
+import { IUserState } from '@/types/redux/IUserState';
 
 const initialState: IUserState = {
   userId: '',

@@ -72,7 +72,11 @@ export default function PostDetailPage({ pageProps }: IProps) {
     </Layout>
   );
 }
-export async function getServerSideProps(context: any) {
-  const postOriginId = context.params.id;
+export async function getServerSideProps({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const postOriginId = params.id;
   return { props: { postOriginId } };
 }

@@ -7,18 +7,8 @@ import ModalIcon from './modal-icon';
 import ModalButton from './modal-button';
 import { MODAL_TITLE, ModalType } from '@/constants/constant';
 
-interface IModal {
-  type:
-    | ModalType.SUCCESS
-    | ModalType.WARNING
-    | ModalType.ERROR
-    | ModalType.CLOSE;
-  message: string;
-  callback: () => void;
-}
-
 export default function Modal() {
-  const { type, message, callback }: IModal = useSelector(modalSelector);
+  const { type, message, callback } = useSelector(modalSelector);
   const { closeModal } = useModal();
   const IS_CONFIRM_MODAL = type === ModalType.WARNING;
   return (
@@ -54,7 +44,7 @@ export default function Modal() {
                         type="yes"
                         onClick={() => {
                           closeModal();
-                          callback();
+                          callback && callback();
                         }}
                       />
                       <ModalButton type="cancle" onClick={closeModal} />
@@ -62,7 +52,7 @@ export default function Modal() {
                   ) : (
                     <ModalButton
                       type="check"
-                      onClick={callback === null ? closeModal : callback}
+                      onClick={callback || closeModal}
                     />
                   )}
                 </div>

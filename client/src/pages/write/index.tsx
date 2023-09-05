@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 //react-quill component
@@ -7,20 +7,17 @@ import { QuillEditBox } from '@/components';
 // form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import {
-  ModalType,
-  errorMessage,
-  successMessage,
-  warningMessage,
-} from '@/constants/constant';
+import { ModalType, errorMessage, warningMessage } from '@/constants/constant';
+
+//hooks
+import useWriting from '@/hooks/Write/useWriting';
+import { useModal } from '@/hooks';
+import { useSession } from 'next-auth/react';
 
 //service
 import { boardPost } from '@/service/board-post';
-import { Icon } from '@iconify/react';
-import { useSession } from 'next-auth/react';
-import { useModal } from '@/hooks';
-import { axios_get } from '@/service/base/api';
 import { boardUpdate } from '@/service/board-update';
+import { Icon } from '@iconify/react';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -28,17 +25,16 @@ const ValidationSchema = Yup.object().shape({
 });
 
 export default function Write() {
-  const [initTitle, setInitTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
-
   const router = useRouter();
   const postOriginId = router.query.postOriginId as string;
+
+  const { initTitle, content, getPostData, handleContent } =
+    useWriting(postOriginId);
 
   const { data } = useSession();
   const accessToken = data?.user.token;
   const { openModal, closeModal } = useModal();
 
-  const handleContent = useCallback((value: string) => setContent(value), []);
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       if (!accessToken) {
@@ -61,14 +57,6 @@ export default function Write() {
     [content]
   );
 
-  const getPostData = async () => {
-    const suburl = `/post/detail/${postOriginId}`;
-    const res = await axios_get({ suburl });
-    const { postTitle, postContent } = res.data;
-
-    setInitTitle(postTitle);
-    setContent(postContent);
-  };
   useEffect(() => {
     if (!postOriginId && initTitle === '') return;
     getPostData();

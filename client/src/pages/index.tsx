@@ -31,11 +31,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = async (e: any) => {
-      const { scrollHeight, scrollTop, clientHeight } =
-        e.target.scrollingElement;
-      if (!isFetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
-        await fetchNextPage();
+    const handleScroll = async (event: Event) => {
+      if (event.target instanceof Document) {
+        const { scrollHeight, scrollTop, clientHeight } = event.target
+          .scrollingElement as Element;
+        if (!isFetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+          await fetchNextPage();
+        }
       }
     };
     document.addEventListener('scroll', handleScroll);
@@ -58,12 +60,12 @@ export default function Home() {
               </div>
             ) : (
               <>
-                {data?.pages.map((group, i) => (
-                  <React.Fragment key={i}>
+                {data?.pages.map((group) => (
+                  <>
                     {group?.data.map((props: IPostInformation) => (
                       <Post key={props.postOriginId} {...props} />
                     ))}
-                  </React.Fragment>
+                  </>
                 ))}
 
                 <div className="flex justify-center">

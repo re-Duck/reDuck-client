@@ -1,11 +1,7 @@
 import React from 'react';
-import Image from 'next/image';
 
 //components
 import { ModifyCommentButton, DeleteButton } from './';
-
-//assets
-import user_icon from '../../assets/images/user_icon.png';
 
 //service
 import { BASE_URL } from '@/service/base/api';

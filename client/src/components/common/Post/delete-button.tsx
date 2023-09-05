@@ -13,7 +13,19 @@ import { deleteCommtent } from '@/service/delete-comment';
 import { deletePost } from '@/service/delete-post';
 import { errorMessage } from '@/constants/constant';
 
-export default function DeleteButton({ id, token, type, refetch }: any) {
+interface IDeleteButton {
+  id: string;
+  token: string;
+  type: 'comment' | 'post';
+  refetch?: () => void;
+}
+
+export default function DeleteButton({
+  id,
+  token,
+  type,
+  refetch,
+}: IDeleteButton) {
   const { openModal } = useModal();
   const router = useRouter();
   const IS_CHECK_MODAL_MESSAGE =
@@ -44,7 +56,7 @@ export default function DeleteButton({ id, token, type, refetch }: any) {
             message: errorMessage.error,
           }),
       });
-      refetch();
+      refetch && refetch();
     }
   };
   return (

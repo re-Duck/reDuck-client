@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 // import { useSelector } from 'react-redux';
 
 //components
-import { Post, Advertisement, Layout, LoadingIcon } from '@/components';
+import { Advertisement, Layout, LoadingIcon } from '@/components';
 import { WritePostButton } from '@/components';
 
 //@tanstack/react-query
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/get-posts';
 
-import { IPostInformation } from '@/types';
+import PostsBox from '@/components/home/PostsBox';
 
 export default function Home() {
   // TODO: 유저정보 필요시 사용
@@ -55,23 +55,10 @@ export default function Home() {
 
             {IS_LOADING ? (
               <div className="flex flex-col items-center">
-                <div>Loading...</div>
                 <LoadingIcon size="65px" />
               </div>
             ) : (
-              <>
-                {data?.pages.map((group) => (
-                  <>
-                    {group?.data.map((props: IPostInformation) => (
-                      <Post key={props.postOriginId} {...props} />
-                    ))}
-                  </>
-                ))}
-
-                <div className="flex justify-center">
-                  {hasNextPage && <LoadingIcon size="40px" />}
-                </div>
-              </>
+              <PostsBox datas={data?.pages} hasNextPage={hasNextPage} />
             )}
           </div>
           <Advertisement />

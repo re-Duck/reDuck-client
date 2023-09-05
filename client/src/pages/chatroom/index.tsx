@@ -1,14 +1,16 @@
-import Layout from '@/components/Layout';
+// react, next
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
-import { Stomp, CompatClient } from '@stomp/stompjs';
+// components
+import { Layout } from '@/components';
 
 // project
 import { ChatUserList } from '@/components/Chat';
 
-// for chat-id
+// third-party
+import { Stomp, CompatClient } from '@stomp/stompjs';
 import { v4 } from 'uuid';
 
 // types
@@ -69,15 +71,15 @@ export default function Chatroom() {
         Authorization: `Bearer ${session.data?.user.token}}`,
       };
       const connect_callback = () => {
-        console.log('onConnet 시작', roomId);
         // STOMP 클라이언트의 연결 상태 확인
         if (!client.connected) {
+          // TODO: 에러 핸들링 - STOMP 소켓 연결 안됨.
           console.log('STOMP 연결 상태: 연결 안 됨');
           return;
         }
         const subscribe_callback = (message: any) => {
-          console.log('구독완료');
-          console.log('콜백', message.body);
+          const chatData = JSON.parse(message.body);
+          setChatList((chat) => [chatData, ...chat]);
         };
         client.subscribe(`/sub/chat/room/${id}`, subscribe_callback, headers);
         setOpenChat(true);
@@ -97,7 +99,7 @@ export default function Chatroom() {
   const handleSendMessage = useCallback(() => {
     const client = clientRef.current;
 
-    const { name, userProfileImgPath, id, token } = session.data!.user;
+    const { id, token } = session.data!.user;
 
     if (client && client.connected) {
       const headers = {
@@ -119,20 +121,12 @@ export default function Chatroom() {
         headers,
       });
 
-      const chat = {
-        ...objectbody,
-        messageTime: `${new Date()}`,
-        userProfileImgPath,
-        name,
-      };
-
-      // TODO: IChatMessageType으로 추가
-
-      setChatList([chat, ...chatList]);
-
       setChatMessage('');
     }
   }, [chatList, chatMessage, session]);
+
+  // TODO: 채팅방 오픈시 스크롤 최하단으로 이동
+
   return (
     <Layout>
       <div className="relative mx-auto flex max-w-5xl h-screen">

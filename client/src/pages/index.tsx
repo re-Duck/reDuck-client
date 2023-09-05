@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 // import { useSelector } from 'react-redux';
 
 //components
-import { Post, Advertisement, Layout } from '@/components';
-import { WritePostButton } from '@/components/WritePostButton';
+import { Post, Advertisement, Layout, LoadingIcon } from '@/components';
+import { WritePostButton } from '@/components';
 
 //@tanstack/react-query
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/get-posts';
 
-import LoadingIcon from '@/components/LoadingIcon';
 import { IPostInformation } from '@/types';
 
 export default function Home() {

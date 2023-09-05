@@ -10,8 +10,7 @@ import * as Yup from 'yup';
 import { ModalType, errorMessage, warningMessage } from '@/constants/constant';
 
 //hooks
-import useWriting from '@/hooks/Write/useWriting';
-import { useModal } from '@/hooks';
+import { useModal, useWriting } from '@/hooks';
 import { useSession } from 'next-auth/react';
 
 //service

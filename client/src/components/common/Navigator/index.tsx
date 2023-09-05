@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ModalType, errorMessage, linkList } from '@/constant';
+import { ModalType, errorMessage, linkList } from '@/constants/constant';
 
 // Icons
 import { Icon } from '@iconify/react';

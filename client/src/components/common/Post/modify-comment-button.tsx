@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useModal } from '@/hooks';
-import { ModalType, errorMessage, successMessage } from '@/constant';
+import { ModalType, errorMessage, successMessage } from '@/constants/constant';
 
 import { updateCommtent } from '@/service/update-comment';
 

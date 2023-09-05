@@ -26,7 +26,7 @@ import {
   errorMessage,
   regex,
   successMessage,
-} from '@/constant';
+} from '@/constants/constant';
 import { IUserInfo, EmailState, UserInputData } from '@/types';
 import { useModal } from '@/hooks';
 

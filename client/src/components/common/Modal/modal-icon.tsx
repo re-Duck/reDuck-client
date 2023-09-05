@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from '../Icon';
-import { ModalType, iconInfo } from '@/constant';
+import { ModalType, iconInfo } from '@/constants/constant';
 
 interface IType {
   type: ModalType.SUCCESS | ModalType.WARNING | ModalType.ERROR;

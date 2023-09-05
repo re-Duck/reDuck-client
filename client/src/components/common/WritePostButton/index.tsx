@@ -7,7 +7,7 @@ import { BASE_URL } from '@/service/base/api';
 
 import { useModal } from '@/hooks';
 
-import { ModalType, errorMessage } from '@/constant';
+import { ModalType, errorMessage } from '@/constants/constant';
 import { Avatar } from '@/components';
 
 export function WritePostButton() {

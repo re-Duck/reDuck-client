@@ -8,7 +8,7 @@ import { BASE_URL } from '@/service/base/api';
 import { commentPost } from '@/service/comment-post';
 
 //assets
-import { ModalType, errorMessage } from '@/constant';
+import { ModalType, errorMessage } from '@/constants/constant';
 import { useModal } from '@/hooks';
 
 //form

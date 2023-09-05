@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import React, { useCallback, useMemo, useRef } from 'react';
 
 // 상수 호출
-import { quillFormats } from '@/constant';
+import { quillFormats } from '@/constants/constant';
 import ReactQuill, { ReactQuillProps } from 'react-quill';
 import { uploadImagePost } from '@/service/upload-image-post';
 import { BASE_URL } from '@/service/base/api';

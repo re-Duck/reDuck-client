@@ -1,5 +1,5 @@
 import { axios_get } from './base/api';
-import { POSTS_INISIATE_VALUE } from '@/constant';
+import { POSTS_INISIATE_VALUE } from '@/constants/constant';
 
 export const getAllPosts = async ({ pageParam = '' }) => {
   const params = {

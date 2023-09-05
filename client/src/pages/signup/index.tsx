@@ -18,7 +18,7 @@ import {
   errorMessage,
   initialSignupValue,
   regex,
-} from '@/constant';
+} from '@/constants/constant';
 
 // types
 import { ICheckID, ISignupData } from '@/types';

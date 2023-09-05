@@ -1,4 +1,4 @@
-import { ModalType, errorMessage, linkList } from '@/constant';
+import { ModalType, errorMessage, linkList } from '@/constants/constant';
 import { useModal } from '@/hooks';
 import Link from 'next/link';
 import React from 'react';

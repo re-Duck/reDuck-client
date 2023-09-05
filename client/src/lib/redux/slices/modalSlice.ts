@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { ModalType } from '@/constant';
+import { ModalType } from '@/constants/constant';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {

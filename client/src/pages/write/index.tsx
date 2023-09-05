@@ -12,7 +12,7 @@ import {
   errorMessage,
   successMessage,
   warningMessage,
-} from '@/constant';
+} from '@/constants/constant';
 
 //service
 import { boardPost } from '@/service/board-post';

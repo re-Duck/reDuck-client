@@ -5,7 +5,7 @@ import { modalSelector } from '@/lib/redux/slices/modalSlice';
 import { useModal } from '@/hooks';
 import ModalIcon from './modal-icon';
 import ModalButton from './modal-button';
-import { MODAL_TITLE, ModalType } from '@/constant';
+import { MODAL_TITLE, ModalType } from '@/constants/constant';
 
 interface IModal {
   type:

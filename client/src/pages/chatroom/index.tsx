@@ -13,6 +13,7 @@ import { v4 } from 'uuid';
 
 // types
 import { IChatMessage } from '@/types';
+import ChatMessage from '@/components/Chat/chat-message';
 
 export default function Chatroom() {
   const session = useSession();
@@ -54,6 +55,7 @@ export default function Chatroom() {
     // Clean up when component unmounts
     return () => {
       client.disconnect();
+      client.deactivate();
     };
   }, []);
 
@@ -73,8 +75,9 @@ export default function Chatroom() {
           console.log('STOMP 연결 상태: 연결 안 됨');
           return;
         }
-        const subscribe_callback = () => {
+        const subscribe_callback = (message: any) => {
           console.log('구독완료');
+          console.log('콜백', message.body);
         };
         client.subscribe(`/sub/chat/room/${id}`, subscribe_callback, headers);
         setOpenChat(true);
@@ -132,25 +135,37 @@ export default function Chatroom() {
   }, [chatList, chatMessage, session]);
   return (
     <Layout>
-      <div className="mx-auto flex max-w-5xl h-screen">
+      <div className="relative mx-auto flex max-w-5xl h-screen">
         <ChatUserList
           userId={session.data ? session.data.user.id : ''}
           handleConnect={handleConnect}
           handleDisconnect={handleDisconnect}
         />
         {openChat && (
-          <section className="relative flex-1 ml-4 border border-black h-5/6">
-            {chatList.map((val) => {
-              const {
-                messageId,
-                message,
-                userId: senderId,
-                name,
-                userProfileImgPath,
-              } = val;
-              return <p key={messageId}>{message}</p>;
-            })}
-            <div className="flex m-2.5 absolute bottom-0 left-0 right-0">
+          <section className="relative flex-1 ml-4 border border-black h-5/6 overflow-y-scroll flex flex-col">
+            <div className="flex flex-col-reverse">
+              {chatList.map((val) => {
+                const {
+                  messageId,
+                  message,
+                  userId: senderId,
+                  name,
+                  userProfileImgPath,
+                  messageTime,
+                } = val;
+                return (
+                  <ChatMessage
+                    key={messageId}
+                    type={senderId === session.data?.user.id ? 'my' : 'other'}
+                    message={message}
+                    name={name}
+                    userProfileImgPath={userProfileImgPath}
+                    messageTime={messageTime}
+                  />
+                );
+              })}
+            </div>
+            <div className="flex p-2.5  sticky bottom-0 bg-white">
               <input
                 type="text"
                 className="relative border border-black flex-1 p-1"

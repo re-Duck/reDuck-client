@@ -43,20 +43,15 @@ export default function ChatUserList({
   };
 
   const handleEnterRoom = (roomId: string, chatMessages: IChatMessage[]) => {
+    handleDisconnect();
     handleConnect(roomId, chatMessages);
-    // if (data !== '') {
-    //   // 새로운 채팅방 개설시
-    //   setChatList([...chatlist]);
-    // } else {
-    //   // 기존 채팅방 입장시
-    // }
+    loadUserChatList();
   };
 
   useEffect(() => {
     loadUserChatList();
   }, []);
-  // uid를 넘겨받아서 유저가 가지고 있는 채팅방 목록을 불러온다.
-  // 채팅방 목록중에 하나를 탭하면 소켓연결을 시작하며 채팅방 내역을 불러온다.
+
   return (
     <section className="relative border border-black min-w-[30%] h-5/6 text-center">
       <section className="flex flex-col m-2.5">

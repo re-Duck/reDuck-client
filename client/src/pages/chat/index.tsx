@@ -29,13 +29,15 @@ export default function Chatroom() {
 
   // 채팅방 연결
   const handleConnect = (id: string, chatMessages: IChatMessage[]) => {
-    setRoomId(id);
-    setChatList(chatMessages);
     const client = clientRef.current;
+    const headers = {
+      Authorization: `Bearer ${session.data?.user.token}}`,
+    };
+    const subscribe_callback = (message: any) => {
+      const chatData = JSON.parse(message.body);
+      setChatList((chat) => [chatData, ...chat]);
+    };
     if (client && !client.connected) {
-      const headers = {
-        Authorization: `Bearer ${session.data?.user.token}}`,
-      };
       const connect_callback = () => {
         // STOMP 클라이언트의 연결 상태 확인
         if (!client.connected) {
@@ -43,24 +45,26 @@ export default function Chatroom() {
           console.log('STOMP 연결 상태: 연결 안 됨');
           return;
         }
-        const subscribe_callback = (message: any) => {
-          const chatData = JSON.parse(message.body);
-          setChatList((chat) => [chatData, ...chat]);
-        };
         client.subscribe(`/sub/chat/room/${id}`, subscribe_callback, headers);
         setOpenChat(true);
       };
       client.connect(headers, connect_callback);
+    } else if (client && client.connected) {
+      client.subscribe(`/sub/chat/room/${id}`, subscribe_callback, headers);
     }
+    setRoomId(id);
+    setChatList(chatMessages);
   };
 
-  const handleDisconnect = useCallback(() => {
+  const handleDisconnect = () => {
     const client = clientRef.current;
-    if (client) {
-      client.deactivate();
-      setOpenChat(false);
+    if (client && client.connected) {
+      const headers = {
+        Authorization: `Bearer ${session.data?.user.token}}`,
+      };
+      client.unsubscribe(roomId, headers);
     }
-  }, []);
+  };
 
   const handleSendMessage = useCallback(
     (chatMessage: string) => {
@@ -101,10 +105,6 @@ export default function Chatroom() {
 
     clientRef.current = client;
 
-    client.disconnect = (frame) => {
-      console.log('연결해제 실행', frame);
-    };
-
     // 에러 이벤트 핸들러
     client.onStompError = (frame) => {
       // TODO: 채팅방 내역 불러오는 재시도를 한다.
@@ -115,7 +115,6 @@ export default function Chatroom() {
     // Clean up when component unmounts
     return () => {
       client.disconnect();
-      client.deactivate();
     };
   }, []);
 

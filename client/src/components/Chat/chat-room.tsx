@@ -40,10 +40,10 @@ export default function ChatRoom({
 
   return (
     <div
-      className="relative flex-1 ml-4 border border-black h-5/6 overflow-y-scroll flex flex-col"
+      className="relative flex-1 ml-4 border border-black h-5/6 flex flex-col"
       ref={chatRoomRef}
     >
-      <div className="flex flex-col-reverse">
+      <div className="flex flex-col-reverse h-full overflow-y-scroll">
         {chatList.map((val) => {
           const {
             messageId,

@@ -4,13 +4,11 @@ import React, { useEffect } from 'react';
 //components
 import { Advertisement, Layout } from '@/components';
 import { WritePostButton } from '@/components';
+import { Loading, PostsBox } from '@/components/home';
 
 //@tanstack/react-query
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/get-posts';
-
-import PostsBox from '@/components/home/PostsBox';
-import Loading from '@/components/home/Loading';
 
 export default function Home() {
   // TODO: 유저정보 필요시 사용

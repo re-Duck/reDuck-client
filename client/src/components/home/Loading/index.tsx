@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingIcon from '../common/LoadingIcon';
+import LoadingIcon from '../../common/LoadingIcon';
 
 function Loading() {
   return (

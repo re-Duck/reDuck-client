@@ -1,7 +1,7 @@
 import React from 'react';
-import { Post } from '../common/Post/post';
+import { Post } from '../../common/Post/post';
 import { IPostInformation } from '@/types';
-import LoadingIcon from '../common/LoadingIcon';
+import LoadingIcon from '../../common/LoadingIcon';
 
 interface IPostsBox {
   datas:

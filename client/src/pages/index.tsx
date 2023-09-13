@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 // import { useSelector } from 'react-redux';
 
 //components
-import { Advertisement, Layout, LoadingIcon } from '@/components';
+import { Advertisement, Layout } from '@/components';
 import { WritePostButton } from '@/components';
 
 //@tanstack/react-query
@@ -10,6 +10,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllPosts } from '@/service/get-posts';
 
 import PostsBox from '@/components/home/PostsBox';
+import Loading from '@/components/home/Loading';
 
 export default function Home() {
   // TODO: 유저정보 필요시 사용
@@ -54,9 +55,7 @@ export default function Home() {
             <WritePostButton />
 
             {IS_LOADING ? (
-              <div className="flex flex-col items-center">
-                <LoadingIcon size="65px" />
-              </div>
+              <Loading />
             ) : (
               <PostsBox datas={data?.pages} hasNextPage={hasNextPage} />
             )}

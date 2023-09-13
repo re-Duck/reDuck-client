@@ -1,9 +1,11 @@
-import { Comment, CommentUpload, PostDetail } from '@/components/common/Post';
+import React from 'react';
+import { useSession } from 'next-auth/react';
+import { useQuery } from '@tanstack/react-query';
+
+import { Comment, CommentUpload } from '@/components/common/Post';
+import { PostDetail } from '@/components/board';
 import { axios_get } from '@/service/base/api';
 import { IComment } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import React from 'react';
 
 interface IProps {
   postOriginId: string;

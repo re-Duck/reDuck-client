@@ -10,13 +10,13 @@ import ReactQuill, { ReactQuillProps } from 'react-quill';
 import { IPostInformation } from '@/types';
 
 //component
-import { DeleteButton, ModifyCotentButton } from './';
 import { Avatar } from '@/components';
 
 //util and constant
 import { parseDate } from '@/util';
 import { BASE_URL } from '@/service/base/api';
 import Link from 'next/link';
+import { DeleteButton, ModifyCotentButton } from '@/components/common/Post';
 
 interface PostDetail {
   data: IPostInformation;

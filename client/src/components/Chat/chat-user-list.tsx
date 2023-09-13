@@ -40,7 +40,6 @@ export default function ChatUserList({
     });
     setRecommandUser(recommandData);
     setChatUserList(listData);
-    console.log(listData);
   };
 
   const handleEnterRoom = (roomId: string, chatMessages: IChatMessage[]) => {

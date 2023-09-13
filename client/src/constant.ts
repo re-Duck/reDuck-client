@@ -1,5 +1,5 @@
 export const linkList = [
-  { name: '채팅방', href: '/chatroom' },
+  { name: '채팅방', href: '/chat' },
   { name: 'GPT', href: '/gpt' },
 ];
 

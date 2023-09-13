@@ -71,7 +71,7 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
 
   const handleChatRoute = () => {
     router.push({
-      pathname: '/chatroom',
+      pathname: '/chat',
       query: {
         otherId: userId,
       },

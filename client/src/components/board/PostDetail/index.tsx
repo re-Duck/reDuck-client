@@ -52,7 +52,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   }, [data]);
   return (
     <article className="flex flex-col min-w-full max-w-4xl m-auto bg-white border-gray-100 border-2 px-4 py-6 sm:p-12 gap-8">
-      <h1 className="text-4xl font-extrabold">{data.postTitle}</h1>
+      <h1 className="text-4xl font-extrabold ">{data.postTitle}</h1>
       <div className="flex justify-between mb-5">
         <Link
           className="flex gap-2 font-semibold items-center"

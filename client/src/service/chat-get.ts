@@ -11,31 +11,35 @@ const getRecommandUser = async () => {
 
 const getUserChatRoom = async ({
   userId,
-  accessToken,
+  token,
 }: {
-  userId: string;
-  accessToken: string;
+  userId?: string;
+  token?: string;
 }) => {
   const headers = {
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${token}`,
   };
   const suburl = `/chat/rooms/${userId}`;
 
   const response = await axios_get({ suburl, headers });
-  const data = response.data;
+  if (response.isOkay) {
+    const data = response.data;
 
-  return data;
+    return data;
+  } else {
+    return null;
+  }
 };
 
 const getRoomChat = async ({
   roomId,
-  accessToken,
+  token,
 }: {
-  roomId: string;
-  accessToken: string;
+  roomId?: string;
+  token?: string;
 }) => {
   const headers = {
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${token}`,
   };
   const suburl = `/chat/room/${roomId}`;
 

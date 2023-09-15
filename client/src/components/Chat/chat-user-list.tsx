@@ -12,12 +12,10 @@ import UserTile from './user-tile';
 import { IUserInfo, IChatMessage } from '@/types';
 
 interface IChatUserList {
-  userId: string;
   handleConnect: (roomId: string, chatMessages: IChatMessage[]) => void;
   handleDisconnect: () => void;
 }
 export default function ChatUserList({
-  userId,
   handleConnect,
   handleDisconnect,
 }: IChatUserList) {
@@ -29,17 +27,16 @@ export default function ChatUserList({
   >([]);
   const [chatUserList, setChatUserList] = useState([]);
   const session = useSession();
-  const user = session.data?.user;
-  const accessToken = user ? user.token : '';
+  const { id, token } = session.data?.user || {};
 
   const loadUserChatList = async () => {
     const recommandData = await getRecommandUser();
     const listData = await getUserChatRoom({
-      userId,
-      accessToken,
+      userId: id,
+      token,
     });
     setRecommandUser(recommandData);
-    setChatUserList(listData);
+    setChatUserList(listData || []);
   };
 
   const handleEnterRoom = (roomId: string, chatMessages: IChatMessage[]) => {
@@ -56,7 +53,7 @@ export default function ChatUserList({
     <section className="relative border border-black min-w-[30%] h-5/6 text-center">
       <section className="flex flex-col m-2.5">
         <span>채팅방 목록</span>
-        {chatUserList.map((dto) => {
+        {chatUserList?.map((dto) => {
           const {
             lastChatMessage,
             lastChatMessageTime,
@@ -70,7 +67,7 @@ export default function ChatUserList({
             <UserTile
               key={roomId}
               roomId={roomId}
-              accessToken={accessToken}
+              token={token}
               userId={otherId}
               src={userProfileImgPath}
               name={name}
@@ -85,18 +82,21 @@ export default function ChatUserList({
       </section>
       <section className="absolute bottom-0 left-0 right-0 flex flex-col m-2.5">
         <p>채팅 추천 유저 목록</p>
-        {recommandUser.map((user) => (
-          <UserTile
-            key={user.userId}
-            accessToken={accessToken}
-            userId={user.userId}
-            src={user.userProfileImgPath}
-            name={user.name}
-            description={`${user.developAnnual}년차 개발자`}
-            handleEnterRoom={handleEnterRoom}
-            type="recommand"
-          />
-        ))}
+        {recommandUser.map((user) => {
+          const { userId, userProfileImgPath, name, developAnnual } = user;
+          return (
+            <UserTile
+              key={userId}
+              token={token}
+              userId={userId}
+              src={userProfileImgPath}
+              name={name}
+              description={`${developAnnual}년차 개발자`}
+              handleEnterRoom={handleEnterRoom}
+              type="recommand"
+            />
+          );
+        })}
       </section>
     </section>
   );

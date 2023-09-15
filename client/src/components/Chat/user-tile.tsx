@@ -15,7 +15,7 @@ import { IChatMessage } from '@/types';
 interface IUserTile {
   roomId?: string;
   src?: string;
-  accessToken: string;
+  token?: string;
   userId: string;
   name?: string;
   description: string;
@@ -28,7 +28,7 @@ interface IUserTile {
 const UserTile = ({
   roomId,
   src,
-  accessToken,
+  token,
   userId,
   name,
   description,
@@ -40,8 +40,8 @@ const UserTile = ({
   const handleRoomCheck = async () => {
     if (type === 'room') {
       const data = await getRoomChat({
-        roomId: roomId as string,
-        accessToken,
+        roomId,
+        token,
       });
       const { roomId: id, chatMessages } = data;
       handleEnterRoom(id, chatMessages);
@@ -50,7 +50,7 @@ const UserTile = ({
       const result = await createChatRoom({
         otherIds,
         roomName: '',
-        accessToken,
+        token,
       });
       const { isOkay, data } = result;
       const { chatMessages, roomId } = data;
@@ -60,8 +60,6 @@ const UserTile = ({
       }
     }
   };
-
-  const url = src ? `${BASE_URL}${src}` : ''; // 프로필 이미지
 
   const formatDateString = () => {
     const currentDate = new Date();
@@ -91,7 +89,7 @@ const UserTile = ({
       className="flex gap-2 font-semibold items-center mb-4"
       onDoubleClick={handleRoomCheck}
     >
-      <Avatar src={url} alt="user_icon" size="sm" />
+      <Avatar src={src ? `${BASE_URL}${src}` : ''} alt="user_icon" size="sm" />
       <div className="flex flex-col text-left">
         <span className="text-md">{name}</span>
         <span className="text-xs text-gray-400">{description}</span>

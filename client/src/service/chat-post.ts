@@ -7,17 +7,17 @@ import { axios_post } from './base/api';
 interface ICreateChatRoom {
   otherIds: string[];
   roomName?: string;
-  accessToken: string;
+  token?: string;
 }
 
 const createChatRoom = async ({
   otherIds,
   roomName,
-  accessToken,
+  token,
 }: ICreateChatRoom) => {
   const suburl = '/chat/room';
   const headers = {
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${token}`,
   };
   const roomId = v4();
   const data = {

@@ -5,23 +5,28 @@ import { useRouter } from 'next/router';
 
 // components
 import { Layout } from '@/components';
-
-// project
 import { ChatUserList, ChatRoom } from '@/components/Chat';
 
+// hooks
+import { useModal } from '@/hooks';
+
 // third-party
-import { Stomp, CompatClient } from '@stomp/stompjs';
+import { Stomp, CompatClient, IMessage } from '@stomp/stompjs';
 import { v4 } from 'uuid';
 
 // types
 import { IChatMessage } from '@/types';
 
+// constant
+import { ModalType, errorMessage } from '@/constant';
+
 export default function Chatroom() {
   const session = useSession();
   const router = useRouter();
+  const { openModal, closeModal } = useModal();
 
-  const [openChat, setOpenChat] = useState<boolean>(false);
-  const [roomId, setRoomId] = useState<string>('');
+  const [openChat, setOpenChat] = useState(false);
+  const [roomId, setRoomId] = useState('');
 
   const [chatList, setChatList] = useState<IChatMessage[]>([]);
 
@@ -33,7 +38,7 @@ export default function Chatroom() {
     const headers = {
       Authorization: `Bearer ${session.data?.user.token}}`,
     };
-    const subscribe_callback = (message: any) => {
+    const subscribe_callback = (message: IMessage) => {
       const chatData = JSON.parse(message.body);
       setChatList((chat) => [chatData, ...chat]);
     };
@@ -70,36 +75,45 @@ export default function Chatroom() {
     (chatMessage: string) => {
       const client = clientRef.current;
 
-      const { id, token } = session.data!.user;
+      if (session.data) {
+        const { id, token } = session.data.user;
 
-      if (client && client.connected) {
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-        const objectbody = {
-          roomId,
-          message: chatMessage,
-          messageId: v4(),
-          userId: id,
-          type: 'CHAT',
-        };
+        if (client && client.connected) {
+          const headers = {
+            Authorization: `Bearer ${token}`,
+          };
+          const objectbody = {
+            roomId,
+            message: chatMessage,
+            messageId: v4(),
+            userId: id,
+            type: 'CHAT',
+          };
 
-        const body = JSON.stringify(objectbody);
+          const body = JSON.stringify(objectbody);
 
-        client.publish({
-          destination: '/pub/chat/message',
-          body,
-          headers,
-        });
+          client.publish({
+            destination: '/pub/chat/message',
+            body,
+            headers,
+          });
+        }
       }
     },
     [chatList, session]
   );
 
   useEffect(() => {
-    if (!session.data?.user.id) {
-      // TODO: redirect message
-      router.push('/');
+    if (!session.data) {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.needLogin,
+        callback: () => {
+          closeModal();
+          router.replace('/login');
+        },
+      });
+      return;
     }
     const client = Stomp.client('ws://168.188.123.234:8080/ws-connection');
 
@@ -112,7 +126,6 @@ export default function Chatroom() {
       console.log('Additional details: ', frame.body);
     };
 
-    // Clean up when component unmounts
     return () => {
       client.disconnect();
     };
@@ -122,14 +135,13 @@ export default function Chatroom() {
     <Layout>
       <div className="relative mx-auto flex max-w-5xl h-screen">
         <ChatUserList
-          userId={session.data ? session.data.user.id : ''}
           handleConnect={handleConnect}
           handleDisconnect={handleDisconnect}
         />
         {openChat && (
           <ChatRoom
             chatList={chatList}
-            currentUid={session.data!.user.id}
+            currentUid={session.data?.user.id || ''}
             handleSendMessage={handleSendMessage}
           />
         )}

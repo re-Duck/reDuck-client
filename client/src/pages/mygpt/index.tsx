@@ -36,7 +36,8 @@ export default function GptPage() {
         <div className="pb-10 bg-slate-200">
           <Gpt ref={answerRef}>
             <Gpt.SubTitle title="Answer" />
-            <Gpt.Content height="md" />
+            <Gpt.Loading />
+            {/* <Gpt.Content height="md" isLoading={true} /> */}
           </Gpt>
         </div>
       )}

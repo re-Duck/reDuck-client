@@ -21,10 +21,10 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
   const { openModal } = useModal();
   return (
     <nav
-      className="w-full h-14 border-b-2 border-gray-100 fixed top-0 left-0 bg-white z-10"
+      className="fixed top-0 left-0 z-10 w-full bg-white border-b-2 border-gray-100 h-14"
       id="navigator"
     >
-      <ul className="m-auto p-8 max-w-6xl flex justify-between items-center h-full">
+      <ul className="flex items-center justify-between h-full max-w-6xl p-8 m-auto">
         <li>
           <Link
             href="/"
@@ -40,20 +40,10 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
         {viewList && (
           <>
             <li className="flex-auto pl-8">
-              <ul className="hidden sm:flex gap-8 text-gray-500">
+              <ul className="hidden gap-8 text-gray-500 sm:flex">
                 {linkList.map(({ name, href }) => (
-                  <li
-                    key={name}
-                    onClick={() =>
-                      openModal({
-                        type: ModalType.ERROR,
-                        message: errorMessage.notComplete,
-                      })
-                    }
-                    className=" hover:cursor-pointer"
-                  >
-                    {name}
-                    {/* <Link href={href}>{name}</Link> */}
+                  <li key={name} className=" hover:cursor-pointer">
+                    <Link href={href}>{name}</Link>
                   </li>
                 ))}
               </ul>
@@ -61,7 +51,7 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
 
             <li>
               <ul>
-                <li className="hidden sm:block font-bold">
+                <li className="hidden font-bold sm:block">
                   {data ? (
                     <Link href={`/profile/${data.user.id}`}>마이페이지</Link>
                   ) : (

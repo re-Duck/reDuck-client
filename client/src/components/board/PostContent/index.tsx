@@ -28,13 +28,13 @@ function PostContent({ postOriginId }: IProps) {
   const IS_POST_AUTHOR = user?.id === data?.postAuthorId;
 
   return (
-    <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
+    <div className="flex flex-col max-w-4xl m-auto mb-4 gap-14">
       <PostDetail
         data={data}
         IS_AUTHOR={IS_POST_AUTHOR}
         token={user ? user.token : ''}
       />
-      <h3 className="text-2xl font-bold pl-3">댓글 {comments?.length}</h3>
+      <h3 className="pl-3 text-2xl font-bold">댓글 {comments?.length}</h3>
       <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
         <CommentUpload
           user={user}

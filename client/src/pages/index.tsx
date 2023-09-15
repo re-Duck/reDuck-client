@@ -48,8 +48,8 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <div className=" mx-auto flex justify-between max-w-5xl">
-          <div className="flex flex-col w-full md:w-8/12 gap-3">
+        <div className="flex justify-between max-w-5xl mx-auto">
+          <div className="flex flex-col w-full gap-3 md:w-8/12">
             <WritePostButton />
 
             {IS_LOADING ? (

@@ -17,7 +17,7 @@ export default function Layout({ children, viewList = true }: IProps) {
         setisClickedHamburger={setisClickedHamburger}
         viewList={viewList}
       />
-      <main className="p-4 pt-10 m-auto mt-8  bg-gray-50">{children}</main>
+      <main className="min-h-screen m-auto pt-14 bg-gray-50">{children}</main>
     </main>
   );
 }

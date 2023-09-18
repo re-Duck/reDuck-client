@@ -13,3 +13,4 @@ export { default as AuthComponent } from '@/components/common/AuthComponent';
 export { default as EditProfile } from '@/components/common/EditProfile';
 export { default as UserInfo } from '@/components/common/UserInfo';
 export { default as WritePostButton } from '@/components/common/WritePostButton';
+export { default as Skeleton } from '@/components/common/Skeleton';

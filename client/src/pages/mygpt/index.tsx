@@ -1,7 +1,8 @@
+import React, { useEffect, useRef, useState } from 'react';
 import { Layout } from '@/components';
 import { Gpt } from '@/components/mygpt/gpt';
 import getCodeReview from '@/service/open-ai';
-import React, { useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 
 export default function GptPage() {
   const [isAnswerOpen, setIsAnswerOpen] = useState(false);
@@ -11,10 +12,12 @@ export default function GptPage() {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
 
-  const getAnswer = async () => {
+  const getAnswer = useCallback(async () => {
+    setAnswer('');
     const res = await getCodeReview({ code, question });
     setAnswer(res || '');
-  };
+  }, [code, question]);
+
   useEffect(() => {
     if (isAnswerOpen || answer) {
       answerRef.current?.scrollIntoView({ behavior: 'smooth' });

@@ -1,14 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Layout } from '@/components';
 import { Gpt } from '@/components/mygpt/gpt';
-import getCodeReview from '@/service/open-ai';
-import { useCallback } from 'react';
 import { Formik } from 'formik';
-
-interface IContent {
-  code: string;
-  question: string;
-}
+import useGpt from '../../hooks/mygpt/useGpt';
 
 const initialLoginValue = {
   code: '',
@@ -16,33 +10,7 @@ const initialLoginValue = {
 };
 
 export default function GptPage() {
-  const [isAnswerOpen, setIsAnswerOpen] = useState(false);
-  const [answer, setAnswer] = useState('');
-  const answerRef = useRef<HTMLFormElement>(null);
-
-  const getAnswer = useCallback(async ({ code, question }: IContent) => {
-    setAnswer('');
-    const res = await getCodeReview({ code, question });
-    setAnswer(res || '');
-  }, []);
-
-  const handdleSubmit = useCallback(
-    async (
-      { code, question }: IContent,
-      { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-    ) => {
-      setIsAnswerOpen(true);
-      setSubmitting(true);
-      await getAnswer({ code, question });
-      setSubmitting(false);
-    },
-    []
-  );
-  useEffect(() => {
-    if (isAnswerOpen || answer) {
-      answerRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [isAnswerOpen, answer]);
+  const { handdleSubmit, answer, answerRef, isAnswerOpen } = useGpt();
 
   return (
     <>

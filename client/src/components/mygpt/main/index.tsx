@@ -9,7 +9,7 @@ const GptMain = forwardRef<HTMLDivElement, IProps>(function GptMain(
   return (
     <div
       ref={ref}
-      className="flex flex-col max-w-2xl gap-6 pt-8 mx-auto "
+      className="flex flex-col max-w-2xl gap-6 pt-8 mx-auto min-h-[200px]"
       {...props}
     >
       {children}

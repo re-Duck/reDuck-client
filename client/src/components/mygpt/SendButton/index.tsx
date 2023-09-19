@@ -1,13 +1,11 @@
 import React from 'react';
 
-interface IProps extends React.HTMLAttributes<HTMLButtonElement> {
-  setIsAnswerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-function GptSendButton({ setIsAnswerOpen }: IProps) {
+type IProps = React.HTMLAttributes<HTMLButtonElement>;
+function GptSendButton({ ...props }: IProps) {
   return (
     <button
       className="px-2 bg-white border-[0.5px] rounded-lg font-semibold"
-      onClick={() => setIsAnswerOpen((prev) => !prev)}
+      {...props}
     >
       Send
     </button>

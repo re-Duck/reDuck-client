@@ -34,11 +34,7 @@ export default function GptPage() {
           <Gpt.ContentBox>
             <Gpt.SubTitle title="Question" />
             <div className="flex justify-center gap-4">
-              <Gpt.Content
-                height="sm"
-                content={question}
-                setContent={setQuestion}
-              />
+              <Gpt.Question content={question} setContent={setQuestion} />
               <Gpt.SendButton
                 onClick={() => {
                   setIsAnswerOpen(true);

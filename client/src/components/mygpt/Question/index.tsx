@@ -1,18 +1,14 @@
 import React from 'react';
+import { Field } from 'formik';
 
-interface IProps extends React.AllHTMLAttributes<HTMLInputElement> {
-  content: string;
-  setContent: React.Dispatch<React.SetStateAction<string>>;
-}
-
-function GptQuestion({ content, setContent, ...props }: IProps) {
+function GptQuestion({ ...props }: React.AllHTMLAttributes<HTMLInputElement>) {
   return (
-    <input
+    <Field
+      as="input"
+      name="question"
       className={`w-full px-4 bg-white border-[0.5px] rounded-lg  border-gray-300 h-10 outline-0`}
-      value={content}
-      onChange={(e) => setContent(e.target.value)}
       {...props}
-    ></input>
+    ></Field>
   );
 }
 

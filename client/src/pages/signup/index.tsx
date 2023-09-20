@@ -1,4 +1,4 @@
-import Layout from '@/components/Layout';
+import { Layout } from '@/components';
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 
@@ -18,7 +18,7 @@ import {
   errorMessage,
   initialSignupValue,
   regex,
-} from '@/constant';
+} from '@/constants/constant';
 
 // types
 import { ICheckID, ISignupData } from '@/types';

@@ -1,10 +1,6 @@
 import axios from 'axios';
 
-export const BASE_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://168.188.123.234:8080'
-    : 'https://reduckas.site';
-
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 interface IResponse {
   isOkay: boolean;
   data: Array<object> | object;

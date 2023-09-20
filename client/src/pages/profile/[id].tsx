@@ -24,7 +24,7 @@ import {
   sideBarList,
   successMessage,
   warningMessage,
-} from '@/constant';
+} from '@/constants/constant';
 
 // types
 import { IUserInfo } from '@/types';

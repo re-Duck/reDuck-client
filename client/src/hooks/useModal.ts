@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { useDispatch } from 'react-redux';
 import { openModal, closeModal } from '../lib/redux/slices/modalSlice';
+import { IModal } from '@/types/redux/IModal';
 
 function useModal() {
   const dispatch = useDispatch();
 
-  const handleOpenModal = ({ type, message, callback = null }: any) => {
-    dispatch(openModal({ type, message, callback }));
+  const handleOpenModal = ({ type, message, callback }: IModal) => {
+    dispatch(openModal({ type, message, callback: callback || null }));
   };
 
   const handleCloseModal = () => {

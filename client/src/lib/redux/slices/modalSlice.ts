@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { ModalType } from '@/constant';
+import { ModalType } from '@/constants/constant';
+import { IModal } from '@/types/redux/IModal';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -8,7 +8,7 @@ const initialState = {
   callback: null,
 };
 
-export const modalSelector = (state: any) => state.modal;
+export const modalSelector = ({ modal }: { modal: IModal }) => modal;
 
 export const modalSlice = createSlice({
   name: 'modal',

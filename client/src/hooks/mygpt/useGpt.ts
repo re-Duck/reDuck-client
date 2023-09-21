@@ -1,10 +1,6 @@
 import getCodeReview from '@/service/open-ai';
+import { IContent } from '@/types/mygpt';
 import { useCallback, useEffect, useRef, useState } from 'react';
-
-interface IContent {
-  code: string;
-  question: string;
-}
 
 function useGpt() {
   const [isAnswerOpen, setIsAnswerOpen] = useState(false);
@@ -17,18 +13,10 @@ function useGpt() {
     setAnswer(res || '');
   }, []);
 
-  const handdleSubmit = useCallback(
-    async (
-      { code, question }: IContent,
-      { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-    ) => {
-      setIsAnswerOpen(true);
-      setSubmitting(true);
-      await getAnswer({ code, question });
-      setSubmitting(false);
-    },
-    []
-  );
+  const handdleSubmit = useCallback(async ({ code, question }: IContent) => {
+    setIsAnswerOpen(true);
+    await getAnswer({ code, question });
+  }, []);
 
   useEffect(() => {
     if (isAnswerOpen || answer) {

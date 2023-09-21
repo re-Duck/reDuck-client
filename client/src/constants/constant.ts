@@ -1,6 +1,7 @@
 export const linkList = [
   { name: '채팅방', href: '/chatroom' },
   { name: 'GPT', href: '/mygpt' },
+  { name: '로그인', href: '/login' },
 ];
 
 export const initialLoginValue = Object.freeze({ userId: '', password: '' });

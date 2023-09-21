@@ -12,7 +12,11 @@ export default function Layout({ children, viewList = true }: IProps) {
 
   return (
     <main className="w-full h-full">
-      <MenuView isClickedHamburger={isClickedHamburger} viewList={viewList} />
+      <MenuView
+        isClickedHamburger={isClickedHamburger}
+        viewList={viewList}
+        setisClickedHamburger={setisClickedHamburger}
+      />
       <Navigator
         setisClickedHamburger={setisClickedHamburger}
         viewList={viewList}

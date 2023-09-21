@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ModalType, errorMessage, linkList } from '@/constants/constant';
+import { linkList } from '@/constants/constant';
 
 // Icons
 import { Icon } from '@iconify/react';
@@ -9,7 +9,6 @@ import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
 
 import Image from 'next/image';
-import { useModal } from '@/hooks';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +17,6 @@ interface INavigator {
 
 export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
   const { data } = useSession();
-  const { openModal } = useModal();
   return (
     <nav
       className="fixed top-0 left-0 z-10 w-full bg-white border-b-2 border-gray-100 h-14"
@@ -41,11 +39,18 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
           <>
             <li className="flex-auto pl-8">
               <ul className="hidden gap-8 text-gray-500 sm:flex">
-                {linkList.map(({ name, href }) => (
-                  <li key={name} className=" hover:cursor-pointer">
-                    <Link href={href}>{name}</Link>
-                  </li>
-                ))}
+                {linkList.map(({ name, href }) => {
+                  if (name === '로그인') return;
+                  return (
+                    <Link
+                      href={href}
+                      key={name}
+                      className=" hover:cursor-pointer"
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
               </ul>
             </li>
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Layout } from '@/components';
-import { Gpt } from '@/components/mygpt/gpt';
+import { Layout, Gpt } from '@/components';
 import { Formik } from 'formik';
 import useGpt from '../../hooks/mygpt/useGpt';
 
@@ -15,7 +14,7 @@ export default function GptPage() {
   return (
     <>
       <Formik initialValues={initialLoginValue} onSubmit={handdleSubmit}>
-        {({ errors, isSubmitting }) => (
+        {({ isSubmitting }) => (
           <>
             <Layout>
               <Gpt>

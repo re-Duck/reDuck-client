@@ -7,7 +7,7 @@ import GptQuestion from '../Question';
 import GptSendButton from '../SendButton';
 import GptSubTitle from '../Subtitle';
 
-export const Gpt = Object.assign(GptMain, {
+export default Object.assign(GptMain, {
   SendButton: GptSendButton,
   ContentBox: GptContextBox,
   Content: GptContent,

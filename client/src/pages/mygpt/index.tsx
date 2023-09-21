@@ -14,7 +14,7 @@ export default function GptPage() {
   return (
     <>
       <Formik initialValues={initialLoginValue} onSubmit={handdleSubmit}>
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values }) => (
           <>
             <Layout>
               <Gpt>
@@ -30,13 +30,15 @@ export default function GptPage() {
                     <Gpt.Remaining />
                   </div>
                   <div className="flex justify-center gap-4">
-                    <Gpt.Question />
-                    <Gpt.SendButton disabled={isSubmitting} />
+                    <Gpt.Question>
+                      <Gpt.SendButton
+                        disabled={isSubmitting || values.question === ''}
+                      />
+                    </Gpt.Question>
                   </div>
                 </Gpt.ContentBox>
               </Gpt>
             </Layout>
-
             {isAnswerOpen && (
               <div className="pb-10 bg-slate-200">
                 <Gpt ref={answerRef}>

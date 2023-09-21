@@ -7,13 +7,19 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 function GptSendButton({ disabled, ...props }: IProps) {
   return (
     <button
-      className={`px-2 bg-white border-[0.5px] rounded-lg font-semibold w-10 flex justify-center items-center`}
+      className={`${
+        disabled ? 'bg-white' : 'bg-[#5046E5]'
+      } rounded-md w-7 h-7 font-semibold  flex justify-center items-center ${
+        disabled && 'cursor-not-allowed'
+      } transition-colors`}
       type="submit"
+      disabled={disabled}
       {...props}
     >
       <Icon
-        icon={`${disabled ? 'line-md:loading-loop' : 'bi:send'}`}
-        style={{ fontSize: 16, color: '#8c8c8c' }}
+        icon="ion:send"
+        style={{ fontSize: 14, color: disabled ? '#0000002d' : '#fff' }}
+        className="transition-colors"
       />
     </button>
   );

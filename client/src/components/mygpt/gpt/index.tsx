@@ -6,6 +6,7 @@ import GptMain from '../main';
 import GptQuestion from '../Question';
 import GptSendButton from '../SendButton';
 import GptSubTitle from '../Subtitle';
+import GptRemaining from '../Remaining/index';
 
 export default Object.assign(GptMain, {
   SendButton: GptSendButton,
@@ -15,4 +16,5 @@ export default Object.assign(GptMain, {
   SubTitle: GptSubTitle,
   Loading: GptLoading,
   Question: GptQuestion,
+  Remaining: GptRemaining,
 });

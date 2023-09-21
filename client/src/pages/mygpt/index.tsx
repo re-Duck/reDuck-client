@@ -25,7 +25,10 @@ export default function GptPage() {
                 </Gpt.ContentBox>
 
                 <Gpt.ContentBox>
-                  <Gpt.SubTitle title="Question" />
+                  <div className="flex items-end justify-between">
+                    <Gpt.SubTitle title="Question" />
+                    <Gpt.Remaining />
+                  </div>
                   <div className="flex justify-center gap-4">
                     <Gpt.Question />
                     <Gpt.SendButton disabled={isSubmitting} />

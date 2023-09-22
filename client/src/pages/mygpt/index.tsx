@@ -10,6 +10,7 @@ import { useModal } from '@/hooks';
 import useGpt from '@/hooks/mygpt/useGpt';
 
 import { ModalType, errorMessage } from '@/constants/constant';
+import useRemainQuestion from '@/hooks/mygpt/useRemainQuestion';
 
 const initialLoginValue = {
   code: '',
@@ -20,14 +21,27 @@ export default function GptPage() {
   const { handdleSubmit, answer, answerRef, isAnswerOpen } = useGpt();
   const authState = useSelector((state: any) => state.auth);
   const { openModal } = useModal();
+  const { leftQuestionCount, isPossibleQuestion } = useRemainQuestion();
+
+  const validate = () => {
+    if (!authState.isLogin) {
+      openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+      return false;
+    }
+    if (!isPossibleQuestion()) {
+      openModal({ type: ModalType.ERROR, message: errorMessage.maxQuestion });
+      return false;
+    }
+    return true;
+  };
 
   const onSubmit = async (
     { code, question }: IContent,
     { setSubmitting }: FormikHelpers<IContent>
   ) => {
-    authState.isLogin
-      ? await handdleSubmit({ code, question })
-      : openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+    if (validate()) {
+      await handdleSubmit({ code, question });
+    }
     setSubmitting(false);
   };
 
@@ -47,7 +61,7 @@ export default function GptPage() {
                 <Gpt.ContentBox>
                   <div className="flex items-end justify-between">
                     <Gpt.SubTitle title="Question" />
-                    <Gpt.Remaining />
+                    <Gpt.Remaining leftQuestionCount={leftQuestionCount} />
                   </div>
                   <div className="flex justify-center gap-4">
                     <Gpt.Question>

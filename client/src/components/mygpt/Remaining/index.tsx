@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const MAX_QUESTION_COUNT = 10;
+interface IProps {
+  leftQuestionCount: number;
+}
 
-function GptRemaining() {
-  const [remaining, setRemaining] = useState(8);
+function GptRemaining({ leftQuestionCount }: IProps) {
   return (
-    <div className="mr-2 text-sm text-gray-400">{`${remaining}/${MAX_QUESTION_COUNT}`}</div>
+    <div className="mr-2 text-sm text-gray-400">{`사용 가능 횟수: ${leftQuestionCount}`}</div>
   );
 }
 

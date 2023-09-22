@@ -15,6 +15,7 @@ function useGpt() {
 
   const handdleSubmit = useCallback(async ({ code, question }: IContent) => {
     setIsAnswerOpen(true);
+    // 횟수 차감 API
     await getAnswer({ code, question });
   }, []);
 

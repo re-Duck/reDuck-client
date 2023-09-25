@@ -2,17 +2,11 @@ import React from 'react';
 import { Post } from '../../common/Post/post';
 import { IPostInformation } from '@/types';
 import LoadingIcon from '../../common/LoadingIcon';
+import useScroll from '@/hooks/Main/useScroll';
 
-interface IPostsBox {
-  datas:
-    | {
-        data: IPostInformation[];
-      }[]
-    | undefined;
-  hasNextPage: boolean | undefined;
-}
+function PostsBox() {
+  const { datas, hasNextPage } = useScroll();
 
-function PostsBox({ datas, hasNextPage }: IPostsBox) {
   return (
     <>
       {datas?.map((group, index) => (

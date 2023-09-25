@@ -8,6 +8,7 @@ import { Loading } from '@/components/home';
 
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import dynamic from 'next/dynamic';
+import ErrorFallback from '@/components/common/ErrorFallback';
 
 const PostsBox = dynamic(() => import('@/components/home/PostsBox'), {
   ssr: false,
@@ -21,7 +22,7 @@ export default function Home() {
           <div className="flex flex-col w-full gap-3 md:w-8/12">
             <WritePostButton />
 
-            <ErrorBoundary>
+            <ErrorBoundary fallback={<ErrorFallback />}>
               <Suspense fallback={<Loading />}>
                 <PostsBox />
               </Suspense>

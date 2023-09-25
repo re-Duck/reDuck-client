@@ -1,8 +1,9 @@
 import React from 'react';
-import { Post } from '../../common/Post/post';
 import { IPostInformation } from '@/types';
-import LoadingIcon from '../../common/LoadingIcon';
 import useScroll from '@/hooks/Main/useScroll';
+
+import { Post } from '../../common/Post/post';
+import LoadingIcon from '../../common/LoadingIcon';
 
 function PostsBox() {
   const { datas, hasNextPage } = useScroll();

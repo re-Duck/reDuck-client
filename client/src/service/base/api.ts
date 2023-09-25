@@ -41,6 +41,10 @@ export async function axios_get<Response = unknown>({
         data: error.response?.data,
       };
     }
+    return {
+      error,
+      isOkay: false,
+    };
   }
 }
 
@@ -64,6 +68,10 @@ export async function axios_post<Response = unknown, Request = unknown>({
         data: error.response?.data,
       };
     }
+    return {
+      error,
+      isOkay: false,
+    };
   }
 }
 
@@ -87,6 +95,10 @@ export async function axios_put<Response = unknown, Request = unknown>({
         data: error.response?.data,
       };
     }
+    return {
+      error,
+      isOkay: false,
+    };
   }
 }
 
@@ -109,5 +121,9 @@ export async function axios_delete<Response = unknown>({
         data: error.response?.data,
       };
     }
+    return {
+      error,
+      isOkay: false,
+    };
   }
 }

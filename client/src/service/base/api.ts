@@ -26,7 +26,7 @@ interface IAxiosDelete {
   headers?: object;
 }
 
-const paramsSerializer = (paramObj: any) => {
+const paramsSerializer = (paramObj: Record<string, string>) => {
   const params = new URLSearchParams();
   for (const key in paramObj) {
     params.append(key, paramObj[key]);

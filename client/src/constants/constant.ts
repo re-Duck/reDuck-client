@@ -109,11 +109,6 @@ export const MODAL_TITLE = {
   error: '오류',
 };
 
-export const POSTS_INISIATE_VALUE = Object.freeze({
-  data: [],
-  nextPageParms: null,
-});
-
 export const sideBarList = [
   {
     content: '내 정보',

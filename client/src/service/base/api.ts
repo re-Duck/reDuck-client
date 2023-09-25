@@ -38,7 +38,7 @@ export async function axios_get<Response = unknown>({
     if (axios.isAxiosError(error)) {
       return {
         isOkay: false,
-        data: error.response?.data,
+        error: error.response?.data,
       };
     }
     return {
@@ -65,7 +65,7 @@ export async function axios_post<Response = unknown, Request = unknown>({
     if (axios.isAxiosError(error)) {
       return {
         isOkay: false,
-        data: error.response?.data,
+        error: error.response?.data,
       };
     }
     return {
@@ -92,7 +92,7 @@ export async function axios_put<Response = unknown, Request = unknown>({
     if (axios.isAxiosError(error)) {
       return {
         isOkay: false,
-        data: error.response?.data,
+        error: error.response?.data,
       };
     }
     return {
@@ -118,7 +118,7 @@ export async function axios_delete<Response = unknown>({
     if (axios.isAxiosError(error)) {
       return {
         isOkay: false,
-        data: error.response?.data,
+        error: error.response?.data,
       };
     }
     return {

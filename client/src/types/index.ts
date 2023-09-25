@@ -22,6 +22,11 @@ export interface IPostInformation {
   postUpdatedAt: string;
 }
 
+export interface IBoardPostInformation
+  extends Omit<IPostInformation, 'commentsCount'> {
+  comments: IComment[];
+}
+
 export interface IUserInfo {
   company?: string;
   companyEmail?: string;

@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic';
 import { Layout } from '@/components';
 import { IPostInformation } from '../../types/index';
 import { Loading } from '@/components/board';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
+import ErrorFallback from '@/components/common/ErrorFallback';
 
 const PostContent = dynamic(
   () => import('@/components/board/PostContent/index'),
@@ -21,9 +23,11 @@ interface IProps {
 export default function PostDetailPage({ pageProps }: IProps) {
   return (
     <Layout>
-      <Suspense fallback={<Loading />}>
-        <PostContent postOriginId={pageProps.postOriginId} />
-      </Suspense>
+      <ErrorBoundary fallback={<ErrorFallback />}>
+        <Suspense fallback={<Loading />}>
+          <PostContent postOriginId={pageProps.postOriginId} />
+        </Suspense>
+      </ErrorBoundary>
     </Layout>
   );
 }

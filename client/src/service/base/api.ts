@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { Axios, AxiosError } from 'axios';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 interface IResponse {
@@ -36,31 +36,29 @@ const paramsSerializer = (paramObj: any) => {
 };
 
 // TODO: any 타입 정의하기
-export async function axios_get({
+export async function axios_get<Response = unknown>({
   suburl,
   headers = {},
   params = {},
 }: IAxiosGet) {
   try {
-    const response = await axios.get(`${BASE_URL}${suburl}`, {
-      params,
+    const response = await axios.get<Response>(`${BASE_URL}${suburl}`, {
       headers,
+      params,
       paramsSerializer,
     });
-    const RESPONSE_OK = response.status === 200 || response.status === 201;
-    if (RESPONSE_OK) {
+    return {
+      isOkay: true,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
       return {
-        isOkay: true,
-        data: response.data,
+        isOkay: false,
+        data: error.response?.data,
       };
     }
-    throw new Error('AXIOS GET 통신 에러');
-  } catch (e: any) {
-    return {
-      isOkay: false,
-      data: e.response?.data,
-      message: e.response?.message,
-    };
+    return { error, isOkay: false };
   }
 }
 

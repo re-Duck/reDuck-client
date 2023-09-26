@@ -3,16 +3,14 @@ import Link from 'next/link';
 import { FallbackProps } from 'react-error-boundary';
 
 import { errorMessage } from '@/constants/constant';
-import { useRouter } from 'next/router';
+import Custom404 from '@/pages/404';
 interface ErrorFallbackProps extends FallbackProps {
   hasHomeButton?: boolean;
 }
 
 function ErrorFallback({ hasHomeButton, ...props }: ErrorFallbackProps) {
-  const router = useRouter();
   if (props.error.message === 'POST_NOT_EXIST') {
-    router.push('/');
-    return <></>;
+    return <Custom404 />;
   }
 
   return (

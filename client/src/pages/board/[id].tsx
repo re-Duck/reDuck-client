@@ -22,17 +22,17 @@ interface IProps {
 }
 export default function PostDetailPage({ pageProps }: IProps) {
   return (
-    <Layout>
-      <ErrorBoundary
-        FallbackComponent={(props) => (
-          <ErrorFallback {...props} hasHomeButton={true} />
-        )}
-      >
+    <ErrorBoundary
+      FallbackComponent={(props) => (
+        <ErrorFallback {...props} hasHomeButton={true} />
+      )}
+    >
+      <Layout>
         <Suspense fallback={<Loading />}>
           <PostContent postOriginId={pageProps.postOriginId} />
         </Suspense>
-      </ErrorBoundary>
-    </Layout>
+      </Layout>
+    </ErrorBoundary>
   );
 }
 export async function getServerSideProps({

@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 import { Layout } from '@/components';
 import { IPostInformation } from '../../types/index';
 import { Loading } from '@/components/board';
-import ErrorBoundary from '@/components/common/ErrorBoundary';
 import ErrorFallback from '@/components/common/ErrorFallback';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const PostContent = dynamic(
   () => import('@/components/board/PostContent/index'),
@@ -23,7 +23,11 @@ interface IProps {
 export default function PostDetailPage({ pageProps }: IProps) {
   return (
     <Layout>
-      <ErrorBoundary fallback={<ErrorFallback />}>
+      <ErrorBoundary
+        FallbackComponent={(props) => (
+          <ErrorFallback {...props} hasHomeButton={true} />
+        )}
+      >
         <Suspense fallback={<Loading />}>
           <PostContent postOriginId={pageProps.postOriginId} />
         </Suspense>

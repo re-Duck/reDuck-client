@@ -11,7 +11,7 @@ export const getAllPosts = async ({ pageParam = '' }) => {
 
   const response = await axios_get<IPostInformation[]>({ suburl, params });
   if (!response.isOkay) {
-    throw new Error(response.error.status);
+    throw new Error(response.error.code);
   }
 
   const data = response.data as IPostInformation[];

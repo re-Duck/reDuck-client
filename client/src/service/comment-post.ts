@@ -29,6 +29,6 @@ export async function commentPost({
   const result = await axios_post({ suburl, headers, data });
 
   if (!result.isOkay) {
-    alert(result.message);
+    alert(result.error);
   }
 }

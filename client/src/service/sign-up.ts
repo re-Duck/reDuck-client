@@ -41,7 +41,7 @@ export async function SignupPost(data: ISignUpProp): Promise<boolean> {
 export async function checkID(id: string): Promise<ICheckID> {
   const suburl = `/user/duplicate/${id}`;
 
-  const result = await axios_get({ suburl });
+  const result = await axios_get<any>({ suburl });
   if (result.isOkay) {
     return {
       state: true,
@@ -50,7 +50,7 @@ export async function checkID(id: string): Promise<ICheckID> {
   } else {
     return {
       state: false,
-      message: result.message,
+      message: result.error,
     };
   }
 }
@@ -65,7 +65,7 @@ export async function sendEmail(data: object) {
 export async function checkEmail(data: object): Promise<ICheckEmail> {
   const suburl = '/auth/email/user';
 
-  const result = await axios_post({ suburl, data });
+  const result = await axios_post<any>({ suburl, data });
   const value = result.isOkay
     ? result.data.emailAuthToken
     : result.data.message;

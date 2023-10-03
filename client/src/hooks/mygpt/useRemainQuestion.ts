@@ -1,16 +1,18 @@
+import { getGptRemain } from '@/service/get-gpt-remain';
 import { useEffect, useState } from 'react';
 
-function useRemainQuestion() {
-  const [questionCount, setQuestionCount] = useState<number>(0);
-  const [maxCount, setMaxCount] = useState(10);
+function useRemainQuestion(accessToken: string) {
+  const [leftQuestionCount, setLeftQuestionCount] = useState<number>(0);
+
   const getQuestionCount = async () => {
     //API
-    setQuestionCount(0);
-    setMaxCount(10);
+    if (!accessToken) return;
+    const count = await getGptRemain({ accessToken });
+    setLeftQuestionCount(count);
   };
 
   const isPossibleQuestion = () => {
-    return questionCount < maxCount;
+    return leftQuestionCount > 0;
   };
 
   useEffect(() => {
@@ -18,7 +20,7 @@ function useRemainQuestion() {
   }, []);
 
   return {
-    leftQuestionCount: maxCount - questionCount,
+    leftQuestionCount,
     isPossibleQuestion,
   };
 }

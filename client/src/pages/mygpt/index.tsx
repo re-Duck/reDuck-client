@@ -11,6 +11,7 @@ import useGpt from '@/hooks/mygpt/useGpt';
 
 import { ModalType, errorMessage } from '@/constants/constant';
 import useRemainQuestion from '@/hooks/mygpt/useRemainQuestion';
+import { useSession } from 'next-auth/react';
 
 const initialLoginValue = {
   code: '',
@@ -21,7 +22,10 @@ export default function GptPage() {
   const { handdleSubmit, answer, answerRef, isAnswerOpen } = useGpt();
   const authState = useSelector((state: any) => state.auth);
   const { openModal } = useModal();
-  const { leftQuestionCount, isPossibleQuestion } = useRemainQuestion();
+  const { data } = useSession();
+  const accessToken = data?.user.token || '';
+  const { leftQuestionCount, isPossibleQuestion } =
+    useRemainQuestion(accessToken);
 
   const validate = () => {
     if (!authState.isLogin) {

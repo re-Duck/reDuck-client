@@ -19,11 +19,13 @@ const initialLoginValue = {
 };
 
 export default function GptPage() {
-  const { handdleSubmit, answer, answerRef, isAnswerOpen } = useGpt();
   const authState = useSelector((state: any) => state.auth);
   const { openModal } = useModal();
   const { data } = useSession();
   const accessToken = data?.user.token || '';
+
+  const { handdleSubmit, answer, answerRef, isAnswerOpen } =
+    useGpt(accessToken);
   const { leftQuestionCount, isPossibleQuestion } =
     useRemainQuestion(accessToken);
 

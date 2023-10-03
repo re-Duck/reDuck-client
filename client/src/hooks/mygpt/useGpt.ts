@@ -1,8 +1,9 @@
 import getCodeReview from '@/service/open-ai';
+import { postGptContent } from '@/service/post-gpt-count';
 import { IContent } from '@/types/mygpt';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-function useGpt() {
+function useGpt(accessToken: string) {
   const [isAnswerOpen, setIsAnswerOpen] = useState(false);
   const [answer, setAnswer] = useState('');
   const answerRef = useRef<HTMLFormElement>(null);
@@ -11,12 +12,20 @@ function useGpt() {
     setAnswer('');
     const res = await getCodeReview({ code, question });
     setAnswer(res || '');
+    return res;
   }, []);
 
   const handdleSubmit = useCallback(async ({ code, question }: IContent) => {
     setIsAnswerOpen(true);
-    // 횟수 차감 API
-    await getAnswer({ code, question });
+    const gptAnswer = await getAnswer({ code, question });
+    if (!gptAnswer) return;
+
+    const data = {
+      userCode: code,
+      userQuestion: question,
+      gptAnswer,
+    };
+    await postGptContent({ data, accessToken });
   }, []);
 
   useEffect(() => {

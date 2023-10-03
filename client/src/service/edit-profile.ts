@@ -35,7 +35,7 @@ export async function editProfile({
     formData.append('file', new Blob());
   }
 
-  const result = await axios_put({ suburl, data: formData, headers });
+  const result = await axios_put<any>({ suburl, data: formData, headers });
   if (result.isOkay) {
     return {
       isOkay: result.isOkay,
@@ -77,7 +77,7 @@ export async function certificationNumberCheck({
   };
   const suburl = '/auth/email/profile';
 
-  const result = await axios_post({ suburl, data, headers });
+  const result = await axios_post<any>({ suburl, data, headers });
   return {
     isOkay: result.isOkay,
     data: result.data,

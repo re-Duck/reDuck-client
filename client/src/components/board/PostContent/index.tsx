@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Comment, CommentUpload } from '@/components/common/Post';
 import { PostDetail } from '@/components/board';
 import { axios_get } from '@/service/base/api';
-import { IComment } from '@/types';
+import { IBoardPostInformation, IComment } from '@/types';
 
 interface IProps {
   postOriginId: string;
@@ -19,9 +19,12 @@ function PostContent({ postOriginId }: IProps) {
   const { data, refetch } = useQuery({
     queryKey: [`${postOriginId}`],
     queryFn: async () => {
-      const res = await axios_get({ suburl });
+      const res = await axios_get<IBoardPostInformation>({ suburl });
+      if (!res.isOkay) throw new Error(res.error.code);
+
       return res.data;
     },
+    retry: false,
     suspense: true,
   });
   const comments = data?.comments;
@@ -30,7 +33,7 @@ function PostContent({ postOriginId }: IProps) {
   return (
     <div className="flex flex-col max-w-4xl m-auto mb-4 gap-14">
       <PostDetail
-        data={data}
+        data={data as IBoardPostInformation}
         IS_AUTHOR={IS_POST_AUTHOR}
         token={user ? user.token : ''}
       />

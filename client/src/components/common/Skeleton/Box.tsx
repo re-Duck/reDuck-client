@@ -8,10 +8,10 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 function SkeletonBox({
   width,
   height,
-  bgColor = 'bg-gray-100',
+  bgColor = 'bg-gray-200',
   ...props
 }: IProps) {
-  const className = `${width} ${height} ${bgColor} animate-pulse ${props.className}`;
+  const className = `${width} ${height} ${bgColor} animate-pulse rounded-md ${props.className}`;
   return <div className={className} {...props}></div>;
 }
 

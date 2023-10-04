@@ -27,6 +27,7 @@ export default function Chatroom() {
 
   const [openChat, setOpenChat] = useState(false);
   const [roomId, setRoomId] = useState('');
+  const [subId, setSubId] = useState('');
 
   const [chatList, setChatList] = useState<IChatMessage[]>([]);
 
@@ -40,6 +41,7 @@ export default function Chatroom() {
     };
     const subscribe_callback = (message: IMessage) => {
       const chatData = JSON.parse(message.body);
+      console.warn('message : ', message.body);
       setChatList((chat) => [chatData, ...chat]);
     };
     if (client && !client.connected) {
@@ -50,12 +52,22 @@ export default function Chatroom() {
           console.log('STOMP 연결 상태: 연결 안 됨');
           return;
         }
-        client.subscribe(`/sub/chat/room/${id}`, subscribe_callback, headers);
+        const subscription = client.subscribe(
+          `/sub/chat/room/${id}`,
+          subscribe_callback,
+          headers
+        );
+        setSubId(subscription.id);
         setOpenChat(true);
       };
       client.connect(headers, connect_callback);
     } else if (client && client.connected) {
-      client.subscribe(`/sub/chat/room/${id}`, subscribe_callback, headers);
+      const subscription = client.subscribe(
+        `/sub/chat/room/${id}`,
+        subscribe_callback,
+        headers
+      );
+      setSubId(subscription.id);
     }
     setRoomId(id);
     setChatList(chatMessages);
@@ -67,7 +79,7 @@ export default function Chatroom() {
       const headers = {
         Authorization: `Bearer ${session.data?.user.token}}`,
       };
-      client.unsubscribe(roomId, headers);
+      client.unsubscribe(subId, headers);
     }
   };
 

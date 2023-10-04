@@ -17,6 +17,7 @@ import { formatDateToString } from '@/util';
 
 interface IUserTile {
   roomId?: string;
+  enteredRoomId: string;
   src?: string;
   token?: string;
   userId: string;
@@ -30,6 +31,7 @@ interface IUserTile {
 
 const UserTile = ({
   roomId,
+  enteredRoomId,
   src,
   token,
   userId,
@@ -65,9 +67,11 @@ const UserTile = ({
     }
   };
 
+  const selectedStyle = enteredRoomId === roomId && 'bg-gray-300';
+
   return (
     <div
-      className="flex gap-2 font-semibold items-center mb-4"
+      className={`flex gap-2 font-semibold items-center px-2 py-4 ${selectedStyle}`}
       onDoubleClick={handleRoomCheck}
     >
       <Avatar src={src ? `${BASE_URL}${src}` : ''} alt="user_icon" size="sm" />

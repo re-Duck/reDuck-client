@@ -26,6 +26,7 @@ export default function ChatUserList({
     >[]
   >([]);
   const [chatUserList, setChatUserList] = useState([]);
+  const [enteredRoomId, setEnteredRoomId] = useState('');
   const session = useSession();
   const { id, token } = session.data?.user || {};
 
@@ -42,6 +43,7 @@ export default function ChatUserList({
   const handleEnterRoom = (roomId: string, chatMessages: IChatMessage[]) => {
     handleDisconnect();
     handleConnect(roomId, chatMessages);
+    setEnteredRoomId(roomId);
     loadUserChatList();
   };
 
@@ -51,7 +53,7 @@ export default function ChatUserList({
 
   return (
     <section className="relative border border-black min-w-[30%] h-5/6 text-center">
-      <section className="flex flex-col m-2.5">
+      <section className="flex flex-col my-2.5">
         <span>채팅방 목록</span>
         {chatUserList?.map((dto) => {
           const {
@@ -63,10 +65,12 @@ export default function ChatUserList({
           } = dto;
           // TODO: 그룹채팅때문에 배열로 내려옴 그룹채팅 추가시 수정
           const { name, uesrId: otherId, userProfileImgPath } = otherUserDto[0];
+          // TODO: 열린 채팅방의 roomId를 저장하고 roomId와 같으면 배경색 변경
           return (
             <UserTile
               key={roomId}
               roomId={roomId}
+              enteredRoomId={enteredRoomId}
               token={token}
               userId={otherId}
               src={userProfileImgPath}
@@ -87,6 +91,7 @@ export default function ChatUserList({
           return (
             <UserTile
               key={userId}
+              enteredRoomId="none"
               token={token}
               userId={userId}
               src={userProfileImgPath}

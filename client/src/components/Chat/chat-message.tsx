@@ -7,6 +7,9 @@ import { Avatar } from '@/components';
 // services
 import { BASE_URL } from '@/service/base/api';
 
+// utils
+import { formatDateToHHMM } from '@/util';
+
 interface IChatMessage {
   type: 'my' | 'other';
   message: string;
@@ -30,14 +33,7 @@ export default function ChatMessage({
       ? ' bg-indigo-500 rounded-tr-none'
       : ' bg-slate-500 rounded-tl-none';
 
-  // TODO: util로 옮기기
-  const foramtDateTime = (messageString: string) => {
-    const newDate = new Date(messageString);
-    const hours = newDate.getHours().toString().padStart(2, '0');
-    const minutes = newDate.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-  };
-  const time = foramtDateTime(messageTime);
+  const time = formatDateToHHMM(messageTime);
   return (
     <div className={`flex ${wrapperStyle} items-end gap-1`}>
       {type === 'other' && (

@@ -12,6 +12,9 @@ import { BASE_URL } from '@/service/base/api';
 // types
 import { IChatMessage } from '@/types';
 
+// utils
+import { formatDateToString } from '@/util';
+
 interface IUserTile {
   roomId?: string;
   src?: string;
@@ -44,6 +47,7 @@ const UserTile = ({
         token,
       });
       const { roomId: id, chatMessages } = data;
+      chatMessages.reverse();
       handleEnterRoom(id, chatMessages);
     } else {
       const otherIds = [userId];
@@ -58,29 +62,6 @@ const UserTile = ({
       if (isOkay) {
         handleEnterRoom(roomId, chatMessages);
       }
-    }
-  };
-
-  const formatDateString = () => {
-    const currentDate = new Date();
-    const targetDate = new Date(lastChatMessageTime as string);
-
-    const diffTime = Math.abs(currentDate.getTime() - targetDate.getTime());
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) {
-      // 오늘 날짜
-      const hours = targetDate.getHours();
-      const minutes = targetDate.getMinutes();
-      return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
-    } else if (diffDays === 1) {
-      // 어제 날짜
-      return '어제';
-    } else {
-      // 그 외의 경우
-      const month = targetDate.getMonth() + 1;
-      const day = targetDate.getDate();
-      return `${month}월 ${day}일`;
     }
   };
 
@@ -106,7 +87,9 @@ const UserTile = ({
           </button>
         ) : (
           <>
-            <p className="text-sm text-slate-400">{formatDateString()}</p>
+            <p className="text-sm text-slate-400">
+              {formatDateToString(lastChatMessageTime as string)}
+            </p>
             {unReadMessageCount !== 0 && (
               <div className="bg-red-500 rounded-full text-white text-sm text-center m-auto w-fit px-2">
                 {unReadMessageCount}

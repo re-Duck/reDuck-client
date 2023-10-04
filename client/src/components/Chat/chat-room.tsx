@@ -7,6 +7,9 @@ import ChatMessage from '@/components/Chat/chat-message';
 // types
 import { IChatMessage } from '@/types';
 
+// utils
+import { parseDate } from '@/util';
+
 interface IChatRoom {
   chatList: IChatMessage[];
   currentUid: string;
@@ -39,12 +42,9 @@ export default function ChatRoom({
   }, [chatList]);
 
   return (
-    <div
-      className="relative flex-1 ml-4 border border-black h-5/6 flex flex-col"
-      ref={chatRoomRef}
-    >
-      <div className="flex flex-col-reverse h-full overflow-y-scroll">
-        {chatList.map((val) => {
+    <div className="relative flex-1 ml-4 border border-black h-5/6 flex flex-col">
+      <div className="flex flex-col h-full overflow-y-scroll" ref={chatRoomRef}>
+        {chatList.map((val, idx) => {
           const {
             messageId,
             message,
@@ -53,15 +53,33 @@ export default function ChatRoom({
             userProfileImgPath,
             messageTime,
           } = val;
+          let dateDivider = null;
+          if (idx !== 0) {
+            dateDivider = parseDate(chatList[idx - 1].messageTime) !==
+              parseDate(messageTime) && (
+              <div className="px-3 py-2 bg-gray-300 w-fit mx-auto rounded-full text-sm">
+                {parseDate(messageTime)}
+              </div>
+            );
+          } else {
+            dateDivider = (
+              <div className="px-3 py-2 bg-gray-300 w-fit mx-auto rounded-full text-sm">
+                {parseDate(messageTime)}
+              </div>
+            );
+          }
           return (
-            <ChatMessage
-              key={messageId}
-              type={senderId === currentUid ? 'my' : 'other'}
-              message={message}
-              name={name}
-              userProfileImgPath={userProfileImgPath}
-              messageTime={messageTime}
-            />
+            <>
+              {dateDivider}
+              <ChatMessage
+                key={messageId}
+                type={senderId === currentUid ? 'my' : 'other'}
+                message={message}
+                name={name}
+                userProfileImgPath={userProfileImgPath}
+                messageTime={messageTime}
+              />
+            </>
           );
         })}
       </div>

@@ -31,3 +31,33 @@ export const parseDate = (date: string) => {
 
   return `${year}년 ${month}월 ${day}일`;
 };
+
+export const formatDateToHHMM = (dateString: string) => {
+  const newDate = new Date(dateString);
+  const hours = newDate.getHours().toString().padStart(2, '0');
+  const minutes = newDate.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+};
+
+export const formatDateToString = (dateString: string) => {
+  const currentDate = new Date();
+  const targetDate = new Date(dateString);
+
+  const diffTime = Math.abs(currentDate.getTime() - targetDate.getTime());
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) {
+    // 오늘 날짜
+    const hours = targetDate.getHours();
+    const minutes = targetDate.getMinutes();
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+  } else if (diffDays === 1) {
+    // 어제 날짜
+    return '어제';
+  } else {
+    // 그 외의 경우
+    const month = targetDate.getMonth() + 1;
+    const day = targetDate.getDate();
+    return `${month}월 ${day}일`;
+  }
+};

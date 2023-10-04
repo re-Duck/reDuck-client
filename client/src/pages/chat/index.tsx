@@ -41,8 +41,7 @@ export default function Chatroom() {
     };
     const subscribe_callback = (message: IMessage) => {
       const chatData = JSON.parse(message.body);
-      console.warn('message : ', message.body);
-      setChatList((chat) => [chatData, ...chat]);
+      setChatList((chat) => [...chat, chatData]);
     };
     if (client && !client.connected) {
       const connect_callback = () => {

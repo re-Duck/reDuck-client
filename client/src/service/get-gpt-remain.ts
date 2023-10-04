@@ -4,8 +4,11 @@ interface IGptRemainUsage {
   accessToken: string;
 }
 interface ResponseType {
-  remainUsageCount: number;
+  data: {
+    remainUsageCount: number;
+  };
 }
+
 export async function getGptRemain({ accessToken }: IGptRemainUsage) {
   const suburl = '/chat-gpt/remain-usage';
   const headers = {
@@ -16,6 +19,8 @@ export async function getGptRemain({ accessToken }: IGptRemainUsage) {
     throw new Error('GPT3의 사용량을 불러오는데 실패했습니다.');
   }
 
-  const { remainUsageCount } = result.data as ResponseType;
+  const {
+    data: { remainUsageCount },
+  } = result.data as ResponseType;
   return remainUsageCount;
 }

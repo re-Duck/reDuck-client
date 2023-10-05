@@ -28,14 +28,15 @@ export default function ChatMessage({
   const wrapperStyle =
     type === 'my' ? 'ml-auto mr-2 flex-row-reverse' : 'mr-auto ml-2';
   const BoxStyle = type === 'my' ? 'text-right' : 'text-left';
+  const messageWrapperStyle = type === 'my' ? 'flex-row-reverse' : 'flex-row';
   const messageStyle =
     type === 'my'
-      ? ' bg-indigo-500 rounded-tr-none'
+      ? ' bg-indigo-500 rounded-tr-none ml-auto'
       : ' bg-slate-500 rounded-tl-none';
 
   const time = formatDateToHHMM(messageTime);
   return (
-    <div className={`flex ${wrapperStyle} items-end gap-1`}>
+    <div className={`flex ${wrapperStyle} items-end gap-1 max-w-[50%]`}>
       {type === 'other' && (
         <div className="self-baseline">
           <Avatar
@@ -45,13 +46,15 @@ export default function ChatMessage({
           />
         </div>
       )}
-      <div className={BoxStyle}>
+      <div className={`${BoxStyle}`}>
         <span>{name}</span>
-        <div className={`w-fit p-2 text-white rounded-xl ${messageStyle}`}>
-          <span>{message}</span>
+        <div className={`flex items-end gap-2 ${messageWrapperStyle}`}>
+          <div className={`w-fit p-2 text-white rounded-xl ${messageStyle}`}>
+            <span>{message}</span>
+          </div>
+          <span>{time}</span>
         </div>
       </div>
-      <span>{time}</span>
     </div>
   );
 }

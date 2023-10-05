@@ -52,8 +52,8 @@ export default function ChatUserList({
   }, []);
 
   return (
-    <section className="relative border border-black min-w-[30%] h-5/6 text-center">
-      <section className="flex flex-col my-2.5">
+    <section className="relative border border-black w-[30%] h-5/6 text-center">
+      <section className="flex flex-col my-2.5 overflow-y-scroll">
         <span>채팅방 목록</span>
         {chatUserList?.map((dto) => {
           const {
@@ -84,7 +84,7 @@ export default function ChatUserList({
           );
         })}
       </section>
-      <section className="absolute bottom-0 left-0 right-0 flex flex-col m-2.5">
+      <section className="absolute bottom-0 left-0 right-0 flex flex-col">
         <p>채팅 추천 유저 목록</p>
         {recommandUser.map((user) => {
           const { userId, userProfileImgPath, name, developAnnual } = user;

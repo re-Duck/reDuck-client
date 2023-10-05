@@ -26,6 +26,7 @@ jobs:
       - name: Generate Environment Variables File for Production
         run: |
           echo "NEXT_PUBLIC_OPEN_API=${{ secrets.NEXT_PUBLIC_OPEN_API }}" >> .env
+          echo "OPENAI_API_KEY=${{ secrets.NEXT_PUBLIC_OPEN_API }}" >> .env
           cat .env
       - name: Install Dependencies
         run: npm install

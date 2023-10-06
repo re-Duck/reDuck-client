@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API" >> .env.production
           echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> .env.production
-          cat .env
+          cat .env.production
         env:
           NEXT_PUBLIC_OPEN_API: ${{ secrets.NEXT_PUBLIC_OPEN_API }}
           OPENAI_API_KEY: ${{ secrets.NEXT_PUBLIC_OPEN_API }}

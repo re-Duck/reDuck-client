@@ -7,7 +7,6 @@ const meta: Meta<typeof ErrorFallback> = {
   component: ErrorFallback,
   tags: ['autodocs'],
   parameters: {
-    layout: 'centered',
     componentSubtitle: '에러가 발생했을 때 보여주는 컴포넌트입니다.',
   },
   argTypes: {

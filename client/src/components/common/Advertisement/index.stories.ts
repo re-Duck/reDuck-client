@@ -5,9 +5,6 @@ import Advertisement from './index';
 const meta: Meta<typeof Advertisement> = {
   title: 'Components/Advertisement',
   component: Advertisement,
-  parameters: {
-    layout: 'centered',
-  },
 };
 
 export default meta;

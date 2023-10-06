@@ -1,13 +1,12 @@
+//core
 import React, { Suspense } from 'react';
-// import { useSelector } from 'react-redux';
-
+import dynamic from 'next/dynamic';
 //components
 import { Advertisement, Layout } from '@/components';
 import { WritePostButton } from '@/components';
 import { Loading } from '@/components/home';
-
-import dynamic from 'next/dynamic';
 import ErrorFallback from '@/components/common/ErrorFallback';
+//third party
 import { ErrorBoundary } from 'react-error-boundary';
 
 const PostsBox = dynamic(() => import('@/components/home/PostsBox'), {

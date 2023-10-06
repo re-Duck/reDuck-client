@@ -34,12 +34,13 @@ const meta: Meta<typeof MenuView> = {
 
   parameters: {
     layout: 'fullscreen',
+    viewport: { defaultViewport: 'mobile1' },
     componentSubtitle:
       '햄버거 버튼을 클릭했을 때 보여주는 메뉴 리스트 컴포넌트입니다. ',
     docs: {
       description: {
         component:
-          '- 이 컴포넌트는 **모바일 화면 사이즈**에서만 보여집니다.\n- 현재 fixed 속성때문에 **Docs에서는 정상적으로 보이지 않습니다**.',
+          '- 이 컴포넌트는 **모바일 화면 사이즈**에서만 보여집니다.\n- 현재 fixed 속성때문에 **Docs에서는 정상적으로 보이지 않습니다.',
       },
     },
   },

@@ -43,9 +43,8 @@ export default function Comment({
           />
           <div className="flex flex-col font-bold">
             <span className="text-md ">{data.commentAuthorName}</span>
-            <div className="flex items-center gap-1">
-              <span className="text-xs text-gray-400">{`${data.commentAuthorDevelopAnnual}년차 개발자`}</span>
-              <span className="flex items-center text-xs text-gray-400">|</span>
+            <div className="flex">
+              <span className="text-xs text-gray-400 after:content-['|'] after:mx-1">{`${data.commentAuthorDevelopAnnual}년차 개발자`}</span>
               <span className="text-xs text-gray-400">
                 {parseDate(data.commentCreatedAt)}
               </span>

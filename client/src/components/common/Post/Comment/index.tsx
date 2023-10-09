@@ -28,7 +28,6 @@ export default function Comment({
 }: ICommentProps) {
   const [isModifying, setIsModifying] = useState(false);
   const [comment, setComment] = useState(data.commentContent);
-
   return (
     <article className="flex flex-col w-full max-w-4xl p-6 m-auto bg-white border-2 border-gray-100 gap-7">
       <div className="flex justify-between">
@@ -63,7 +62,12 @@ export default function Comment({
               setIsModifying={setIsModifying}
             />
             {isModifying && (
-              <button onClick={() => setIsModifying(false)}>취소</button>
+              <button
+                onClick={() => setIsModifying(false)}
+                className="font-medium text-gray-400"
+              >
+                취소
+              </button>
             )}
             <DeleteButton
               id={data.commentOriginId}

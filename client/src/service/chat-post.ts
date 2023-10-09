@@ -26,8 +26,6 @@ const createChatRoom = async ({
     roomName,
   };
 
-  // TODO: roomId 수정
-
   const result = await axios_post({ suburl, headers, data });
 
   return result;

@@ -60,7 +60,7 @@ const UserTile = ({
       });
       const { isOkay, data } = result;
       const { chatMessages, roomId } = data;
-
+      chatMessages.reverse();
       if (isOkay) {
         handleEnterRoom(roomId, chatMessages);
       }
@@ -75,11 +75,13 @@ const UserTile = ({
       onDoubleClick={handleRoomCheck}
     >
       <Avatar src={src ? `${BASE_URL}${src}` : ''} alt="user_icon" size="sm" />
-      <div className="flex flex-col text-left">
+      <div className="flex flex-1 flex-col text-left overflow-hidden">
         <span className="text-md">{name}</span>
-        <span className="text-xs text-gray-400">{description}</span>
+        <span className="text-xs text-gray-400 truncate overflow-ellipsis">
+          {description}
+        </span>
       </div>
-      <div className="absolute right-0 disabled:opacity-70 w-8 h-8 sm:w-14 sm:h-10 inline-block">
+      <div className="disabled:opacity-70 w-8 h-8 sm:w-14 sm:h-10 inline-block">
         {type === 'recommand' ? (
           <button className="w-8 sm:w-14 text-right" onClick={handleRoomCheck}>
             <Icon

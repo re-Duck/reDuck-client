@@ -3,8 +3,7 @@ import React, { Suspense } from 'react';
 
 //components
 import { Advertisement, Layout } from '@/components';
-import { WritePostButton } from '@/components';
-import { Loading } from '@/components/home';
+import { Loading, WritePostButton } from '@/components/home';
 
 import dynamic from 'next/dynamic';
 import ErrorFallback from '@/components/common/ErrorFallback';

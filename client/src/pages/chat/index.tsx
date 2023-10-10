@@ -34,7 +34,7 @@ export default function Chatroom() {
   const clientRef = useRef<CompatClient>();
 
   // 채팅방 연결
-  const handleConnect = (id: string, chatMessages: IChatMessage[]) => {
+  const handleConnect = (id: string) => {
     const client = clientRef.current;
     const headers = {
       Authorization: `Bearer ${session.data?.user.token}}`,
@@ -48,7 +48,7 @@ export default function Chatroom() {
         // STOMP 클라이언트의 연결 상태 확인
         if (!client.connected) {
           // TODO: 에러 핸들링 - STOMP 소켓 연결 안됨.
-          console.log('STOMP 연결 상태: 연결 안 됨');
+          console.error('STOMP 연결 상태: 연결 안 됨');
           return;
         }
         const subscription = client.subscribe(
@@ -69,7 +69,6 @@ export default function Chatroom() {
       setSubId(subscription.id);
     }
     setRoomId(id);
-    setChatList(chatMessages);
   };
 
   const handleDisconnect = () => {
@@ -111,7 +110,7 @@ export default function Chatroom() {
         }
       }
     },
-    [chatList, session]
+    [session]
   );
 
   useEffect(() => {
@@ -151,7 +150,10 @@ export default function Chatroom() {
         />
         {openChat && (
           <ChatRoom
+            token={session.data?.user.token || ''}
+            roomId={roomId}
             chatList={chatList}
+            setChatList={setChatList}
             currentUid={session.data?.user.id || ''}
             handleSendMessage={handleSendMessage}
           />

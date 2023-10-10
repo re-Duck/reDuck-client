@@ -9,10 +9,10 @@ import { getRecommandUser, getUserChatRoom } from '@/service/chat-get';
 import UserTile from './user-tile';
 
 // types
-import { IUserInfo, IChatMessage } from '@/types';
+import { IUserInfo } from '@/types';
 
 interface IChatUserList {
-  handleConnect: (roomId: string, chatMessages: IChatMessage[]) => void;
+  handleConnect: (roomId: string) => void;
   handleDisconnect: () => void;
 }
 export default function ChatUserList({
@@ -40,9 +40,9 @@ export default function ChatUserList({
     setChatUserList(listData || []);
   };
 
-  const handleEnterRoom = (roomId: string, chatMessages: IChatMessage[]) => {
+  const handleEnterRoom = (roomId: string) => {
     handleDisconnect();
-    handleConnect(roomId, chatMessages);
+    handleConnect(roomId);
     setEnteredRoomId(roomId);
     loadUserChatList();
   };
@@ -65,7 +65,6 @@ export default function ChatUserList({
           } = dto;
           // TODO: 그룹채팅때문에 배열로 내려옴 그룹채팅 추가시 수정
           const { name, uesrId: otherId, userProfileImgPath } = otherUserDto[0];
-          // TODO: 열린 채팅방의 roomId를 저장하고 roomId와 같으면 배경색 변경
           return (
             <UserTile
               key={roomId}

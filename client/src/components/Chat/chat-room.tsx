@@ -1,6 +1,9 @@
 // react, next
 import React, { useEffect, useRef, useState } from 'react';
 
+// react-query
+import { useInfiniteQuery } from '@tanstack/react-query';
+
 // components
 import ChatMessage from '@/components/Chat/chat-message';
 
@@ -10,15 +13,24 @@ import { IChatMessage } from '@/types';
 // utils
 import { parseDate } from '@/util';
 
+// services
+import { getRoomChat } from '@/service/chat-get';
+
 interface IChatRoom {
+  token: string;
+  roomId: string;
   chatList: IChatMessage[];
   currentUid: string;
+  setChatList: React.Dispatch<React.SetStateAction<IChatMessage[]>>;
   handleSendMessage: (chatMessage: string) => void;
 }
 
 export default function ChatRoom({
+  token,
+  roomId,
   chatList,
   currentUid,
+  setChatList,
   handleSendMessage,
 }: IChatRoom) {
   const [chatMessage, setChatMessage] = useState('');
@@ -35,11 +47,57 @@ export default function ChatRoom({
     setChatMessage('');
   };
 
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ['chat'],
+    queryFn: ({ pageParam }) =>
+      getRoomChat({ roomId, token, messageId: pageParam }),
+    getNextPageParam: (lastPage) => lastPage?.nextPageParam,
+  });
+
   useEffect(() => {
     if (chatRoomRef.current !== null) {
+      if (chatRoomRef.current.scrollTop > 150) {
+        return;
+      }
       chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
     }
   }, [chatList]);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      const newData = data?.pages[data?.pages.length - 1].chatMessages;
+      newData.reverse();
+      setChatList((chat) => [...newData, ...chat]);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setChatList([]);
+    fetchNextPage({ pageParam: 0 });
+  }, [roomId]);
+
+  useEffect(() => {
+    const handleScroll = async (e: Event) => {
+      const chatRoomElement = e.currentTarget;
+
+      if (chatRoomElement) {
+        const { scrollTop } = chatRoomElement as Element;
+        if (!isFetching && hasNextPage && scrollTop <= 150) {
+          await fetchNextPage();
+        }
+      }
+    };
+
+    if (chatRoomRef.current) {
+      chatRoomRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (chatRoomRef.current) {
+        chatRoomRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [isFetching, hasNextPage]);
 
   return (
     <div className="relative flex-1 ml-4 border border-black h-5/6 flex flex-col">
@@ -53,33 +111,28 @@ export default function ChatRoom({
             userProfileImgPath,
             messageTime,
           } = val;
-          let dateDivider = null;
-          if (idx !== 0) {
-            dateDivider = parseDate(chatList[idx - 1].messageTime) !==
-              parseDate(messageTime) && (
+
+          const dateDivider =
+            idx === 0 ||
+            (idx !== 0 &&
+              parseDate(chatList[idx - 1].messageTime) !==
+                parseDate(messageTime)) ? (
               <div className="px-3 py-2 bg-gray-300 w-fit mx-auto rounded-full text-sm">
                 {parseDate(messageTime)}
               </div>
-            );
-          } else {
-            dateDivider = (
-              <div className="px-3 py-2 bg-gray-300 w-fit mx-auto rounded-full text-sm">
-                {parseDate(messageTime)}
-              </div>
-            );
-          }
+            ) : null;
+
           return (
-            <>
+            <React.Fragment key={messageId}>
               {dateDivider}
               <ChatMessage
-                key={messageId}
                 type={senderId === currentUid ? 'my' : 'other'}
                 message={message}
                 name={name}
                 userProfileImgPath={userProfileImgPath}
                 messageTime={messageTime}
               />
-            </>
+            </React.Fragment>
           );
         })}
       </div>

@@ -23,7 +23,7 @@ interface IUserTile {
   userId: string;
   name?: string;
   description: string;
-  handleEnterRoom: (roomId: string, chatMessages: IChatMessage[]) => void;
+  handleEnterRoom: (roomId: string) => void;
   type: 'recommand' | 'room';
   lastChatMessageTime?: string;
   unReadMessageCount?: number;
@@ -44,13 +44,7 @@ const UserTile = ({
 }: IUserTile) => {
   const handleRoomCheck = async () => {
     if (type === 'room') {
-      const data = await getRoomChat({
-        roomId,
-        token,
-      });
-      const { roomId: id, chatMessages } = data;
-      chatMessages.reverse();
-      handleEnterRoom(id, chatMessages);
+      handleEnterRoom(roomId as string);
     } else {
       const otherIds = [userId];
       const result = await createChatRoom({
@@ -59,10 +53,9 @@ const UserTile = ({
         token,
       });
       const { isOkay, data } = result;
-      const { chatMessages, roomId } = data;
-      chatMessages.reverse();
+      const { roomId } = data;
       if (isOkay) {
-        handleEnterRoom(roomId, chatMessages);
+        handleEnterRoom(roomId);
       }
     }
   };

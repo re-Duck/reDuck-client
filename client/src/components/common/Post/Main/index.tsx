@@ -3,21 +3,21 @@ import React from 'react';
 
 //Interface
 import { IPostInformation } from '@/types';
-import Avatar from '../Avatar';
+import Avatar from '../../Avatar';
 import { BASE_URL } from '@/service/base/api';
 import { parseDate } from '@/util';
 
-export function Post(props: IPostInformation) {
+export function Main(props: IPostInformation) {
   const url = props.postAuthorId
     ? `${BASE_URL}${props.postAuthorProfileImgPath}`
     : '';
 
   return (
-    <article className="flex flex-col w-full  bg-white border-gray-100 border-2 h-50 p-6  rounded-l gap-3">
+    <article className="flex flex-col w-full gap-3 p-6 bg-white border-2 border-gray-100 rounded-l h-50">
       <div className="flex">
         <Link
           href={`profile/${props.postAuthorId}`}
-          className="flex gap-2 font-semibold items-center mb-4 hover:cursor-pointer"
+          className="flex items-center gap-2 mb-4 font-semibold hover:cursor-pointer"
         >
           <Avatar src={url} alt="user_icon" size="sm" />
           <div className="flex flex-col">
@@ -37,19 +37,19 @@ export function Post(props: IPostInformation) {
         <h1 className="text-xl font-bold">{props.postTitle}</h1>
 
         <p
-          className="text-md text-gray-500 line-clamp-3 mb-3"
+          className="mb-3 text-gray-500 text-md line-clamp-3"
           dangerouslySetInnerHTML={{ __html: props.postContent }}
         />
         <div className="flex justify-between">
           <div className="flex flex-col gap-1">
-            <p className="text-gray-400 text-sm">좋아요 0 | 조회 0</p>
+            <p className="text-sm text-gray-400">좋아요 0 | 조회 0</p>
             <p className="text-gray-400">{parseDate(props?.postCreatedAt)}</p>
           </div>
-          <p className="text-gray-400 text-sm">{`댓글 ${props.commentsCount}`}</p>
+          <p className="text-sm text-gray-400">{`댓글 ${props.commentsCount}`}</p>
         </div>
       </Link>
     </article>
   );
 }
 
-export default React.memo(Post);
+export default React.memo(Main);

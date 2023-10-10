@@ -2,7 +2,7 @@ import React from 'react';
 import { IPostInformation } from '@/types';
 import useScroll from '@/hooks/Main/useScroll';
 
-import { Post } from '../../common/Post/post';
+import { Post } from '../../common/Post/Main';
 import LoadingIcon from '../../common/LoadingIcon';
 
 function PostsBox() {

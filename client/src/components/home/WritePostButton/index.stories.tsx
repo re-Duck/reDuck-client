@@ -18,7 +18,7 @@ const mockData = {
 };
 
 const meta: Meta<typeof WritePostButton> = {
-  title: 'Components/WritePostButton',
+  title: 'Components/home/WritePostButton',
   component: WritePostButton,
   tags: ['autodocs'],
   parameters: {

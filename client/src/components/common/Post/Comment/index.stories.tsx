@@ -19,7 +19,7 @@ const mockComment: IComment = {
 };
 
 const meta: Meta<typeof Comment> = {
-  title: 'Components/Post/Comment',
+  title: 'Components/common/Post/Comment',
   component: Comment,
   tags: ['autodocs'],
   parameters: {

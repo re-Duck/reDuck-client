@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Advertisement from './index';
 
 const meta: Meta<typeof Advertisement> = {
-  title: 'Components/Advertisement',
+  title: 'Components/common/Advertisement',
   component: Advertisement,
 };
 

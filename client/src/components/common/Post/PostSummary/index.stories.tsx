@@ -19,7 +19,7 @@ const mockPostInfoData: IPostInformation = {
 };
 
 const meta: Meta<typeof PostSummary> = {
-  title: 'Components/Post/PostSummary',
+  title: 'Components/common/Post/PostSummary',
   component: PostSummary,
   tags: ['autodocs'],
   parameters: {

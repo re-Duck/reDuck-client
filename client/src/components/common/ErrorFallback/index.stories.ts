@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ErrorFallback from './index';
 
 const meta: Meta<typeof ErrorFallback> = {
-  title: 'Components/ErrorFallback',
+  title: 'Components/common/ErrorFallback',
   component: ErrorFallback,
   tags: ['autodocs'],
   parameters: {

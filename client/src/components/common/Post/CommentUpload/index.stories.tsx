@@ -15,7 +15,7 @@ const mockUser: IUser = {
 };
 
 const meta: Meta<typeof CommentUpload> = {
-  title: 'Components/Post/CommentUpload',
+  title: 'Components/common/Post/CommentUpload',
   component: CommentUpload,
   tags: ['autodocs'],
   parameters: {

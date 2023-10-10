@@ -28,7 +28,7 @@ const authSlice = createSlice({
 });
 
 const meta: Meta<typeof MenuView> = {
-  title: 'Components/MenuView',
+  title: 'Components/common/MenuView',
   component: MenuView,
   tags: ['autodocs'],
 

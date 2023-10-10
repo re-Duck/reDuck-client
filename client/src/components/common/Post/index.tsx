@@ -1,4 +1,4 @@
-export { default as Post } from './Main';
+export { default as PostSummary } from './PostSummary';
 export { default as Comment } from './Comment';
 export { default as CommentUpload } from './CommentUpload';
 export { default as DeleteButton } from './DeleteButton';

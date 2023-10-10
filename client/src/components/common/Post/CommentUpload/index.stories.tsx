@@ -30,7 +30,9 @@ const meta: Meta<typeof CommentUpload> = {
           reducer: {},
         })}
       >
-        <Story className="w-full max-w-4xl" />
+        <div className="w-full max-w-4xl">
+          <Story />
+        </div>
       </Provider>
     ),
   ],

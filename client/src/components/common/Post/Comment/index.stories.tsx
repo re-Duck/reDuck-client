@@ -23,6 +23,7 @@ const meta: Meta<typeof Comment> = {
   component: Comment,
   tags: ['autodocs'],
   parameters: {
+    layout: 'fullscreen',
     componentSubtitle: '게시글의 댓글을 보여주는 컴포넌트입니다.',
   },
   decorators: [

@@ -64,7 +64,7 @@ export default function Login() {
     setSubmitting(false);
   };
   return (
-    <Layout viewList={false}>
+    <Layout hasLoginButton={false}>
       <div className="flex flex-col h-[calc(100vh-3.5rem)] justify-center items-center">
         <h1 className="text-2xl font-bold">로그인</h1>
         <Formik

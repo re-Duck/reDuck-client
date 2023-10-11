@@ -7,13 +7,13 @@ import { useSelector } from 'react-redux';
 
 interface IMenuView {
   isClickedHamburger: boolean;
-  viewList: boolean;
+  hasLoginButton: boolean;
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function MenuView({
   isClickedHamburger,
-  viewList,
+  hasLoginButton,
   setisClickedHamburger,
 }: IMenuView) {
   const authState = useSelector((state: any) => state.auth);
@@ -22,7 +22,7 @@ export default function MenuView({
 
   return (
     <>
-      {isClickedHamburger && viewList && (
+      {isClickedHamburger && hasLoginButton && (
         <div className="fixed z-10 w-screen h-screen bg-white top-14 sm:hidden">
           <ul className="flex flex-col text-2xl">
             {linkList.map(({ name, href }) => {

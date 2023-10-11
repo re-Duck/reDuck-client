@@ -34,7 +34,7 @@ const meta: Meta<typeof MenuView> = {
         },
       },
     },
-    viewList: {
+    hasLoginButton: {
       description: '메뉴 리스트가 보여지는지 여부입니다.',
       table: {
         type: {
@@ -62,7 +62,7 @@ type Story = StoryObj<typeof MenuView>;
 export const Primary: Story = {
   args: {
     isClickedHamburger: true,
-    viewList: true,
+    hasLoginButton: true,
   },
   parameters: {
     docs: {
@@ -75,7 +75,7 @@ export const Primary: Story = {
 export const Logined: Story = {
   args: {
     isClickedHamburger: true,
-    viewList: true,
+    hasLoginButton: true,
   },
   parameters: {
     docs: {

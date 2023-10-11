@@ -18,7 +18,7 @@ const meta: Meta<typeof MenuView> = {
     docs: {
       description: {
         component:
-          '- 이 컴포넌트는 **모바일 화면 사이즈**에서만 보여집니다.\n- 현재 fixed 속성때문에 **Docs에서는 정상적으로 보이지 않습니다.',
+          '- 이 컴포넌트는 **모바일 화면 사이즈**에서만 보여집니다.\n- 현재 fixed 속성때문에 **Docs에서는 정상적으로 보이지 않습니다.**',
       },
     },
   },
@@ -35,13 +35,13 @@ const meta: Meta<typeof MenuView> = {
       },
     },
     hasLoginButton: {
-      description: '메뉴 리스트가 보여지는지 여부입니다.',
+      description: '로그인 버튼이 보여지는지 여부입니다.',
       table: {
         type: {
           summary: 'boolean',
         },
         defaultValue: {
-          summary: false,
+          summary: true,
         },
       },
     },

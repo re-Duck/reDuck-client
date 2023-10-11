@@ -90,7 +90,7 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
           onClick={handleChatRoute}
           className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
         >
-          채팅연결
+          1:1 채팅
         </button>
       </div>
     </>

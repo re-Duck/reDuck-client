@@ -19,10 +19,12 @@ import { IChatMessage } from '@/types';
 
 // constant
 import { ModalType, errorMessage } from '@/constant';
+import { createChatRoom } from '@/service/chat-post';
 
 export default function Chatroom() {
   const session = useSession();
   const router = useRouter();
+  const { query } = router;
   const { openModal, closeModal } = useModal();
 
   const [openChat, setOpenChat] = useState(false);
@@ -113,6 +115,21 @@ export default function Chatroom() {
     [session]
   );
 
+  const handleConnectChat = async (otherId: string) => {
+    const otherIds = [otherId];
+    const result = await createChatRoom({
+      otherIds,
+      roomName: '',
+      token: session.data?.user.token || '',
+    });
+    const { isOkay, data } = result;
+    if (isOkay) {
+      const { roomId, chatMessages } = data;
+      handleConnect(roomId);
+      setChatList(chatMessages);
+    }
+  };
+
   useEffect(() => {
     if (!session.data) {
       openModal({
@@ -136,6 +153,11 @@ export default function Chatroom() {
       console.log('Additional details: ', frame.body);
     };
 
+    // 마이페이지에서 채팅 연결 시도 시
+    if (query.otherId) {
+      handleConnectChat(query.otherId as string);
+    }
+
     return () => {
       client.disconnect();
     };
@@ -145,6 +167,7 @@ export default function Chatroom() {
     <Layout>
       <div className="relative mx-auto flex max-w-5xl h-screen">
         <ChatUserList
+          enteredRoomId={roomId}
           handleConnect={handleConnect}
           handleDisconnect={handleDisconnect}
         />

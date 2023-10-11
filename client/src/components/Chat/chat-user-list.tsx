@@ -12,10 +12,12 @@ import UserTile from './user-tile';
 import { IUserInfo } from '@/types';
 
 interface IChatUserList {
+  enteredRoomId: string;
   handleConnect: (roomId: string) => void;
   handleDisconnect: () => void;
 }
 export default function ChatUserList({
+  enteredRoomId,
   handleConnect,
   handleDisconnect,
 }: IChatUserList) {
@@ -26,7 +28,6 @@ export default function ChatUserList({
     >[]
   >([]);
   const [chatUserList, setChatUserList] = useState([]);
-  const [enteredRoomId, setEnteredRoomId] = useState('');
   const session = useSession();
   const { id, token } = session.data?.user || {};
 
@@ -43,7 +44,6 @@ export default function ChatUserList({
   const handleEnterRoom = (roomId: string) => {
     handleDisconnect();
     handleConnect(roomId);
-    setEnteredRoomId(roomId);
     loadUserChatList();
   };
 

@@ -6,11 +6,7 @@ import { Avatar, Icon } from '../';
 
 // services
 import { createChatRoom } from '@/service/chat-post';
-import { getRoomChat } from '@/service/chat-get';
 import { BASE_URL } from '@/service/base/api';
-
-// types
-import { IChatMessage } from '@/types';
 
 // utils
 import { formatDateToString } from '@/util';

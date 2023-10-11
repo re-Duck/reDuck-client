@@ -23,6 +23,19 @@ const meta: Meta<typeof Layout> = {
     componentSubtitle:
       '모든 페이지에서 공통적으로 보여지는 레이아웃 컴포넌트입니다.',
   },
+  argTypes: {
+    hasLoginButton: {
+      description: '로그인 버튼이 보여지는지 여부입니다.',
+      table: {
+        type: {
+          summary: 'boolean',
+        },
+        defaultValue: {
+          summary: true,
+        },
+      },
+    },
+  },
 };
 
 export default meta;

@@ -3,29 +3,8 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import MenuView from './index';
-import { PayloadAction, configureStore, createSlice } from '@reduxjs/toolkit';
-import { Provider, useDispatch } from 'react-redux';
-import { IUserState } from '@/types/redux/IUserState';
-
-const initialState: IUserState = {
-  userId: '',
-  userName: '',
-  userProfileImgPath: '',
-  isLogin: false,
-};
-
-const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    logIn: (state, actions: PayloadAction<IUserState>) => {
-      state.userId = actions.payload.userId;
-      state.userName = actions.payload.userName;
-      state.userProfileImgPath = actions.payload.userProfileImgPath;
-      state.isLogin = true;
-    },
-  },
-});
+import { useDispatch } from 'react-redux';
+import { authSlice } from '../../../../.storybook/preview';
 
 const meta: Meta<typeof MenuView> = {
   title: 'Components/common/MenuView',
@@ -44,19 +23,6 @@ const meta: Meta<typeof MenuView> = {
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <Provider
-        store={configureStore({
-          reducer: {
-            auth: authSlice.reducer,
-          },
-        })}
-      >
-        <Story />
-      </Provider>
-    ),
-  ],
   argTypes: {
     isClickedHamburger: {
       description: '햄버거 버튼이 클릭되었는지 여부입니다.',

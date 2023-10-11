@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-
 import MenuView from './index';
+
 import { useDispatch } from 'react-redux';
 import { authSlice } from '../../../../.storybook/preview';
 
@@ -64,7 +63,6 @@ export const Primary: Story = {
   args: {
     isClickedHamburger: true,
     viewList: true,
-    setisClickedHamburger: () => {},
   },
   parameters: {
     docs: {
@@ -78,7 +76,6 @@ export const Logined: Story = {
   args: {
     isClickedHamburger: true,
     viewList: true,
-    setisClickedHamburger: () => {},
   },
   parameters: {
     docs: {

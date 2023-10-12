@@ -7,9 +7,7 @@ module.exports = {
       numberOfRuns: 3,
     },
     upload: {
-      target: 'filesystem',
-      outputDir: './lhci_reports',
-      reportFilenamePattern: '%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%',
+      target: 'temporary-public-storage',
     },
     assert: {
       assertions: {

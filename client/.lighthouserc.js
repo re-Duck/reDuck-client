@@ -1,7 +1,6 @@
 module.exports = {
   ci: {
     collect: {
-      staticDistDir: './build',
       startServerCommand: 'npm run start',
       startServerReadyPattern: 'ready on',
       url: ['http://localhost:3000'],

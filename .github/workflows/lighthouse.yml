@@ -16,17 +16,13 @@ jobs:
           node-version: '18'
 
       - name: Install packages
-        run: |
-          npm ci
+        run: npm ci && npm install -g @lhci/cli@0.8.x
         working-directory: ${{ env.working-directory }}
       - name: Build
-        run: |
-          npm run build
+        run: npm run build
         working-directory: ${{ env.working-directory }}
       - name: Run Lighthouse CI
+        run: lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-        run: |
-          npm install -g @lhci/cli
-          lhci autorun || echo "Fail to Run Lighthouse CI!"
         working-directory: ${{ env.working-directory }}

@@ -35,7 +35,7 @@ jobs:
           script: |
 
             const fs = require('fs');
-            const results = JSON.parse(fs.readFileSync("/client/lhci_reports/manifest.json"));
+            const results = JSON.parse(fs.readFileSync("./client/lhci_reports/manifest.json"));
             let comments = "";
 
             results.forEach((result) => {
@@ -55,7 +55,7 @@ jobs:
                 `⚡️ Lighthouse report!`,
                 `| Category | Score |`,
                 `| --- | --- |`,
-                `| ${score(summary.performance)} Performance | ${summary.performance} |`,
+                `| ${score(summary.performance)} Performance | ${summary.performance} |`
               ].join("\n");
 
               const detail = [

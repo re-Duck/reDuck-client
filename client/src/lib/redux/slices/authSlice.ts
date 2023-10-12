@@ -37,6 +37,7 @@ export const authSlice = createSlice({
   //   },
   // },
 
+  // 위 코드가 경고창이 발생하여 아래와 같이 수정했음. 하지만 action.payload가 타입 에러로 나와서 확인 부탁
   extraReducers: (builder) => {
     builder.addCase(HYDRATE, (state, action: any) => {
       return {

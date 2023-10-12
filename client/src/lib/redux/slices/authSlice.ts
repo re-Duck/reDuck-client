@@ -27,13 +27,23 @@ export const authSlice = createSlice({
     },
   },
   /* 페이지 이동시 상태 초기화가 필요한 경우 사용 */
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
+  // extraReducers: {
+  //   [HYDRATE]: (state, action) => {
+  //     console.log('action: ', action);
+  //     return {
+  //       ...state,
+  //       ...action.payload.auth,
+  //     };
+  //   },
+  // },
+
+  extraReducers: (builder) => {
+    builder.addCase(HYDRATE, (state, action: any) => {
       return {
         ...state,
         ...action.payload.auth,
       };
-    },
+    });
   },
 });
 

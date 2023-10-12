@@ -3,6 +3,7 @@ module.exports = {
     collect: {
       staticDistDir: './build',
       startServerCommand: 'npm run start',
+      startServerReadyPattern: 'ready on',
       url: ['http://localhost:3000'],
       numberOfRuns: 5,
     },

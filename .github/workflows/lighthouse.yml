@@ -47,7 +47,7 @@ jobs:
                 (key) => (summary[key] = formatResult(summary[key]))
               );
 
-              const score = (res) => (res >= 90 ? "🟢" : res >= 50 ? "🟠" : "🔴");
+              const score = (res) => (res >= 90 ? "🟢" : res >= 80 ? "🟠" : "🔴");
 
               const comment = [
                 `⚡️ Lighthouse report!`,
@@ -59,13 +59,13 @@ jobs:
                 `| ${score(summary.seo)} SEO | ${summary.seo} |`,
                 `| ${score(summary.pwa)} PWA | ${summary.pwa} |`,
               ].join("\n");
-
+              comments += comment + "\n";
             });
-            core.setOutput('comment', comment)
+            core.setOutput('comment', comments)
 
       - name: comment PR
         uses: unsplash/comment-on-pr@v1.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: ${{ steps.format_lighthouse_score.outputs.comment}}
+          msg: ${{ steps.format_lighthouse_score.outputs.comments}}

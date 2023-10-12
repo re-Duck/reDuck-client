@@ -59,7 +59,17 @@ jobs:
                 `| ${score(summary.seo)} SEO | ${summary.seo} |`,
                 `| ${score(summary.pwa)} PWA | ${summary.pwa} |`,
               ].join("\n");
-              comments += comment + "\n";
+
+              const detail = [
+                `| Category | Score |`,
+                `| --- | --- |`,
+                `| ${score(
+                  audits["first-contentful-paint"].score * 100
+                )} First Contentful Paint | ${
+                  audits["first-contentful-paint"].displayValue
+                } |`,
+              ].join("\n");
+              comments += comment + "\n" + detail + "\n";
             });
             core.setOutput('comment', comments)
 

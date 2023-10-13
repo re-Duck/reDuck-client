@@ -34,6 +34,7 @@ export default function ChatRoom({
   handleSendMessage,
 }: IChatRoom) {
   const [chatMessage, setChatMessage] = useState('');
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const messageRef = useRef<HTMLInputElement | null>(null);
   const chatRoomRef = useRef<HTMLDivElement | null>(null);
@@ -56,10 +57,9 @@ export default function ChatRoom({
 
   useEffect(() => {
     if (chatRoomRef.current !== null) {
-      if (chatRoomRef.current.scrollTop > 150) {
-        return;
+      if (!isScrolling) {
+        chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
       }
-      chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
     }
   }, [chatList]);
 
@@ -77,9 +77,16 @@ export default function ChatRoom({
   }, [roomId]);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     const handleScroll = async (e: Event) => {
+      setIsScrolling(true);
+
       const chatRoomElement = e.currentTarget;
 
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        setIsScrolling(false);
+      }, 150);
       if (chatRoomElement) {
         const { scrollTop } = chatRoomElement as Element;
         if (!isFetching && hasNextPage && scrollTop <= 150) {

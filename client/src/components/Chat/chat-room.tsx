@@ -43,6 +43,12 @@ export default function ChatRoom({
     setChatMessage(e.target.value);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleClickSend();
+    }
+  };
+
   const handleClickSend = () => {
     handleSendMessage(chatMessage);
     setChatMessage('');
@@ -150,6 +156,7 @@ export default function ChatRoom({
           value={chatMessage}
           ref={messageRef}
           onChange={handleMessageChange}
+          onKeyDown={handleKeyDown}
         />
         <button
           type="button"

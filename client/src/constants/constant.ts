@@ -31,7 +31,7 @@ export const errorMessage = Object.freeze({
     '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요.',
   failedSignUp: '회원가입에 실패했습니다. 다시 시도해주세요.',
   networkError: '일시적인 네트워크 오류입니다.',
-  tryAgarin: '잠시후 다시 시도해주세요.',
+  tryAgain: '잠시후 다시 시도해주세요.',
   error: '에러입니다.',
 });
 

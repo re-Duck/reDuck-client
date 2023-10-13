@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { useModal } from '@/hooks';
 
 // components
 import { Avatar } from '@/components';
@@ -8,9 +10,15 @@ import FlexLabelContent from './flex-label-content';
 // service
 import { BASE_URL } from '@/service/base/api';
 import { IUserInfo } from '@/types';
+import { createChatRoom } from '@/service/chat-post';
+import { ModalType, errorMessage } from '@/constant';
 
 export default function UserInfo({ userData }: { userData: IUserInfo }) {
   const router = useRouter();
+  const session = useSession();
+  const { openModal } = useModal();
+
+  const [isDisable, setIsDisable] = useState(false);
   const {
     company,
     companyEmail,
@@ -35,9 +43,7 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
       label: '프로필이미지',
       content: (
         <Avatar
-          src={`${BASE_URL}${
-            userProfileImgPath === undefined ? '' : userProfileImgPath
-          }`}
+          src={`${BASE_URL}${userProfileImgPath || ''}`}
           alt="profileImg"
           size="sm"
         />
@@ -69,13 +75,30 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
     },
   ];
 
-  const handleChatRoute = () => {
-    router.push({
-      pathname: '/chat',
-      query: {
-        otherId: userId,
-      },
+  const handleChatRoute = async () => {
+    setIsDisable(true);
+    const result = await createChatRoom({
+      otherIds: [userId],
+      roomName: '',
+      token: session.data?.user.token,
     });
+    const { isOkay, data } = result;
+    if (isOkay) {
+      const { roomId, chatMessages } = data;
+      router.push({
+        pathname: '/chat',
+        query: {
+          roomId,
+          chatMessages: JSON.stringify(chatMessages),
+        },
+      });
+    } else {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.error,
+      });
+      setIsDisable(false);
+    }
   };
 
   return (
@@ -88,6 +111,7 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
       <div className="flex items-baseline">
         <button
           onClick={handleChatRoute}
+          disabled={isDisable}
           className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
         >
           1:1 채팅

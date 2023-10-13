@@ -19,7 +19,6 @@ import { IChatMessage } from '@/types';
 
 // constant
 import { ModalType, errorMessage } from '@/constant';
-import { createChatRoom } from '@/service/chat-post';
 
 export default function Chatroom() {
   const session = useSession();
@@ -136,6 +135,10 @@ export default function Chatroom() {
       console.log('Broker reported error: ', frame.headers['message']);
       console.log('Additional details: ', frame.body);
     };
+
+    if (query.roomId) {
+      handleConnect(query.roomId as string);
+    }
 
     return () => {
       client.disconnect();

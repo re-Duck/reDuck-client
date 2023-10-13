@@ -50,8 +50,10 @@ export default function ChatRoom({
   };
 
   const handleClickSend = () => {
-    handleSendMessage(chatMessage);
-    setChatMessage('');
+    if (chatMessage !== '') {
+      handleSendMessage(chatMessage);
+      setChatMessage('');
+    }
   };
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({

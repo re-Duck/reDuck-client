@@ -1,9 +1,14 @@
+//core
 import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 //components
 import { Layout } from '@/components';
-import { IPostInformation } from '../../types/index';
 import { Loading } from '@/components/board';
+import ErrorFallback from '@/components/common/ErrorFallback';
+//types
+import { IPostInformation } from '@/types';
+//third party
+import { ErrorBoundary } from 'react-error-boundary';
 
 const PostContent = dynamic(
   () => import('@/components/board/PostContent/index'),
@@ -20,11 +25,17 @@ interface IProps {
 }
 export default function PostDetailPage({ pageProps }: IProps) {
   return (
-    <Layout>
-      <Suspense fallback={<Loading />}>
-        <PostContent postOriginId={pageProps.postOriginId} />
-      </Suspense>
-    </Layout>
+    <ErrorBoundary
+      FallbackComponent={(props) => (
+        <ErrorFallback {...props} hasHomeButton={true} />
+      )}
+    >
+      <Layout>
+        <Suspense fallback={<Loading />}>
+          <PostContent postOriginId={pageProps.postOriginId} />
+        </Suspense>
+      </Layout>
+    </ErrorBoundary>
   );
 }
 export async function getServerSideProps({

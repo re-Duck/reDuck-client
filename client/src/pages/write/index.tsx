@@ -14,9 +14,8 @@ import { useModal, useWriting } from '@/hooks';
 import { useSession } from 'next-auth/react';
 
 //service
-import { boardPost } from '@/service/board-post';
-import { boardUpdate } from '@/service/board-update';
 import { Icon } from '@iconify/react';
+import { postManager } from '@/service/post';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -45,9 +44,18 @@ export default function Write() {
       let returnPostOriginId = postOriginId;
 
       if (returnPostOriginId) {
-        await boardUpdate({ title, content, accessToken, postOriginId });
+        await postManager.updatePost({
+          title,
+          content,
+          accessToken,
+          postOriginId,
+        });
       } else {
-        returnPostOriginId = await boardPost({ title, content, accessToken });
+        returnPostOriginId = await postManager.createPost({
+          title,
+          content,
+          accessToken,
+        });
       }
 
       setSubmitting(false);
@@ -62,7 +70,7 @@ export default function Write() {
   }, []);
 
   return (
-    <div className="bg-gray-50 h-screen">
+    <div className="h-screen bg-gray-50">
       {
         <Formik
           enableReinitialize={true}
@@ -73,7 +81,7 @@ export default function Write() {
           }
         >
           {({ errors, isSubmitting }) => (
-            <Form className="flex flex-col p-10 m-auto gap-y-5 max-w-5xl">
+            <Form className="flex flex-col max-w-5xl p-10 m-auto gap-y-5">
               <div className="flex justify-between">
                 <button
                   type="button"
@@ -97,7 +105,7 @@ export default function Write() {
                 </button>
 
                 <button
-                  className="rounded-md w-15 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
+                  className="px-3 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md w-15 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
                   type="submit"
                   disabled={isSubmitting}
                   onClick={() => {
@@ -115,7 +123,7 @@ export default function Write() {
                 name="title"
                 type="text"
                 placeholder="제목을 입력하세요"
-                className="text-4xl p-3 border-2 rounded-md border-gray-100 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700 bg-transparent"
+                className="p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
               />
               <div className="border-2">
                 <QuillEditBox content={content} handleContent={handleContent} />

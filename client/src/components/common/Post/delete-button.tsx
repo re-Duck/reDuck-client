@@ -10,8 +10,8 @@ import {
 
 //service
 import { deleteCommtent } from '@/service/delete-comment';
-import { deletePost } from '@/service/delete-post';
 import { errorMessage } from '@/constants/constant';
+import { postManager } from '@/service/post';
 
 interface IDeleteButton {
   id: string;
@@ -35,16 +35,12 @@ export default function DeleteButton({
 
   const callback = async () => {
     if (type === 'post') {
-      deletePost({
-        token,
-        postOriginId: id,
-        callback: () => {
-          router.push('/');
-          openModal({
-            type: ModalType.SUCCESS,
-            message: successMessage.postDeleteSuccess,
-          });
-        },
+      await postManager.deletePost({ token, postOriginId: id });
+
+      router.push('/');
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.postDeleteSuccess,
       });
     } else if (type === 'comment') {
       await deleteCommtent({

@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Comment, CommentUpload } from '@/components/common/Post';
 import { PostDetail } from '@/components/board';
-import { axios_get } from '@/service/base/api';
 import { IBoardPostInformation, IComment } from '@/types';
+import { postManager } from '@/service/post';
 
 interface IProps {
   postOriginId: string;
@@ -15,14 +15,11 @@ function PostContent({ postOriginId }: IProps) {
   const session = useSession();
 
   const user = session.data?.user;
-  const suburl = `/post/detail/${postOriginId}`;
   const { data, refetch } = useQuery({
     queryKey: [`${postOriginId}`],
     queryFn: async () => {
-      const res = await axios_get<IBoardPostInformation>({ suburl });
-      if (!res.isOkay) throw new Error(res.error.code);
-
-      return res.data;
+      const { data } = await postManager.getPost({ postOriginId });
+      return data;
     },
     retry: false,
     suspense: true,

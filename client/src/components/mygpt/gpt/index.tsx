@@ -2,7 +2,7 @@ import GptTitle from '..';
 import GptContent from '../Content';
 import GptContextBox from '../ContentBox';
 import GptLoading from '../Loading';
-import GptMain from '../main';
+import GptMain from '../Main';
 import GptQuestion from '../Question';
 import GptSendButton from '../SendButton';
 import GptSubTitle from '../Subtitle';

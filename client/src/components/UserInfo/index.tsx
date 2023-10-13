@@ -84,12 +84,11 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
     });
     const { isOkay, data } = result;
     if (isOkay) {
-      const { roomId, chatMessages } = data;
+      const { roomId } = data;
       router.push({
         pathname: '/chat',
         query: {
           roomId,
-          chatMessages: JSON.stringify(chatMessages),
         },
       });
     } else {

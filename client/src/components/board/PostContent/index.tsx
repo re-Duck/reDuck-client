@@ -17,10 +17,7 @@ function PostContent({ postOriginId }: IProps) {
   const user = session.data?.user;
   const { data, refetch } = useQuery({
     queryKey: [`${postOriginId}`],
-    queryFn: async () => {
-      const { data } = await postManager.getPost({ postOriginId });
-      return data;
-    },
+    queryFn: async () => await postManager.getPost({ postOriginId }),
     retry: false,
     suspense: true,
   });

@@ -49,7 +49,6 @@ export default function Chatroom() {
       const connect_callback = () => {
         // STOMP 클라이언트의 연결 상태 확인
         if (!client.connected) {
-          // TODO: 에러 핸들링 - STOMP 소켓 연결 안됨.
           console.error('STOMP 연결 상태: 연결 안 됨');
           return;
         }
@@ -112,23 +111,8 @@ export default function Chatroom() {
         }
       }
     },
-    [session]
+    [session, roomId]
   );
-
-  const handleConnectChat = async (otherId: string) => {
-    const otherIds = [otherId];
-    const result = await createChatRoom({
-      otherIds,
-      roomName: '',
-      token: session.data?.user.token || '',
-    });
-    const { isOkay, data } = result;
-    if (isOkay) {
-      const { roomId, chatMessages } = data;
-      handleConnect(roomId);
-      setChatList(chatMessages);
-    }
-  };
 
   useEffect(() => {
     if (!session.data) {
@@ -152,11 +136,6 @@ export default function Chatroom() {
       console.log('Broker reported error: ', frame.headers['message']);
       console.log('Additional details: ', frame.body);
     };
-
-    // 마이페이지에서 채팅 연결 시도 시
-    if (query.otherId) {
-      handleConnectChat(query.otherId as string);
-    }
 
     return () => {
       client.disconnect();

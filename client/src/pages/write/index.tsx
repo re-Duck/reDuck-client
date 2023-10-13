@@ -35,31 +35,36 @@ export default function Write() {
 
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
-      if (!accessToken) {
-        openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
-        return;
+      try {
+        if (!accessToken) {
+          openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+          return;
+        }
+
+        setSubmitting(true);
+        let returnPostOriginId = postOriginId;
+
+        if (returnPostOriginId) {
+          await postManager.updatePost({
+            title,
+            content,
+            accessToken,
+            postOriginId,
+          });
+        } else {
+          returnPostOriginId = await postManager.createPost({
+            title,
+            content,
+            accessToken,
+          });
+        }
+
+        setSubmitting(false);
+        router.replace(`/board/${returnPostOriginId}`);
+      } catch (e) {
+        setSubmitting(false);
+        openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain });
       }
-
-      setSubmitting(true);
-      let returnPostOriginId = postOriginId;
-
-      if (returnPostOriginId) {
-        await postManager.updatePost({
-          title,
-          content,
-          accessToken,
-          postOriginId,
-        });
-      } else {
-        returnPostOriginId = await postManager.createPost({
-          title,
-          content,
-          accessToken,
-        });
-      }
-
-      setSubmitting(false);
-      router.replace(`/board/${returnPostOriginId}`);
     },
     [content]
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useModal } from '@/hooks';
-import { ModalType, successMessage } from '@/constants/constant';
+import { ModalType, errorMessage, successMessage } from '@/constants/constant';
 
 import { commentManager } from '../../../service/comment/index';
 
@@ -24,17 +24,24 @@ export default function ModifyCommentButton({
   const { openModal } = useModal();
 
   const handleUpdate = async () => {
-    await commentManager.updateCommtent({
-      token,
-      postOriginId,
-      content: comment,
-      commentOriginId: id,
-    });
+    try {
+      await commentManager.updateCommtent({
+        token,
+        postOriginId,
+        content: comment,
+        commentOriginId: id,
+      });
 
-    openModal({
-      type: ModalType.SUCCESS,
-      message: successMessage.commentUpdateSuccess,
-    });
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.commentUpdateSuccess,
+      });
+    } catch (e) {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.tryAgain,
+      });
+    }
   };
   return (
     <button

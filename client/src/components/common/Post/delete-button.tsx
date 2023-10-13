@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
 import {
   ModalType,
+  errorMessage,
   successMessage,
   warningMessage,
 } from '@/constants/constant';
@@ -33,20 +34,27 @@ export default function DeleteButton({
       : warningMessage.confirmDeleteComment;
 
   const handdleDelete = async () => {
-    if (type === 'post') {
-      await postManager.deletePost({ token, postOriginId: id });
+    try {
+      if (type === 'post') {
+        await postManager.deletePost({ token, postOriginId: id });
 
-      router.push('/');
+        router.push('/');
+        openModal({
+          type: ModalType.SUCCESS,
+          message: successMessage.postDeleteSuccess,
+        });
+      } else if (type === 'comment') {
+        await commentManager.deleteCommtent({
+          token,
+          commentOriginId: id,
+        });
+        refetch && refetch();
+      }
+    } catch (e) {
       openModal({
-        type: ModalType.SUCCESS,
-        message: successMessage.postDeleteSuccess,
+        type: ModalType.ERROR,
+        message: errorMessage.tryAgain,
       });
-    } else if (type === 'comment') {
-      await commentManager.deleteCommtent({
-        token,
-        commentOriginId: id,
-      });
-      refetch && refetch();
     }
   };
   return (

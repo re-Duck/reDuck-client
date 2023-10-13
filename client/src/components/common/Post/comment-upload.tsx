@@ -49,19 +49,24 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
     setSubmitting,
     resetForm,
   }: IHnadlerComment) => {
-    if (user === undefined) {
-      openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+    try {
+      if (user === undefined) {
+        openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+        setSubmitting(false);
+        return;
+      }
+      await commentManager.createComment({
+        content,
+        postOriginId,
+        token: user.token,
+      });
+      resetForm();
       setSubmitting(false);
-      return;
+      refetch();
+    } catch (e) {
+      setSubmitting(false);
+      openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain });
     }
-    await commentManager.createComment({
-      content,
-      postOriginId,
-      token: user.token,
-    });
-    resetForm();
-    setSubmitting(false);
-    refetch();
   };
   return (
     <Formik

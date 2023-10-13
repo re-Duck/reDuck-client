@@ -1,24 +1,28 @@
-import { axios_put } from './base/api';
+import { axios_put } from '../base/api';
 
-interface updateCommtent {
+interface IUpdateCommtent {
   commentOriginId: string;
   postOriginId: string;
   token: string;
   content: string;
 }
 
-export async function updateCommtent({
+async function updateCommtent({
   commentOriginId,
   postOriginId,
   token,
   content,
-}: updateCommtent) {
+}: IUpdateCommtent) {
   const suburl = `/post/comment/${commentOriginId}`;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
   const data = { content, commentOriginId, postOriginId };
-  const response = await axios_put({ suburl, headers, data });
+  const result = await axios_put({ suburl, headers, data });
 
-  return response.isOkay;
+  if (!result.isOkay) {
+    throw new Error(result.error);
+  }
 }
+
+export default updateCommtent;

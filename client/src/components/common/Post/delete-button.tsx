@@ -9,9 +9,8 @@ import {
 } from '@/constants/constant';
 
 //service
-import { deleteCommtent } from '@/service/delete-comment';
-import { errorMessage } from '@/constants/constant';
 import { postManager } from '@/service/post';
+import { commentManager } from '../../../service/comment/index';
 
 interface IDeleteButton {
   id: string;
@@ -33,7 +32,7 @@ export default function DeleteButton({
       ? warningMessage.confirmDeletePost
       : warningMessage.confirmDeleteComment;
 
-  const callback = async () => {
+  const handdleDelete = async () => {
     if (type === 'post') {
       await postManager.deletePost({ token, postOriginId: id });
 
@@ -43,14 +42,9 @@ export default function DeleteButton({
         message: successMessage.postDeleteSuccess,
       });
     } else if (type === 'comment') {
-      await deleteCommtent({
+      await commentManager.deleteCommtent({
         token,
         commentOriginId: id,
-        callback: () =>
-          openModal({
-            type: ModalType.ERROR,
-            message: errorMessage.error,
-          }),
       });
       refetch && refetch();
     }
@@ -61,7 +55,7 @@ export default function DeleteButton({
         openModal({
           type: ModalType.WARNING,
           message: IS_CHECK_MODAL_MESSAGE,
-          callback: () => callback(),
+          callback: handdleDelete,
         })
       }
     >

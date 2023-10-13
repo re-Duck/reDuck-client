@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { useModal } from '@/hooks';
-import { ModalType, errorMessage, successMessage } from '@/constants/constant';
+import { ModalType, successMessage } from '@/constants/constant';
 
-import { updateCommtent } from '@/service/update-comment';
+import { commentManager } from '../../../service/comment/index';
 
 interface IProps {
   id: string;
@@ -24,24 +24,17 @@ export default function ModifyCommentButton({
   const { openModal } = useModal();
 
   const handleUpdate = async () => {
-    const res = await updateCommtent({
+    await commentManager.updateCommtent({
       token,
       postOriginId,
       content: comment,
       commentOriginId: id,
     });
 
-    if (res) {
-      openModal({
-        type: ModalType.SUCCESS,
-        message: successMessage.commentUpdateSuccess,
-      });
-    } else {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.error,
-      });
-    }
+    openModal({
+      type: ModalType.SUCCESS,
+      message: successMessage.commentUpdateSuccess,
+    });
   };
   return (
     <button

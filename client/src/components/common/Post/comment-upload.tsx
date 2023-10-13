@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 
 //service
 import { BASE_URL } from '@/service/base/api';
-import { commentPost } from '@/service/comment-post';
 
 //assets
 import { ModalType, errorMessage } from '@/constants/constant';
@@ -15,6 +14,7 @@ import { useModal } from '@/hooks';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Avatar from '../Avatar';
+import { commentManager } from '@/service/comment';
 
 interface IUser {
   id: string;
@@ -54,7 +54,11 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
       setSubmitting(false);
       return;
     }
-    await commentPost({ content, postOriginId, token: user.token });
+    await commentManager.createComment({
+      content,
+      postOriginId,
+      token: user.token,
+    });
     resetForm();
     setSubmitting(false);
     refetch();
@@ -77,7 +81,7 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
             placeholder="댓글을 입력해 보세요."
           />
           <button
-            className=" bg-red-400 rounded-lg px-3 py-2 text-white text-xs"
+            className="px-3 py-2 text-xs text-white bg-red-400 rounded-lg "
             type="submit"
             onClick={() => {
               errors.content &&

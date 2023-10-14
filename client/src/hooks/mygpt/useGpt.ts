@@ -14,7 +14,7 @@ function useGpt(accessToken: string) {
   const getAnswer = async ({ code, question }: IContent) => {
     setAnswer('');
     const res = await getCodeReview({ code, question });
-    setAnswer(res || '');
+
     return res;
   };
 
@@ -29,7 +29,7 @@ function useGpt(accessToken: string) {
       gptAnswer,
     };
     const count = await postGptContent({ data, accessToken });
-
+    setAnswer(gptAnswer || '');
     setRemainUsageCount(count);
   };
 

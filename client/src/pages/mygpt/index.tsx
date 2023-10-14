@@ -48,10 +48,15 @@ export default function GptPage() {
     { code, question }: IContent,
     { setSubmitting }: FormikHelpers<IContent>
   ) => {
-    if (validate()) {
-      await handdleSubmit({ code, question });
+    try {
+      if (validate()) {
+        await handdleSubmit({ code, question });
+      }
+    } catch (e) {
+      openModal({ type: ModalType.ERROR, message: errorMessage.networkError });
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   return (

@@ -1,8 +1,11 @@
+//core
+import { useEffect, useRef, useState } from 'react';
+//service
 import { getGptRemain } from '@/service/get-gpt-remain';
 import getCodeReview from '@/service/open-ai';
 import { postGptContent } from '@/service/post-gpt-count';
+//types
 import { IContent } from '@/types/mygpt';
-import { useEffect, useRef, useState } from 'react';
 
 function useGpt(accessToken: string) {
   const [isAnswerOpen, setIsAnswerOpen] = useState(false);

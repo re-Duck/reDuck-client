@@ -1,6 +1,10 @@
 import { axios_get } from '@/service/base/api';
 import { useCallback, useState } from 'react';
 
+interface IPreviewPost {
+  postTitle: string;
+  postContent: string;
+}
 function useWriting(postOriginId: string) {
   const [initTitle, setInitTitle] = useState('');
   const [content, setContent] = useState('');
@@ -9,8 +13,11 @@ function useWriting(postOriginId: string) {
 
   const getPostData = async () => {
     const suburl = `/post/detail/${postOriginId}`;
-    const res = await axios_get({ suburl });
-    const { postTitle, postContent } = res.data;
+    const res = await axios_get<IPreviewPost>({ suburl });
+    if (!res.isOkay) {
+      throw new Error('게시글을 불러오는데 실패했습니다.');
+    }
+    const { postTitle, postContent } = res.data as IPreviewPost;
 
     setInitTitle(postTitle);
     setContent(postContent);

@@ -1,24 +1,19 @@
 import React from 'react';
-import { Post } from '../../common/Post/post';
 import { IPostInformation } from '@/types';
+import useScroll from '@/hooks/Main/useScroll';
+
+import { PostSummary } from '../../common/Post';
 import LoadingIcon from '../../common/LoadingIcon';
 
-interface IPostsBox {
-  datas:
-    | {
-        data: IPostInformation[];
-      }[]
-    | undefined;
-  hasNextPage: boolean | undefined;
-}
+function PostsBox() {
+  const { datas, hasNextPage } = useScroll();
 
-function PostsBox({ datas, hasNextPage }: IPostsBox) {
   return (
     <>
       {datas?.map((group, index) => (
         <React.Fragment key={index}>
           {group?.data.map((props: IPostInformation) => (
-            <Post key={props.postOriginId} {...props} />
+            <PostSummary key={props.postOriginId} postInfoData={props} />
           ))}
         </React.Fragment>
       ))}

@@ -4,26 +4,25 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 //constants
-import { ModalType, errorMessage, linkList } from '@/constants/constant';
+import { linkList } from '@/constants/constant';
 
-//hooks
-import { useModal } from '@/hooks';
-
-//Icons
+// Icons
 import { Icon } from '@iconify/react';
 import reDuckIcon from 'public/main-duck.png';
 
-//session
+// session
 import { useSession } from 'next-auth/react';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
-  viewList: boolean;
+  hasLoginButton: boolean;
 }
 
-export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
+export function Navigator({
+  setisClickedHamburger,
+  hasLoginButton,
+}: INavigator) {
   const { data } = useSession();
-  const { openModal } = useModal();
   return (
     <nav
       className="fixed top-0 left-0 z-10 w-full h-16 bg-white border-b-2 border-gray-100"
@@ -42,25 +41,22 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
             </div>
           </Link>
         </li>
-        {viewList && (
+        {hasLoginButton && (
           <>
             <li className="flex-auto pl-8">
               <ul className="hidden gap-8 text-gray-500 sm:flex">
-                {linkList.map(({ name, href }) => (
-                  <li
-                    key={name}
-                    onClick={() =>
-                      openModal({
-                        type: ModalType.ERROR,
-                        message: errorMessage.notComplete,
-                      })
-                    }
-                    className=" hover:cursor-pointer"
-                  >
-                    {name}
-                    {/* <Link href={href}>{name}</Link> */}
-                  </li>
-                ))}
+                {linkList.map(({ name, href }) => {
+                  if (name === '로그인') return;
+                  return (
+                    <Link
+                      href={href}
+                      key={name}
+                      className=" hover:cursor-pointer"
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
               </ul>
             </li>
 

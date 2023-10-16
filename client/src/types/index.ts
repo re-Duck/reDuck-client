@@ -22,6 +22,11 @@ export interface IPostInformation {
   postUpdatedAt: string;
 }
 
+export interface IBoardPostInformation
+  extends Omit<IPostInformation, 'commentsCount'> {
+  comments: IComment[];
+}
+
 export interface IUserInfo {
   company?: string;
   companyEmail?: string;
@@ -77,4 +82,11 @@ export enum EmailState {
 export interface IFlexLabelContent {
   label: string;
   content: React.ReactNode | string;
+}
+
+export interface IUser {
+  id: string;
+  name: string;
+  userProfileImgPath: string;
+  token: string;
 }

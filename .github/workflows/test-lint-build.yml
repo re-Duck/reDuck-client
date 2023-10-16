@@ -22,6 +22,15 @@ jobs:
         with:
           path: node_modules
           key: npm-packages-${{ hashFiles('**/package-lock.json') }}
+      - name: Generate Environment Variables File for Production
+        run: |
+          echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API" >> .env.production
+          echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> .env.production
+          cat .env.production
+        working-directory: ${{ env.working-directory }}
+        env:
+          NEXT_PUBLIC_OPEN_API: ${{ secrets.NEXT_PUBLIC_OPEN_API }}
+          OPENAI_API_KEY: ${{ secrets.NEXT_PUBLIC_OPEN_API }}
       - name: Install Dependencies
         run: npm ci
         working-directory: ${{ env.working-directory }}

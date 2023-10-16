@@ -14,17 +14,11 @@ import { useModal } from '@/hooks';
 //form
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import Avatar from '../Avatar';
-
-interface IUser {
-  id: string;
-  name: string;
-  userProfileImgPath: string;
-  token: string;
-}
+import Avatar from '../../Avatar';
+import { IUser } from '@/types';
 
 interface IComentUpload {
-  user: IUser | undefined;
+  user?: IUser;
   refetch: () => void;
 }
 
@@ -68,7 +62,7 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
       }
     >
       {({ errors, isSubmitting }) => (
-        <Form className="flex justify-between items-center gap-0.5 h-16 bg-white border-gray-100 border-[1px] px-4 sm:px-10">
+        <Form className="flex justify-between items-center sm:gap-0.5 h-16 bg-white border-gray-100 border-[1px] sm:px-10">
           <Avatar src={comentImgSrc} alt="user_icon" size="sm" />
           <Field
             name="content"
@@ -77,7 +71,7 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
             placeholder="댓글을 입력해 보세요."
           />
           <button
-            className=" bg-red-400 rounded-lg px-3 py-2 text-white text-xs"
+            className="px-3 py-2 text-xs text-white bg-red-400 rounded-lg "
             type="submit"
             onClick={() => {
               errors.content &&

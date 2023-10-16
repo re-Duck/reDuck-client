@@ -227,11 +227,11 @@ export default function SignUp() {
   };
 
   return (
-    <Layout viewList={false}>
+    <Layout hasLoginButton={false}>
       <div className="max-w-xl m-auto">
         <div>
           <h2 className="text-2xl font-bold text-center">회원가입</h2>
-          <p className="text-xs text-right pt-1">
+          <p className="pt-1 text-xs text-right">
             <span className="text-red-500">*</span> 필수입력사항
           </p>
         </div>
@@ -246,18 +246,18 @@ export default function SignUp() {
           {({ values, errors, touched, isSubmitting }) => (
             <Form className="flex flex-col gap-y-10">
               <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
+                <label className="w-20 text-xs sm:text-base sm:w-28">
                   아이디 <span className="text-red-500">*</span>
                 </label>
-                <div className="flex grow flex-col">
+                <div className="flex flex-col grow">
                   <Field
                     type="text"
                     name="userId"
-                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="h-full p-2 rounded-md shadow-sm grow ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     placeholder="아이디를 입력해주세요"
                   />
                   {errors.userId && touched.userId && (
-                    <span className="text-xs text-red-500 translate-y-2 h-0">
+                    <span className="h-0 text-xs text-red-500 translate-y-2">
                       {errors.userId}
                     </span>
                   )}
@@ -271,70 +271,70 @@ export default function SignUp() {
                       errors.userId
                     )
                   }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+                  className="w-20 p-2 ml-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base"
                 >
                   중복확인
                 </button>
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
+                <label className="w-20 text-xs sm:text-base sm:w-28">
                   비밀번호 <span className="text-red-500">*</span>
                 </label>
                 <div className="flex flex-col grow">
                   <Field
                     type="password"
                     name="password"
-                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="h-full p-2 rounded-md shadow-sm grow ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     placeholder="비밀번호를 입력해주세요 "
                   />
                   {errors.password && touched.password && (
-                    <span className="text-xs text-red-500 translate-y-2 h-0">
+                    <span className="h-0 text-xs text-red-500 translate-y-2">
                       {errors.password}
                     </span>
                   )}
                 </div>
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
+                <label className="w-20 text-xs sm:text-base sm:w-28">
                   비밀번호 확인 <span className="text-red-500">*</span>
                 </label>
                 <div className="flex flex-col grow">
                   <Field
                     type="password"
                     name="passwordConfirm"
-                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="h-full p-2 rounded-md shadow-sm grow ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     placeholder="비밀번호를 한번 더 입력해주세요 "
                   />
                   {errors.passwordConfirm && touched.passwordConfirm && (
-                    <span className="text-xs text-red-500 translate-y-2 h-0">
+                    <span className="h-0 text-xs text-red-500 translate-y-2">
                       {errors.passwordConfirm}
                     </span>
                   )}
                 </div>
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
+                <label className="w-20 text-xs sm:text-base sm:w-28">
                   이름 <span className="text-red-500">*</span>
                 </label>
                 <div className="flex flex-col grow">
                   <Field
                     type="text"
                     name="name"
-                    className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    className="h-full p-2 rounded-md shadow-sm grow ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     placeholder="이름을 입력해주세요."
                   />
                   {errors.name && touched.name && (
-                    <span className="text-xs text-red-500 translate-y-2 h-0">
+                    <span className="h-0 text-xs text-red-500 translate-y-2">
                       {errors.name}
                     </span>
                   )}
                 </div>
               </div>
-              <div className="inline-flex w-full items-center">
+              <div className="inline-flex items-center w-full">
                 <label className="text-xs w-28 sm:text-base sm:w-28">
                   프로필 이미지
                 </label>
-                <div className="flex gap-x-4 items-baseline flex-wrap">
+                <div className="flex flex-wrap items-baseline gap-x-4">
                   <Avatar src={profileImg} alt="profileImg" size="md" />
                   <input
                     type="file"
@@ -346,7 +346,7 @@ export default function SignUp() {
                   <button
                     type="button"
                     onClick={handleChooseFile}
-                    className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+                    className="w-20 p-1 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base"
                   >
                     파일 업로드
                   </button>
@@ -356,10 +356,10 @@ export default function SignUp() {
                 </div>
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
+                <label className="w-20 text-xs sm:text-base sm:w-28">
                   이메일 <span className="text-red-500">*</span>
                 </label>
-                <div className="flex grow flex-col gap-y-1">
+                <div className="flex flex-col grow gap-y-1">
                   <div className="flex grow">
                     <Field
                       type="text"
@@ -369,7 +369,7 @@ export default function SignUp() {
                     />
                     <button
                       type="button"
-                      className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                      className="w-20 p-2 ml-2 text-xs font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-sm"
                       onClick={() =>
                         handleRequestEmail(
                           values.email,
@@ -389,13 +389,13 @@ export default function SignUp() {
                     <div className="flex flex-none">
                       <input
                         type="text"
-                        className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                        className="p-2 rounded-md shadow-sm flex-0 ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                         ref={certificateNumberRef}
                         onChange={handleCertificateNumber}
                       />
                       <button
                         type="button"
-                        className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                        className="w-20 p-2 ml-2 text-xs font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-sm"
                         onClick={() => handleCheckEmail(values.email)}
                       >
                         인증번호확인
@@ -405,29 +405,29 @@ export default function SignUp() {
                 </div>
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
+                <label className="w-20 text-xs sm:text-base sm:w-28">
                   학교
                 </label>
                 <Field
                   type="text"
                   name="school"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                  className="h-full p-2 rounded-md shadow-sm grow ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                   placeholder="학교를 선택해주세요"
                 />
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
+                <label className="w-20 text-xs sm:text-base sm:w-28">
                   직장
                 </label>
                 <Field
                   type="text"
                   name="company"
-                  className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                  className="h-full p-2 rounded-md shadow-sm grow ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                   placeholder="직장을 선택해주세요"
                 />
               </div>
               <div className="inline-flex w-full h-[38px] items-center">
-                <label className="text-xs w-20 sm:text-base sm:w-28">
+                <label className="w-20 text-xs sm:text-base sm:w-28">
                   개발시작연도
                 </label>
                 <div className="flex flex-col grow self-baseline">
@@ -446,7 +446,7 @@ export default function SignUp() {
                       </option>
                     ))}
                   </Field>
-                  <span className="text-gray-500 text-xs">
+                  <span className="text-xs text-gray-500">
                     개발 시작연도는 실제 직장에 입사한 연도입니다.
                   </span>
                 </div>
@@ -455,7 +455,7 @@ export default function SignUp() {
               <div className="text-center">
                 <button
                   type="submit"
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20"
+                  className="w-20 p-2 ml-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
                   disabled={isSubmitting}
                 >
                   회원가입

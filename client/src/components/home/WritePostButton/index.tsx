@@ -21,7 +21,7 @@ export function WritePostButton() {
       {data?.user.token ? (
         <Link href={'/write'} className="w-10/12">
           <button className=" border-[1px] rounded-md w-full bg-gray-50 h-11">
-            <p className=" text-gray-400">나누고 싶은 생각이 있으신가요?</p>
+            <p className="text-gray-400 ">나누고 싶은 생각이 있으신가요?</p>
           </button>
         </Link>
       ) : (
@@ -34,7 +34,7 @@ export function WritePostButton() {
             })
           }
         >
-          <p className=" text-gray-400">로그인 후 게시글을 작성해 주세요</p>
+          <p className="text-gray-400 ">로그인 후 게시글을 작성해 주세요</p>
         </button>
       )}
     </article>

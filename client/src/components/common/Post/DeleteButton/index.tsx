@@ -68,6 +68,7 @@ export default function DeleteButton({
           callback: () => callback(),
         })
       }
+      className="font-medium text-gray-400"
     >
       삭제
     </button>

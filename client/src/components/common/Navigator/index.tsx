@@ -12,10 +12,13 @@ import Image from 'next/image';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
-  viewList: boolean;
+  hasLoginButton: boolean;
 }
 
-export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
+export function Navigator({
+  setisClickedHamburger,
+  hasLoginButton,
+}: INavigator) {
   const { data } = useSession();
   return (
     <nav
@@ -35,7 +38,7 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
             </div>
           </Link>
         </li>
-        {viewList && (
+        {hasLoginButton && (
           <>
             <li className="flex-auto pl-8">
               <ul className="hidden gap-8 text-gray-500 sm:flex">

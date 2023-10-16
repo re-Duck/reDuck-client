@@ -83,3 +83,10 @@ export interface IFlexLabelContent {
   label: string;
   content: React.ReactNode | string;
 }
+
+export interface IUser {
+  id: string;
+  name: string;
+  userProfileImgPath: string;
+  token: string;
+}

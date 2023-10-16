@@ -3,8 +3,7 @@ import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 //components
 import { Advertisement, Layout } from '@/components';
-import { WritePostButton } from '@/components';
-import { Loading } from '@/components/home';
+import { Loading, WritePostButton } from '@/components/home';
 import ErrorFallback from '@/components/common/ErrorFallback';
 //third party
 import { ErrorBoundary } from 'react-error-boundary';

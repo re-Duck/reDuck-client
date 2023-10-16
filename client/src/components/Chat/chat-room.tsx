@@ -16,6 +16,9 @@ import { parseDate } from '@/util';
 // services
 import { getRoomChat } from '@/service/chat-get';
 
+// constant
+import { SCROLL_STATE_CHANGE_INTERVAL, SCROLL_TOP_BOUNDARY } from '@/constant';
+
 interface IChatRoom {
   token: string;
   roomId: string;
@@ -94,10 +97,11 @@ export default function ChatRoom({
       clearTimeout(timer);
       timer = setTimeout(() => {
         setIsScrolling(false);
-      }, 150);
+      }, SCROLL_STATE_CHANGE_INTERVAL);
+
       if (chatRoomElement) {
         const { scrollTop } = chatRoomElement as Element;
-        if (!isFetching && hasNextPage && scrollTop <= 150) {
+        if (!isFetching && hasNextPage && scrollTop <= SCROLL_TOP_BOUNDARY) {
           await fetchNextPage();
         }
       }

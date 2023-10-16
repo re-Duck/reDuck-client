@@ -163,3 +163,7 @@ export const regex = Object.freeze({
   id: /^[a-z0-9]{6,12}$/,
   password: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/,
 });
+
+export const SCROLL_STATE_CHANGE_INTERVAL = 150;
+
+export const SCROLL_TOP_BOUNDARY = 150;

@@ -1,6 +1,7 @@
 export const linkList = [
   { name: '채팅방', href: '/chatroom' },
-  { name: 'GPT', href: '/gpt' },
+  { name: 'GPT', href: '/mygpt' },
+  { name: '로그인', href: '/login' },
 ];
 
 export const initialLoginValue = Object.freeze({ userId: '', password: '' });
@@ -30,6 +31,7 @@ export const errorMessage = Object.freeze({
   notmatchConfirmNumber:
     '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요.',
   failedSignUp: '회원가입에 실패했습니다. 다시 시도해주세요.',
+  maxQuestion: '하루 최대 질문 수를 초과했습니다.',
   networkError: '일시적인 네트워크 오류입니다.',
   tryAgarin: '잠시후 다시 시도해주세요.',
   error: '에러입니다.',

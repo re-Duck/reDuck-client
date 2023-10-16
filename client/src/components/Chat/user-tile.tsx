@@ -46,7 +46,6 @@ const UserTile = ({
 }: IUserTile) => {
   const { openModal } = useModal();
   const handleRoomCheck = async () => {
-    // const { openModal } = useModal();
     if (type === 'room') {
       handleEnterRoom(roomId as string);
     } else {
@@ -69,11 +68,13 @@ const UserTile = ({
     }
   };
 
-  const selectedStyle = enteredRoomId === roomId && 'bg-gray-300';
+  const addedStyle = `${type === 'room' && 'hover:cursor-pointer'} ${
+    enteredRoomId === roomId && 'bg-gray-300'
+  }`;
 
   return (
     <div
-      className={`flex gap-2 font-semibold items-center px-2 py-4 ${selectedStyle}`}
+      className={`flex gap-2 font-semibold items-center px-2 py-4 ${addedStyle}`}
       onDoubleClick={handleRoomCheck}
     >
       <Avatar src={src ? `${BASE_URL}${src}` : ''} alt="user_icon" size="sm" />

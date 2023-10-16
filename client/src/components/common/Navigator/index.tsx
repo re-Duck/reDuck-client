@@ -1,15 +1,20 @@
+//core
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+
+//constants
 import { ModalType, errorMessage, linkList } from '@/constants/constant';
 
-// Icons
-import { Icon } from '@iconify/react';
-
-// session
-import { useSession } from 'next-auth/react';
-
-import Image from 'next/image';
+//hooks
 import { useModal } from '@/hooks';
+
+//Icons
+import { Icon } from '@iconify/react';
+import reDuckIcon from 'public/main-duck.png';
+
+//session
+import { useSession } from 'next-auth/react';
 
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,7 +38,7 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
           >
             <div className="flex gap-1">
               reDuck
-              <Image src="/main-duck.png" alt="reDuck" width={32} height={32} />
+              <Image src={reDuckIcon} alt="reDuck" width={32} />
             </div>
           </Link>
         </li>

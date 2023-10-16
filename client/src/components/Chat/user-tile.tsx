@@ -4,12 +4,18 @@ import React from 'react';
 // components
 import { Avatar, Icon } from '../';
 
+// hooks
+import { useModal } from '@/hooks';
+
 // services
 import { createChatRoom } from '@/service/chat-post';
 import { BASE_URL } from '@/service/base/api';
 
 // utils
 import { formatDateToString } from '@/util';
+
+// constant
+import { ModalType, errorMessage } from '@/constant';
 
 interface IUserTile {
   roomId?: string;
@@ -39,6 +45,7 @@ const UserTile = ({
   unReadMessageCount,
 }: IUserTile) => {
   const handleRoomCheck = async () => {
+    const { openModal } = useModal();
     if (type === 'room') {
       handleEnterRoom(roomId as string);
     } else {
@@ -50,9 +57,14 @@ const UserTile = ({
       });
       const { isOkay, data } = result;
       const { roomId } = data;
-      if (isOkay) {
-        handleEnterRoom(roomId);
+      if (!isOkay) {
+        openModal({
+          type: ModalType.ERROR,
+          message: errorMessage.failedCreateChatRoom,
+        });
+        return;
       }
+      handleEnterRoom(roomId);
     }
   };
 

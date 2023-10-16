@@ -1,8 +1,11 @@
+//core
+import { useEffect, useRef, useState } from 'react';
+//service
 import { getGptRemain } from '@/service/get-gpt-remain';
 import getCodeReview from '@/service/open-ai';
 import { postGptContent } from '@/service/post-gpt-count';
+//types
 import { IContent } from '@/types/mygpt';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 function useGpt(accessToken: string) {
   const [isAnswerOpen, setIsAnswerOpen] = useState(false);
@@ -11,30 +14,27 @@ function useGpt(accessToken: string) {
 
   const answerRef = useRef<HTMLFormElement>(null);
 
-  const getAnswer = useCallback(async ({ code, question }: IContent) => {
+  const getAnswer = async ({ code, question }: IContent) => {
     setAnswer('');
     const res = await getCodeReview({ code, question });
-    setAnswer(res || '');
+
     return res;
-  }, []);
+  };
 
-  const handdleSubmit = useCallback(
-    async ({ code, question }: IContent) => {
-      setIsAnswerOpen(true);
-      const gptAnswer = await getAnswer({ code, question });
-      if (!gptAnswer) return;
+  const handdleSubmit = async ({ code, question }: IContent) => {
+    setIsAnswerOpen(true);
+    const gptAnswer = await getAnswer({ code, question });
+    if (!gptAnswer) return;
 
-      const data = {
-        userCode: code,
-        userQuestion: question,
-        gptAnswer,
-      };
-      const count = await postGptContent({ data, accessToken });
-
-      setRemainUsageCount(count);
-    },
-    [accessToken]
-  );
+    const data = {
+      userCode: code,
+      userQuestion: question,
+      gptAnswer,
+    };
+    const count = await postGptContent({ data, accessToken });
+    setAnswer(gptAnswer || '');
+    setRemainUsageCount(count);
+  };
 
   const isPossibleQuestion = () => {
     return remainUsageCount > 0;

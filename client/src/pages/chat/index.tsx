@@ -125,7 +125,7 @@ export default function Chatroom() {
       });
       return;
     }
-    const client = Stomp.client('ws://168.188.123.234:8080/ws-connection');
+    const client = Stomp.client(`${process.env.NEXT_PUBLIC_CHAT_URL}`);
 
     clientRef.current = client;
 

@@ -6,6 +6,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 // components
 import ChatMessage from '@/components/Chat/chat-message';
+import DateDivider from '@/components/Chat/date-divider';
 
 // types
 import { IChatMessage } from '@/types';
@@ -131,19 +132,16 @@ export default function ChatRoom({
             messageTime,
           } = val;
 
-          const dateDivider =
-            idx === 0 ||
-            (idx !== 0 &&
-              parseDate(chatList[idx - 1].messageTime) !==
-                parseDate(messageTime)) ? (
-              <div className="px-3 py-2 bg-gray-300 w-fit mx-auto rounded-full text-sm">
-                {parseDate(messageTime)}
-              </div>
-            ) : null;
-
           return (
             <React.Fragment key={messageId}>
-              {dateDivider}
+              {idx === 0 ||
+                (idx !== 0 &&
+                  parseDate(chatList[idx - 1].messageTime) !==
+                    parseDate(messageTime) && (
+                    <DateDivider
+                      messageTime={parseDate(messageTime) as string}
+                    />
+                  ))}
               <ChatMessage
                 type={senderId === currentUid ? 'my' : 'other'}
                 message={message}

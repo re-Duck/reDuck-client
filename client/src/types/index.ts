@@ -88,3 +88,17 @@ export interface IChatMessage {
   message: string;
   messageTime: string;
 }
+
+export interface IOtherUserDto {
+  name: string;
+  uesrId: string;
+  userProfileImgPath?: string;
+}
+
+export interface IChatUserDto {
+  lastChatMessage: string;
+  lastChatMessageTime: string;
+  otherUserDto: IOtherUserDto[];
+  roomId: string;
+  unReadMessageCount: number;
+}

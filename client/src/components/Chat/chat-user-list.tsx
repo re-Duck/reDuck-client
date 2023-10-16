@@ -9,7 +9,7 @@ import { getRecommandUser, getUserChatRoom } from '@/service/chat-get';
 import UserTile from './user-tile';
 
 // types
-import { IUserInfo } from '@/types';
+import { IUserInfo, IChatUserDto } from '@/types';
 
 interface IChatUserList {
   enteredRoomId: string;
@@ -27,7 +27,7 @@ export default function ChatUserList({
       'userId' | 'name' | 'company' | 'developAnnual' | 'userProfileImgPath'
     >[]
   >([]);
-  const [chatUserList, setChatUserList] = useState([]);
+  const [chatUserList, setChatUserList] = useState<IChatUserDto[]>([]);
   const session = useSession();
   const { id, token } = session.data?.user || {};
 

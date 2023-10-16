@@ -44,8 +44,9 @@ const UserTile = ({
   lastChatMessageTime,
   unReadMessageCount,
 }: IUserTile) => {
+  const { openModal } = useModal();
   const handleRoomCheck = async () => {
-    const { openModal } = useModal();
+    // const { openModal } = useModal();
     if (type === 'room') {
       handleEnterRoom(roomId as string);
     } else {

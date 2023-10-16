@@ -131,9 +131,14 @@ export default function Chatroom() {
 
     // 에러 이벤트 핸들러
     client.onStompError = (frame) => {
-      // TODO: 채팅방 내역 불러오는 재시도를 한다.
-      console.log('Broker reported error: ', frame.headers['message']);
-      console.log('Additional details: ', frame.body);
+      console.error('Broker reported error: ', frame.headers['message']);
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.socket,
+        callback: () => {
+          router.reload();
+        },
+      });
     };
 
     if (query.roomId) {

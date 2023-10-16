@@ -30,6 +30,7 @@ export const errorMessage = Object.freeze({
   notmatchConfirmNumber:
     '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요.',
   failedSignUp: '회원가입에 실패했습니다. 다시 시도해주세요.',
+  socket: '소켓 연결에 문제가 발생했습니다. 페이지를 새로고침해주세요.',
   failedCreateChatRoom: '채팅방 생성에 실패했습니다. 다시 시도해주세요',
   error: '에러입니다.',
 });

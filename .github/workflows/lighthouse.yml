@@ -16,9 +16,7 @@ jobs:
           node-version: '16'
 
       - name: Generate Environment Variables File for Production
-        run: |
-          echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API" >> .env.production
-          cat .env.production
+        run: echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API" >> .env.production
         working-directory: ${{ env.working-directory }}
         env:
           NEXT_PUBLIC_OPEN_API: ${{ secrets.NEXT_PUBLIC_OPEN_API }}

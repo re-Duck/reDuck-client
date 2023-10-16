@@ -54,7 +54,7 @@ export default function ChatRoom({
   };
 
   const handleClickSend = () => {
-    if (chatMessage !== '') {
+    if (chatMessage.length !== 0) {
       handleSendMessage(chatMessage);
       setChatMessage('');
     }
@@ -164,6 +164,7 @@ export default function ChatRoom({
         />
         <button
           type="button"
+          disabled={chatMessage.length === 0}
           onClick={handleClickSend}
           className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
         >

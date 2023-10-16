@@ -77,7 +77,7 @@ export default function ChatRoom({
 
   useEffect(() => {
     if (data !== undefined) {
-      const newData = data?.pages[data?.pages.length - 1].chatMessages;
+      const newData = data?.pages.at(-1)?.chatMessages;
       newData.reverse();
       setChatList((chat) => [...newData, ...chat]);
     }

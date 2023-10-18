@@ -1,5 +1,5 @@
 import { axios_get } from './base/api';
-import { POSTS_INISIATE_VALUE } from '@/constant';
+import { IPostInformation } from '../types/index';
 
 export const getAllPosts = async ({ pageParam = '' }) => {
   const params = {
@@ -9,13 +9,12 @@ export const getAllPosts = async ({ pageParam = '' }) => {
   };
   const suburl = '/post';
 
-  const response = await axios_get({ suburl, params });
-  const data = response.data;
-  const IS_ARRAY = Array.isArray(data);
-
-  if (IS_ARRAY) {
-    const nextPageParms = data[data.length - 1]?.postOriginId;
-    return { data, nextPageParms };
+  const response = await axios_get<IPostInformation[]>({ suburl, params });
+  if (!response.isOkay) {
+    throw new Error(response.error.code);
   }
-  return POSTS_INISIATE_VALUE;
+
+  const data = response.data as IPostInformation[];
+  const nextPageParms = data.at(-1)?.postOriginId;
+  return { data, nextPageParms };
 };

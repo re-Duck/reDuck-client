@@ -27,7 +27,7 @@ export async function boardPost({ title, content, accessToken }: IBoardPost) {
   const result = await axios_post({ suburl, headers, data });
 
   if (!result.isOkay) {
-    alert(result.message);
+    alert(result.error);
   }
   return postOriginId;
 }

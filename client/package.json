@@ -33,6 +33,7 @@
     "quill-image-resize-module": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.11",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
     "socketjs-client": "^1.0.2",

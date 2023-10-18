@@ -16,7 +16,11 @@ import { Divider, Layout } from '@/components';
 
 // service
 import { signIn } from 'next-auth/react';
-import { initialLoginValue, errorMessage, ModalType } from '@/constant';
+import {
+  initialLoginValue,
+  errorMessage,
+  ModalType,
+} from '@/constants/constant';
 import { useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({

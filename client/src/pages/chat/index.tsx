@@ -152,7 +152,7 @@ export default function Chatroom() {
 
   return (
     <Layout>
-      <div className="relative mx-auto flex max-w-5xl h-screen">
+      <div className="relative pt-8 mx-auto flex max-w-5xl h-[calc(100vh-6rem)]">
         <ChatUserList
           enteredRoomId={roomId}
           handleConnect={handleConnect}

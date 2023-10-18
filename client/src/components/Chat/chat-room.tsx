@@ -123,7 +123,7 @@ export default function ChatRoom({
   }, [isFetching, hasNextPage]);
 
   return (
-    <div className="relative flex-1 ml-4 border border-black h-5/6 flex flex-col">
+    <div className="relative flex-1 ml-4 border border-black flex flex-col">
       <div className="flex flex-col h-full overflow-y-scroll" ref={chatRoomRef}>
         {chatList?.map((val, idx) => {
           const {

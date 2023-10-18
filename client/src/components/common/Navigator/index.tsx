@@ -1,28 +1,33 @@
+//core
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+
+//constants
 import { linkList } from '@/constants/constant';
 
 // Icons
 import { Icon } from '@iconify/react';
+import reDuckIcon from 'public/main-duck.png';
 
 // session
 import { useSession } from 'next-auth/react';
-
-import Image from 'next/image';
-
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
-  viewList: boolean;
+  hasLoginButton: boolean;
 }
 
-export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
+export function Navigator({
+  setisClickedHamburger,
+  hasLoginButton,
+}: INavigator) {
   const { data } = useSession();
   return (
     <nav
-      className="fixed top-0 left-0 z-10 w-full bg-white border-b-2 border-gray-100 h-14"
+      className="fixed top-0 left-0 z-10 w-full h-16 bg-white border-b-2 border-gray-100"
       id="navigator"
     >
-      <ul className="flex items-center justify-between h-full max-w-6xl p-8 m-auto">
+      <ul className="flex items-center justify-between h-full max-w-5xl p-4 px-6 m-auto">
         <li>
           <Link
             href="/"
@@ -31,19 +36,26 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
           >
             <div className="flex gap-1">
               reDuck
-              <Image src="/main-duck.png" alt="reDuck" width={30} height={30} />
+              <Image src={reDuckIcon} alt="reDuck" width={32} />
             </div>
           </Link>
         </li>
-        {viewList && (
+        {hasLoginButton && (
           <>
             <li className="flex-auto pl-8">
               <ul className="hidden gap-8 text-gray-500 sm:flex">
-                {linkList.map(({ name, href }) => (
-                  <li key={name} className=" hover:cursor-pointer">
-                    <Link href={href}>{name}</Link>
-                  </li>
-                ))}
+                {linkList.map(({ name, href }) => {
+                  if (name === '로그인') return;
+                  return (
+                    <Link
+                      href={href}
+                      key={name}
+                      className=" hover:cursor-pointer"
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
               </ul>
             </li>
 
@@ -57,16 +69,12 @@ export function Navigator({ setisClickedHamburger, viewList }: INavigator) {
                   )}
                 </li>
                 <li className="sm:hidden">
-                  {
-                    <button
-                      onClick={() => setisClickedHamburger((prev) => !prev)}
-                    >
-                      <Icon
-                        icon="material-symbols:menu-rounded"
-                        style={{ fontSize: '25px' }}
-                      />
-                    </button>
-                  }
+                  <Icon
+                    icon="material-symbols:menu-rounded"
+                    style={{ fontSize: '25px' }}
+                    className="cursor-pointer"
+                    onClick={() => setisClickedHamburger((prev) => !prev)}
+                  />
                 </li>
               </ul>
             </li>

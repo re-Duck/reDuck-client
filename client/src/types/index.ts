@@ -107,3 +107,9 @@ export interface IChatUserDto {
   roomId: string;
   unReadMessageCount: number;
 }
+export interface IUser {
+  id: string;
+  name: string;
+  userProfileImgPath: string;
+  token: string;
+}

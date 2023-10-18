@@ -27,13 +27,24 @@ export const authSlice = createSlice({
     },
   },
   /* 페이지 이동시 상태 초기화가 필요한 경우 사용 */
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
+  // extraReducers: {
+  //   [HYDRATE]: (state, action) => {
+  //     console.log('action: ', action);
+  //     return {
+  //       ...state,
+  //       ...action.payload.auth,
+  //     };
+  //   },
+  // },
+
+  // 위 코드가 경고창이 발생하여 아래와 같이 수정했음. 하지만 action.payload가 타입 에러로 나와서 확인 부탁
+  extraReducers: (builder) => {
+    builder.addCase(HYDRATE, (state, action: any) => {
       return {
         ...state,
         ...action.payload.auth,
       };
-    },
+    });
   },
 });
 

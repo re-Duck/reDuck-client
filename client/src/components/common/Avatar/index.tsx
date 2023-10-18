@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import user_icon from '@/assets/images/user_icon.png';
+import user_icon from '../../../../public/user_icon.png';
 
 import { positionStyle, avatarSizeStyle } from '@/styles/styleConstant';
 
@@ -30,7 +30,7 @@ export default function Avatar({
         width={80}
         height={80}
         alt={alt}
-        className="w-full h-full object-cover"
+        className="object-cover w-full h-full"
       />
       {hasDot && (
         <div

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 //components
-import { ModifyCommentButton, DeleteButton } from './';
+import { ModifyCommentButton, DeleteButton } from '..';
 
 //service
 import { BASE_URL } from '@/service/base/api';
@@ -9,7 +9,8 @@ import { BASE_URL } from '@/service/base/api';
 //types
 import { IComment } from '@/types';
 import Link from 'next/link';
-import Avatar from '../Avatar';
+import Avatar from '../../Avatar';
+import { parseDate } from '@/util';
 
 interface ICommentProps {
   data: IComment;
@@ -27,12 +28,11 @@ export default function Comment({
 }: ICommentProps) {
   const [isModifying, setIsModifying] = useState(false);
   const [comment, setComment] = useState(data.commentContent);
-
   return (
-    <article className="flex flex-col w-full max-w-4xl m-auto bg-white border-gray-100 border-2 p-6 gap-7">
+    <article className="flex flex-col w-full max-w-4xl p-6 m-auto bg-white border-2 border-gray-100 gap-7">
       <div className="flex justify-between">
         <Link
-          className="flex gap-2 font-semibold items-center"
+          className="flex items-center gap-2 font-semibold"
           href={`/profile/${data.commentAuthorId}`}
         >
           <Avatar
@@ -42,7 +42,12 @@ export default function Comment({
           />
           <div className="flex flex-col font-bold">
             <span className="text-md ">{data.commentAuthorName}</span>
-            <span className="text-xs text-gray-400">{`${data.commentAuthorDevelopAnnual}년차 개발자 `}</span>
+            <div className="flex">
+              <span className="text-xs text-gray-400 after:content-['|'] after:mx-1">{`${data.commentAuthorDevelopAnnual}년차 개발자`}</span>
+              <span className="text-xs text-gray-400">
+                {parseDate(data.commentCreatedAt)}
+              </span>
+            </div>
           </div>
         </Link>
 
@@ -57,7 +62,12 @@ export default function Comment({
               setIsModifying={setIsModifying}
             />
             {isModifying && (
-              <button onClick={() => setIsModifying(false)}>취소</button>
+              <button
+                onClick={() => setIsModifying(false)}
+                className="font-medium text-gray-400"
+              >
+                취소
+              </button>
             )}
             <DeleteButton
               id={data.commentOriginId}
@@ -70,12 +80,12 @@ export default function Comment({
       </div>
       {isModifying ? (
         <input
-          className="text-md text-gray-500  rounded-md p-1 pl-4 border-2 border-gray-200 focus:outline-none focus:border-gray-400"
+          className="p-1 pl-4 text-gray-500 border-2 border-gray-200 rounded-md text-md focus:outline-none focus:border-gray-400"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
       ) : (
-        <p className="text-md text-gray-500">{comment}</p>
+        <p className="text-gray-500 text-md">{comment}</p>
       )}
     </article>
   );

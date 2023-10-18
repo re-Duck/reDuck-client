@@ -18,7 +18,6 @@ const paramsSerializer = (paramObj: Record<string, string>) => {
   return params.toString();
 };
 
-// TODO: any 타입 정의하기
 export async function axios_get<Response = unknown>({
   suburl,
   headers = {},
@@ -30,6 +29,7 @@ export async function axios_get<Response = unknown>({
       params,
       paramsSerializer,
     });
+    //TODO: data: response.data.data로 바꾸기 (백엔드 변경 이후)
     return {
       isOkay: true,
       data: response.data,

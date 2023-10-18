@@ -1,6 +1,7 @@
 export const linkList = [
   { name: '채팅방', href: '/chat' },
-  { name: 'GPT', href: '/gpt' },
+  { name: 'GPT', href: '/mygpt' },
+  { name: '로그인', href: '/login' },
 ];
 
 export const initialLoginValue = Object.freeze({ userId: '', password: '' });
@@ -32,6 +33,7 @@ export const errorMessage = Object.freeze({
   failedSignUp: '회원가입에 실패했습니다. 다시 시도해주세요.',
   socket: '소켓 연결에 문제가 발생했습니다. 페이지를 새로고침해주세요.',
   failedCreateChatRoom: '채팅방 생성에 실패했습니다. 다시 시도해주세요',
+  maxQuestion: '하루 최대 질문 수를 초과했습니다.',
   networkError: '일시적인 네트워크 오류입니다.',
   tryAgarin: '잠시후 다시 시도해주세요.',
   error: '에러입니다.',

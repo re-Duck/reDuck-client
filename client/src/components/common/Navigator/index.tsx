@@ -12,7 +12,6 @@ import reDuckIcon from 'public/main-duck.png';
 
 // session
 import { useSession } from 'next-auth/react';
-
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
   hasLoginButton: boolean;

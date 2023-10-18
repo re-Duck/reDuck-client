@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { linkList } from '@/constants/constant';
 import Link from 'next/link';
 import React from 'react';

@@ -84,6 +84,29 @@ export interface IFlexLabelContent {
   content: React.ReactNode | string;
 }
 
+export interface IChatMessage {
+  type: string;
+  messageId: string;
+  userId: string;
+  name: string;
+  userProfileImgPath?: string;
+  message: string;
+  messageTime: string;
+}
+
+export interface IOtherUserDto {
+  name: string;
+  uesrId: string;
+  userProfileImgPath?: string;
+}
+
+export interface IChatUserDto {
+  lastChatMessage: string;
+  lastChatMessageTime: string;
+  otherUserDto: IOtherUserDto[];
+  roomId: string;
+  unReadMessageCount: number;
+}
 export interface IUser {
   id: string;
   name: string;

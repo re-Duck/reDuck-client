@@ -1,4 +1,8 @@
+// api
 import { axios_get } from './base/api';
+
+// types
+import { IChatMessage, IUserInfo, IChatUserDto } from '@/types';
 
 const getRecommandUser = async () => {
   const suburl = '/chat/random';
@@ -6,7 +10,10 @@ const getRecommandUser = async () => {
   const response = await axios_get({ suburl });
   const data = response.data;
 
-  return data;
+  return data as Pick<
+    IUserInfo,
+    'userId' | 'name' | 'company' | 'developAnnual' | 'userProfileImgPath'
+  >[];
 };
 
 const getUserChatRoom = async ({
@@ -15,7 +22,7 @@ const getUserChatRoom = async ({
 }: {
   userId?: string;
   token?: string;
-}) => {
+}): Promise<IChatUserDto[]> => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -25,11 +32,15 @@ const getUserChatRoom = async ({
   if (response.isOkay) {
     const data = response.data;
 
-    return data;
+    return data as IChatUserDto[];
   } else {
-    return null;
+    return [];
   }
 };
+
+interface ResponseTypeRoomChat {
+  chatMessages: IChatMessage[];
+}
 
 const getRoomChat = async ({
   roomId,
@@ -53,7 +64,7 @@ const getRoomChat = async ({
   const response = await axios_get({ suburl, headers, params });
   const data = response.data;
 
-  const { chatMessages } = data;
+  const { chatMessages } = data as ResponseTypeRoomChat;
   const nextPageParam =
     chatMessages.length > 0
       ? chatMessages[chatMessages.length - 1].messageId

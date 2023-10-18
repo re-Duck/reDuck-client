@@ -18,7 +18,10 @@ import { parseDate } from '@/util';
 import { getRoomChat } from '@/service/chat-get';
 
 // constant
-import { SCROLL_STATE_CHANGE_INTERVAL, SCROLL_TOP_BOUNDARY } from '@/constant';
+import {
+  SCROLL_STATE_CHANGE_INTERVAL,
+  SCROLL_TOP_BOUNDARY,
+} from '@/constants/constant';
 
 interface IChatRoom {
   token: string;
@@ -77,7 +80,7 @@ export default function ChatRoom({
 
   useEffect(() => {
     if (data !== undefined) {
-      const newData = data?.pages.at(-1)?.chatMessages;
+      const newData = data?.pages.at(-1)?.chatMessages as IChatMessage[];
       newData.reverse();
       setChatList((chat) => [...newData, ...chat]);
     }

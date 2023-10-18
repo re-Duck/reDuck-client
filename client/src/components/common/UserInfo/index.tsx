@@ -11,7 +11,9 @@ import FlexLabelContent from './flex-label-content';
 import { BASE_URL } from '@/service/base/api';
 import { IUserInfo } from '@/types';
 import { createChatRoom } from '@/service/chat-post';
-import { ModalType, errorMessage } from '@/constant';
+
+// constant
+import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function UserInfo({ userData }: { userData: IUserInfo }) {
   const router = useRouter();
@@ -77,13 +79,12 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
 
   const handleChatRoute = async () => {
     setIsDisable(true);
-    const result = await createChatRoom({
-      otherIds: [userId],
-      roomName: '',
-      token: session.data?.user.token,
-    });
-    const { isOkay, data } = result;
-    if (isOkay) {
+    try {
+      const data = await createChatRoom({
+        otherIds: [userId],
+        roomName: '',
+        token: session.data?.user.token,
+      });
       const { roomId } = data;
       router.push({
         pathname: '/chat',
@@ -91,7 +92,7 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
           roomId,
         },
       });
-    } else {
+    } catch (error) {
       openModal({
         type: ModalType.ERROR,
         message: errorMessage.error,

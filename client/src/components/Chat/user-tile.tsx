@@ -15,7 +15,7 @@ import { BASE_URL } from '@/service/base/api';
 import { formatDateToString } from '@/util';
 
 // constant
-import { ModalType, errorMessage } from '@/constant';
+import { ModalType, errorMessage } from '@/constants/constant';
 
 interface IUserTile {
   roomId?: string;
@@ -50,21 +50,20 @@ const UserTile = ({
       handleEnterRoom(roomId as string);
     } else {
       const otherIds = [userId];
-      const result = await createChatRoom({
-        otherIds,
-        roomName: '',
-        token,
-      });
-      const { isOkay, data } = result;
-      const { roomId } = data;
-      if (!isOkay) {
+      try {
+        const data = await createChatRoom({
+          otherIds,
+          roomName: '',
+          token,
+        });
+        const { roomId } = data;
+        handleEnterRoom(roomId);
+      } catch {
         openModal({
           type: ModalType.ERROR,
           message: errorMessage.failedCreateChatRoom,
         });
-        return;
       }
-      handleEnterRoom(roomId);
     }
   };
 

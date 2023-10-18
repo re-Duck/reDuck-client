@@ -18,7 +18,7 @@ import { v4 } from 'uuid';
 import { IChatMessage } from '@/types';
 
 // constant
-import { ModalType, errorMessage } from '@/constant';
+import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function Chatroom() {
   const session = useSession();

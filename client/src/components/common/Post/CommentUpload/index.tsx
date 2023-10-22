@@ -1,10 +1,13 @@
+//core
 import React from 'react';
-
-//next
 import { useRouter } from 'next/router';
+
+//components
+import Avatar from '../../Avatar';
 
 //service
 import { BASE_URL } from '@/service/base/api';
+import { commentManager } from '@/service/comment';
 
 //assets
 import { ModalType, errorMessage } from '@/constants/constant';
@@ -13,18 +16,12 @@ import { useModal } from '@/hooks';
 //form
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import Avatar from '../Avatar';
-import { commentManager } from '@/service/comment';
 
-interface IUser {
-  id: string;
-  name: string;
-  userProfileImgPath: string;
-  token: string;
-}
+//types
+import { IUser } from '@/types';
 
 interface IComentUpload {
-  user: IUser | undefined;
+  user?: IUser;
   refetch: () => void;
 }
 
@@ -77,7 +74,7 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
       }
     >
       {({ errors, isSubmitting }) => (
-        <Form className="flex justify-between items-center gap-0.5 h-16 bg-white border-gray-100 border-[1px] px-4 sm:px-10">
+        <Form className="flex justify-between items-center sm:gap-0.5 h-16 bg-white border-gray-100 border-[1px] sm:px-10">
           <Avatar src={comentImgSrc} alt="user_icon" size="sm" />
           <Field
             name="content"

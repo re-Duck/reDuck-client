@@ -8,7 +8,10 @@ interface ErrorFallbackProps extends FallbackProps {
   hasHomeButton?: boolean;
 }
 
-function ErrorFallback({ hasHomeButton, ...props }: ErrorFallbackProps) {
+function ErrorFallback({
+  hasHomeButton = false,
+  ...props
+}: ErrorFallbackProps) {
   if (props.error.message === 'POST_NOT_EXIST') {
     return <Custom404 />;
   }

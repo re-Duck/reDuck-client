@@ -2,7 +2,7 @@ import React from 'react';
 import { IPostInformation } from '@/types';
 import useScroll from '@/hooks/Main/useScroll';
 
-import { Post } from '../../common/Post/post';
+import { PostSummary } from '../../common/Post';
 import LoadingIcon from '../../common/LoadingIcon';
 
 function PostsBox() {
@@ -13,7 +13,7 @@ function PostsBox() {
       {datas?.map((group, index) => (
         <React.Fragment key={index}>
           {group?.data.map((props: IPostInformation) => (
-            <Post key={props.postOriginId} {...props} />
+            <PostSummary key={props.postOriginId} postInfoData={props} />
           ))}
         </React.Fragment>
       ))}

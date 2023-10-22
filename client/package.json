@@ -6,15 +6,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "proxy": {
+    "/ws-connection": {
+      "target": "ws://www.reduck.site",
+      "ws": true
+    }
   },
   "dependencies": {
     "@iconify/react": "^4.1.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^4.29.5",
+    "@tomfreudenberg/next-auth-mock": "^0.5.6",
     "@types/node": "18.15.7",
     "@types/react": "^18.2.31",
     "@types/react-dom": "18.0.11",
+    "@types/stompjs": "^2.3.5",
     "axios": "^1.3.5",
     "eslint-config-next": "13.2.4",
     "feather-icons": "^4.29.0",
@@ -22,17 +33,27 @@
     "next": "13.2.4",
     "next-auth": "^4.22.1",
     "next-redux-wrapper": "^8.1.0",
+    "openai": "^4.8.0",
     "quill-image-resize-module": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.11",
     "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
+    "socketjs-client": "^1.0.2",
     "typescript": "5.0.2",
     "uuid": "^9.0.0",
     "yup": "^1.0.2"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^7.4.6",
+    "@storybook/addon-interactions": "^7.4.6",
+    "@storybook/addon-links": "^7.4.6",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.4.6",
+    "@storybook/nextjs": "^7.4.6",
+    "@storybook/react": "^7.4.6",
+    "@storybook/testing-library": "^0.2.2",
     "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
@@ -45,9 +66,16 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.14",
+    "msw": "^1.3.2",
+    "msw-storybook-addon": "^1.9.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.7",
     "redux-devtools-extension": "^2.13.9",
+    "storybook": "^7.4.6",
     "tailwindcss": "^3.3.1"
+  },
+  "msw": {
+    "workerDirectory": ".storybook/public"
   }
 }

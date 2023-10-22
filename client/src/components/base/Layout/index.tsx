@@ -4,22 +4,24 @@ import MenuView from '../../common/MenuView';
 
 interface IProps {
   children: React.ReactNode;
-  viewList?: boolean;
+  hasLoginButton?: boolean;
 }
 
-export default function Layout({ children, viewList = true }: IProps) {
+export default function Layout({ children, hasLoginButton = true }: IProps) {
   const [isClickedHamburger, setisClickedHamburger] = useState(false);
 
   return (
     <main className="w-full h-full">
-      <MenuView isClickedHamburger={isClickedHamburger} viewList={viewList} />
+      <MenuView
+        isClickedHamburger={isClickedHamburger}
+        setisClickedHamburger={setisClickedHamburger}
+        hasLoginButton={hasLoginButton}
+      />
       <Navigator
         setisClickedHamburger={setisClickedHamburger}
-        viewList={viewList}
+        hasLoginButton={hasLoginButton}
       />
-      <main className="m-auto bg-gray-50 mt-8 p-4 pt-10 min-h-screen">
-        {children}
-      </main>
+      <main className="min-h-screen m-auto pt-14 bg-gray-50">{children}</main>
     </main>
   );
 }

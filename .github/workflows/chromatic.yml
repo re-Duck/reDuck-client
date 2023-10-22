@@ -8,7 +8,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      working-directory: ./client
+      working-directory: ../client
 
     steps:
       - uses: actions/checkout@v1
@@ -18,6 +18,9 @@ jobs:
         working-directory: ${{ env.working-directory }}
       - name: test
         run: pwd
+        working-directory: ${{ env.working-directory }}
+      - name: test2
+        run: ls
         working-directory: ${{ env.working-directory }}
       - name: Generate Environment Variables File for Production
         run: echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production

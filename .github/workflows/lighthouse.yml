@@ -20,6 +20,9 @@ jobs:
         working-directory: ${{ env.working-directory }}
         env:
           NEXT_PUBLIC_OPEN_API: ${{ secrets.NEXT_PUBLIC_OPEN_API }}
+      - name: test
+        run: pwd
+        working-directory: ${{ env.working-directory }}
       - name: Install packages
         run: npm ci && npm install -g @lhci/cli@0.8.x
         working-directory: ${{ env.working-directory }}

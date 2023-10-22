@@ -1,8 +1,6 @@
 # 🐥 reDuck
 > `reDuck`은 개발자들 사이에서 자유로운 리뷰와 소통을 할 수 있는 커뮤니티로, **리뷰하는 오리(Duck)** 를 의미합니다.
-
-![Slide 16_9 - 1](https://github.com/re-Duck/reDuck-client/assets/37887690/4ad8c625-67a9-43b1-82a4-6b442ffdec61)
-
+![Slide 16_9 - 1](https://github.com/re-Duck/reDuck-client/assets/37887690/bb1bb3ce-fe96-4a2d-a7ac-fab9936d8d1c)
 
 ## 👨‍💻 팀원 소개
 

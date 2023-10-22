@@ -12,8 +12,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      
       - name: Install dependencies
-        run: yarn
+        run: npm ci
+        working-directory: ${{ env.working-directory }}
+      - name: test
+        run: pwd
         working-directory: ${{ env.working-directory }}
       - name: Generate Environment Variables File for Production
         run: echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
@@ -25,5 +29,3 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          working-directory: ./client

@@ -11,7 +11,7 @@ import {
 
 //service
 import { postManager } from '@/service/post';
-import { commentManager } from '../../../service/comment/index';
+import { commentManager } from '@/service/comment';
 
 interface IDeleteButton {
   id: string;

@@ -2,8 +2,7 @@ import React from 'react';
 
 import { useModal } from '@/hooks';
 import { ModalType, errorMessage, successMessage } from '@/constants/constant';
-
-import { commentManager } from '../../../service/comment/index';
+import { commentManager } from '@/service/comment';
 
 interface IProps {
   id: string;

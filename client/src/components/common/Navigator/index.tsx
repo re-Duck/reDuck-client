@@ -8,7 +8,7 @@ import { linkList } from '@/constants/constant';
 
 // Icons
 import { Icon } from '@iconify/react';
-import reDuckIcon from 'public/main-duck.png';
+import reDuckIcon from '../../../../public/main-duck.png';
 
 // session
 import { useSession } from 'next-auth/react';

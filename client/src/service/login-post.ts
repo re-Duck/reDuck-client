@@ -9,7 +9,7 @@ interface ILoginPost {
 export async function loginPost(data: object): Promise<ILoginPost> {
   const suburl = '/login';
 
-  const result = await axios_post({ suburl, data });
+  const result = await axios_post<any>({ suburl, data });
   if (result.isOkay) {
     // TODO: set-cookie를 통해 자동으로 쿠키에 저장
     document.cookie = `accessToken=${result.data.accessToken}`;

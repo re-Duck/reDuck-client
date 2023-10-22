@@ -1,19 +1,21 @@
-import React from 'react';
-
+//core
+import React, { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 //components
-import { Layout, PostDetail, Comment, CommentUpload } from '@/components';
-
-//service
-import { axios_get } from '@/service/base/api';
-
+import { Layout } from '@/components';
+import { Loading } from '@/components/board';
+import ErrorFallback from '@/components/common/ErrorFallback';
 //types
-import { IComment } from '@/types';
+import { IPostInformation } from '@/types';
+//third party
+import { ErrorBoundary } from 'react-error-boundary';
 
-//next-auth
-import { useSession } from 'next-auth/react';
-import { useQuery } from '@tanstack/react-query';
-import { IPostInformation } from '../../types/index';
-
+const PostContent = dynamic(
+  () => import('@/components/board/PostContent/index'),
+  {
+    ssr: false,
+  }
+);
 interface IProps {
   pageProps: {
     suburl: string;
@@ -22,57 +24,25 @@ interface IProps {
   };
 }
 export default function PostDetailPage({ pageProps }: IProps) {
-  const session = useSession();
-
-  const user = session.data?.user;
-  const suburl = `/post/detail/${pageProps.postOriginId}`;
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: [`${pageProps.postOriginId}`],
-    queryFn: async () => {
-      const res = await axios_get({ suburl });
-      return res.data;
-    },
-  });
-  const comments = data?.comments;
-  const IS_POST_AUTHOR = user?.id === data?.postAuthorId;
   return (
-    <Layout>
-      {!isLoading && (
-        <div className="flex flex-col max-w-4xl m-auto gap-14 mb-4">
-          <PostDetail
-            data={data}
-            IS_AUTHOR={IS_POST_AUTHOR}
-            token={user ? user.token : ''}
-          />
-          <h3 className="text-2xl font-bold pl-3">댓글 {comments?.length}</h3>
-          <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
-            <CommentUpload
-              user={user}
-              refetch={() => {
-                refetch();
-                setTimeout(
-                  () => window.scrollTo(0, document.body.scrollHeight),
-                  100
-                );
-              }}
-            />
-            {comments?.map((comment: IComment) => (
-              <Comment
-                key={comment.commentOriginId}
-                data={comment}
-                token={user ? user.token : ''}
-                IS_AUTHOR={user?.id === comment.commentAuthorId}
-                postOriginId={pageProps.postOriginId}
-                refetch={refetch}
-              />
-            ))}
-          </div>
-        </div>
+    <ErrorBoundary
+      FallbackComponent={(props) => (
+        <ErrorFallback {...props} hasHomeButton={true} />
       )}
-    </Layout>
+    >
+      <Layout>
+        <Suspense fallback={<Loading />}>
+          <PostContent postOriginId={pageProps.postOriginId} />
+        </Suspense>
+      </Layout>
+    </ErrorBoundary>
   );
 }
-export async function getServerSideProps(context: any) {
-  const postOriginId = context.params.id;
+export async function getServerSideProps({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const postOriginId = params.id;
   return { props: { postOriginId } };
 }

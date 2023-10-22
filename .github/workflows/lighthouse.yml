@@ -1,0 +1,33 @@
+name: Run lighthouse CI When Push
+on: [push]
+jobs:
+  lhci:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+
+      - name: Generate Environment Variables File for Production
+        run: echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API" >> .env.production
+        working-directory: ${{ env.working-directory }}
+        env:
+          NEXT_PUBLIC_OPEN_API: ${{ secrets.NEXT_PUBLIC_OPEN_API }}
+      - name: Install packages
+        run: npm ci && npm install -g @lhci/cli@0.8.x
+        working-directory: ${{ env.working-directory }}
+      - name: Build
+        run: npm run build
+        working-directory: ${{ env.working-directory }}
+      - name: Run Lighthouse CI
+        run: lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        working-directory: ${{ env.working-directory }}

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/*
 import React from 'react';
 
 interface IIconProp {
@@ -25,3 +25,4 @@ export default function Icon({ name, size, strokeWidth, color }: IIconProp) {
     </div>
   );
 }
+*/

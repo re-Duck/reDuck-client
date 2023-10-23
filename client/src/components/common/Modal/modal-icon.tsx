@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '../../base/Icon';
+import Icon from '../../base/Icon/index.tsx.temp';
 import { ModalType, iconInfo } from '@/constants/constant';
 
 interface IType {

@@ -28,7 +28,6 @@
     "@types/stompjs": "^2.3.5",
     "axios": "^1.3.5",
     "eslint-config-next": "13.2.4",
-    "feather-icons": "^4.29.0",
     "formik": "^2.2.9",
     "next": "13.2.4",
     "next-auth": "^4.22.1",

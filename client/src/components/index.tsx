@@ -7,7 +7,6 @@ export { default as QuillEditBox } from '@/components/common/QuillEditBox';
 export { default as Divider } from '@/components/common/Divider';
 export { default as Avatar } from '@/components/common/Avatar';
 export { default as LoadingIcon } from '@/components/common/LoadingIcon';
-export { default as Icon } from '@/components/base/Icon';
 export { default as Modal } from '@/components/common/Modal';
 export { default as AuthComponent } from '@/components/common/AuthComponent';
 export { default as EditProfile } from '@/components/common/EditProfile';

@@ -4,14 +4,7 @@ import { useModal } from '@/hooks';
 import { useSession } from 'next-auth/react';
 
 // components
-import {
-  Layout,
-  Avatar,
-  Divider,
-  Icon,
-  UserInfo,
-  EditProfile,
-} from '@/components';
+import { Layout, Avatar, Divider, UserInfo, EditProfile } from '@/components';
 
 // service
 import { BASE_URL, axios_get } from '@/service/base/api';
@@ -28,6 +21,7 @@ import {
 
 // types
 import { IUserInfo } from '@/types';
+import { Icon } from '@iconify/react';
 
 export default function Profile({
   pageProps,
@@ -80,7 +74,7 @@ export default function Profile({
   //TODO: 반응형 디자인 고려하기 (모바일 디자인)
   return (
     <Layout>
-      <div className="flex mx-auto max-w-5xl p-8 gap-x-16">
+      <div className="flex max-w-5xl p-8 mx-auto gap-x-16">
         <div className="flex-none text-center">
           <Avatar
             src={`${BASE_URL}${
@@ -95,7 +89,7 @@ export default function Profile({
             <p>{school}</p>
           </div>
           <Divider type="horizental" margin={4} thin={2} />
-          <ul className="sm:block hidden">
+          <ul className="hidden sm:block">
             {sideBarList.map(({ content, iconName }) => (
               <li
                 key={content}
@@ -106,13 +100,18 @@ export default function Profile({
                 ${content === '회원탈퇴' && !isMyPage && `hidden`}`}
                 onClick={() => handleSelectMenu(content)}
               >
-                <Icon name={iconName} size={15} strokeWidth={3} color="black" />
+                <Icon
+                  icon={iconName}
+                  fontSize={15}
+                  strokeWidth={3}
+                  color="black"
+                />
                 <span className="ml-4">{content}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="flex flex-1 border bg-white">
+        <div className="flex flex-1 bg-white border">
           {isMyPage ? (
             <EditProfile userData={userData} />
           ) : (

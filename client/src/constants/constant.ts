@@ -118,23 +118,23 @@ export const MODAL_TITLE = {
 export const sideBarList = [
   {
     content: '내 정보',
-    iconName: 'user',
+    iconName: 'uil:user',
   },
   {
     content: '활동기록',
-    iconName: 'activity',
+    iconName: 'tabler:activity',
   },
   {
     content: '친구목록',
-    iconName: 'users',
+    iconName: 'ph:users-bold',
   },
   {
     content: '덕력치',
-    iconName: 'bar-chart',
+    iconName: 'bi:bar-chart-fill',
   },
   {
     content: '회원탈퇴',
-    iconName: 'log-out',
+    iconName: 'ic:outline-log-out',
   },
 ];
 
@@ -148,15 +148,15 @@ export enum ModalType {
 export const iconInfo = Object.freeze({
   success: {
     color: 'green',
-    shape: 'check-circle',
+    shape: 'material-symbols:check-circle-outline',
   },
   warning: {
     color: 'orange',
-    shape: 'alert-triangle',
+    shape: 'tabler:alert-triangle',
   },
   error: {
     color: 'red',
-    shape: 'alert-octagon',
+    shape: 'mingcute:alert-octagon-line',
   },
 });
 

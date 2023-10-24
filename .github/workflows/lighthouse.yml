@@ -21,7 +21,7 @@ jobs:
         env:
           NEXT_PUBLIC_OPEN_API: ${{ secrets.NEXT_PUBLIC_OPEN_API }}
       - name: Install packages
-        run: yarn install && yarn add -g @lhci/cli@0.8.x
+        run: yarn install && yarn global add @lhci/cli@0.8.x
         working-directory: ${{ env.working-directory }}
       - name: Build
         run: yarn build

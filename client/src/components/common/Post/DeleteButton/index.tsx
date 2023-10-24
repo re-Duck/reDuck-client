@@ -44,7 +44,7 @@ export default function DeleteButton({
           message: successMessage.postDeleteSuccess,
         });
       } else if (type === 'comment') {
-        await commentManager.deleteCommtent({
+        await commentManager.deleteComment({
           token,
           commentOriginId: id,
         });

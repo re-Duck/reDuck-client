@@ -24,7 +24,7 @@ export default function ModifyCommentButton({
 
   const handleUpdate = async () => {
     try {
-      await commentManager.updateCommtent({
+      await commentManager.updateComment({
         token,
         postOriginId,
         content: comment,

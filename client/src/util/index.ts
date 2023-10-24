@@ -13,7 +13,7 @@ export const makeblobToHTML = (blob: Blob) => {
     };
     fr.readAsText(blob);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

@@ -49,37 +49,3 @@ export async function editProfile({
     };
   }
 }
-
-export async function sendEditEmail({
-  data,
-  accessToken,
-}: {
-  data: object;
-  accessToken?: string;
-}) {
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
-  const suburl = '/auth/email/profile/number';
-  const result = await axios_post({ suburl, data, headers });
-  return result.isOkay;
-}
-
-export async function certificationNumberCheck({
-  data,
-  accessToken,
-}: {
-  data: object;
-  accessToken?: string;
-}) {
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
-  const suburl = '/auth/email/profile';
-
-  const result = await axios_post<any>({ suburl, data, headers });
-  return {
-    isOkay: result.isOkay,
-    data: result.data,
-  };
-}

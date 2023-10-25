@@ -15,11 +15,8 @@ import { useModal } from '@/hooks';
 
 // service
 import { BASE_URL } from '@/service/base/api';
-import {
-  certificationNumberCheck,
-  editProfile,
-  sendEditEmail,
-} from '@/service/edit-profile';
+import { editProfile } from '@/service/edit-profile';
+import { emailManager } from '@/service/email';
 
 // constant
 import {
@@ -37,7 +34,7 @@ import { IUserInfo, EmailState, UserInputData, EmailType } from '@/types';
 
 interface ICheckEmailDto {
   email: string;
-  number: string;
+  number: number;
   type: EmailType;
 }
 
@@ -81,7 +78,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   }: IUserInfo = userData;
 
   const { data: session, update } = useSession();
-  const accessToken = session?.user.token;
+  const accessToken = session!.user.token;
 
   const { openModal } = useModal();
 
@@ -158,10 +155,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     }
   };
 
-  const handleSubmitEmail = async (
-    type: EmailType,
-    email: string
-  ) => {
+  const handleSubmitEmail = async (type: EmailType, email: string) => {
     switch (type) {
       case 'USER': {
         setUserEmailState(EmailState.Submitting);
@@ -177,7 +171,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       }
     }
     try {
-      const flag = await sendEditEmail({
+      await emailManager.sendProfileEmail({
         data: {
           email,
         },
@@ -185,20 +179,23 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       });
       switch (type) {
         case 'USER': {
-          flag && setUserEmailState(EmailState.Submitted);
+          setUserEmailState(EmailState.Submitted);
           break;
         }
         case 'SCHOOL': {
-          flag && setSchoolEmailState(EmailState.Submitted);
+          setSchoolEmailState(EmailState.Submitted);
           break;
         }
         case 'COMPANY': {
-          flag && setCompanyEmailState(EmailState.Submitted);
+          setCompanyEmailState(EmailState.Submitted);
           break;
         }
       }
     } catch (e) {
-      alert(e);
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.failedSendingEmail,
+      });
       switch (type) {
         case 'USER': {
           setUserEmailState(EmailState.None);
@@ -216,10 +213,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     }
   };
 
-  const handleCheckEmail = async (
-    type: EmailType,
-    email: string
-  ) => {
+  const handleCheckEmail = async (type: EmailType, email: string) => {
     // 인증번호가 일치한다면 토큰 받아옴
     const number = {
       USER: userCertificationNumber,
@@ -228,28 +222,25 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     };
     const dto: ICheckEmailDto = {
       email,
-      number: number[type],
+      number: parseInt(number[type]),
       type,
     };
-    const result = await certificationNumberCheck({
-      data: dto,
-      accessToken,
-    });
-    if (result.isOkay) {
-      const addObject = {
-        USER: {
-          emailAuthToken: result.data?.emailAuthToken,
-        },
-        SCHOOL: {
-          schoolEmailAuthToken: result.data?.emailAuthToken,
-        },
-        COMPANY: {
-          companyEmailAuthToken: result.data?.emailAuthToken,
-        },
-      };
-      setAuthToken({
-        ...authToken,
-        ...addObject[type],
+    try {
+      const emailAuthToken = await emailManager.checkProfileEmailNumber({
+        data: dto,
+        accessToken,
+      });
+      if (type === 'USER') {
+        setAuthToken({ ...authToken, emailAuthToken });
+      } else if (type === 'COMPANY') {
+        setAuthToken({ ...authToken, companyEmailAuthToken: emailAuthToken });
+      } else if (type === 'SCHOOL') {
+        setAuthToken({ ...authToken, schoolEmailAuthToken: emailAuthToken });
+      }
+    } catch {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.checkCertificateEmail,
       });
     }
   };

@@ -11,7 +11,7 @@ interface IAvatarProp {
   alt: string;
   size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   hasDot?: boolean;
-  position: keyof typeof positionStyle;
+  position?: keyof typeof positionStyle;
 }
 
 export default function Avatar({
@@ -19,7 +19,7 @@ export default function Avatar({
   alt,
   size = 'sm',
   hasDot = false,
-  position,
+  position = 'topRight',
 }: IAvatarProp) {
   const avatarStyle = `relative rounded-full border border-slate-200 ${avatarSizeStyle[size]} max-w-[200px] max-h-[200px] overflow-hidden`;
   return (

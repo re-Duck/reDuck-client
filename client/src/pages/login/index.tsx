@@ -8,9 +8,6 @@ import { Icon } from '@iconify/react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-// assets
-import googleLogo from '../../../public/google_logo.png';
-
 // components
 import { Divider, Layout } from '@/components';
 
@@ -127,7 +124,7 @@ export default function Login() {
                 }
               >
                 <Image
-                  src={googleLogo}
+                  src="/images/google_logo.png"
                   alt="googleLogo"
                   style={{ width: '20px' }}
                 />

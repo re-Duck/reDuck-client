@@ -113,3 +113,5 @@ export interface IUser {
   userProfileImgPath: string;
   token: string;
 }
+
+export type EmailType = 'USER' | 'COMPANY' | 'SCHOOL';

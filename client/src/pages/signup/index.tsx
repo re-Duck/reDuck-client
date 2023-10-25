@@ -169,7 +169,7 @@ export default function SignUp() {
     const data = {
       email,
       number: certificateNumber,
-      type: 'user',
+      type: 'USER',
     };
     const result = await checkEmail(data);
     if (result.status) {

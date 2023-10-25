@@ -76,5 +76,8 @@
   },
   "msw": {
     "workerDirectory": ".storybook/public"
+  },
+  "resolutions": {
+    "jackspeak": "2.1.1"
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import user_icon from '../../../../public/user_icon.png';
+import user_icon from '../../../../public/images/user_icon.png';
 
 import { positionStyle, avatarSizeStyle } from '@/styles/styleConstant';
 

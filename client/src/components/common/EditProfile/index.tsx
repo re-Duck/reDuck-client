@@ -191,6 +191,10 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
           break;
         }
       }
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.sendingEmailSuccess,
+      });
     } catch (e) {
       openModal({
         type: ModalType.ERROR,

@@ -24,7 +24,8 @@ import {
 import { ICheckID, ISignupData } from '@/types';
 
 // service
-import { SignupPost, checkEmail, checkID, sendEmail } from '@/service/sign-up';
+import { SignupPost, checkID } from '@/service/sign-up';
+import { emailManager } from '@/service/email';
 
 // hooks
 import { useModal } from '@/hooks';
@@ -144,20 +145,21 @@ export default function SignUp() {
       });
     } else {
       setSendingEmail(true);
-      const status = await sendEmail({ email });
-      if (status) {
+      try {
+        await emailManager.sendSignUpEmail({ email });
         setIsSendEmail(true);
         openModal({
           type: ModalType.SUCCESS,
           message: successMessage.sendingEmailSuccess,
         });
-      } else {
+      } catch {
         openModal({
           type: ModalType.ERROR,
           message: errorMessage.failedSendingEmail,
         });
+      } finally {
+        setSendingEmail(false);
       }
-      setSendingEmail(false);
     }
   };
 
@@ -166,19 +168,17 @@ export default function SignUp() {
   };
 
   const handleCheckEmail = async (email: string) => {
-    const data = {
-      email,
-      number: certificateNumber,
-      type: 'USER',
-    };
-    const result = await checkEmail(data);
-    if (result.status) {
-      setEmailAuthToken(result.value);
+    try {
+      const emailAuthToken = await emailManager.checkSignUpNumber({
+        email,
+        number: parseInt(certificateNumber),
+      });
+      setEmailAuthToken(emailAuthToken);
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.confirmNumberSuccess,
       });
-    } else {
+    } catch {
       setEmailAuthToken('');
       openModal({
         type: ModalType.ERROR,

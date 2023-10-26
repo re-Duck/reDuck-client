@@ -24,7 +24,8 @@ import {
 import { ICheckID, ISignupData } from '@/types';
 
 // service
-import { SignupPost, checkEmail, checkID, sendEmail } from '@/service/sign-up';
+import { userManager } from '@/service/user';
+import { emailManager } from '@/service/email';
 
 // hooks
 import { useModal } from '@/hooks';
@@ -73,23 +74,24 @@ export default function SignUp() {
     if (!isTouched || errorMsg) {
       openModal({
         type: ModalType.ERROR,
-        message: errorMsg ? errorMsg : errorMessage.blankID,
+        message: errorMsg || errorMessage.blankID,
       });
     } else {
-      const response: ICheckID = await checkID(userId);
-      if (response.state && !response.isDuplicate) {
+      try {
+        await userManager.checkDuplicateUser(userId);
         setCheckedId(userId);
         openModal({
           type: ModalType.SUCCESS,
           message: successMessage.availableIdSuccess,
         });
-      } else {
+      } catch (error) {
         setCheckedId('');
         openModal({
           type: ModalType.ERROR,
-          message: response.isDuplicate
-            ? errorMessage.duplicateId
-            : errorMessage.network,
+          message:
+            error === 'duplicate'
+              ? errorMessage.duplicateId
+              : errorMessage.network,
         });
       }
     }
@@ -144,20 +146,21 @@ export default function SignUp() {
       });
     } else {
       setSendingEmail(true);
-      const status = await sendEmail({ email });
-      if (status) {
+      try {
+        await emailManager.sendSignUpEmail({ email });
         setIsSendEmail(true);
         openModal({
           type: ModalType.SUCCESS,
           message: successMessage.sendingEmailSuccess,
         });
-      } else {
+      } catch {
         openModal({
           type: ModalType.ERROR,
           message: errorMessage.failedSendingEmail,
         });
+      } finally {
+        setSendingEmail(false);
       }
-      setSendingEmail(false);
     }
   };
 
@@ -166,19 +169,17 @@ export default function SignUp() {
   };
 
   const handleCheckEmail = async (email: string) => {
-    const data = {
-      email,
-      number: certificateNumber,
-      type: 'user',
-    };
-    const result = await checkEmail(data);
-    if (result.status) {
-      setEmailAuthToken(result.value);
+    try {
+      const emailAuthToken = await emailManager.checkSignUpNumber({
+        email,
+        number: parseInt(certificateNumber),
+      });
+      setEmailAuthToken(emailAuthToken);
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.confirmNumberSuccess,
       });
-    } else {
+    } catch {
       setEmailAuthToken('');
       openModal({
         type: ModalType.ERROR,
@@ -205,10 +206,10 @@ export default function SignUp() {
     setSubmitting(true);
     const data = {
       signUpDto: { ...sendData, emailAuthToken },
-      file: imgFile,
+      imgFile,
     };
-    const status = await SignupPost(data);
-    if (status) {
+    try {
+      await userManager.createUser(data);
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.signUpSuccess,
@@ -217,13 +218,14 @@ export default function SignUp() {
           router.push('/login');
         },
       });
-    } else {
+    } catch {
       openModal({
         type: ModalType.ERROR,
         message: errorMessage.failedSignUp,
       });
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   return (

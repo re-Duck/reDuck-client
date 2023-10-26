@@ -2,8 +2,7 @@ import React from 'react';
 
 import { useModal } from '@/hooks';
 import { ModalType, errorMessage, successMessage } from '@/constants/constant';
-
-import { updateCommtent } from '@/service/update-comment';
+import { commentManager } from '@/service/comment';
 
 interface IProps {
   id: string;
@@ -24,22 +23,22 @@ export default function ModifyCommentButton({
   const { openModal } = useModal();
 
   const handleUpdate = async () => {
-    const res = await updateCommtent({
-      token,
-      postOriginId,
-      content: comment,
-      commentOriginId: id,
-    });
+    try {
+      await commentManager.updateComment({
+        token,
+        postOriginId,
+        content: comment,
+        commentOriginId: id,
+      });
 
-    if (res) {
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.commentUpdateSuccess,
       });
-    } else {
+    } catch (e) {
       openModal({
         type: ModalType.ERROR,
-        message: errorMessage.error,
+        message: errorMessage.tryAgain,
       });
     }
   };

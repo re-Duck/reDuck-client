@@ -1,15 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+//core
 import React from 'react';
+
+//component
 import { Layout, Gpt } from '@/components';
 
-import { Formik, FormikHelpers } from 'formik';
-import { IContent } from '@/types/mygpt';
+//constant
+import { ModalType, errorMessage } from '@/constants/constant';
 
-import { useSelector } from 'react-redux';
+//hooks
 import { useModal } from '@/hooks';
 import useGpt from '@/hooks/mygpt/useGpt';
 
-import { ModalType, errorMessage } from '@/constants/constant';
+//type
+import { IContent } from '@/types/mygpt';
+
+//third party
+import { Formik, FormikHelpers } from 'formik';
+import { useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 
 const initialLoginValue = {

@@ -1,4 +1,4 @@
-import { getAllPosts } from '@/service/get-posts';
+import getAllPosts from '@/service/post/getAllPosts';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 

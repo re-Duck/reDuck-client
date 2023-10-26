@@ -1,11 +1,13 @@
+//core
 import React from 'react';
-
-//next
 import { useRouter } from 'next/router';
+
+//components
+import Avatar from '../../Avatar';
 
 //service
 import { BASE_URL } from '@/service/base/api';
-import { commentPost } from '@/service/comment-post';
+import { commentManager } from '@/service/comment';
 
 //assets
 import { ModalType, errorMessage } from '@/constants/constant';
@@ -14,7 +16,8 @@ import { useModal } from '@/hooks';
 //form
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import Avatar from '../../Avatar';
+
+//types
 import { IUser } from '@/types';
 
 interface IComentUpload {
@@ -43,15 +46,24 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
     setSubmitting,
     resetForm,
   }: IHnadlerComment) => {
-    if (user === undefined) {
-      openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+    try {
+      if (user === undefined) {
+        openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+        setSubmitting(false);
+        return;
+      }
+      await commentManager.createComment({
+        content,
+        postOriginId,
+        token: user.token,
+      });
+      resetForm();
       setSubmitting(false);
-      return;
+      refetch();
+    } catch (e) {
+      setSubmitting(false);
+      openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain });
     }
-    await commentPost({ content, postOriginId, token: user.token });
-    resetForm();
-    setSubmitting(false);
-    refetch();
   };
   return (
     <Formik

@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install dependencies
-        run: npm ci
+        run: yarn install
         working-directory: ${{ env.working-directory }}
       - name: Generate Environment Variables File for Production
         run: |

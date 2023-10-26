@@ -16,6 +16,7 @@ import { useSession } from 'next-auth/react';
 //service
 import { Icon } from '@iconify/react';
 import { postManager } from '@/service/post';
+import Tiptap from '@/components/write/Tiptap';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -131,7 +132,8 @@ export default function Write() {
                 className="p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
               />
               <div className="border-2">
-                <QuillEditBox content={content} handleContent={handleContent} />
+                <Tiptap />
+                {/* <QuillEditBox content={content} handleContent={handleContent} /> */}
               </div>
             </Form>
           )}

@@ -126,7 +126,8 @@ export default function Login() {
                 <Image
                   src="/images/google_logo.png"
                   alt="googleLogo"
-                  style={{ width: '20px' }}
+                  width={20}
+                  height={20}
                 />
                 <span className="flex-grow">구글 계정으로 로그인</span>
               </button>

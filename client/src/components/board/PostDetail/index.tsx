@@ -50,6 +50,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
   useEffect(() => {
     setHTML(data.postContent);
   }, [data]);
+
   return (
     <article className="flex flex-col max-w-4xl min-w-full gap-8 px-4 py-6 m-auto bg-white border-2 border-gray-100 sm:p-12">
       <h1 className="text-4xl font-extrabold ">{data.postTitle}</h1>

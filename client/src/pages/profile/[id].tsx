@@ -8,7 +8,7 @@ import { Layout, Avatar, Divider, UserInfo, EditProfile } from '@/components';
 
 // service
 import { BASE_URL, axios_get } from '@/service/base/api';
-import { withdrawal } from '@/service/withdrawal';
+import { userManager } from '@/service/user';
 
 // constant
 import {
@@ -50,21 +50,23 @@ export default function Profile({
         type: ModalType.WARNING,
         message: warningMessage.confirmWithdrawal,
         callback: async () => {
-          const flag = await withdrawal(user ? user.token : '');
           closeModal();
-          flag
-            ? openModal({
-                type: ModalType.SUCCESS,
-                message: successMessage.withdrawalSuccess,
-                callback: () => {
-                  closeModal();
-                  router.replace('/');
-                },
-              })
-            : openModal({
-                type: ModalType.ERROR,
-                message: errorMessage.error,
-              });
+          try {
+            await userManager.deleteUser(user ? user.token : '');
+            openModal({
+              type: ModalType.SUCCESS,
+              message: successMessage.withdrawalSuccess,
+              callback: () => {
+                closeModal();
+                router.replace('/');
+              },
+            });
+          } catch {
+            openModal({
+              type: ModalType.ERROR,
+              message: errorMessage.error,
+            });
+          }
         },
       });
     } else {

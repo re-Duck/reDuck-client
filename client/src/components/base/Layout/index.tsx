@@ -21,7 +21,7 @@ export default function Layout({ children, hasLoginButton = true }: IProps) {
         setisClickedHamburger={setisClickedHamburger}
         hasLoginButton={hasLoginButton}
       />
-      <main className="min-h-screen m-auto pt-14 bg-gray-50">{children}</main>
+      <main className="min-h-screen pt-20 m-auto bg-gray-50">{children}</main>
     </main>
   );
 }

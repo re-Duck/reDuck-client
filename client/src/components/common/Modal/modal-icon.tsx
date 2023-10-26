@@ -1,6 +1,6 @@
 import React from 'react';
-import Icon from '../../base/Icon';
 import { ModalType, iconInfo } from '@/constants/constant';
+import { Icon } from '@iconify/react';
 
 interface IType {
   type: ModalType.SUCCESS | ModalType.WARNING | ModalType.ERROR;
@@ -8,12 +8,11 @@ interface IType {
 
 export default function ModalIcon({ type }: IType) {
   const { color, shape } = iconInfo[type];
-
   return (
     <div
       className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-${color}-100 sm:mx-0 sm:h-10 sm:w-10`}
     >
-      <Icon name={shape} strokeWidth={2} size={24} color={color} />
+      <Icon icon={shape} color={color} fontSize={24} />
     </div>
   );
 }

@@ -4,14 +4,14 @@ import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
 import {
   ModalType,
+  errorMessage,
   successMessage,
   warningMessage,
 } from '@/constants/constant';
 
 //service
-import { deleteCommtent } from '@/service/delete-comment';
-import { deletePost } from '@/service/delete-post';
-import { errorMessage } from '@/constants/constant';
+import { postManager } from '@/service/post';
+import { commentManager } from '@/service/comment';
 
 interface IDeleteButton {
   id: string;
@@ -33,30 +33,28 @@ export default function DeleteButton({
       ? warningMessage.confirmDeletePost
       : warningMessage.confirmDeleteComment;
 
-  const callback = async () => {
-    if (type === 'post') {
-      deletePost({
-        token,
-        postOriginId: id,
-        callback: () => {
-          router.push('/');
-          openModal({
-            type: ModalType.SUCCESS,
-            message: successMessage.postDeleteSuccess,
-          });
-        },
+  const handdleDelete = async () => {
+    try {
+      if (type === 'post') {
+        await postManager.deletePost({ token, postOriginId: id });
+
+        router.push('/');
+        openModal({
+          type: ModalType.SUCCESS,
+          message: successMessage.postDeleteSuccess,
+        });
+      } else if (type === 'comment') {
+        await commentManager.deleteComment({
+          token,
+          commentOriginId: id,
+        });
+        refetch && refetch();
+      }
+    } catch (e) {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.tryAgain,
       });
-    } else if (type === 'comment') {
-      await deleteCommtent({
-        token,
-        commentOriginId: id,
-        callback: () =>
-          openModal({
-            type: ModalType.ERROR,
-            message: errorMessage.error,
-          }),
-      });
-      refetch && refetch();
     }
   };
   return (
@@ -65,7 +63,7 @@ export default function DeleteButton({
         openModal({
           type: ModalType.WARNING,
           message: IS_CHECK_MODAL_MESSAGE,
-          callback: () => callback(),
+          callback: handdleDelete,
         })
       }
       className="font-medium text-gray-400"

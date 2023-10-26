@@ -1,7 +1,7 @@
-import { axios_get } from './base/api';
-import { IPostInformation } from '../types/index';
+import { axios_get } from '../base/api';
+import { IPostInformation } from '../../types/index';
 
-export const getAllPosts = async ({ pageParam = '' }) => {
+async function getAllPosts({ pageParam = '' }) {
   const params = {
     postOriginId: pageParam,
     postType: ['stack', 'qna'],
@@ -17,4 +17,6 @@ export const getAllPosts = async ({ pageParam = '' }) => {
   const data = response.data as IPostInformation[];
   const nextPageParms = data.at(-1)?.postOriginId;
   return { data, nextPageParms };
-};
+}
+
+export default getAllPosts;

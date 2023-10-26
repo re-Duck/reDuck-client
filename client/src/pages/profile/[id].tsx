@@ -4,18 +4,11 @@ import { useModal } from '@/hooks';
 import { useSession } from 'next-auth/react';
 
 // components
-import {
-  Layout,
-  Avatar,
-  Divider,
-  Icon,
-  UserInfo,
-  EditProfile,
-} from '@/components';
+import { Layout, Avatar, Divider, UserInfo, EditProfile } from '@/components';
 
 // service
-import { BASE_URL, axios_get } from '@/service/base/api';
-import { withdrawal } from '@/service/withdrawal';
+import { BASE_URL } from '@/service/base/api';
+import { userManager } from '@/service/user';
 
 // constant
 import {
@@ -28,6 +21,7 @@ import {
 
 // types
 import { IUserInfo } from '@/types';
+import { Icon } from '@iconify/react';
 
 export default function Profile({
   pageProps,
@@ -56,21 +50,23 @@ export default function Profile({
         type: ModalType.WARNING,
         message: warningMessage.confirmWithdrawal,
         callback: async () => {
-          const flag = await withdrawal(user ? user.token : '');
           closeModal();
-          flag
-            ? openModal({
-                type: ModalType.SUCCESS,
-                message: successMessage.withdrawalSuccess,
-                callback: () => {
-                  closeModal();
-                  router.replace('/');
-                },
-              })
-            : openModal({
-                type: ModalType.ERROR,
-                message: errorMessage.error,
-              });
+          try {
+            await userManager.deleteUser(user ? user.token : '');
+            openModal({
+              type: ModalType.SUCCESS,
+              message: successMessage.withdrawalSuccess,
+              callback: () => {
+                closeModal();
+                router.replace('/');
+              },
+            });
+          } catch {
+            openModal({
+              type: ModalType.ERROR,
+              message: errorMessage.error,
+            });
+          }
         },
       });
     } else {
@@ -80,7 +76,7 @@ export default function Profile({
   //TODO: 반응형 디자인 고려하기 (모바일 디자인)
   return (
     <Layout>
-      <div className="flex mx-auto max-w-5xl p-8 gap-x-16">
+      <div className="flex max-w-5xl p-8 mx-auto gap-x-16">
         <div className="flex-none text-center">
           <Avatar
             src={`${BASE_URL}${
@@ -95,7 +91,7 @@ export default function Profile({
             <p>{school}</p>
           </div>
           <Divider type="horizental" margin={4} thin={2} />
-          <ul className="sm:block hidden">
+          <ul className="hidden sm:block">
             {sideBarList.map(({ content, iconName }) => (
               <li
                 key={content}
@@ -106,13 +102,18 @@ export default function Profile({
                 ${content === '회원탈퇴' && !isMyPage && `hidden`}`}
                 onClick={() => handleSelectMenu(content)}
               >
-                <Icon name={iconName} size={15} strokeWidth={3} color="black" />
+                <Icon
+                  icon={iconName}
+                  fontSize={15}
+                  strokeWidth={3}
+                  color="black"
+                />
                 <span className="ml-4">{content}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="flex flex-1 border bg-white">
+        <div className="flex flex-1 bg-white border">
           {isMyPage ? (
             <EditProfile userData={userData} />
           ) : (
@@ -129,13 +130,10 @@ export async function getServerSideProps({
 }: {
   params: { id: string };
 }) {
-  const suburl = `/user/${id}`;
-  const res = await axios_get({
-    suburl,
-  });
+  const userData = await userManager.getUser(id);
   return {
     props: {
-      userData: res.data,
+      userData,
     },
   };
 }

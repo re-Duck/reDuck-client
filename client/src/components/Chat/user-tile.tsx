@@ -2,7 +2,8 @@
 import React from 'react';
 
 // components
-import { Avatar, Icon } from '../';
+import { Avatar } from '../';
+import { Icon } from '@iconify/react';
 
 // hooks
 import { useModal } from '@/hooks';
@@ -77,21 +78,16 @@ const UserTile = ({
       onDoubleClick={handleRoomCheck}
     >
       <Avatar src={src ? `${BASE_URL}${src}` : ''} alt="user_icon" size="sm" />
-      <div className="flex flex-1 flex-col text-left overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden text-left">
         <span className="text-md">{name}</span>
         <span className="text-xs text-gray-400 truncate overflow-ellipsis">
           {description}
         </span>
       </div>
-      <div className="disabled:opacity-70 w-8 h-8 sm:w-14 sm:h-10 inline-block">
+      <div className="inline-block w-8 h-8 disabled:opacity-70 sm:w-14 sm:h-10">
         {type === 'recommand' ? (
-          <button className="w-8 sm:w-14 text-right" onClick={handleRoomCheck}>
-            <Icon
-              name="message-circle"
-              size={30}
-              strokeWidth={3}
-              color="black"
-            />
+          <button className="w-8 text-right sm:w-14" onClick={handleRoomCheck}>
+            <Icon icon="lucide:message-circle" fontSize={28} color="black" />
           </button>
         ) : (
           <>
@@ -99,7 +95,7 @@ const UserTile = ({
               {formatDateToString(lastChatMessageTime as string)}
             </p>
             {unReadMessageCount !== 0 && (
-              <div className="bg-red-500 rounded-full text-white text-sm text-center m-auto w-fit px-2">
+              <div className="px-2 m-auto text-sm text-center text-white bg-red-500 rounded-full w-fit">
                 {unReadMessageCount}
               </div>
             )}

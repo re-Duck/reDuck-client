@@ -35,7 +35,7 @@ export const errorMessage = Object.freeze({
   failedCreateChatRoom: '채팅방 생성에 실패했습니다. 다시 시도해주세요',
   maxQuestion: '하루 최대 질문 수를 초과했습니다.',
   networkError: '일시적인 네트워크 오류입니다.',
-  tryAgarin: '잠시후 다시 시도해주세요.',
+  tryAgain: '잠시후 다시 시도해주세요.',
   error: '에러입니다.',
 });
 
@@ -118,23 +118,23 @@ export const MODAL_TITLE = {
 export const sideBarList = [
   {
     content: '내 정보',
-    iconName: 'user',
+    iconName: 'uil:user',
   },
   {
     content: '활동기록',
-    iconName: 'activity',
+    iconName: 'tabler:activity',
   },
   {
     content: '친구목록',
-    iconName: 'users',
+    iconName: 'ph:users-bold',
   },
   {
     content: '덕력치',
-    iconName: 'bar-chart',
+    iconName: 'bi:bar-chart-fill',
   },
   {
     content: '회원탈퇴',
-    iconName: 'log-out',
+    iconName: 'ic:outline-log-out',
   },
 ];
 
@@ -148,15 +148,15 @@ export enum ModalType {
 export const iconInfo = Object.freeze({
   success: {
     color: 'green',
-    shape: 'check-circle',
+    shape: 'material-symbols:check-circle-outline',
   },
   warning: {
     color: 'orange',
-    shape: 'alert-triangle',
+    shape: 'tabler:alert-triangle',
   },
   error: {
     color: 'red',
-    shape: 'alert-octagon',
+    shape: 'mingcute:alert-octagon-line',
   },
 });
 

@@ -27,7 +27,7 @@ function App({ Component, ...rest }: AppProps) {
         <title>reDuck</title>
         <meta name="description" content="reDuck site" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/main-duck.png" />
+        <link rel="icon" href="/images/main-duck.png" />
       </Head>
       <SessionProvider session={props.session}>
         <Provider store={store}>

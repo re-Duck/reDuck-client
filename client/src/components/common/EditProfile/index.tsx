@@ -15,8 +15,8 @@ import { useModal } from '@/hooks';
 
 // service
 import { BASE_URL } from '@/service/base/api';
-import { editProfile } from '@/service/edit-profile';
 import { emailManager } from '@/service/email';
+import { userManager } from '@/service/user';
 
 // constant
 import {
@@ -268,14 +268,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
   ) => {
     const { newPasswordConfirm, ...modifyUserDto } = inputData;
 
-    if (inputData.password === '') {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.blankPassword,
-      });
-      return;
-    }
-
     const data = {
       modifyUserDto: {
         ...modifyUserDto,
@@ -292,31 +284,44 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
             ? authToken.companyEmailAuthToken
             : '',
       },
-      file: imgFile,
+      imgFile,
     };
     setSubmitting(true);
-    const result = await editProfile({ data, userId, accessToken });
-    if (result.isOkay) {
+    try {
+      const userData = await userManager.updateUser({
+        data,
+        userId,
+        accessToken,
+      });
       await update({
         ...session,
         user: {
           ...session?.user,
-          name: result.data?.name,
-          email: result.data?.email,
-          userProfileImgPath: result.data?.userProfileImgPath,
+          name: userData.name,
+          email: userData.email,
+          userProfileImgPath: userData.userProfileImgPath,
         },
       });
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.profileUpdateSuccess,
       });
-    } else {
+    } catch (error) {
       openModal({
         type: ModalType.ERROR,
-        message: errorCodeToMessage[result.code],
+        message:
+          error instanceof Error
+            ? errorCodeToMessage[
+                error.message as
+                  | 'INVALID_PASSWORD'
+                  | 'UNAUTHENTICATED_EMAIL'
+                  | ''
+              ]
+            : errorMessage.error,
       });
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
   return (
     <Formik

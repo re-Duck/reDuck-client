@@ -131,10 +131,7 @@ export default function Write() {
                 placeholder="제목을 입력하세요"
                 className="p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
               />
-              <div className="border-2">
-                <Tiptap />
-                {/* <QuillEditBox content={content} handleContent={handleContent} /> */}
-              </div>
+              <Tiptap />
             </Form>
           )}
         </Formik>

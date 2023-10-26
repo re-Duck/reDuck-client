@@ -18,6 +18,12 @@
 
 #tiptap {
   line-height: 2;
+  padding: 1rem 2rem;
+  height: 60vh;
+  overflow: hidden;
+  :focus {
+    outline: none;
+  }
   > * + * {
     margin-top: 0.75em;
   }

@@ -2,6 +2,8 @@ import React from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
+import ToolBar from './Toolbar';
+
 const Tiptap = () => {
   const editor = useEditor({
     extensions: [StarterKit, Highlight],
@@ -37,7 +39,12 @@ display: none;
     `,
   });
 
-  return <EditorContent id="tiptap" editor={editor} />;
+  return (
+    <div className="border-2">
+      <ToolBar editor={editor} />
+      <EditorContent id="tiptap" editor={editor} />
+    </div>
+  );
 };
 
 export default Tiptap;

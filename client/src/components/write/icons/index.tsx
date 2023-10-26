@@ -5,8 +5,8 @@ import H3 from './h3';
 import Italic from './italic';
 import Quote from './quote';
 import Strikethrough from './strikethrough';
-import Underline from './underline';
 import Bold from './bold';
+import Code from './code';
 
 export const Icon = {
   AddPhoto,
@@ -17,5 +17,5 @@ export const Icon = {
   Italic,
   Quote,
   Strikethrough,
-  Underline,
+  Code,
 };

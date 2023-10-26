@@ -12,7 +12,7 @@
   },
   "proxy": {
     "/ws-connection": {
-      "target": "ws://www.reduck.site",
+      "target": "wss://www.reduck.site",
       "ws": true
     }
   },

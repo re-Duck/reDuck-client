@@ -5,21 +5,13 @@ import Highlight from '@tiptap/extension-highlight';
 import ToolBar from './Toolbar';
 
 interface TiptapProps {
-  isSubmitting: boolean;
-  handleContent: (content: string) => void;
   content: string;
 }
 
-const Tiptap = ({ isSubmitting, handleContent, content }: TiptapProps) => {
+const Tiptap = ({ content }: TiptapProps) => {
   const editor = useEditor({
     extensions: [StarterKit, Highlight],
   });
-
-  useEffect(() => {
-    if (isSubmitting) {
-      handleContent(editor?.getHTML() || '');
-    }
-  }, [isSubmitting]);
 
   useEffect(() => {
     if (content) {

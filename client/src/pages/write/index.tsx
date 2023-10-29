@@ -34,6 +34,9 @@ export default function Write() {
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       try {
+        const nextContent =
+          document.querySelector('.ProseMirror')?.innerHTML || '';
+        handleContent(nextContent);
         if (!accessToken) {
           openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
           return;
@@ -45,15 +48,15 @@ export default function Write() {
         if (returnPostOriginId) {
           await postManager.updatePost({
             title,
-            content,
             accessToken,
             postOriginId,
+            content: nextContent,
           });
         } else {
           returnPostOriginId = await postManager.createPost({
             title,
-            content,
             accessToken,
+            content: nextContent,
           });
         }
 
@@ -128,11 +131,7 @@ export default function Write() {
                 placeholder="제목을 입력하세요"
                 className="h-16 p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
               />
-              <Tiptap
-                isSubmitting={isSubmitting}
-                handleContent={handleContent}
-                content={content}
-              />
+              <Tiptap content={content} />
             </Form>
           )}
         </Formik>

@@ -16,10 +16,9 @@
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-#tiptap {
+#tiptap,
+#tiptap-board {
   line-height: 2;
-  padding: 1rem 2rem;
-  height: 60vh;
   overflow: scroll;
 
   :focus {
@@ -97,12 +96,8 @@
     height: auto;
   }
 
-  hr {
-    margin: 1rem 0;
-  }
-
   blockquote {
-    margin: 1rem 3rem;
+    margin: 1rem;
     padding: 0.5rem 0;
     padding-left: 1rem;
     border-left: 0.4rem solid #efefef;
@@ -111,7 +106,11 @@
 
   hr {
     border: none;
-    border-top: 2px solid #616161;
+    border-top: 2px solid #e5e5e5;
     margin: 2rem 0;
   }
+}
+#tiptap {
+  height: 60vh;
+  padding: 1rem 2rem;
 }

@@ -20,7 +20,8 @@
   line-height: 2;
   padding: 1rem 2rem;
   height: 60vh;
-  overflow: hidden;
+  overflow: scroll;
+
   :focus {
     outline: none;
   }
@@ -31,6 +32,9 @@
   ol {
     padding: 0 1rem;
     list-style-type: disc;
+  }
+  ol {
+    list-style-type: decimal;
   }
   h1 {
     font-size: 2.25rem !important;

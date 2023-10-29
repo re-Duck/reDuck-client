@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-//react-quill component
-import { QuillEditBox } from '@/components';
-
 // form
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
@@ -129,9 +126,13 @@ export default function Write() {
                 name="title"
                 type="text"
                 placeholder="제목을 입력하세요"
-                className="p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
+                className="h-16 p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
               />
-              <Tiptap />
+              <Tiptap
+                isSubmitting={isSubmitting}
+                handleContent={handleContent}
+                content={content}
+              />
             </Form>
           )}
         </Formik>

@@ -1,4 +1,4 @@
-import AddPhoto from './add_photo';
+import AddPhoto from './add-photo';
 import H1 from './h1';
 import H2 from './h2';
 import H3 from './h3';

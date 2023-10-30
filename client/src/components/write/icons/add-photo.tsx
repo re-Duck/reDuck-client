@@ -1,12 +1,22 @@
-import { BASE_URL } from '@/service/base/api';
-import { uploadImagePost } from '@/service/upload-image-post';
-import { Editor } from '@tiptap/react';
-import { useSession } from 'next-auth/react';
+//core
 import React from 'react';
+import { useSession } from 'next-auth/react';
+
+//constants
+import { ModalType, errorMessage } from '@/constants/constant';
+
+//service
+import { BASE_URL } from '@/service/base/api';
+import { postManager } from '@/service/post';
+
+//third party
+import { Editor } from '@tiptap/react';
+import { useModal } from '@/hooks';
 
 function AddPhoto({ editor }: { editor: Editor }) {
   const { data } = useSession();
   const accessToken = data?.user.token;
+  const { openModal } = useModal();
 
   const handleUploadPhoto = async (files: FileList | null) => {
     if (files === null || !editor) return;
@@ -16,12 +26,15 @@ function AddPhoto({ editor }: { editor: Editor }) {
     formData.append('file', file);
 
     try {
-      const imgHash = await uploadImagePost(formData, accessToken);
+      const imgHash = await postManager.uploadImage(formData, accessToken);
       const IMG_URL = `${BASE_URL}${imgHash}`;
 
       editor.commands.setImage({ src: IMG_URL });
     } catch (error) {
-      console.error('실패');
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.failedUploadImage,
+      });
     }
   };
   return (

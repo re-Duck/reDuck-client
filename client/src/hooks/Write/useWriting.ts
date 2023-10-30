@@ -1,5 +1,5 @@
 import { axios_get } from '@/service/base/api';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface IPreviewPost {
   postTitle: string;
@@ -23,7 +23,12 @@ function useWriting(postOriginId: string) {
     setContent(postContent);
   };
 
-  return { initTitle, content, handleContent, getPostData };
+  useEffect(() => {
+    if (!postOriginId) return;
+    getPostData();
+  }, [postOriginId]);
+
+  return { initTitle, content, handleContent };
 }
 
 export default useWriting;

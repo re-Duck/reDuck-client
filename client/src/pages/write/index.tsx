@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 
 // form
@@ -23,9 +23,7 @@ const ValidationSchema = Yup.object().shape({
 export default function Write() {
   const router = useRouter();
   const postOriginId = router.query.postOriginId as string;
-
-  const { initTitle, content, getPostData, handleContent } =
-    useWriting(postOriginId);
+  const { initTitle, content, handleContent } = useWriting(postOriginId);
 
   const { data } = useSession();
   const accessToken = data?.user.token;
@@ -69,11 +67,6 @@ export default function Write() {
     },
     [content]
   );
-
-  useEffect(() => {
-    if (!postOriginId && initTitle === '') return;
-    getPostData();
-  }, []);
 
   return (
     <div className="h-screen bg-gray-50">

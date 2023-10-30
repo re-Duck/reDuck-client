@@ -38,7 +38,7 @@ export function PostSummary({
           sessionStorage.setItem('scrollPosition', window.scrollY.toString());
         }}
       >
-        <h1 className="text-xl font-bold">{postInfoData.postTitle}</h1>
+        <h1 className="mb-3 text-2xl font-bold">{postInfoData.postTitle}</h1>
 
         <p
           className="mb-3 text-gray-500 text-md line-clamp-3"

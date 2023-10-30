@@ -14,6 +14,7 @@ import { DeleteButton, ModifyCotentButton } from '@/components/common/Post';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
+import Image from '@tiptap/extension-image';
 
 interface PostDetail {
   data: Omit<IPostInformation, 'commentsCount'>;
@@ -26,7 +27,12 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
     ? `${BASE_URL}${data.postAuthorProfileImgPath}`
     : '';
   const editor = useEditor({
-    extensions: [StarterKit, Highlight],
+    extensions: [
+      StarterKit,
+      Highlight,
+      Image.configure({ inline: true, allowBase64: true }),
+    ],
+    editable: false,
   });
 
   useEffect(() => {

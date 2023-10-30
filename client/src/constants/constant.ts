@@ -84,22 +84,6 @@ export const initialSignupValue = {
   developYear: '',
 };
 
-export const quillFormats = [
-  'header',
-  'font',
-  'size',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'link',
-  'image',
-  'video',
-];
 // 이미지 파일 최대용량 10MB
 export const IMAGE_FILE_MAX_SIZE = 10 * 1024 * 1024;
 

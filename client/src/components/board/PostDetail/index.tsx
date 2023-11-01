@@ -1,20 +1,26 @@
+//core
 import React, { useEffect } from 'react';
+import Link from 'next/link';
 
 //interface
 import { IPostInformation } from '@/types';
 
 //component
 import { Avatar } from '@/components';
+import { DeleteButton, ModifyCotentButton } from '@/components/common/Post';
 
 //util and constant
 import { parseDate } from '@/util';
 import { BASE_URL } from '@/service/base/api';
-import Link from 'next/link';
-import { DeleteButton, ModifyCotentButton } from '@/components/common/Post';
+
+//tiptap
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+
+import { common, createLowlight } from 'lowlight';
 
 interface PostDetail {
   data: Omit<IPostInformation, 'commentsCount'>;
@@ -23,14 +29,19 @@ interface PostDetail {
 }
 
 export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
+  const lowlight = createLowlight(common);
   const url = data.postAuthorId
     ? `${BASE_URL}${data.postAuthorProfileImgPath}`
     : '';
+
   const editor = useEditor({
     extensions: [
       StarterKit,
       Highlight,
       Image.configure({ inline: true, allowBase64: true }),
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
     ],
     editable: false,
   });

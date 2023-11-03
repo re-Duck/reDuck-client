@@ -12,16 +12,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      
       - name: Install dependencies
         run: yarn install
         working-directory: ${{ env.working-directory }}
+      - name: test
+        run: pwd
+        working-directory: ${{ env.working-directory }}
+      - name: test2
+        run: ls
+        working-directory: ${{ env.working-directory }}
       - name: Generate Environment Variables File for Production
-        run: |
-          echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
+        run: echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
         working-directory: ${{ env.working-directory }}
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
+          workingDir: ${{ env.working-directory }}
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}

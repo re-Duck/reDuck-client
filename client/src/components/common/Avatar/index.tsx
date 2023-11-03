@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import user_icon from '../../../../public/user_icon.png';
 
 import { positionStyle, avatarSizeStyle } from '@/styles/styleConstant';
 
@@ -12,7 +11,7 @@ interface IAvatarProp {
   alt: string;
   size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   hasDot?: boolean;
-  position?: 'topRight' | 'bottomRight' | 'topLeft' | 'bottomLeft';
+  position?: keyof typeof positionStyle;
 }
 
 export default function Avatar({
@@ -20,13 +19,15 @@ export default function Avatar({
   alt,
   size = 'sm',
   hasDot = false,
-  position,
+  position = 'topRight',
 }: IAvatarProp) {
   const avatarStyle = `relative rounded-full border border-slate-200 ${avatarSizeStyle[size]} max-w-[200px] max-h-[200px] overflow-hidden`;
   return (
     <div className={avatarStyle}>
       <Image
-        src={src === `${BASE_URL}` || src === '' ? user_icon : src}
+        src={
+          src === `${BASE_URL}` || src === '' ? '/images/user_icon.png' : src
+        }
         width={80}
         height={80}
         alt={alt}
@@ -34,9 +35,7 @@ export default function Avatar({
       />
       {hasDot && (
         <div
-          className={`${
-            positionStyle[position!]
-          } absolute z-10 bg-white rounded-full p-4`}
+          className={`${positionStyle[position]} absolute z-10 bg-white rounded-full p-4`}
         />
       )}
     </div>

@@ -8,7 +8,6 @@ import { linkList } from '@/constants/constant';
 
 // Icons
 import { Icon } from '@iconify/react';
-import reDuckIcon from '../../../../public/main-duck.png';
 
 // session
 import { useSession } from 'next-auth/react';
@@ -36,7 +35,12 @@ export function Navigator({
           >
             <div className="flex gap-1">
               reDuck
-              <Image src={reDuckIcon} alt="reDuck" width={32} />
+              <Image
+                src="/images/main-duck.png"
+                alt="reDuck"
+                width={32}
+                height={32}
+              />
             </div>
           </Link>
         </li>

@@ -1,4 +1,4 @@
-# 🐥 reDuck
+# 🐥 [reDuck](https://www.reduck.site/)
 > `reDuck`은 개발자들 사이에서 자유로운 리뷰와 소통을 할 수 있는 커뮤니티로, **리뷰하는 오리(Duck)** 를 의미합니다.
 
 ![Slide 16_9 - 1](https://github.com/re-Duck/reDuck-client/assets/37887690/bb1bb3ce-fe96-4a2d-a7ac-fab9936d8d1c)
@@ -50,6 +50,12 @@
   <summary>GPT</summary>
   <h4>설명</h4>
 </details>
+
+## 💯 Test
+### [Storybook](https://652643816743ed80c0f303c2-valgcbpkbf.chromatic.com/?path=/docs/components-base-layout--docs)
+> [Storybook](https://652643816743ed80c0f303c2-valgcbpkbf.chromatic.com/?path=/docs/components-base-layout--docs)을 활용하여 프로젝트의 컴포넌트 UI 테스팅을 진행하였습니다.
+
+### Jest
 
 ## 🛠 Tech Stacks
 ### FE

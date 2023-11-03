@@ -1,6 +1,6 @@
 import React from 'react';
 import { Editor } from '@tiptap/react';
-import { Icon } from './icons';
+import { Icon } from '../icons';
 
 interface ToolBarProps {
   editor: Editor | null;

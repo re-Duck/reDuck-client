@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
-import ToolBar from './Toolbar';
+import ToolBar from '../Toolbar';
 
 //tiptap
 import StarterKit from '@tiptap/starter-kit';

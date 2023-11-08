@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import { Editor } from '@tiptap/react';
 import React from 'react';
 
@@ -10,14 +11,7 @@ function Italic({ editor }: { editor: Editor }) {
       }`}
       type="button"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="32"
-        viewBox="0 -960 960 960"
-        width="32"
-      >
-        <path d="M200-200v-100h160l120-360H320v-100h400v100H580L460-300h140v100H200Z" />
-      </svg>
+      <Icon icon="majesticons:italic-line" fontSize={32} color="black" />
     </button>
   );
 }

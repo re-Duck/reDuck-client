@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import { Editor } from '@tiptap/react';
 import React from 'react';
 
@@ -10,14 +11,7 @@ function Code({ editor }: { editor: Editor }) {
       }`}
       type="button"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="32"
-        viewBox="0 -960 960 960"
-        width="32"
-      >
-        <path d="M320-240 80-480l240-240 57 57-184 184 183 183-56 56Zm320 0-57-57 184-184-183-183 56-56 240 240-240 240Z" />
-      </svg>
+      <Icon icon="material-symbols:code" fontSize={32} color="black" />
     </button>
   );
 }

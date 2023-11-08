@@ -9,6 +9,7 @@ import { ModalType, errorMessage, warningMessage } from '@/constants/constant';
 //hooks
 import { useModal, useWriting } from '@/hooks';
 import { useSession } from 'next-auth/react';
+import useTipTap from '@/hooks/Write/useTiptap';
 
 //service
 import { Icon } from '@iconify/react';
@@ -29,11 +30,12 @@ export default function Write() {
   const accessToken = data?.user.token;
   const { openModal, closeModal } = useModal();
 
+  const { editor } = useTipTap();
+
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       try {
-        const nextContent =
-          document.querySelector('.ProseMirror')?.innerHTML || '';
+        const nextContent = editor?.getHTML() || '';
         handleContent(nextContent);
         if (!accessToken) {
           openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
@@ -124,7 +126,7 @@ export default function Write() {
                 placeholder="제목을 입력하세요"
                 className="h-16 p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
               />
-              <Tiptap content={content} />
+              <Tiptap content={content} editor={editor} />
             </Form>
           )}
         </Formik>

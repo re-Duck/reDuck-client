@@ -2904,13 +2904,6 @@
   resolved "https://registry.npmjs.org/@testing-library/user-event/-/user-event-14.5.1.tgz"
   integrity sha512-UCcUKrUYGj7ClomOo2SpNVvx4/fkd/2BbIHDCle8A0ax+P3bU7yJwDBDrS6ZwdTMARWTGODX1hEsCcO+7beJjg==
 
-"@tiptap-pro/extension-unique-id@^2.3.3":
-  version "2.3.3"
-  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-unique-id/-/extension-unique-id-2.3.3.tgz"
-  integrity sha512-5Bm3r8J8WP3jMonkf4Jb6khHMA/+qOudvJ4Z9esfGYsdy+P6knGJSRNFpcOsOdZxz14TZNVq9IbvSTn4anGj9A==
-  dependencies:
-    uuid "^8.3.2"
-
 "@tiptap/core@^2.1.12":
   version "2.1.12"
   resolved "https://registry.npmjs.org/@tiptap/core/-/core-2.1.12.tgz"

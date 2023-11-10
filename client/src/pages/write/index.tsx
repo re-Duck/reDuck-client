@@ -1,8 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
-
-//react-quill component
-import { QuillEditBox } from '@/components';
 
 // form
 import { Formik, Field, Form } from 'formik';
@@ -12,10 +9,12 @@ import { ModalType, errorMessage, warningMessage } from '@/constants/constant';
 //hooks
 import { useModal, useWriting } from '@/hooks';
 import { useSession } from 'next-auth/react';
+import useTipTap from '@/hooks/Write/useTiptap';
 
 //service
 import { Icon } from '@iconify/react';
 import { postManager } from '@/service/post';
+import Tiptap from '@/components/write/Tiptap';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -25,17 +24,19 @@ const ValidationSchema = Yup.object().shape({
 export default function Write() {
   const router = useRouter();
   const postOriginId = router.query.postOriginId as string;
-
-  const { initTitle, content, getPostData, handleContent } =
-    useWriting(postOriginId);
+  const { initTitle, content, handleContent } = useWriting(postOriginId);
 
   const { data } = useSession();
   const accessToken = data?.user.token;
   const { openModal, closeModal } = useModal();
 
+  const { editor } = useTipTap();
+
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
       try {
+        const nextContent = editor?.getHTML() || '';
+        handleContent(nextContent);
         if (!accessToken) {
           openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
           return;
@@ -47,15 +48,15 @@ export default function Write() {
         if (returnPostOriginId) {
           await postManager.updatePost({
             title,
-            content,
             accessToken,
             postOriginId,
+            content: nextContent,
           });
         } else {
           returnPostOriginId = await postManager.createPost({
             title,
-            content,
             accessToken,
+            content: nextContent,
           });
         }
 
@@ -68,11 +69,6 @@ export default function Write() {
     },
     [content]
   );
-
-  useEffect(() => {
-    if (!postOriginId && initTitle === '') return;
-    getPostData();
-  }, []);
 
   return (
     <div className="h-screen bg-gray-50">
@@ -128,11 +124,9 @@ export default function Write() {
                 name="title"
                 type="text"
                 placeholder="제목을 입력하세요"
-                className="p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
+                className="h-16 p-3 text-4xl bg-transparent border-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-200 focus:border-transparent text-slate-700"
               />
-              <div className="border-2">
-                <QuillEditBox content={content} handleContent={handleContent} />
-              </div>
+              <Tiptap content={content} editor={editor} />
             </Form>
           )}
         </Formik>

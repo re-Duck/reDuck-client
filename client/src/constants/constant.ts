@@ -27,6 +27,7 @@ export const errorMessage = Object.freeze({
   blankComment: '댓글을 입력해주세요.',
   notComplete: '준비 중인 기능입니다.',
   imageCapacityExceeded: '이미지 용량 초과 입니다.',
+  failedUploadImage: '이미지 업로드에 실패했습니다. 다시 시도해주세요.',
   failedSendingEmail: '이메일 전송에 실패했습니다. 다시 시도해주세요',
   notmatchConfirmNumber:
     '메일의 인증번호와 일치하지 않습니다. 인증번호를 확인해주세요.',
@@ -83,22 +84,6 @@ export const initialSignupValue = {
   developYear: '',
 };
 
-export const quillFormats = [
-  'header',
-  'font',
-  'size',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'link',
-  'image',
-  'video',
-];
 // 이미지 파일 최대용량 10MB
 export const IMAGE_FILE_MAX_SIZE = 10 * 1024 * 1024;
 

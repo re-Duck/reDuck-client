@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from 'react';
-
-//next
-import dynamic from 'next/dynamic';
-
-//react-quill
-import ReactQuill, { ReactQuillProps } from 'react-quill';
+//core
+import React, { useEffect } from 'react';
+import Link from 'next/link';
 
 //interface
 import { IPostInformation } from '@/types';
 
 //component
 import { Avatar } from '@/components';
+import { DeleteButton, ModifyCotentButton } from '@/components/common/Post';
 
 //util and constant
 import { parseDate } from '@/util';
 import { BASE_URL } from '@/service/base/api';
-import Link from 'next/link';
-import { DeleteButton, ModifyCotentButton } from '@/components/common/Post';
+
+//tiptap
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Highlight from '@tiptap/extension-highlight';
+import Image from '@tiptap/extension-image';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+
+import { common, createLowlight } from 'lowlight';
 
 interface PostDetail {
   data: Omit<IPostInformation, 'commentsCount'>;
@@ -24,37 +28,32 @@ interface PostDetail {
   token: string;
 }
 
-interface ForwardedQuillComponent extends ReactQuillProps {
-  forwardedRef: React.Ref<ReactQuill>;
-}
-const Content = dynamic(
-  async () => {
-    const { default: RQ } = await import('react-quill');
-    const component = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
-      <RQ ref={forwardedRef} {...props} readOnly id="postContent" />
-    );
-    return component;
-  },
-
-  {
-    ssr: false,
-  }
-);
-
 export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
-  const [html, setHTML] = useState<string>('');
+  const lowlight = createLowlight(common);
   const url = data.postAuthorId
     ? `${BASE_URL}${data.postAuthorProfileImgPath}`
     : '';
 
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Highlight,
+      Image.configure({ inline: true, allowBase64: true }),
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+    ],
+    editable: false,
+  });
+
   useEffect(() => {
-    setHTML(data.postContent);
-  }, [data]);
+    editor?.commands.setContent(data.postContent);
+  }, [data, editor]);
 
   return (
     <article className="flex flex-col max-w-4xl min-w-full gap-8 px-4 py-6 m-auto bg-white border-2 border-gray-100 sm:p-12">
       <h1 className="text-4xl font-extrabold ">{data.postTitle}</h1>
-      <div className="flex justify-between mb-5">
+      <div className="flex justify-between">
         <Link
           className="flex items-center gap-2 font-semibold"
           href={`/profile/${data.postAuthorId}`}
@@ -73,7 +72,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
           </div>
         )}
       </div>
-      <Content forwardedRef={null} modules={{ toolbar: false }} value={html} />
+      <EditorContent id="tiptap-board" editor={editor} />
 
       <p className="text-gray-400">{parseDate(data?.postCreatedAt)}</p>
       <hr />

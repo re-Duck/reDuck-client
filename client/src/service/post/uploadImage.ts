@@ -1,7 +1,7 @@
 // service
-import { axios_post } from './base/api';
+import { axios_post } from '../base/api';
 
-export async function uploadImagePost(
+export default async function uploadImage(
   formData: FormData,
   accessToken: string | undefined
 ) {
@@ -13,8 +13,11 @@ export async function uploadImagePost(
       'Authorization': `Bearer ${accessToken}`,
     },
   };
-  const result = await axios_post(dataObject);
+  const result = await axios_post<string, FormData>(dataObject);
 
-  if (result.isOkay) return result.data;
-  else false;
+  if (!result.isOkay) {
+    throw new Error(result.error);
+  }
+
+  return result.data;
 }

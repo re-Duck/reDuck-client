@@ -5,7 +5,6 @@ import Head from 'next/head';
 import { AuthComponent, Modal } from '@/components';
 
 // packages
-import 'react-quill/dist/quill.snow.css';
 import { SessionProvider } from 'next-auth/react';
 
 // redux

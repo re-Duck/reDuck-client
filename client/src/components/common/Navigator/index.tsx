@@ -37,7 +37,7 @@ export function Navigator({
               reDuck
               <Image
                 src="/images/main-duck.png"
-                alt="reDuck"
+                alt="reDuck-icon"
                 width={32}
                 height={32}
               />

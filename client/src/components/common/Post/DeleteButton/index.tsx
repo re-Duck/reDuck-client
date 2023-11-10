@@ -66,7 +66,7 @@ export default function DeleteButton({
           callback: handdleDelete,
         })
       }
-      className="font-medium text-gray-400"
+      className="font-normal text-gray-400"
     >
       삭제
     </button>

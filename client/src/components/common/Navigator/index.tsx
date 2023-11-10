@@ -47,7 +47,7 @@ export function Navigator({
         {hasLoginButton && (
           <>
             <li className="flex-auto pl-8">
-              <ul className="hidden gap-8 text-gray-500 sm:flex">
+              <div className="hidden gap-8 text-gray-500 sm:flex">
                 {linkList.map(({ name, href }) => {
                   if (name === '로그인') return;
                   return (
@@ -60,7 +60,7 @@ export function Navigator({
                     </Link>
                   );
                 })}
-              </ul>
+              </div>
             </li>
 
             <li>

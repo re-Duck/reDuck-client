@@ -55,7 +55,7 @@ export default function ChatMessage({
         <span>{name}</span>
         <div className={`flex items-end gap-2 ${Style[type].messageWrapper}`}>
           <div
-            className={`w-fit p-2 text-white rounded-xl ${Style[type].message}`}
+            className={`w-fit p-2 text-white text-left rounded-xl ${Style[type].message}`}
           >
             <span>{message}</span>
           </div>

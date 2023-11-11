@@ -16,10 +16,11 @@ jobs:
           node-version: '16'
 
       - name: Generate Environment Variables File for Production
-        run: echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API" >> .env.production
+        run: echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API\nNEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
         working-directory: ${{ env.working-directory }}
         env:
           NEXT_PUBLIC_OPEN_API: ${{ secrets.NEXT_PUBLIC_OPEN_API }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
       - name: test
         run: pwd
         working-directory: ${{ env.working-directory }}
@@ -55,14 +56,14 @@ jobs:
               );
 
               const score = (res) => (res >= 85 ? "🟢" : res >= 50 ? "🟠" : "🔴");
-
+              
               const comment = [
                 `⚡️ Lighthouse report!`,
                 `| Category | Score |`,
                 `| --- | --- |`,
                 `| ${score(summary.performance)} Performance | ${summary.performance} |`,
                 `| ${score(summary.accessibility)} Accessibility | ${summary.accessibility} |`,
-                `| ${score(summary.best_practices)} Best practices | ${summary.best_practices} |`,
+                `| ${score(summary.bestPractices)} Best practices | ${summary} |`,
                 `| ${score(summary.seo)} SEO | ${summary.seo} |`,
                 `| ${score(summary.pwa)} PWA | ${summary.pwa} |`,
               ].join("\n");

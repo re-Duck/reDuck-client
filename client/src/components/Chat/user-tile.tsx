@@ -88,7 +88,7 @@ const UserTile = ({
           </button>
         ) : (
           <>
-            <p className="text-sm text-slate-400">
+            <p className="text-xs text-slate-400">
               {formatDateToString(lastChatMessageTime as string)}
             </p>
             {unReadMessageCount !== 0 && (

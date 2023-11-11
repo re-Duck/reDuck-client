@@ -371,7 +371,7 @@ export default function SignUp() {
                     />
                     <button
                       type="button"
-                      className="w-20 p-2 ml-2 text-xs font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-sm"
+                      className="w-20 p-2 ml-2 text-xs font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-sm break-keep"
                       onClick={() =>
                         handleRequestEmail(
                           values.email,
@@ -383,7 +383,7 @@ export default function SignUp() {
                       {sendingEmail ? (
                         <LoadingIcon size="25px" />
                       ) : (
-                        '인증번호발송'
+                        '인증번호 발송'
                       )}
                     </button>
                   </div>

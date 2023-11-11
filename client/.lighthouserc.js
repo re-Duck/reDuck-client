@@ -5,12 +5,14 @@ module.exports = {
       startServerReadyPattern: 'ready on',
       url: ['http://localhost:3000'],
       numberOfRuns: 3,
+      settings: {
+        preset: 'desktop',
+      },
     },
     upload: {
-      // target: 'filesystem',
-      // outputDir: './lhci_reports',
-      // reportFilenamePattern: '%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%',
-      target: 'temporary-public-storage',
+      target: 'filesystem',
+      outputDir: './lhci_reports',
+      reportFilenamePattern: '%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%',
     },
     assert: {
       assertions: {

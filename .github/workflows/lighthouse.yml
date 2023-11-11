@@ -54,6 +54,9 @@ jobs:
               Object.keys(summary).forEach(
                 (key) => (summary[key] = formatResult(summary[key]))
               );
+              Object.keys(summary).forEach(
+                (key) => (comments+=`${key}: ${summary[key]}\n`)
+              );
 
               const score = (res) => (res >= 90 ? "🟢" : res >= 70 ? "🟠" : "🔴");
               
@@ -63,7 +66,7 @@ jobs:
                 `| --- | --- |`,
                 `| ${score(summary.performance)} Performance | ${summary.performance} |`,
                 `| ${score(summary.accessibility)} Accessibility | ${summary.accessibility} |`,
-                `| ${score(summary.bestPractices)} Best practices | ${summary} |`,
+                `| ${score(summary.bestPractices)} Best practices | ${summary..bestPractices}, ${summary.best-practices} |`,
                 `| ${score(summary.seo)} SEO | ${summary.seo} |`,
                 `| ${score(summary.pwa)} PWA | ${summary.pwa} |`,
               ].join("\n");

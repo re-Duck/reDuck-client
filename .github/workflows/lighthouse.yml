@@ -66,7 +66,7 @@ jobs:
                 `| --- | --- |`,
                 `| ${score(summary.performance)} Performance | ${summary.performance} |`,
                 `| ${score(summary.accessibility)} Accessibility | ${summary.accessibility} |`,
-                `| ${score(summary.bestPractices)} Best practices | ${summary..bestPractices}, ${summary.best-practices} |`,
+                `| ${score(summary.bestPractices)} Best practices | ${summary.bestPractices}, ${summary.best-practices} |`,
                 `| ${score(summary.seo)} SEO | ${summary.seo} |`,
                 `| ${score(summary.pwa)} PWA | ${summary.pwa} |`,
               ].join("\n");

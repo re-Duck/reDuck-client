@@ -1,5 +1,5 @@
 name: Run lighthouse CI When Push
-on: [push, pull_request]
+on: [push]
 jobs:
   lhci:
     name: Lighthouse CI
@@ -42,7 +42,7 @@ jobs:
           script: |
 
             const fs = require('fs');
-            const results = JSON.parse(fs.readFileSync("/${{ env.working-directory }}/lhci_reports/manifest.json"));
+            const results = JSON.parse(fs.readFileSync("${{ env.working-directory }}/lhci_reports/manifest.json"));
             let comments = "";
 
             results.forEach((result) => {

@@ -58,7 +58,7 @@ jobs:
               const score = (res) => (res >= 90 ? "🟢" : res >= 70 ? "🟠" : "🔴");
 
               const comment = [
-                `⚡️ [Lighthouse report ${index}](${result.url})`,
+                `⚡️ Lighthouse report ${index}`,
                 `| Category | Score |`,
                 `| --- | --- |`,
                 `| ${score(summary.performance)} Performance | ${summary.performance} |`,

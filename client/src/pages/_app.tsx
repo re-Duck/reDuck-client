@@ -4,9 +4,6 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { AuthComponent, Modal } from '@/components';
 
-// packages
-import { SessionProvider } from 'next-auth/react';
-
 // redux
 import { Provider } from 'react-redux';
 import { wrapper } from '@/lib/redux/store';
@@ -28,18 +25,16 @@ function App({ Component, ...rest }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/main-duck.png" />
       </Head>
-      <SessionProvider session={props.session}>
-        <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={props.dehydratedState}>
-              <AuthComponent>
-                <Modal />
-                <Component {...props} />
-              </AuthComponent>
-            </Hydrate>
-          </QueryClientProvider>
-        </Provider>
-      </SessionProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={props.dehydratedState}>
+            <AuthComponent>
+              <Modal />
+              <Component {...props} />
+            </AuthComponent>
+          </Hydrate>
+        </QueryClientProvider>
+      </Provider>
     </>
   );
 }

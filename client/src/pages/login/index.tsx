@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { logIn } from '@/lib/redux/slices/authSlice';
 
 // packages
 import { Icon } from '@iconify/react';
@@ -12,12 +14,18 @@ import * as Yup from 'yup';
 import { Divider, Layout } from '@/components';
 
 // service
+import { userManager } from '@/service/user';
+
+// hooks
+import { useModal } from '@/hooks';
+
+// constant
 import {
   initialLoginValue,
   errorMessage,
+  errorCodeToMessage,
   ModalType,
 } from '@/constants/constant';
-import { useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string().required(errorMessage.blankID),
@@ -31,6 +39,7 @@ interface ILogin {
 
 export default function Login() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   // Modal
   const { openModal } = useModal();
@@ -41,23 +50,26 @@ export default function Login() {
   ) => {
     setSubmitting(true);
     try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        ...sendData,
-      });
-      if (result?.error) {
-        openModal({
-          type: ModalType.ERROR,
-          message: result.error,
-        });
-        return;
-      }
-
+      const userData = await userManager.loginUser({ data: sendData });
+      dispatch(logIn(userData));
       router.push('/');
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        type Code = 'USER_NOT_EXIST' | 'INVALID_PASSWORD';
+        openModal({
+          type: ModalType.ERROR,
+          message:
+            errorCodeToMessage[error.message as Code] || errorMessage.error,
+        });
+      } else {
+        openModal({
+          type: ModalType.ERROR,
+          message: errorMessage.error,
+        });
+      }
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
   return (
     <Layout hasLoginButton={false}>

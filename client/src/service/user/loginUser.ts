@@ -37,7 +37,7 @@ export default async function loginUser({ data }: PropType) {
 
   // 쿠키 설정
   try {
-    await fetch('/api/login', {
+    await fetch('/api/setToken', {
       method: 'POST',
       body: JSON.stringify({ refreshToken }),
     });

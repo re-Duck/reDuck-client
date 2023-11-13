@@ -1,7 +1,6 @@
 // react, next
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
 // thrid-party
@@ -81,10 +80,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userId,
     userProfileImgPath,
   }: IUserInfo = userData;
-
-  const user = useSelector((state: any) => state.auth);
-
-  const accessToken = user.token;
 
   const { openModal } = useModal();
 
@@ -189,7 +184,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         data: {
           email,
         },
-        accessToken,
       });
       switch (type) {
         case 'USER': {
@@ -246,7 +240,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     try {
       const emailAuthToken = await emailManager.checkProfileEmailNumber({
         data: dto,
-        accessToken,
       });
       if (type === 'USER') {
         setAuthToken({ ...authToken, emailAuthToken });
@@ -305,7 +298,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       const userData = await userManager.updateUser({
         data,
         userId,
-        accessToken,
       });
       // await update({
       //   ...user,

@@ -18,10 +18,7 @@ export const authSlice = createSlice({
       state.userName = actions.payload.userName;
       state.userProfileImgPath = actions.payload.userProfileImgPath;
     },
-    logOut: (state) => {
-      state.userId = '';
-      state.userName = '';
-    },
+    logOut: () => initialState,
   },
   /* 페이지 이동시 상태 초기화가 필요한 경우 사용 */
   // extraReducers: {

@@ -1,6 +1,8 @@
 // react, next
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // thrid-party
 import { Formik, Form, Field } from 'formik';
@@ -63,6 +65,9 @@ const ValidationSchema = Yup.object().shape({
 });
 
 export default function EditProfile({ userData }: { userData: IUserInfo }) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const {
     company,
     companyEmail,
@@ -83,9 +88,17 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
 
   const { openModal } = useModal();
 
-  const handleLogout = () => {
-    logOut();
-    signOut({ redirect: true, callbackUrl: '/' });
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/deleteToken', {
+        method: 'DELETE',
+      });
+      dispatch(logOut());
+      router.replace('/');
+    } catch {
+      // TODO: 로그아웃 실패 모달
+      console.error('로그아웃 실패');
+    }
   };
 
   // profileImg 관련

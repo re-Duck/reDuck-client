@@ -24,15 +24,15 @@ export default async function getToken(
             .status(200)
             .json({ message: '토큰발급 성공', data: { accessToken } });
         } catch {
-          res.status(401).json({ message: '토큰 만료' });
+          res.status(401).json({ message: '토큰이 만료됐습니다.' });
         }
       } else {
-        res.status(401).json({ message: '비로그인 상태' });
+        res.status(401).json({ message: '로그인하지 않은 유저' });
       }
     } else {
       res.status(405).json({ message: 'GET만 인정' });
     }
   } catch (error) {
-    res.status(500).json({ message: '토큰발급 실패' });
+    res.status(500).json({ message: '토큰이 만료됐습니다.' });
   }
 }

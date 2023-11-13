@@ -18,17 +18,12 @@ const getRecommandUser = async () => {
 
 const getUserChatRoom = async ({
   userId,
-  token,
 }: {
   userId?: string;
-  token?: string;
 }): Promise<IChatUserDto[]> => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
   const suburl = `/chat/rooms/${userId}`;
 
-  const response = await axios_get({ suburl, headers });
+  const response = await axios_get({ suburl });
   if (response.isOkay) {
     const data = response.data;
 

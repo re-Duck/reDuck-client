@@ -10,6 +10,7 @@ import UserTile from './user-tile';
 
 // types
 import { IUserInfo, IChatUserDto } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 interface IChatUserList {
   enteredRoomId: string;
@@ -29,14 +30,13 @@ export default function ChatUserList({
   >([]);
   const [chatUserList, setChatUserList] = useState<IChatUserDto[]>([]);
 
-  const user = useSelector((state: any) => state.auth);
-  const { id, token } = user || {};
+  const user = useSelector((state: IReduxState) => state.auth);
+  const { userId } = user;
 
   const loadUserChatList = async () => {
     const recommandData = await getRecommandUser();
     const listData = await getUserChatRoom({
-      userId: id,
-      token,
+      userId,
     });
     setRecommandUser(recommandData);
     setChatUserList(listData || []);
@@ -71,7 +71,6 @@ export default function ChatUserList({
               key={roomId}
               roomId={roomId}
               enteredRoomId={enteredRoomId}
-              token={token}
               userId={otherId}
               src={userProfileImgPath}
               name={name}
@@ -92,7 +91,6 @@ export default function ChatUserList({
             <UserTile
               key={userId}
               enteredRoomId="none"
-              token={token}
               userId={userId}
               src={userProfileImgPath}
               name={name}

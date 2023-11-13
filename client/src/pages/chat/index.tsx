@@ -16,12 +16,14 @@ import { v4 } from 'uuid';
 
 // types
 import { IChatMessage } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 // constant
 import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function Chatroom() {
-  const user = useSelector((state: any) => state.auth);
+  const user = useSelector((state: IReduxState) => state.auth);
+  const { userId } = user;
   const router = useRouter();
   const { query } = router;
   const { openModal, closeModal } = useModal();
@@ -37,9 +39,8 @@ export default function Chatroom() {
   // 채팅방 연결
   const handleConnect = (id: string) => {
     const client = clientRef.current;
-    const headers = {
-      Authorization: `Bearer ${user.token}}`,
-    };
+    // TODO: header token필요
+
     const subscribe_callback = (message: IMessage) => {
       const chatData = JSON.parse(message.body);
       setChatList((chat) => [...chat, chatData]);
@@ -53,18 +54,19 @@ export default function Chatroom() {
         }
         const subscription = client.subscribe(
           `/sub/chat/room/${id}`,
-          subscribe_callback,
-          headers
+          subscribe_callback
+          //headers
         );
         setSubId(subscription.id);
         setOpenChat(true);
       };
-      client.connect(headers, connect_callback);
+      // client.connect(headers, connect_callback);
+      client.connect(connect_callback);
     } else if (client && client.connected) {
       const subscription = client.subscribe(
         `/sub/chat/room/${id}`,
-        subscribe_callback,
-        headers
+        subscribe_callback
+        //headers
       );
       setSubId(subscription.id);
     }
@@ -74,10 +76,9 @@ export default function Chatroom() {
   const handleDisconnect = () => {
     const client = clientRef.current;
     if (client && client.connected) {
-      const headers = {
-        Authorization: `Bearer ${user.token}}`,
-      };
-      client.unsubscribe(subId, headers);
+      // TODO: header token필요
+      // client.unsubscribe(subId, headers);
+      client.unsubscribe(subId);
     }
   };
 
@@ -86,17 +87,12 @@ export default function Chatroom() {
       const client = clientRef.current;
 
       if (user) {
-        const { id, token } = user;
-
         if (client && client.connected) {
-          const headers = {
-            Authorization: `Bearer ${token}`,
-          };
           const objectbody = {
             roomId,
             message: chatMessage,
             messageId: v4(),
-            userId: id,
+            userId,
             type: 'CHAT',
           };
 
@@ -105,8 +101,13 @@ export default function Chatroom() {
           client.publish({
             destination: '/pub/chat/message',
             body,
-            headers,
           });
+          // TODO: header token필요
+          // client.publish({
+          //   destination: '/pub/chat/message',
+          //   body,
+          //   headers,
+          // });
         }
       }
     },
@@ -160,11 +161,10 @@ export default function Chatroom() {
         />
         {openChat && (
           <ChatRoom
-            token={user.token || ''}
             roomId={roomId}
             chatList={chatList}
             setChatList={setChatList}
-            currentUid={user.id || ''}
+            currentUid={userId}
             handleSendMessage={handleSendMessage}
           />
         )}

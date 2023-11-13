@@ -17,7 +17,6 @@ import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function UserInfo({ userData }: { userData: IUserInfo }) {
   const router = useRouter();
-  const user = useSelector((state: any) => state.auth);
   const { openModal } = useModal();
 
   const [isDisable, setIsDisable] = useState(false);
@@ -83,7 +82,6 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
       const data = await createChatRoom({
         otherIds: [userId],
         roomName: '',
-        token: user.token,
       });
       const { roomId } = data;
       router.push({

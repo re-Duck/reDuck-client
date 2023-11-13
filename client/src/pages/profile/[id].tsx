@@ -21,6 +21,9 @@ import {
 
 // types
 import { IUserInfo } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
+
+// icons
 import { Icon } from '@iconify/react';
 
 export default function Profile({
@@ -32,7 +35,7 @@ export default function Profile({
 }) {
   const router = useRouter();
 
-  const user = useSelector((state: any) => state.auth);
+  const user = useSelector((state: IReduxState) => state.auth);
 
   const { openModal, closeModal } = useModal();
 
@@ -51,7 +54,7 @@ export default function Profile({
         callback: async () => {
           closeModal();
           try {
-            await userManager.deleteUser(user ? user.token : '');
+            await userManager.deleteUser();
             openModal({
               type: ModalType.SUCCESS,
               message: successMessage.withdrawalSuccess,

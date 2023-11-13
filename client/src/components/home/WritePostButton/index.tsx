@@ -1,17 +1,25 @@
+// react, next
 import Link from 'next/link';
 import React from 'react';
-
 import { useSelector } from 'react-redux';
 
-import { BASE_URL } from '@/service/base/api';
-
-import { useModal } from '@/hooks';
-
-import { ModalType, errorMessage } from '@/constants/constant';
+// components
 import { Avatar } from '@/components';
 
+// hooks
+import { useModal } from '@/hooks';
+
+// service
+import { BASE_URL } from '@/service/base/api';
+
+// constant
+import { ModalType, errorMessage } from '@/constants/constant';
+
+// types
+import { IReduxState } from '@/types/redux/IReduxState';
+
 export function WritePostButton() {
-  const user = useSelector((state: any) => state.auth);
+  const user = useSelector((state: IReduxState) => state.auth);
   const imgPath = user.userProfileImgPath
     ? `${BASE_URL}${user.userProfileImgPath}`
     : '';
@@ -20,7 +28,7 @@ export function WritePostButton() {
   return (
     <article className="flex justify-center w-full items-center bg-white border-gray-100 border-[1px] h-25 p-6 gap-4">
       <Avatar src={imgPath} alt="profileImg" size="sm" />
-      {user.token ? (
+      {user.userId ? (
         <Link href={'/write'} className="w-10/12">
           <button className=" border-[1px] rounded-md w-full bg-gray-50 h-11">
             <p className="text-gray-400 ">나누고 싶은 생각이 있으신가요?</p>

@@ -7,7 +7,7 @@ import { postGptContent } from '@/service/post-gpt-count';
 //types
 import { IContent } from '@/types/mygpt';
 
-function useGpt(accessToken: string) {
+function useGpt() {
   const [isAnswerOpen, setIsAnswerOpen] = useState(false);
   const [answer, setAnswer] = useState('');
   const [remainUsageCount, setRemainUsageCount] = useState(0);
@@ -31,7 +31,7 @@ function useGpt(accessToken: string) {
       userQuestion: question,
       gptAnswer,
     };
-    const count = await postGptContent({ data, accessToken });
+    const count = await postGptContent({ data });
     setAnswer(gptAnswer || '');
     setRemainUsageCount(count);
   };
@@ -41,12 +41,12 @@ function useGpt(accessToken: string) {
   };
 
   useEffect(() => {
-    if (!accessToken) return;
     (async () => {
-      const count = await getGptRemain({ accessToken });
+      const count = await getGptRemain();
+      // TODO: 에러 핸들링
       setRemainUsageCount(count);
     })();
-  }, [accessToken]);
+  }, []);
 
   useEffect(() => {
     if (isAnswerOpen || answer) {

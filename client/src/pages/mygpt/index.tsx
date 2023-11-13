@@ -14,6 +14,7 @@ import useGpt from '@/hooks/mygpt/useGpt';
 
 //type
 import { IContent } from '@/types/mygpt';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 //third party
 import { Formik, FormikHelpers } from 'formik';
@@ -25,9 +26,8 @@ const initialLoginValue = {
 };
 
 export default function GptPage() {
-  const authState = useSelector((state: any) => state.auth);
+  const user = useSelector((state: IReduxState) => state.auth);
   const { openModal } = useModal();
-  const accessToken = authState.token || '';
 
   const {
     handdleSubmit,
@@ -36,10 +36,10 @@ export default function GptPage() {
     isAnswerOpen,
     remainUsageCount,
     isPossibleQuestion,
-  } = useGpt(accessToken);
+  } = useGpt();
 
   const validate = () => {
-    if (!authState.isLogin) {
+    if (!user.userId) {
       openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
       return false;
     }

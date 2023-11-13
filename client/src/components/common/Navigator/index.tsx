@@ -7,6 +7,9 @@ import { useSelector } from 'react-redux';
 //constants
 import { linkList } from '@/constants/constant';
 
+//types
+import { IReduxState } from '@/types/redux/IReduxState';
+
 // Icons
 import { Icon } from '@iconify/react';
 
@@ -19,7 +22,7 @@ export function Navigator({
   setisClickedHamburger,
   hasLoginButton,
 }: INavigator) {
-  const user = useSelector((state: any) => state.auth);
+  const user = useSelector((state: IReduxState) => state.auth);
   return (
     <nav
       className="fixed top-0 left-0 z-10 w-full h-16 bg-white border-b-2 border-gray-100"

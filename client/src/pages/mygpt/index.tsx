@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 //core
 import React from 'react';
 
@@ -36,7 +35,7 @@ export default function GptPage() {
     isAnswerOpen,
     remainUsageCount,
     isPossibleQuestion,
-  } = useGpt();
+  } = useGpt(user);
 
   const validate = () => {
     if (!user.userId) {

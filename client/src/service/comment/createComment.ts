@@ -7,7 +7,6 @@ import { axios_post } from '../base/api';
 interface ICreateComment {
   content: string;
   postOriginId: string | string[] | undefined;
-  token: string;
 }
 
 interface Request {
@@ -16,12 +15,9 @@ interface Request {
   commentOriginId: string;
 }
 
-async function createComment({ content, postOriginId, token }: ICreateComment) {
+async function createComment({ content, postOriginId }: ICreateComment) {
   const commentOriginId = uuidv4();
   const suburl = '/post/comment';
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
 
   const data = {
     content,
@@ -29,7 +25,7 @@ async function createComment({ content, postOriginId, token }: ICreateComment) {
     commentOriginId,
   };
 
-  const result = await axios_post<unknown, Request>({ suburl, headers, data });
+  const result = await axios_post<unknown, Request>({ suburl, data });
 
   if (!result.isOkay) {
     throw new Error(result.error);

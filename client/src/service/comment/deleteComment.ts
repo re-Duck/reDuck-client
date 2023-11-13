@@ -2,15 +2,12 @@ import { axios_delete } from '../base/api';
 
 interface IdeleteCommtent {
   commentOriginId: string;
-  token: string;
 }
 
-async function deleteCommtent({ commentOriginId, token }: IdeleteCommtent) {
+async function deleteCommtent({ commentOriginId }: IdeleteCommtent) {
   const suburl = `/post/comment/${commentOriginId}`;
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  const result = await axios_delete({ suburl, headers });
+
+  const result = await axios_delete({ suburl });
 
   if (!result.isOkay) {
     throw new Error(result.error);

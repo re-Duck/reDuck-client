@@ -15,14 +15,12 @@ import { parseDate } from '@/util';
 interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
-  token: string;
   postOriginId: string;
   refetch: () => void;
 }
 export default function Comment({
   data,
   IS_AUTHOR,
-  token,
   postOriginId,
   refetch,
 }: ICommentProps) {
@@ -55,7 +53,6 @@ export default function Comment({
           <div className="flex gap-2">
             <ModifyCommentButton
               id={data.commentOriginId}
-              token={token}
               comment={comment}
               postOriginId={postOriginId}
               isModifying={isModifying}
@@ -71,7 +68,6 @@ export default function Comment({
             )}
             <DeleteButton
               id={data.commentOriginId}
-              token={token}
               type="comment"
               refetch={refetch}
             />

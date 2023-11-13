@@ -1,10 +1,16 @@
+// react, next
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 
+// components
 import { Comment, CommentUpload } from '@/components/common/Post';
 import { PostDetail } from '@/components/board';
+
+// types
 import { IBoardPostInformation, IComment } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
+// service
 import { postManager } from '@/service/post';
 
 interface IProps {
@@ -12,7 +18,7 @@ interface IProps {
 }
 
 function PostContent({ postOriginId }: IProps) {
-  const user = useSelector((state: any) => state.auth);
+  const user = useSelector((state: IReduxState) => state.auth);
 
   const { data, refetch } = useQuery({
     queryKey: [`${postOriginId}`],
@@ -21,14 +27,13 @@ function PostContent({ postOriginId }: IProps) {
     suspense: true,
   });
   const comments = data?.comments;
-  const IS_POST_AUTHOR = user?.id === data?.postAuthorId;
+  const IS_POST_AUTHOR = user.userId === data?.postAuthorId;
 
   return (
     <div className="flex flex-col max-w-4xl m-auto mb-4 gap-14">
       <PostDetail
         data={data as IBoardPostInformation}
         IS_AUTHOR={IS_POST_AUTHOR}
-        token={user ? user.token : ''}
       />
       <h3 className="pl-3 text-2xl font-bold">댓글 {comments?.length}</h3>
       <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
@@ -46,8 +51,7 @@ function PostContent({ postOriginId }: IProps) {
           <Comment
             key={comment.commentOriginId}
             data={comment}
-            token={user ? user.token : ''}
-            IS_AUTHOR={user?.id === comment.commentAuthorId}
+            IS_AUTHOR={user.userId === comment.commentAuthorId}
             postOriginId={postOriginId}
             refetch={refetch}
           />

@@ -21,7 +21,7 @@ import {
 } from '@/constants/constant';
 
 // types
-import { ICheckID, ISignupData } from '@/types';
+import { ISignupData } from '@/types';
 
 // service
 import { userManager } from '@/service/user';

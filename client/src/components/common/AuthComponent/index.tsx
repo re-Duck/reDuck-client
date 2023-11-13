@@ -52,8 +52,6 @@ export default function AuthComponent({
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
       return accessToken;
-
-      // TODO: axios header에 accessToken 설정;
     } catch (error) {
       console.error(error);
       //TODO: 토큰 만료 메시지 출력

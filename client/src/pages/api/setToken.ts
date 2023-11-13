@@ -1,7 +1,10 @@
 // next, react
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function login(req: NextApiRequest, res: NextApiResponse) {
+export default async function setToken(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     if (req.method === 'POST') {
       const { refreshToken }: { refreshToken: string } = JSON.parse(req.body);

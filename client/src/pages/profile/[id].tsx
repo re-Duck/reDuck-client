@@ -36,7 +36,7 @@ export default function Profile({
 
   const { openModal, closeModal } = useModal();
 
-  const isMyPage = router.query.id === user?.id;
+  const isMyPage = router.query.id === user.userId;
 
   const [selectedMenu, setSelectedMenu] = useState<string>('내 정보');
 

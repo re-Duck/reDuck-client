@@ -1,11 +1,17 @@
 // react, next
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { logIn } from '@/lib/redux/slices/authSlice';
+import { logIn, logOut } from '@/lib/redux/slices/authSlice';
+
+// hooks
+import { useModal } from '@/hooks';
 
 // services
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { userManager } from '@/service/user';
+
+// constant
+import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function AuthComponent({
   children,
@@ -13,6 +19,8 @@ export default function AuthComponent({
   children: React.ReactNode;
 }) {
   const dispatch = useDispatch();
+  const { openModal } = useModal();
+
   function decodeJWT(token: string) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -37,26 +45,42 @@ export default function AuthComponent({
       )) as { name: string; userProfileImgPath: string };
       const payload = { userId, userName, userProfileImgPath };
       dispatch(logIn(payload));
-    } catch {
-      console.error('유저데이터 불러오기 실패');
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message !== '로그인하지 않은 유저') {
+          openModal({
+            type: ModalType.ERROR,
+            message: errorMessage.sessionExpiration,
+          });
+        }
+      } else if (error instanceof AxiosError) {
+        // 유저정보 불러오기 실패, 새로고침할 수 있게.
+        openModal({
+          type: ModalType.ERROR,
+          message: errorMessage.failedGetUser,
+        });
+      } else {
+        openModal({
+          type: ModalType.ERROR,
+          message: errorMessage.Unknown,
+        });
+      }
     }
   };
 
   const silentRefresh = async () => {
-    try {
-      const result = await fetch('/api/getToken', { method: 'GET' });
-      const { data } = await result.json();
-      const { accessToken } = data;
-
-      // axios default header 설정
-      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
-      return accessToken;
-    } catch (error) {
-      console.error(error);
-      //TODO: 토큰 만료 메시지 출력
-      //TODO: 전역 데이터 정리
+    const response = await fetch('/api/getToken', { method: 'GET' });
+    const { message, data } = await response.json();
+    if (!response.ok) {
+      dispatch(logOut());
+      throw new Error(message);
     }
+    const { accessToken } = data;
+
+    // axios default header 설정
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+    return accessToken;
   };
 
   useEffect(() => {

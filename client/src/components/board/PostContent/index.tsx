@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 
 import { Comment, CommentUpload } from '@/components/common/Post';
@@ -12,9 +12,8 @@ interface IProps {
 }
 
 function PostContent({ postOriginId }: IProps) {
-  const session = useSession();
+  const user = useSelector((state: any) => state.auth);
 
-  const user = session.data?.user;
   const { data, refetch } = useQuery({
     queryKey: [`${postOriginId}`],
     queryFn: async () => await postManager.getPost({ postOriginId }),

@@ -1,6 +1,6 @@
 // react, next
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 // components
@@ -21,7 +21,7 @@ import { IChatMessage } from '@/types';
 import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function Chatroom() {
-  const session = useSession();
+  const user = useSelector((state: any) => state.auth);
   const router = useRouter();
   const { query } = router;
   const { openModal, closeModal } = useModal();
@@ -38,7 +38,7 @@ export default function Chatroom() {
   const handleConnect = (id: string) => {
     const client = clientRef.current;
     const headers = {
-      Authorization: `Bearer ${session.data?.user.token}}`,
+      Authorization: `Bearer ${user.token}}`,
     };
     const subscribe_callback = (message: IMessage) => {
       const chatData = JSON.parse(message.body);
@@ -75,7 +75,7 @@ export default function Chatroom() {
     const client = clientRef.current;
     if (client && client.connected) {
       const headers = {
-        Authorization: `Bearer ${session.data?.user.token}}`,
+        Authorization: `Bearer ${user.token}}`,
       };
       client.unsubscribe(subId, headers);
     }
@@ -85,8 +85,8 @@ export default function Chatroom() {
     (chatMessage: string) => {
       const client = clientRef.current;
 
-      if (session.data) {
-        const { id, token } = session.data.user;
+      if (user) {
+        const { id, token } = user;
 
         if (client && client.connected) {
           const headers = {
@@ -110,11 +110,11 @@ export default function Chatroom() {
         }
       }
     },
-    [session, roomId]
+    [user, roomId]
   );
 
   useEffect(() => {
-    if (!session.data) {
+    if (!user) {
       openModal({
         type: ModalType.ERROR,
         message: errorMessage.needLogin,
@@ -160,11 +160,11 @@ export default function Chatroom() {
         />
         {openChat && (
           <ChatRoom
-            token={session.data?.user.token || ''}
+            token={user.token || ''}
             roomId={roomId}
             chatList={chatList}
             setChatList={setChatList}
-            currentUid={session.data?.user.id || ''}
+            currentUid={user.id || ''}
             handleSendMessage={handleSendMessage}
           />
         )}

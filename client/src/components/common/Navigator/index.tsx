@@ -2,6 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSelector } from 'react-redux';
 
 //constants
 import { linkList } from '@/constants/constant';
@@ -9,8 +10,6 @@ import { linkList } from '@/constants/constant';
 // Icons
 import { Icon } from '@iconify/react';
 
-// session
-import { useSession } from 'next-auth/react';
 interface INavigator {
   setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
   hasLoginButton: boolean;
@@ -20,7 +19,7 @@ export function Navigator({
   setisClickedHamburger,
   hasLoginButton,
 }: INavigator) {
-  const { data } = useSession();
+  const user = useSelector((state: any) => state.auth);
   return (
     <nav
       className="fixed top-0 left-0 z-10 w-full h-16 bg-white border-b-2 border-gray-100"
@@ -66,8 +65,8 @@ export function Navigator({
             <li>
               <ul>
                 <li className="hidden font-bold sm:block">
-                  {data ? (
-                    <Link href={`/profile/${data.user.id}`}>마이페이지</Link>
+                  {user.userId ? (
+                    <Link href={`/profile/${user.userId}`}>마이페이지</Link>
                   ) : (
                     <Link href="/login">로그인</Link>
                   )}

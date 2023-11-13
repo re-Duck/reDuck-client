@@ -12,7 +12,6 @@ import * as Yup from 'yup';
 import { Divider, Layout } from '@/components';
 
 // service
-import { signIn } from 'next-auth/react';
 import {
   initialLoginValue,
   errorMessage,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 
 // components
 import { Layout, Avatar, Divider, UserInfo, EditProfile } from '@/components';
@@ -32,8 +32,7 @@ export default function Profile({
 }) {
   const router = useRouter();
 
-  const session = useSession();
-  const user = session.data?.user;
+  const user = useSelector((state: any) => state.auth);
 
   const { openModal, closeModal } = useModal();
 

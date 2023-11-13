@@ -1,6 +1,6 @@
 //core
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 
 //constants
 import { ModalType, errorMessage } from '@/constants/constant';
@@ -15,8 +15,8 @@ import { useModal } from '@/hooks';
 import { Icon } from '@iconify/react';
 
 function AddPhoto({ editor }: { editor: Editor }) {
-  const { data } = useSession();
-  const accessToken = data?.user.token;
+  const user = useSelector((state: any) => state.auth);
+  const accessToken = user.token;
   const { openModal } = useModal();
 
   const handleUploadPhoto = async (files: FileList | null) => {

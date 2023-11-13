@@ -1,6 +1,6 @@
 // react, next
 import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 
 // services
 import { getRecommandUser, getUserChatRoom } from '@/service/chat-get';
@@ -28,8 +28,9 @@ export default function ChatUserList({
     >[]
   >([]);
   const [chatUserList, setChatUserList] = useState<IChatUserDto[]>([]);
-  const session = useSession();
-  const { id, token } = session.data?.user || {};
+
+  const user = useSelector((state: any) => state.auth);
+  const { id, token } = user || {};
 
   const loadUserChatList = async () => {
     const recommandData = await getRecommandUser();

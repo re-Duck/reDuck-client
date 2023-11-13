@@ -18,7 +18,6 @@ import { IContent } from '@/types/mygpt';
 //third party
 import { Formik, FormikHelpers } from 'formik';
 import { useSelector } from 'react-redux';
-import { useSession } from 'next-auth/react';
 
 const initialLoginValue = {
   code: '',
@@ -28,8 +27,7 @@ const initialLoginValue = {
 export default function GptPage() {
   const authState = useSelector((state: any) => state.auth);
   const { openModal } = useModal();
-  const { data } = useSession();
-  const accessToken = data?.user.token || '';
+  const accessToken = authState.token || '';
 
   const {
     handdleSubmit,

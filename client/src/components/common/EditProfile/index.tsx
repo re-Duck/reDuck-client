@@ -1,10 +1,10 @@
 // react, next
 import React, { useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 // thrid-party
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { signOut, useSession } from 'next-auth/react';
 import { logOut } from '@/lib/redux/slices/authSlice';
 
 // components
@@ -77,8 +77,9 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userProfileImgPath,
   }: IUserInfo = userData;
 
-  const { data: session, update } = useSession();
-  const accessToken = session!.user.token;
+  const user = useSelector((state: any) => state.auth);
+
+  const accessToken = user.token;
 
   const { openModal } = useModal();
 
@@ -293,15 +294,15 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         userId,
         accessToken,
       });
-      await update({
-        ...session,
-        user: {
-          ...session?.user,
-          name: userData.name,
-          email: userData.email,
-          userProfileImgPath: userData.userProfileImgPath,
-        },
-      });
+      // await update({
+      //   ...user,
+      //   user: {
+      //     ...user,
+      //     name: userData.name,
+      //     email: userData.email,
+      //     userProfileImgPath: userData.userProfileImgPath,
+      //   },
+      // });
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.profileUpdateSuccess,

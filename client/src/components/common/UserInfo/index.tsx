@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
+import { useSelector } from 'react-redux';
 
 // components
 import { Avatar } from '@/components';
@@ -17,7 +17,7 @@ import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function UserInfo({ userData }: { userData: IUserInfo }) {
   const router = useRouter();
-  const session = useSession();
+  const user = useSelector((state: any) => state.auth);
   const { openModal } = useModal();
 
   const [isDisable, setIsDisable] = useState(false);
@@ -83,7 +83,7 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
       const data = await createChatRoom({
         otherIds: [userId],
         roomName: '',
-        token: session.data?.user.token,
+        token: user.token,
       });
       const { roomId } = data;
       router.push({

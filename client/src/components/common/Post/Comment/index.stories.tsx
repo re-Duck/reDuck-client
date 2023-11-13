@@ -46,9 +46,6 @@ const meta: Meta<typeof Comment> = {
     IS_AUTHOR: {
       description: '댓글의 작성자인지 여부를 나타내는 boolean 값입니다.',
     },
-    token: {
-      description: '로그인한 사용자의 토큰 값입니다.',
-    },
     postOriginId: {
       description: '댓글이 속한 게시글의 고유 아이디입니다.',
     },
@@ -63,7 +60,7 @@ export default meta;
 type Story = StoryObj<typeof Comment>;
 
 export const Primary: Story = {
-  args: { data: mockComment, IS_AUTHOR: false, token: '', postOriginId: '' },
+  args: { data: mockComment, IS_AUTHOR: false, postOriginId: '' },
   parameters: {
     docs: {
       description: {
@@ -74,7 +71,7 @@ export const Primary: Story = {
 };
 
 export const MyComment: Story = {
-  args: { data: mockComment, IS_AUTHOR: true, token: '', postOriginId: '' },
+  args: { data: mockComment, IS_AUTHOR: true, postOriginId: '' },
   parameters: {
     docs: {
       description: {

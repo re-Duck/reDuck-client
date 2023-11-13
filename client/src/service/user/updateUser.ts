@@ -21,9 +21,6 @@ export default async function updateUser({
 }: PropType): Promise<IUserInfo> {
   const { modifyUserDto, imgFile } = data;
 
-  const headers = {
-    'Content-Type': 'multipart/form-data',
-  };
   const suburl = `/user/${userId}`;
 
   const modifyUserDtoBlob = makeJsonToBlob(modifyUserDto);
@@ -35,7 +32,6 @@ export default async function updateUser({
   const result = await axios_put<IUserInfo>({
     suburl,
     data: formData,
-    headers,
   });
 
   if (result.isOkay) {

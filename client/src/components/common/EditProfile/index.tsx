@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
+import { update } from '@/lib/redux/slices/authSlice';
 
 // thrid-party
 import { Formik, Form, Field } from 'formik';
@@ -299,15 +300,11 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         data,
         userId,
       });
-      // await update({
-      //   ...user,
-      //   user: {
-      //     ...user,
-      //     name: userData.name,
-      //     email: userData.email,
-      //     userProfileImgPath: userData.userProfileImgPath,
-      //   },
-      // });
+      const payload = {
+        userName: userData.name as string,
+        userProfileImgPath: userData.userProfileImgPath || '',
+      };
+      dispatch(update(payload));
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.profileUpdateSuccess,
@@ -315,15 +312,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     } catch (error) {
       openModal({
         type: ModalType.ERROR,
-        message:
-          error instanceof Error
-            ? errorCodeToMessage[
-                error.message as
-                  | 'INVALID_PASSWORD'
-                  | 'UNAUTHENTICATED_EMAIL'
-                  | ''
-              ]
-            : errorMessage.error,
+        message: error instanceof Error ? error.message : errorMessage.error,
       });
     } finally {
       setSubmitting(false);

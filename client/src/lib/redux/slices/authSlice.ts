@@ -17,10 +17,14 @@ export const authSlice = createSlice({
       state.userName = actions.payload.userName;
       state.userProfileImgPath = actions.payload.userProfileImgPath;
     },
+    update: (state, actions: PayloadAction<Omit<IUserState, 'userId'>>) => {
+      (state.userName = actions.payload.userName),
+        (state.userProfileImgPath = actions.payload.userProfileImgPath);
+    },
     logOut: () => initialState,
   },
 });
 
-export const { logIn, logOut } = authSlice.actions;
+export const { logIn, update, logOut } = authSlice.actions;
 export const selectUser = (state: RootState) => state.auth;
 export default authSlice.reducer;

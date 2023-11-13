@@ -1,5 +1,6 @@
 // react, next
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { logIn, logOut } from '@/lib/redux/slices/authSlice';
 
@@ -18,6 +19,7 @@ export default function AuthComponent({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { openModal } = useModal();
 
@@ -51,6 +53,9 @@ export default function AuthComponent({
           openModal({
             type: ModalType.ERROR,
             message: errorMessage.sessionExpiration,
+            callback: () => {
+              router.replace('/login');
+            },
           });
         }
       } else if (error instanceof AxiosError) {

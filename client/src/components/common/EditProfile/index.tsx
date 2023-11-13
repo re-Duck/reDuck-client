@@ -92,8 +92,10 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       dispatch(logOut());
       router.replace('/');
     } catch {
-      // TODO: 로그아웃 실패 모달
-      console.error('로그아웃 실패');
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.tryAgain,
+      });
     }
   };
 

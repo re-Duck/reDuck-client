@@ -24,6 +24,10 @@ export default async function getToken(
             .status(200)
             .json({ message: '토큰발급 성공', data: { accessToken } });
         } catch {
+          res.setHeader(
+            'Set-Cookie',
+            `token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure`
+          );
           res.status(401).json({ message: '토큰이 만료됐습니다.' });
         }
       } else {
@@ -36,6 +40,10 @@ export default async function getToken(
       res.status(405).json({ message: 'GET만 인정' });
     }
   } catch (error) {
+    res.setHeader(
+      'Set-Cookie',
+      `token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure`
+    );
     res.status(500).json({ message: '토큰이 만료됐습니다.' });
   }
 }

@@ -1,10 +1,6 @@
-// import { useDispatch } from 'react-redux';
-// import { logIn } from '@/lib/redux/slices/authSlice';
-
 // service
 import axios from 'axios';
 import { axios_post } from '../base/api';
-// import { IUserState } from '@/types/redux/IUserState';
 
 interface PropType {
   data: { userId: string; password: string };
@@ -20,7 +16,6 @@ interface ReturnDataType {
 }
 
 export default async function loginUser({ data }: PropType) {
-  //   const dispatch = useDispatch();
   const suburl = '/login';
   const response = await axios_post({ suburl, data });
 

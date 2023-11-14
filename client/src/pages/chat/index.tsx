@@ -10,6 +10,9 @@ import { ChatUserList, ChatRoom } from '@/components/Chat';
 // hooks
 import { useModal } from '@/hooks';
 
+// services
+import axios from 'axios';
+
 // third-party
 import { Stomp, CompatClient, IMessage } from '@stomp/stompjs';
 import { v4 } from 'uuid';
@@ -23,6 +26,9 @@ import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function Chatroom() {
   const user = useSelector((state: IReduxState) => state.auth);
+  const headers = {
+    Authorization: axios.defaults.headers.common['Authorization'] as string,
+  };
   const { userId } = user;
   const router = useRouter();
   const { query } = router;
@@ -39,7 +45,6 @@ export default function Chatroom() {
   // 채팅방 연결
   const handleConnect = (id: string) => {
     const client = clientRef.current;
-    // TODO: header token필요
 
     const subscribe_callback = (message: IMessage) => {
       const chatData = JSON.parse(message.body);
@@ -54,14 +59,13 @@ export default function Chatroom() {
         }
         const subscription = client.subscribe(
           `/sub/chat/room/${id}`,
-          subscribe_callback
-          //headers
+          subscribe_callback,
+          headers
         );
         setSubId(subscription.id);
         setOpenChat(true);
       };
-      // client.connect(headers, connect_callback);
-      client.connect(connect_callback);
+      client.connect(headers, connect_callback);
     } else if (client && client.connected) {
       const subscription = client.subscribe(
         `/sub/chat/room/${id}`,
@@ -76,9 +80,7 @@ export default function Chatroom() {
   const handleDisconnect = () => {
     const client = clientRef.current;
     if (client && client.connected) {
-      // TODO: header token필요
-      // client.unsubscribe(subId, headers);
-      client.unsubscribe(subId);
+      client.unsubscribe(subId, headers);
     }
   };
 
@@ -101,13 +103,8 @@ export default function Chatroom() {
           client.publish({
             destination: '/pub/chat/message',
             body,
+            headers,
           });
-          // TODO: header token필요
-          // client.publish({
-          //   destination: '/pub/chat/message',
-          //   body,
-          //   headers,
-          // });
         }
       }
     },

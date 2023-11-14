@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '@/lib/redux/slices/authSlice';
 
 // components
 import { Layout, Avatar, Divider, UserInfo, EditProfile } from '@/components';
@@ -35,6 +36,7 @@ export default function Profile({
 }) {
   const router = useRouter();
 
+  const dispatch = useDispatch();
   const user = useSelector((state: IReduxState) => state.auth);
 
   const { openModal, closeModal } = useModal();
@@ -55,6 +57,10 @@ export default function Profile({
           closeModal();
           try {
             await userManager.deleteUser();
+            await fetch('/api/deleteToken', {
+              method: 'DELETE',
+            });
+            dispatch(logOut());
             openModal({
               type: ModalType.SUCCESS,
               message: successMessage.withdrawalSuccess,

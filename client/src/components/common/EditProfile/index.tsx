@@ -25,7 +25,6 @@ import {
   IMAGE_FILE_MAX_SIZE,
   ModalType,
   developExperience,
-  errorCodeToMessage,
   errorMessage,
   regex,
   successMessage,

@@ -27,7 +27,10 @@ export default async function getToken(
           res.status(401).json({ message: '토큰이 만료됐습니다.' });
         }
       } else {
-        res.status(401).json({ message: '로그인하지 않은 유저' });
+        res.status(200).json({
+          message: '로그인하지 않은 유저',
+          data: { accessToken: null },
+        });
       }
     } else {
       res.status(405).json({ message: 'GET만 인정' });

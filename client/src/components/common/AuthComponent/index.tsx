@@ -21,7 +21,7 @@ export default function AuthComponent({
 }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   function decodeJWT(token: string) {
     const base64Url = token.split('.')[1];
@@ -41,23 +41,28 @@ export default function AuthComponent({
     // reload시 유저 전역데이터 세팅
     try {
       const accessToken = await silentRefresh();
-      const { sub: userId } = decodeJWT(accessToken);
-      const { name: userName, userProfileImgPath } = (await userManager.getUser(
-        userId
-      )) as { name: string; userProfileImgPath: string };
-      const payload = { userId, userName, userProfileImgPath };
-      dispatch(logIn(payload));
+      if (accessToken) {
+        const { sub: userId } = decodeJWT(accessToken);
+        const { name: userName, userProfileImgPath } =
+          (await userManager.getUser(userId)) as {
+            name: string;
+            userProfileImgPath: string;
+          };
+        const payload = { userId, userName, userProfileImgPath };
+        dispatch(logIn(payload));
+      } else {
+        dispatch(logOut());
+      }
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message !== '로그인하지 않은 유저') {
-          openModal({
-            type: ModalType.ERROR,
-            message: errorMessage.sessionExpiration,
-            callback: () => {
-              router.replace('/login');
-            },
-          });
-        }
+        openModal({
+          type: ModalType.ERROR,
+          message: errorMessage.sessionExpiration,
+          callback: () => {
+            closeModal();
+            router.replace('/login');
+          },
+        });
       } else if (error instanceof AxiosError) {
         // 유저정보 불러오기 실패, 새로고침할 수 있게.
         openModal({
@@ -83,7 +88,9 @@ export default function AuthComponent({
     const { accessToken } = data;
 
     // axios default header 설정
-    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    if (accessToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    }
 
     return accessToken;
   };

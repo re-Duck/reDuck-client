@@ -9,13 +9,17 @@ import FlexLabelContent from './flex-label-content';
 
 // service
 import { BASE_URL } from '@/service/base/api';
-import { IUserInfo } from '@/types';
 import { createChatRoom } from '@/service/chat-post';
 
 // constant
 import { ModalType, errorMessage } from '@/constants/constant';
 
+// types
+import { IUserInfo } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
+
 export default function UserInfo({ userData }: { userData: IUserInfo }) {
+  const user = useSelector((state: IReduxState) => state.auth);
   const router = useRouter();
   const { openModal } = useModal();
 
@@ -77,6 +81,13 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
   ];
 
   const handleChatRoute = async () => {
+    if (!user.userId) {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.needLogin,
+      });
+      return;
+    }
     setIsDisable(true);
     try {
       const data = await createChatRoom({

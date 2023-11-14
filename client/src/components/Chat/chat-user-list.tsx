@@ -1,5 +1,5 @@
 // react, next
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // services
@@ -33,14 +33,16 @@ export default function ChatUserList({
   const user = useSelector((state: IReduxState) => state.auth);
   const { userId } = user;
 
-  const loadUserChatList = async () => {
+  const loadUserChatList = useCallback(async () => {
     const recommandData = await getRecommandUser();
-    const listData = await getUserChatRoom({
-      userId,
-    });
+    if (userId) {
+      const listData = await getUserChatRoom({
+        userId,
+      });
+      setChatUserList(listData || []);
+    }
     setRecommandUser(recommandData);
-    setChatUserList(listData || []);
-  };
+  }, [userId]);
 
   const handleEnterRoom = (roomId: string) => {
     handleDisconnect();
@@ -50,7 +52,7 @@ export default function ChatUserList({
 
   useEffect(() => {
     loadUserChatList();
-  }, []);
+  }, [user]);
 
   return (
     <section className="relative border border-black w-[30%] text-center">

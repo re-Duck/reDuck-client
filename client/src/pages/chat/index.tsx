@@ -32,7 +32,7 @@ export default function Chatroom() {
   const { userId } = user;
   const router = useRouter();
   const { query } = router;
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 
   const [openChat, setOpenChat] = useState(false);
   const [roomId, setRoomId] = useState('');
@@ -112,17 +112,6 @@ export default function Chatroom() {
   );
 
   useEffect(() => {
-    if (!user) {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.needLogin,
-        callback: () => {
-          closeModal();
-          router.replace('/login');
-        },
-      });
-      return;
-    }
     const client = Stomp.client(`${process.env.NEXT_PUBLIC_CHAT_URL}`);
 
     clientRef.current = client;

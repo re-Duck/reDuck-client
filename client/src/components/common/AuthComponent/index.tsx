@@ -40,7 +40,7 @@ export default function AuthComponent({
   const getUserData = async () => {
     // reload시 유저 전역데이터 세팅
     try {
-      const accessToken = await silentRefresh();
+      const accessToken = await getAccessToken();
       if (accessToken) {
         const { sub: userId } = decodeJWT(accessToken);
         const { name: userName, userProfileImgPath } =
@@ -78,7 +78,7 @@ export default function AuthComponent({
     }
   };
 
-  const silentRefresh = async () => {
+  const getAccessToken = async () => {
     const response = await fetch('/api/getToken', { method: 'GET' });
     const { message, data } = await response.json();
     if (!response.ok) {
@@ -99,7 +99,28 @@ export default function AuthComponent({
     getUserData();
   }, []);
 
-  // TODO: refreshToken 기반 accessToken 발급 갱신
+  useEffect(() => {
+    // 10분마다 토큰 재발급
+    const silentRefresh = async () => {
+      try {
+        await getAccessToken();
+      } catch (error) {
+        if (error instanceof Error) {
+          openModal({
+            type: ModalType.ERROR,
+            message: errorMessage.sessionExpiration,
+            callback: () => {
+              closeModal();
+              router.replace('/login');
+            },
+          });
+        }
+      }
+    };
+    const refreshToken = setInterval(silentRefresh, 10 * 60 * 1000);
+
+    return () => clearInterval(refreshToken);
+  }, []);
 
   return <>{children}</>;
 }

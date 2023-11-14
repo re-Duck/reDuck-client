@@ -9,11 +9,10 @@ export default async function setToken(
     if (req.method === 'POST') {
       const { refreshToken }: { refreshToken: string } = JSON.parse(req.body);
 
-      // TODO: HTTPS를 통한 요청인지 확인하여 secure를 true설정 함.
-      //   const cookieOptions = `token=${refreshToken}; HttpOnly; Path=/${
-      //     isSecure ? '; Secure' : ''
-      //   }`;
-      res.setHeader('Set-Cookie', `token=${refreshToken}; HttpOnly; Path=/`);
+      res.setHeader(
+        'Set-Cookie',
+        `token=${refreshToken}; Path=/; HttpOnly; Secure`
+      );
 
       res.status(200).json({ message: '쿠기설정 성공' });
     } else {

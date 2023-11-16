@@ -52,7 +52,7 @@ export default function ModifyCommentButton({
           setIsModifying(true);
         }
       }}
-      className="font-medium text-gray-400"
+      className="font-normal text-gray-400"
     >
       {isModifying ? '완료' : '수정'}
     </button>

@@ -67,7 +67,7 @@ export default function Write() {
         openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain });
       }
     },
-    [content]
+    [content, editor]
   );
 
   return (

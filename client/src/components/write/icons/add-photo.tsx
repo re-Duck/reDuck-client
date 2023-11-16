@@ -30,7 +30,11 @@ function AddPhoto({ editor }: { editor: Editor }) {
       const imgHash = await postManager.uploadImage(formData, accessToken);
       const IMG_URL = `${BASE_URL}${imgHash}`;
 
-      editor.commands.setImage({ src: IMG_URL });
+      editor.commands.setImage({
+        src: IMG_URL,
+        alt: file.name,
+        title: file.name,
+      });
     } catch (error) {
       openModal({
         type: ModalType.ERROR,

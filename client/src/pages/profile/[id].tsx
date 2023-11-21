@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
-import { useSession } from 'next-auth/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '@/lib/redux/slices/authSlice';
 
 // components
 import { Layout, Avatar, Divider, UserInfo, EditProfile } from '@/components';
@@ -21,6 +22,9 @@ import {
 
 // types
 import { IUserInfo } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
+
+// icons
 import { Icon } from '@iconify/react';
 
 export default function Profile({
@@ -32,12 +36,12 @@ export default function Profile({
 }) {
   const router = useRouter();
 
-  const session = useSession();
-  const user = session.data?.user;
+  const dispatch = useDispatch();
+  const user = useSelector((state: IReduxState) => state.auth);
 
   const { openModal, closeModal } = useModal();
 
-  const isMyPage = router.query.id === user?.id;
+  const isMyPage = router.query.id === user.userId;
 
   const [selectedMenu, setSelectedMenu] = useState<string>('내 정보');
 
@@ -52,7 +56,11 @@ export default function Profile({
         callback: async () => {
           closeModal();
           try {
-            await userManager.deleteUser(user ? user.token : '');
+            await userManager.deleteUser();
+            await fetch('/api/deleteToken', {
+              method: 'DELETE',
+            });
+            dispatch(logOut());
             openModal({
               type: ModalType.SUCCESS,
               message: successMessage.withdrawalSuccess,

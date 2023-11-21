@@ -18,17 +18,12 @@ const getRecommandUser = async () => {
 
 const getUserChatRoom = async ({
   userId,
-  token,
 }: {
   userId?: string;
-  token?: string;
 }): Promise<IChatUserDto[]> => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
   const suburl = `/chat/rooms/${userId}`;
 
-  const response = await axios_get({ suburl, headers });
+  const response = await axios_get({ suburl });
   if (response.isOkay) {
     const data = response.data;
 
@@ -44,16 +39,11 @@ interface ResponseTypeRoomChat {
 
 const getRoomChat = async ({
   roomId,
-  token,
   messageId,
 }: {
   roomId: string;
-  token: string;
   messageId: string;
 }) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
   const suburl = `/chat/room/${roomId}`;
   const params = messageId
     ? {
@@ -61,7 +51,7 @@ const getRoomChat = async ({
       }
     : {};
 
-  const response = await axios_get({ suburl, headers, params });
+  const response = await axios_get({ suburl, params });
   const data = response.data;
 
   const { chatMessages } = data as ResponseTypeRoomChat;

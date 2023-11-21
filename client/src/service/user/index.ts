@@ -3,6 +3,7 @@ import getUser from './getUser';
 import updateUser from './updateUser';
 import deleteUser from './deleteUser';
 import checkDuplicateUser from './checkDuplicateUser';
+import loginUser from './loginUser';
 
 export const userManager = {
   createUser,
@@ -10,4 +11,5 @@ export const userManager = {
   updateUser,
   deleteUser,
   checkDuplicateUser,
+  loginUser,
 };

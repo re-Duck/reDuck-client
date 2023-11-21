@@ -8,7 +8,6 @@ interface GptContentType {
 
 interface IPostGptContent {
   data: GptContentType;
-  accessToken: string;
 }
 
 interface IPostGptContentResponse {
@@ -17,15 +16,11 @@ interface IPostGptContentResponse {
   };
 }
 
-export async function postGptContent({ data, accessToken }: IPostGptContent) {
+export async function postGptContent({ data }: IPostGptContent) {
   const suburl = '/chat-gpt';
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
 
   const result = await axios_post<IPostGptContentResponse, GptContentType>({
     suburl,
-    headers,
     data,
   });
   if (!result.isOkay) {

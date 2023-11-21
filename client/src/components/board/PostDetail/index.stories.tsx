@@ -61,9 +61,6 @@ const meta: Meta<typeof PostDetail> = {
       description:
         '게시글 작성자인지 여부를 나타내는 boolean 값입니다. 작성자는 수정 및 삭제를 할 수 있습니다.',
     },
-    token: {
-      description: '로그인한 사용자의 토큰 값입니다.',
-    },
   },
 };
 

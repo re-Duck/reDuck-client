@@ -8,13 +8,16 @@ import { ModalType, errorMessage, warningMessage } from '@/constants/constant';
 
 //hooks
 import { useModal, useWriting } from '@/hooks';
-import { useSession } from 'next-auth/react';
 import useTipTap from '@/hooks/Write/useTiptap';
 
 //service
 import { Icon } from '@iconify/react';
 import { postManager } from '@/service/post';
 import Tiptap from '@/components/write/Tiptap';
+import { useSelector } from 'react-redux';
+
+// types
+import { IReduxState } from '@/types/redux/IReduxState';
 
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
@@ -26,8 +29,8 @@ export default function Write() {
   const postOriginId = router.query.postOriginId as string;
   const { initTitle, content, handleContent } = useWriting(postOriginId);
 
-  const { data } = useSession();
-  const accessToken = data?.user.token;
+  const user = useSelector((state: IReduxState) => state.auth);
+
   const { openModal, closeModal } = useModal();
 
   const { editor } = useTipTap();
@@ -37,7 +40,7 @@ export default function Write() {
       try {
         const nextContent = editor?.getHTML() || '';
         handleContent(nextContent);
-        if (!accessToken) {
+        if (!user.userId) {
           openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
           return;
         }
@@ -48,14 +51,12 @@ export default function Write() {
         if (returnPostOriginId) {
           await postManager.updatePost({
             title,
-            accessToken,
             postOriginId,
             content: nextContent,
           });
         } else {
           returnPostOriginId = await postManager.createPost({
             title,
-            accessToken,
             content: nextContent,
           });
         }
@@ -67,7 +68,7 @@ export default function Write() {
         openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain });
       }
     },
-    [content]
+    [content, editor]
   );
 
   return (

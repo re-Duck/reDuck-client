@@ -6,7 +6,6 @@ import { commentManager } from '@/service/comment';
 
 interface IProps {
   id: string;
-  token: string;
   comment: string;
   isModifying: boolean;
   setIsModifying: (isModifying: boolean) => void;
@@ -14,7 +13,6 @@ interface IProps {
 }
 export default function ModifyCommentButton({
   id,
-  token,
   comment,
   isModifying,
   setIsModifying,
@@ -25,7 +23,6 @@ export default function ModifyCommentButton({
   const handleUpdate = async () => {
     try {
       await commentManager.updateComment({
-        token,
         postOriginId,
         content: comment,
         commentOriginId: id,
@@ -52,7 +49,7 @@ export default function ModifyCommentButton({
           setIsModifying(true);
         }
       }}
-      className="font-medium text-gray-400"
+      className="font-normal text-gray-400"
     >
       {isModifying ? '완료' : '수정'}
     </button>

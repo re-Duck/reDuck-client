@@ -13,20 +13,14 @@ interface PropType {
     imgFile: Blob | null;
   };
   userId: string;
-  accessToken: string;
 }
 
 export default async function updateUser({
   data,
   userId,
-  accessToken,
 }: PropType): Promise<IUserInfo> {
   const { modifyUserDto, imgFile } = data;
 
-  const headers = {
-    'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer ${accessToken}`,
-  };
   const suburl = `/user/${userId}`;
 
   const modifyUserDtoBlob = makeJsonToBlob(modifyUserDto);
@@ -38,7 +32,6 @@ export default async function updateUser({
   const result = await axios_put<IUserInfo>({
     suburl,
     data: formData,
-    headers,
   });
 
   if (result.isOkay) {

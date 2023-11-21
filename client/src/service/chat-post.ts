@@ -21,12 +21,8 @@ interface ResponseType {
 const createChatRoom = async ({
   otherIds,
   roomName,
-  token,
 }: ICreateChatRoom): Promise<ResponseType> => {
   const suburl = '/chat/room';
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
   const roomId = v4();
   const data = {
     roomId,
@@ -36,7 +32,6 @@ const createChatRoom = async ({
 
   const result = await axios_post({
     suburl,
-    headers,
     data,
   });
 

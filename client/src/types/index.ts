@@ -33,13 +33,13 @@ export interface IUserInfo {
   companyEmailAuthentication?: boolean;
   developAnnual?: number;
   email?: string;
-  name?: string;
+  name: string;
   post?: Array<object>;
   school?: string;
   schoolEmail?: string;
   schoolEmailAuthentication?: boolean;
   userId: string;
-  userProfileImgPath?: string;
+  userProfileImgPath: string;
 }
 
 export interface UserInputData {
@@ -106,12 +106,6 @@ export interface IChatUserDto {
   otherUserDto: IOtherUserDto[];
   roomId: string;
   unReadMessageCount: number;
-}
-export interface IUser {
-  id: string;
-  name: string;
-  userProfileImgPath: string;
-  token: string;
 }
 
 export type EmailType = 'USER' | 'COMPANY' | 'SCHOOL';

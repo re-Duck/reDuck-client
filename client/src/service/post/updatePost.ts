@@ -4,7 +4,6 @@ import { axios_put } from '../base/api';
 interface IUpdatePost {
   title: string;
   content: string;
-  accessToken: string;
   postOriginId: string;
 }
 
@@ -15,16 +14,8 @@ interface Request {
   postType: 'qna' | 'stack';
 }
 
-async function updatePost({
-  title,
-  content,
-  accessToken,
-  postOriginId,
-}: IUpdatePost) {
+async function updatePost({ title, content, postOriginId }: IUpdatePost) {
   const suburl = `/post/${postOriginId}`;
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
 
   const data: Request = {
     title,
@@ -33,7 +24,7 @@ async function updatePost({
     postType: 'qna',
   };
 
-  const result = await axios_put<unknown, Request>({ suburl, headers, data });
+  const result = await axios_put<unknown, Request>({ suburl, data });
 
   if (!result.isOkay) {
     throw new Error(result.error);

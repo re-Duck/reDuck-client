@@ -15,17 +15,11 @@ import { commentManager } from '@/service/comment';
 
 interface IDeleteButton {
   id: string;
-  token: string;
   type: 'comment' | 'post';
   refetch?: () => void;
 }
 
-export default function DeleteButton({
-  id,
-  token,
-  type,
-  refetch,
-}: IDeleteButton) {
+export default function DeleteButton({ id, type, refetch }: IDeleteButton) {
   const { openModal } = useModal();
   const router = useRouter();
   const IS_CHECK_MODAL_MESSAGE =
@@ -36,7 +30,7 @@ export default function DeleteButton({
   const handdleDelete = async () => {
     try {
       if (type === 'post') {
-        await postManager.deletePost({ token, postOriginId: id });
+        await postManager.deletePost({ postOriginId: id });
 
         router.push('/');
         openModal({
@@ -45,7 +39,6 @@ export default function DeleteButton({
         });
       } else if (type === 'comment') {
         await commentManager.deleteComment({
-          token,
           commentOriginId: id,
         });
         refetch && refetch();
@@ -66,7 +59,7 @@ export default function DeleteButton({
           callback: handdleDelete,
         })
       }
-      className="font-medium text-gray-400"
+      className="font-normal text-gray-400"
     >
       삭제
     </button>

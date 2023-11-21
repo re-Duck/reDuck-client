@@ -1,6 +1,6 @@
 // react, next
-import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 // services
 import { getRecommandUser, getUserChatRoom } from '@/service/chat-get';
@@ -10,6 +10,7 @@ import UserTile from './user-tile';
 
 // types
 import { IUserInfo, IChatUserDto } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 interface IChatUserList {
   enteredRoomId: string;
@@ -28,18 +29,20 @@ export default function ChatUserList({
     >[]
   >([]);
   const [chatUserList, setChatUserList] = useState<IChatUserDto[]>([]);
-  const session = useSession();
-  const { id, token } = session.data?.user || {};
 
-  const loadUserChatList = async () => {
+  const user = useSelector((state: IReduxState) => state.auth);
+  const { userId } = user;
+
+  const loadUserChatList = useCallback(async () => {
     const recommandData = await getRecommandUser();
-    const listData = await getUserChatRoom({
-      userId: id,
-      token,
-    });
+    if (userId) {
+      const listData = await getUserChatRoom({
+        userId,
+      });
+      setChatUserList(listData || []);
+    }
     setRecommandUser(recommandData);
-    setChatUserList(listData || []);
-  };
+  }, [userId]);
 
   const handleEnterRoom = (roomId: string) => {
     handleDisconnect();
@@ -49,7 +52,7 @@ export default function ChatUserList({
 
   useEffect(() => {
     loadUserChatList();
-  }, []);
+  }, [user]);
 
   return (
     <section className="relative border border-black w-[30%] text-center">
@@ -70,7 +73,6 @@ export default function ChatUserList({
               key={roomId}
               roomId={roomId}
               enteredRoomId={enteredRoomId}
-              token={token}
               userId={otherId}
               src={userProfileImgPath}
               name={name}
@@ -91,7 +93,6 @@ export default function ChatUserList({
             <UserTile
               key={userId}
               enteredRoomId="none"
-              token={token}
               userId={userId}
               src={userProfileImgPath}
               name={name}

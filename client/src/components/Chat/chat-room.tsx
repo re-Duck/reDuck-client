@@ -24,7 +24,6 @@ import {
 } from '@/constants/constant';
 
 interface IChatRoom {
-  token: string;
   roomId: string;
   chatList: IChatMessage[];
   currentUid: string;
@@ -33,7 +32,6 @@ interface IChatRoom {
 }
 
 export default function ChatRoom({
-  token,
   roomId,
   chatList,
   currentUid,
@@ -65,8 +63,7 @@ export default function ChatRoom({
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['chat'],
-    queryFn: ({ pageParam }) =>
-      getRoomChat({ roomId, token, messageId: pageParam }),
+    queryFn: ({ pageParam }) => getRoomChat({ roomId, messageId: pageParam }),
     getNextPageParam: (lastPage) => lastPage?.nextPageParam,
   });
 
@@ -112,7 +109,9 @@ export default function ChatRoom({
     };
 
     if (chatRoomRef.current) {
-      chatRoomRef.current.addEventListener('scroll', handleScroll);
+      chatRoomRef.current.addEventListener('scroll', handleScroll, {
+        passive: true,
+      });
     }
 
     return () => {
@@ -123,7 +122,7 @@ export default function ChatRoom({
   }, [isFetching, hasNextPage]);
 
   return (
-    <div className="relative flex-1 ml-4 border border-black flex flex-col">
+    <div className="relative flex flex-col flex-1 ml-4 border border-black">
       <div className="flex flex-col h-full overflow-y-scroll" ref={chatRoomRef}>
         {chatList?.map((val, idx) => {
           const {
@@ -159,7 +158,7 @@ export default function ChatRoom({
       <div className="flex p-2.5  sticky bottom-0 bg-white">
         <input
           type="text"
-          className="relative border border-black flex-1 p-1"
+          className="relative flex-1 p-1 border border-black"
           value={chatMessage}
           ref={messageRef}
           onChange={handleMessageChange}
@@ -169,7 +168,7 @@ export default function ChatRoom({
           type="button"
           disabled={chatMessage.length === 0}
           onClick={handleClickSend}
-          className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+          className="w-20 p-2 ml-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base"
         >
           전송
         </button>

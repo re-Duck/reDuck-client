@@ -10,23 +10,16 @@ interface PropType {
     type: EmailType;
     number: number;
   };
-  accessToken: string;
 }
 
 interface ResponseDataType {
   emailAuthToken: string;
 }
 
-export default async function checkProfileEmailNumber({
-  data,
-  accessToken,
-}: PropType) {
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
+export default async function checkProfileEmailNumber({ data }: PropType) {
   const suburl = '/auth/email/profile';
 
-  const result = await axios_post<ResponseDataType>({ suburl, data, headers });
+  const result = await axios_post<ResponseDataType>({ suburl, data });
 
   if (!result.isOkay) {
     throw new Error(result.error);

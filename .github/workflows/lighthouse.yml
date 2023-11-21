@@ -1,5 +1,9 @@
 name: Run lighthouse CI When Push
-on: [push]
+on:
+  push:
+    branches-ignore:
+    - 'dev'
+    - 'main'
 jobs:
   lhci:
     name: Lighthouse CI
@@ -16,10 +20,11 @@ jobs:
           node-version: '16'
 
       - name: Generate Environment Variables File for Production
-        run: echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API" >> .env.production
+        run: echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API\nNEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
         working-directory: ${{ env.working-directory }}
         env:
           NEXT_PUBLIC_OPEN_API: ${{ secrets.NEXT_PUBLIC_OPEN_API }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
       - name: test
         run: pwd
         working-directory: ${{ env.working-directory }}
@@ -34,3 +39,48 @@ jobs:
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         working-directory: ${{ env.working-directory }}
+      - name: Format lighthouse score
+        id: format_lighthouse_score
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync("${{ env.working-directory }}/lhci_reports/manifest.json"));
+            let comments = "";
+
+            results.forEach((result,index) => {
+              const { summary } = result;
+
+              const formatResult = (res) => Math.round(res * 100);
+
+              Object.keys(summary).forEach(
+                (key) => (summary[key] = formatResult(summary[key]))
+              );
+
+              const score = (res) => (res >= 90 ? "🟢" : res >= 70 ? "🟠" : "🔴");
+
+              const comment = [
+                `⚡️ Lighthouse report ${index}`,
+                `| Category | Score |`,
+                `| --- | --- |`,
+                `| ${score(summary.performance)} Performance | ${summary.performance} |`,
+                `| ${score(summary.accessibility)} Accessibility | ${summary.accessibility} |`,
+                `| ${score(summary['best-practices'])} Best practices | ${summary['best-practices']} |`,
+                `| ${score(summary.seo)} SEO | ${summary.seo} |`,
+                `| ${score(summary.pwa)} PWA | ${summary.pwa} |`,
+                `\n`,
+              ].join("\n");
+
+              comments += comment + "\n";
+            });
+
+            core.setOutput('comments', comments)
+
+      - name: comment PR
+        uses: unsplash/comment-on-pr@v1.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: ${{ steps.format_lighthouse_score.outputs.comments}}

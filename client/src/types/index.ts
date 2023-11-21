@@ -33,13 +33,13 @@ export interface IUserInfo {
   companyEmailAuthentication?: boolean;
   developAnnual?: number;
   email?: string;
-  name?: string;
+  name: string;
   post?: Array<object>;
   school?: string;
   schoolEmail?: string;
   schoolEmailAuthentication?: boolean;
   userId: string;
-  userProfileImgPath?: string;
+  userProfileImgPath: string;
 }
 
 export interface UserInputData {

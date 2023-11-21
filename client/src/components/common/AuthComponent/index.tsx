@@ -33,10 +33,7 @@ export default function AuthComponent({
       if (accessToken) {
         const { sub: userId } = decodeJWT(accessToken);
         const { name: userName, userProfileImgPath } =
-          (await userManager.getUser(userId)) as {
-            name: string;
-            userProfileImgPath: string;
-          };
+          await userManager.getUser(userId);
         const payload = { userId, userName, userProfileImgPath };
         dispatch(logIn(payload));
       } else {

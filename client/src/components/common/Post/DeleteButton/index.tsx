@@ -59,7 +59,7 @@ export default function DeleteButton({ id, type, refetch }: IDeleteButton) {
           callback: handdleDelete,
         })
       }
-      className="font-medium text-gray-400"
+      className="font-normal text-gray-400"
     >
       삭제
     </button>

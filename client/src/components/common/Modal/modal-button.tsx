@@ -33,7 +33,7 @@ export default function ModalButton({ type, onClick }: IType) {
   };
 
   useEffect(() => {
-    document.addEventListener('keyup', handdleKeyup);
+    document.addEventListener('keyup', handdleKeyup, { passive: true });
     return () => document.removeEventListener('keyup', handdleKeyup);
   }, []);
   return (

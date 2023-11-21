@@ -16,6 +16,7 @@ export default function ModifyCotentButton({ postOriginId }: IProps) {
           query: { postOriginId },
         })
       }
+      className="font-normal text-gray-400"
     >
       수정
     </button>

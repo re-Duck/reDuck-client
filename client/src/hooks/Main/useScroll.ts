@@ -28,7 +28,7 @@ function useScroll() {
         }
       }
     };
-    document.addEventListener('scroll', handleScroll);
+    document.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       document.removeEventListener('scroll', handleScroll);
     };

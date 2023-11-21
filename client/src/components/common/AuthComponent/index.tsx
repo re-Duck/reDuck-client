@@ -40,7 +40,13 @@ export default function AuthComponent({
         dispatch(logOut());
       }
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof AxiosError) {
+        // 유저정보 불러오기 실패, 새로고침할 수 있게.
+        openModal({
+          type: ModalType.ERROR,
+          message: errorMessage.failedGetUser,
+        });
+      } else if (error instanceof Error) {
         openModal({
           type: ModalType.ERROR,
           message: errorMessage.sessionExpiration,
@@ -48,12 +54,6 @@ export default function AuthComponent({
             closeModal();
             router.replace('/login');
           },
-        });
-      } else if (error instanceof AxiosError) {
-        // 유저정보 불러오기 실패, 새로고침할 수 있게.
-        openModal({
-          type: ModalType.ERROR,
-          message: errorMessage.failedGetUser,
         });
       } else {
         openModal({

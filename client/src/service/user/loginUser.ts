@@ -24,10 +24,10 @@ export default async function loginUser({ data }: PropType) {
   }
   const {
     userId,
-    name: userName,
     userProfileImgPath,
     accessToken,
     refreshToken,
+    name: userName,
   } = response.data as ReturnDataType;
 
   // 쿠키 설정

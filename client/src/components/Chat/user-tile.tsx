@@ -22,7 +22,6 @@ interface IUserTile {
   roomId?: string;
   enteredRoomId: string;
   src?: string;
-  token?: string;
   userId: string;
   name?: string;
   description: string;
@@ -36,7 +35,6 @@ const UserTile = ({
   roomId,
   enteredRoomId,
   src,
-  token,
   userId,
   name,
   description,
@@ -55,7 +53,6 @@ const UserTile = ({
         const data = await createChatRoom({
           otherIds,
           roomName: '',
-          token,
         });
         const { roomId } = data;
         handleEnterRoom(roomId);
@@ -91,7 +88,7 @@ const UserTile = ({
           </button>
         ) : (
           <>
-            <p className="text-sm text-slate-400">
+            <p className="text-xs text-slate-400">
               {formatDateToString(lastChatMessageTime as string)}
             </p>
             {unReadMessageCount !== 0 && (

@@ -1,10 +1,12 @@
 // react, next
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { update } from '@/lib/redux/slices/authSlice';
 
 // thrid-party
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { signOut, useSession } from 'next-auth/react';
 import { logOut } from '@/lib/redux/slices/authSlice';
 
 // components
@@ -23,7 +25,6 @@ import {
   IMAGE_FILE_MAX_SIZE,
   ModalType,
   developExperience,
-  errorCodeToMessage,
   errorMessage,
   regex,
   successMessage,
@@ -63,6 +64,9 @@ const ValidationSchema = Yup.object().shape({
 });
 
 export default function EditProfile({ userData }: { userData: IUserInfo }) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const {
     company,
     companyEmail,
@@ -77,14 +81,21 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userProfileImgPath,
   }: IUserInfo = userData;
 
-  const { data: session, update } = useSession();
-  const accessToken = session!.user.token;
-
   const { openModal } = useModal();
 
-  const handleLogout = () => {
-    logOut();
-    signOut({ redirect: true, callbackUrl: '/' });
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/deleteToken', {
+        method: 'DELETE',
+      });
+      dispatch(logOut());
+      router.replace('/');
+    } catch {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.tryAgain,
+      });
+    }
   };
 
   // profileImg 관련
@@ -175,7 +186,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         data: {
           email,
         },
-        accessToken,
       });
       switch (type) {
         case 'USER': {
@@ -232,7 +242,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     try {
       const emailAuthToken = await emailManager.checkProfileEmailNumber({
         data: dto,
-        accessToken,
       });
       if (type === 'USER') {
         setAuthToken({ ...authToken, emailAuthToken });
@@ -291,17 +300,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       const userData = await userManager.updateUser({
         data,
         userId,
-        accessToken,
       });
-      await update({
-        ...session,
-        user: {
-          ...session?.user,
-          name: userData.name,
-          email: userData.email,
-          userProfileImgPath: userData.userProfileImgPath,
-        },
-      });
+      const payload = {
+        userName: userData.name as string,
+        userProfileImgPath: userData.userProfileImgPath || '',
+      };
+      dispatch(update(payload));
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.profileUpdateSuccess,
@@ -309,15 +313,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     } catch (error) {
       openModal({
         type: ModalType.ERROR,
-        message:
-          error instanceof Error
-            ? errorCodeToMessage[
-                error.message as
-                  | 'INVALID_PASSWORD'
-                  | 'UNAUTHENTICATED_EMAIL'
-                  | ''
-              ]
-            : errorMessage.error,
+        message: error instanceof Error ? error.message : errorMessage.error,
       });
     } finally {
       setSubmitting(false);
@@ -411,7 +407,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     onClick={() =>
                       handleSubmitEmail('USER', values.email || '')
                     }
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                   >
                     {userEmailState === EmailState.Submitting ? (
                       <LoadingIcon size={'25px'} />
@@ -434,7 +430,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   />
                   <button
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                     onClick={() => handleCheckEmail('USER', values.email || '')}
                   >
                     인증번호확인
@@ -473,7 +469,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   onClick={() =>
                     handleSubmitEmail('SCHOOL', values.schoolEmail)
                   }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                 >
                   {schoolEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
@@ -538,7 +534,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   onClick={() =>
                     handleSubmitEmail('COMPANY', values.companyEmail)
                   }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
+                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                 >
                   {companyEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />

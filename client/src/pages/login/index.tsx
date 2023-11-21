@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { logIn } from '@/lib/redux/slices/authSlice';
 
 // packages
 import { Icon } from '@iconify/react';
@@ -12,13 +14,19 @@ import * as Yup from 'yup';
 import { Divider, Layout } from '@/components';
 
 // service
-import { signIn } from 'next-auth/react';
+import { userManager } from '@/service/user';
+
+// hooks
+import { useModal } from '@/hooks';
+
+// constant
 import {
   initialLoginValue,
   errorMessage,
+  errorCodeToMessage,
   ModalType,
 } from '@/constants/constant';
-import { useModal } from '@/hooks';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string().required(errorMessage.blankID),
@@ -32,34 +40,41 @@ interface ILogin {
 
 export default function Login() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   // Modal
+  const modalState = useSelector((state: IReduxState) => state.modal);
   const { openModal } = useModal();
 
-  const handleSubmit = async (
-    sendData: ILogin,
-    setSubmitting: (value: boolean) => void
-  ) => {
-    setSubmitting(true);
-    try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        ...sendData,
-      });
-      if (result?.error) {
-        openModal({
-          type: ModalType.ERROR,
-          message: result.error,
-        });
-        return;
+  const handleSubmit = useCallback(
+    async (sendData: ILogin, setSubmitting: (value: boolean) => void) => {
+      if (modalState.type === ModalType.CLOSE) {
+        setSubmitting(true);
+        try {
+          const userData = await userManager.loginUser({ data: sendData });
+          dispatch(logIn(userData));
+          router.push('/');
+        } catch (error) {
+          if (error instanceof Error) {
+            type Code = 'USER_NOT_EXIST' | 'INVALID_PASSWORD';
+            openModal({
+              type: ModalType.ERROR,
+              message:
+                errorCodeToMessage[error.message as Code] || errorMessage.error,
+            });
+          } else {
+            openModal({
+              type: ModalType.ERROR,
+              message: errorMessage.error,
+            });
+          }
+        } finally {
+          setSubmitting(false);
+        }
       }
-
-      router.push('/');
-    } catch (error) {
-      console.error(error);
-    }
-    setSubmitting(false);
-  };
+    },
+    [modalState]
+  );
   return (
     <Layout hasLoginButton={false}>
       <div className="flex flex-col h-[calc(100vh-3.5rem)] justify-center items-center">

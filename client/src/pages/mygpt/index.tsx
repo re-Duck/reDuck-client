@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 //core
 import React from 'react';
 
@@ -14,11 +13,11 @@ import useGpt from '@/hooks/mygpt/useGpt';
 
 //type
 import { IContent } from '@/types/mygpt';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 //third party
 import { Formik, FormikHelpers } from 'formik';
 import { useSelector } from 'react-redux';
-import { useSession } from 'next-auth/react';
 
 const initialLoginValue = {
   code: '',
@@ -26,10 +25,8 @@ const initialLoginValue = {
 };
 
 export default function GptPage() {
-  const authState = useSelector((state: any) => state.auth);
+  const user = useSelector((state: IReduxState) => state.auth);
   const { openModal } = useModal();
-  const { data } = useSession();
-  const accessToken = data?.user.token || '';
 
   const {
     handdleSubmit,
@@ -38,10 +35,10 @@ export default function GptPage() {
     isAnswerOpen,
     remainUsageCount,
     isPossibleQuestion,
-  } = useGpt(accessToken);
+  } = useGpt(user);
 
   const validate = () => {
-    if (!authState.isLogin) {
+    if (!user.userId) {
       openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
       return false;
     }

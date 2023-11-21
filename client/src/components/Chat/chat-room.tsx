@@ -24,7 +24,6 @@ import {
 } from '@/constants/constant';
 
 interface IChatRoom {
-  token: string;
   roomId: string;
   chatList: IChatMessage[];
   currentUid: string;
@@ -33,7 +32,6 @@ interface IChatRoom {
 }
 
 export default function ChatRoom({
-  token,
   roomId,
   chatList,
   currentUid,
@@ -65,8 +63,7 @@ export default function ChatRoom({
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['chat'],
-    queryFn: ({ pageParam }) =>
-      getRoomChat({ roomId, token, messageId: pageParam }),
+    queryFn: ({ pageParam }) => getRoomChat({ roomId, messageId: pageParam }),
     getNextPageParam: (lastPage) => lastPage?.nextPageParam,
   });
 

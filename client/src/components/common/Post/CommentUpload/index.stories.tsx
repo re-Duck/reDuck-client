@@ -4,14 +4,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import CommentUpload from './index';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { IUser } from '@/types';
+import { IUserState } from '@/types/redux/IUserState';
 
-const mockUser: IUser = {
-  id: 'test1234',
-  name: '테스터',
+const mockUser: IUserState = {
+  userId: 'test1234',
+  userName: '테스터',
   userProfileImgPath:
     '/home/nuhgnod/develup/storage/profile/test1234/325560ce-a9fa-4194-95cb-5590b8e24052.jpg',
-  token: '',
 };
 
 const meta: Meta<typeof CommentUpload> = {

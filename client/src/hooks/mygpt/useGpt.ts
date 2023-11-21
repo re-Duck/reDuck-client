@@ -1,13 +1,16 @@
 //core
 import { useEffect, useRef, useState } from 'react';
+
 //service
 import { getGptRemain } from '@/service/get-gpt-remain';
 import getCodeReview from '@/service/open-ai';
 import { postGptContent } from '@/service/post-gpt-count';
+
 //types
 import { IContent } from '@/types/mygpt';
+import { IUserState } from '@/types/redux/IUserState';
 
-function useGpt(accessToken: string) {
+function useGpt(user: IUserState) {
   const [isAnswerOpen, setIsAnswerOpen] = useState(false);
   const [answer, setAnswer] = useState('');
   const [remainUsageCount, setRemainUsageCount] = useState(0);
@@ -31,7 +34,7 @@ function useGpt(accessToken: string) {
       userQuestion: question,
       gptAnswer,
     };
-    const count = await postGptContent({ data, accessToken });
+    const count = await postGptContent({ data });
     setAnswer(gptAnswer || '');
     setRemainUsageCount(count);
   };
@@ -41,12 +44,13 @@ function useGpt(accessToken: string) {
   };
 
   useEffect(() => {
-    if (!accessToken) return;
-    (async () => {
-      const count = await getGptRemain({ accessToken });
-      setRemainUsageCount(count);
-    })();
-  }, [accessToken]);
+    if (user.userId) {
+      (async () => {
+        const count = await getGptRemain();
+        setRemainUsageCount(count);
+      })();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (isAnswerOpen || answer) {

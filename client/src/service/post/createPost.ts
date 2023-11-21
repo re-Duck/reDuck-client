@@ -7,7 +7,6 @@ import { axios_post } from '../base/api';
 interface ICreatePost {
   title: string;
   content: string;
-  accessToken: string;
 }
 
 interface Request {
@@ -16,12 +15,9 @@ interface Request {
   postOriginId: string;
   postType: 'qna' | 'stack';
 }
-async function createPost({ title, content, accessToken }: ICreatePost) {
+async function createPost({ title, content }: ICreatePost) {
   const postOriginId = uuidv4();
   const suburl = '/post';
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
 
   const data: Request = {
     title,
@@ -32,7 +28,6 @@ async function createPost({ title, content, accessToken }: ICreatePost) {
 
   const result = await axios_post<unknown, Request>({
     suburl,
-    headers,
     data,
   });
 

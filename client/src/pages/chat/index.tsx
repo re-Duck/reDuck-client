@@ -1,6 +1,6 @@
 // react, next
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 // components
@@ -10,21 +10,29 @@ import { ChatUserList, ChatRoom } from '@/components/Chat';
 // hooks
 import { useModal } from '@/hooks';
 
+// services
+import axios from 'axios';
+
 // third-party
 import { Stomp, CompatClient, IMessage } from '@stomp/stompjs';
 import { v4 } from 'uuid';
 
 // types
 import { IChatMessage } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 // constant
 import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function Chatroom() {
-  const session = useSession();
+  const user = useSelector((state: IReduxState) => state.auth);
+  const headers = {
+    Authorization: axios.defaults.headers.common['Authorization'] as string,
+  };
+  const { userId } = user;
   const router = useRouter();
   const { query } = router;
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 
   const [openChat, setOpenChat] = useState(false);
   const [roomId, setRoomId] = useState('');
@@ -37,9 +45,7 @@ export default function Chatroom() {
   // 채팅방 연결
   const handleConnect = (id: string) => {
     const client = clientRef.current;
-    const headers = {
-      Authorization: `Bearer ${session.data?.user.token}}`,
-    };
+
     const subscribe_callback = (message: IMessage) => {
       const chatData = JSON.parse(message.body);
       setChatList((chat) => [...chat, chatData]);
@@ -63,8 +69,8 @@ export default function Chatroom() {
     } else if (client && client.connected) {
       const subscription = client.subscribe(
         `/sub/chat/room/${id}`,
-        subscribe_callback,
-        headers
+        subscribe_callback
+        //headers
       );
       setSubId(subscription.id);
     }
@@ -74,9 +80,6 @@ export default function Chatroom() {
   const handleDisconnect = () => {
     const client = clientRef.current;
     if (client && client.connected) {
-      const headers = {
-        Authorization: `Bearer ${session.data?.user.token}}`,
-      };
       client.unsubscribe(subId, headers);
     }
   };
@@ -85,18 +88,13 @@ export default function Chatroom() {
     (chatMessage: string) => {
       const client = clientRef.current;
 
-      if (session.data) {
-        const { id, token } = session.data.user;
-
+      if (user) {
         if (client && client.connected) {
-          const headers = {
-            Authorization: `Bearer ${token}`,
-          };
           const objectbody = {
             roomId,
             message: chatMessage,
             messageId: v4(),
-            userId: id,
+            userId,
             type: 'CHAT',
           };
 
@@ -110,21 +108,10 @@ export default function Chatroom() {
         }
       }
     },
-    [session, roomId]
+    [user, roomId]
   );
 
   useEffect(() => {
-    if (!session.data) {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.needLogin,
-        callback: () => {
-          closeModal();
-          router.replace('/login');
-        },
-      });
-      return;
-    }
     const client = Stomp.client(`${process.env.NEXT_PUBLIC_CHAT_URL}`);
 
     clientRef.current = client;
@@ -160,11 +147,10 @@ export default function Chatroom() {
         />
         {openChat && (
           <ChatRoom
-            token={session.data?.user.token || ''}
             roomId={roomId}
             chatList={chatList}
             setChatList={setChatList}
-            currentUid={session.data?.user.id || ''}
+            currentUid={userId}
             handleSendMessage={handleSendMessage}
           />
         )}

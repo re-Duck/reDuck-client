@@ -18,10 +18,10 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
 //types
-import { IUser } from '@/types';
+import { IUserState } from '@/types/redux/IUserState';
 
 interface IComentUpload {
-  user?: IUser;
+  user: IUserState;
   refetch: () => void;
 }
 
@@ -55,7 +55,6 @@ export default function CommentUpload({ user, refetch }: IComentUpload) {
       await commentManager.createComment({
         content,
         postOriginId,
-        token: user.token,
       });
       resetForm();
       setSubmitting(false);

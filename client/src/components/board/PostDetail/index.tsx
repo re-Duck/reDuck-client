@@ -25,10 +25,9 @@ import { common, createLowlight } from 'lowlight';
 interface PostDetail {
   data: Omit<IPostInformation, 'commentsCount'>;
   IS_AUTHOR: boolean;
-  token: string;
 }
 
-export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
+export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
   const lowlight = createLowlight(common);
   const url = data.postAuthorId
     ? `${BASE_URL}${data.postAuthorProfileImgPath}`
@@ -68,7 +67,7 @@ export default function PostDetail({ data, IS_AUTHOR, token }: PostDetail) {
         {IS_AUTHOR && (
           <div className="flex gap-1 font-normal text-gray-500">
             <ModifyCotentButton postOriginId={data.postOriginId} />
-            <DeleteButton token={token} id={data.postOriginId} type="post" />
+            <DeleteButton id={data.postOriginId} type="post" />
           </div>
         )}
       </div>

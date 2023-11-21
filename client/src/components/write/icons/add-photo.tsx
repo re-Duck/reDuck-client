@@ -1,6 +1,6 @@
 //core
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 
 //constants
 import { ModalType, errorMessage } from '@/constants/constant';
@@ -15,8 +15,6 @@ import { useModal } from '@/hooks';
 import { Icon } from '@iconify/react';
 
 function AddPhoto({ editor }: { editor: Editor }) {
-  const { data } = useSession();
-  const accessToken = data?.user.token;
   const { openModal } = useModal();
 
   const handleUploadPhoto = async (files: FileList | null) => {
@@ -27,7 +25,7 @@ function AddPhoto({ editor }: { editor: Editor }) {
     formData.append('file', file);
 
     try {
-      const imgHash = await postManager.uploadImage(formData, accessToken);
+      const imgHash = await postManager.uploadImage(formData);
       const IMG_URL = `${BASE_URL}${imgHash}`;
 
       editor.commands.setImage({

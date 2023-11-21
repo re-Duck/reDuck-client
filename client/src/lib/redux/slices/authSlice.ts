@@ -18,8 +18,8 @@ export const authSlice = createSlice({
       state.userProfileImgPath = actions.payload.userProfileImgPath;
     },
     update: (state, actions: PayloadAction<Omit<IUserState, 'userId'>>) => {
-      (state.userName = actions.payload.userName),
-        (state.userProfileImgPath = actions.payload.userProfileImgPath);
+      state.userName = actions.payload.userName;
+      state.userProfileImgPath = actions.payload.userProfileImgPath;
     },
     logOut: () => initialState,
   },

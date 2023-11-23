@@ -2,7 +2,7 @@ import { ModalType } from '@/constants/constant';
 import { IModal } from '@/types/redux/IModal';
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+const initialState: IModal = {
   type: ModalType.CLOSE,
   message: '',
   callback: null,

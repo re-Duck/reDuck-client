@@ -15,10 +15,7 @@ export const modalSlice = createSlice({
   initialState,
   reducers: {
     openModal: (state, action) => {
-      const { type, message } = action.payload;
-      state.type = type;
-      state.message = message;
-      state.callback = action.payload.callback;
+      Object.assign(state, action.payload);
     },
     closeModal: () => {
       return initialState;

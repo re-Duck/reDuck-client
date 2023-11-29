@@ -12,3 +12,4 @@ export { default as EditProfile } from '@/components/common/EditProfile';
 export { default as UserInfo } from '@/components/common/UserInfo';
 export { default as Gpt } from '@/components/mygpt/gpt';
 export { default as Skeleton } from '@/components/common/Skeleton';
+export { default as Form } from '@/components/Form';

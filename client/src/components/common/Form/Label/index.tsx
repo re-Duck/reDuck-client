@@ -7,10 +7,16 @@ interface IProps {
 
 function FormLabel({ name, isEssential = false }: IProps) {
   const essentialStyle = isEssential
-    ? `after:content-['*'] after:color-red`
+    ? `after:content-["*"] after:text-red-500`
     : '';
 
-  return <label className={`w-28 min-w-fit ${essentialStyle}`}>{name}</label>;
+  return (
+    <label
+      className={`min-w-[4rem] w-16 text-xs break-keep sm:text-base sm:w-28 ${essentialStyle}`}
+    >
+      {name}
+    </label>
+  );
 }
 
 export default FormLabel;

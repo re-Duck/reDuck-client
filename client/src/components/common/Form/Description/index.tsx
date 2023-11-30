@@ -5,7 +5,7 @@ interface IProps {
 }
 
 function FormDiscription({ name }: IProps) {
-  return <span className="text-xs text-zinc-500">{name}</span>;
+  return <span className="hidden text-xs text-zinc-500 sm:block">{name}</span>;
 }
 
 export default FormDiscription;

@@ -5,7 +5,7 @@ interface IProps {
 }
 
 function FormContainer({ children }: IProps) {
-  <div className="flex items-center">{children}</div>;
+  return <div className="flex items-center px-2 sm:px-0">{children}</div>;
 }
 
 export default FormContainer;

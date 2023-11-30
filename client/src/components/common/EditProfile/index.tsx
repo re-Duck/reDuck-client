@@ -14,10 +14,10 @@ import { Avatar, LoadingIcon } from '@/components';
 
 // hooks
 import { useModal } from '@/hooks';
+import useEmail from '@/hooks/Form/useEmail';
 
 // service
 import { BASE_URL } from '@/service/base/api';
-import { emailManager } from '@/service/email';
 import { userManager } from '@/service/user';
 
 // constant
@@ -31,19 +31,7 @@ import {
 } from '@/constants/constant';
 
 // types
-import { IUserInfo, EmailState, UserInputData, EmailType } from '@/types';
-
-interface ICheckEmailDto {
-  email: string;
-  number: number;
-  type: EmailType;
-}
-
-interface IAuthToken {
-  emailAuthToken?: string;
-  schoolEmailAuthToken?: string;
-  companyEmailAuthToken?: string;
-}
+import { IUserInfo, EmailState, UserInputData } from '@/types';
 
 const ValidationSchema = Yup.object().shape({
   password: Yup.string().matches(
@@ -83,6 +71,34 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
 
   const { openModal } = useModal();
 
+  // 이메일
+  const {
+    certificateRef: userCertificateNumberRef,
+    emailState: userEmailState,
+    emailAuthToken,
+    handleChangeCertifiactionNumber: handleChangeUserCertificationNumber,
+    handleRequestEmail: handleRequestUserEmail,
+    handleCheckEmail: handleCheckUserEmail,
+  } = useEmail('USER');
+
+  const {
+    certificateRef: schoolCertificateNumberRef,
+    emailState: schoolEmailState,
+    emailAuthToken: schoolEmailAuthToken,
+    handleChangeCertifiactionNumber: handleChangeSchoolCertificationNumber,
+    handleRequestEmail: handleRequestSchoolEmail,
+    handleCheckEmail: handleCheckSchoolEmail,
+  } = useEmail('SCHOOL');
+
+  const {
+    certificateRef: companyCertificateNumberRef,
+    emailState: companyEmailState,
+    emailAuthToken: companyEmailAuthToken,
+    handleChangeCertifiactionNumber: handleChangeCompanyCertificationNumber,
+    handleRequestEmail: handleRequestCompanyEmail,
+    handleCheckEmail: handleCheckCompanyEmail,
+  } = useEmail('COMPANY');
+
   const handleLogout = async () => {
     try {
       await fetch('/api/deleteToken', {
@@ -104,33 +120,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     `${BASE_URL}${userProfileImgPath === undefined ? '' : userProfileImgPath}`
   );
   const [imgFile, setImgFile] = useState<Blob | null>(null);
-
-  // TODO 이메일 Custom Hook 만들기
-  const [authToken, setAuthToken] = useState<IAuthToken>({});
-
-  // User 이메일 관련
-  const userCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [userEmailState, setUserEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [userCertificationNumber, setUserCertificationNumber] =
-    useState<string>('');
-
-  // School 이메일 관련
-  const schoolCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [schoolEmailState, setSchoolEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [schoolCertificationNumber, setSchoolCertificationNumber] =
-    useState<string>('');
-
-  // Comapny 이메일 관련
-  const companyCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [companyEmailState, setCompanyEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [companyCertificationNumber, setCompanyCertificationNumber] =
-    useState<string>('');
 
   const handleChooseFile = () => {
     imgRef.current?.click();
@@ -166,98 +155,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     }
   };
 
-  const handleSubmitEmail = async (type: EmailType, email: string) => {
-    switch (type) {
-      case 'USER': {
-        setUserEmailState(EmailState.Submitting);
-        break;
-      }
-      case 'SCHOOL': {
-        setSchoolEmailState(EmailState.Submitting);
-        break;
-      }
-      case 'COMPANY': {
-        setCompanyEmailState(EmailState.Submitting);
-        break;
-      }
-    }
-    try {
-      await emailManager.sendProfileEmail({
-        data: {
-          email,
-        },
-      });
-      switch (type) {
-        case 'USER': {
-          setUserEmailState(EmailState.Submitted);
-          break;
-        }
-        case 'SCHOOL': {
-          setSchoolEmailState(EmailState.Submitted);
-          break;
-        }
-        case 'COMPANY': {
-          setCompanyEmailState(EmailState.Submitted);
-          break;
-        }
-      }
-      openModal({
-        type: ModalType.SUCCESS,
-        message: successMessage.sendingEmailSuccess,
-      });
-    } catch (e) {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.failedSendingEmail,
-      });
-      switch (type) {
-        case 'USER': {
-          setUserEmailState(EmailState.None);
-          break;
-        }
-        case 'SCHOOL': {
-          setSchoolEmailState(EmailState.None);
-          break;
-        }
-        case 'COMPANY': {
-          setCompanyEmailState(EmailState.None);
-          break;
-        }
-      }
-    }
-  };
-
-  const handleCheckEmail = async (type: EmailType, email: string) => {
-    // 인증번호가 일치한다면 토큰 받아옴
-    const number = {
-      USER: userCertificationNumber,
-      SCHOOL: schoolCertificationNumber,
-      COMPANY: companyCertificationNumber,
-    };
-    const dto: ICheckEmailDto = {
-      email,
-      number: parseInt(number[type]),
-      type,
-    };
-    try {
-      const emailAuthToken = await emailManager.checkProfileEmailNumber({
-        data: dto,
-      });
-      if (type === 'USER') {
-        setAuthToken({ ...authToken, emailAuthToken });
-      } else if (type === 'COMPANY') {
-        setAuthToken({ ...authToken, companyEmailAuthToken: emailAuthToken });
-      } else if (type === 'SCHOOL') {
-        setAuthToken({ ...authToken, schoolEmailAuthToken: emailAuthToken });
-      }
-    } catch {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.checkCertificateEmail,
-      });
-    }
-  };
-
   const initialValues = {
     name: name,
     password: '',
@@ -280,18 +177,9 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     const data = {
       modifyUserDto: {
         ...modifyUserDto,
-        emailAuthToken:
-          userEmailState === EmailState.Submitted
-            ? authToken.emailAuthToken
-            : '',
-        schoolEmailAuthToken:
-          schoolEmailState === EmailState.Submitted
-            ? authToken.schoolEmailAuthToken
-            : '',
-        companyEmailAuthToken:
-          companyEmailState === EmailState.Submitted
-            ? authToken.companyEmailAuthToken
-            : '',
+        emailAuthToken,
+        schoolEmailAuthToken,
+        companyEmailAuthToken,
       },
       imgFile,
     };
@@ -319,13 +207,14 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       setSubmitting(false);
     }
   };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={ValidationSchema}
       onSubmit={(data, { setSubmitting }) => handleSubmit(data, setSubmitting)}
     >
-      {({ values, errors, touched, isSubmitting }) => (
+      {({ values, errors, isSubmitting }) => (
         <Form className="flex flex-1 flex-col p-8 gap-4">
           <div className="flex items-center">
             <label className="w-28 min-w-fit">아이디</label>
@@ -403,9 +292,9 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 {initialValues.email !== values.email && (
                   <button
                     type="button"
-                    disabled={!(touched.email && !errors.email)}
+                    disabled={errors.email !== undefined || values.email === ''}
                     onClick={() =>
-                      handleSubmitEmail('USER', values.email || '')
+                      handleRequestUserEmail(values.email as string)
                     }
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                   >
@@ -426,12 +315,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     type="text"
                     className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={userCertificateNumberRef}
-                    onChange={(e) => setUserCertificationNumber(e.target.value)}
+                    onChange={handleChangeUserCertificationNumber}
                   />
                   <button
                     type="button"
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
-                    onClick={() => handleCheckEmail('USER', values.email || '')}
+                    onClick={() => handleCheckUserEmail(values.email as string)}
                   >
                     인증번호확인
                   </button>
@@ -465,10 +354,11 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 />
                 <button
                   type="button"
-                  disabled={!(touched.schoolEmail && !errors.schoolEmail)}
-                  onClick={() =>
-                    handleSubmitEmail('SCHOOL', values.schoolEmail)
+                  disabled={
+                    errors.schoolEmail !== undefined ||
+                    values.schoolEmail === ''
                   }
+                  onClick={() => handleRequestSchoolEmail(values.schoolEmail)}
                   className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                 >
                   {schoolEmailState === EmailState.Submitting ? (
@@ -487,16 +377,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     type="text"
                     className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={schoolCertificateNumberRef}
-                    onChange={(e) =>
-                      setSchoolCertificationNumber(e.target.value)
-                    }
+                    onChange={handleChangeSchoolCertificationNumber}
                   />
                   <button
                     type="button"
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                    onClick={() =>
-                      handleCheckEmail('SCHOOL', values.schoolEmail)
-                    }
+                    onClick={() => handleCheckSchoolEmail(values.schoolEmail)}
                   >
                     인증번호확인
                   </button>
@@ -530,10 +416,11 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 />
                 <button
                   type="button"
-                  disabled={!(touched.companyEmail && !errors.companyEmail)}
-                  onClick={() =>
-                    handleSubmitEmail('COMPANY', values.companyEmail)
+                  disabled={
+                    errors.companyEmail !== undefined ||
+                    values.companyEmail !== ''
                   }
+                  onClick={() => handleRequestCompanyEmail(values.companyEmail)}
                   className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                 >
                   {companyEmailState === EmailState.Submitting ? (
@@ -552,16 +439,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     type="text"
                     className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={companyCertificateNumberRef}
-                    onChange={(e) =>
-                      setCompanyCertificationNumber(e.target.value)
-                    }
+                    onChange={handleChangeCompanyCertificationNumber}
                   />
                   <button
                     type="button"
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                    onClick={() =>
-                      handleCheckEmail('COMPANY', values.companyEmail)
-                    }
+                    onClick={() => handleCheckCompanyEmail(values.companyEmail)}
                   >
                     인증번호확인
                   </button>

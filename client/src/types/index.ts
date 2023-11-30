@@ -108,4 +108,4 @@ export interface IChatUserDto {
   unReadMessageCount: number;
 }
 
-export type EmailType = 'USER' | 'COMPANY' | 'SCHOOL';
+export type EmailType = 'SIGNUP' | 'USER' | 'COMPANY' | 'SCHOOL';

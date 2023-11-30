@@ -1,4 +1,4 @@
-import { Layout } from '@/components';
+// react, next
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 
@@ -7,7 +7,16 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 // components
-import { Divider, Avatar, LoadingIcon, Form as CustomForm } from '@/components';
+import {
+  Layout,
+  Divider,
+  Avatar,
+  LoadingIcon,
+  Form as CustomForm,
+} from '@/components';
+
+// hooks
+import useEmail from '@/hooks/Form/useEmail';
 
 // constant
 import {
@@ -21,11 +30,10 @@ import {
 } from '@/constants/constant';
 
 // types
-import { ISignupData } from '@/types';
+import { EmailState, ISignupData } from '@/types';
 
 // service
 import { userManager } from '@/service/user';
-import { emailManager } from '@/service/email';
 
 // hooks
 import { useModal } from '@/hooks';
@@ -50,21 +58,24 @@ export default function SignUp() {
   const router = useRouter();
 
   const imgRef = useRef<HTMLInputElement>(null);
-  const certificateNumberRef = useRef<HTMLInputElement>(null);
   const [profileImg, setProfileImg] = useState<string>('');
   const [imgFile, setImgFile] = useState<Blob | null>(null);
-  const [certificateNumber, setCertificateNumber] = useState<string>('');
 
   // Modal
   const { openModal, closeModal } = useModal();
 
+  // email
+  const {
+    certificateRef,
+    emailState,
+    emailAuthToken,
+    handleChangeCertifiactionNumber,
+    handleRequestEmail,
+    handleCheckEmail,
+  } = useEmail('SIGNUP');
+
   // 아이디 중복 체크 여부
   const [checkedId, setCheckedId] = useState<string>('');
-
-  // 이메일 전송/확인 여부
-  const [isSendEmail, setIsSendEmail] = useState<boolean>(false);
-  const [sendingEmail, setSendingEmail] = useState<boolean>(false);
-  const [emailAuthToken, setEmailAuthToken] = useState<string>('');
 
   const checkDuplicateID = async (
     userId: string,
@@ -131,60 +142,6 @@ export default function SignUp() {
           }
         }
       };
-    }
-  };
-
-  const handleRequestEmail = async (
-    email: string,
-    isTouched: boolean | undefined,
-    errorMsg: string | undefined
-  ) => {
-    if (!isTouched || errorMsg) {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMsg ? errorMsg : errorMessage.blankEmail,
-      });
-    } else {
-      setSendingEmail(true);
-      try {
-        await emailManager.sendSignUpEmail({ email });
-        setIsSendEmail(true);
-        openModal({
-          type: ModalType.SUCCESS,
-          message: successMessage.sendingEmailSuccess,
-        });
-      } catch {
-        openModal({
-          type: ModalType.ERROR,
-          message: errorMessage.failedSendingEmail,
-        });
-      } finally {
-        setSendingEmail(false);
-      }
-    }
-  };
-
-  const handleCertificateNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCertificateNumber(e.target.value);
-  };
-
-  const handleCheckEmail = async (email: string) => {
-    try {
-      const emailAuthToken = await emailManager.checkSignUpNumber({
-        email,
-        number: parseInt(certificateNumber),
-      });
-      setEmailAuthToken(emailAuthToken);
-      openModal({
-        type: ModalType.SUCCESS,
-        message: successMessage.confirmNumberSuccess,
-      });
-    } catch {
-      setEmailAuthToken('');
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.notmatchConfirmNumber,
-      });
     }
   };
 
@@ -349,15 +306,12 @@ export default function SignUp() {
                     />
                     <CustomForm.FormButton
                       type="button"
-                      onClick={() =>
-                        handleRequestEmail(
-                          values.email,
-                          touched.email,
-                          errors.email
-                        )
+                      disabled={
+                        errors.email !== undefined || values.email === ''
                       }
+                      onClick={() => handleRequestEmail(values.email)}
                       name={
-                        sendingEmail ? (
+                        emailState === EmailState.Submitting ? (
                           <LoadingIcon size="25px" />
                         ) : (
                           '인증번호 발송'
@@ -365,13 +319,13 @@ export default function SignUp() {
                       }
                     />
                   </CustomForm.FormBox>
-                  {isSendEmail && (
+                  {emailState === EmailState.Submitted && (
                     <CustomForm.FormBox>
                       <input
                         type="text"
                         className="p-2 min-w-0 rounded-md shadow-sm flex-0 ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                        ref={certificateNumberRef}
-                        onChange={handleCertificateNumber}
+                        ref={certificateRef}
+                        onChange={handleChangeCertifiactionNumber}
                       />
                       <CustomForm.FormButton
                         type="button"

@@ -5,18 +5,16 @@ import { axios_post } from '../base/api';
 import { EmailType } from '@/types';
 
 interface PropType {
-  data: {
-    email: string;
-    type: EmailType;
-    number: number;
-  };
+  email: string;
+  type: EmailType;
+  number: number;
 }
 
 interface ResponseDataType {
   emailAuthToken: string;
 }
 
-export default async function checkProfileEmailNumber({ data }: PropType) {
+export default async function checkProfileEmailNumber(data: PropType) {
   const suburl = '/auth/email/profile';
 
   const result = await axios_post<ResponseDataType>({ suburl, data });

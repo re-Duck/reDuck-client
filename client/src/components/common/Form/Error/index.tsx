@@ -6,13 +6,11 @@ interface IProps {
 }
 
 function FormError({ isDisplay, name }: IProps) {
-  return (
-    isDisplay && (
-      <span className="absolute left-0 -bottom-5 text-xs text-red-500">
-        {name}
-      </span>
-    )
-  );
+  const style = isDisplay
+    ? 'absolute left-0 -bottom-5 text-xs text-red-500'
+    : 'hidden';
+
+  return <span className={style}>{name}</span>;
 }
 
 export default FormError;

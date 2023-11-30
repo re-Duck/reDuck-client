@@ -12,7 +12,7 @@ function FormLabel({ name, isEssential = false }: IProps) {
 
   return (
     <label
-      className={`min-w-[4rem] w-16 text-xs break-keep sm:text-base sm:w-28 ${essentialStyle}`}
+      className={`min-w-[4rem] w-16 text-xs break-keep sm:text-base sm:w-28 sm:min-w-[7rem] ${essentialStyle}`}
     >
       {name}
     </label>

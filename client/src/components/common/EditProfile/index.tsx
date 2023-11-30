@@ -1,5 +1,5 @@
 // react, next
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { update } from '@/lib/redux/slices/authSlice';
@@ -7,7 +7,6 @@ import { update } from '@/lib/redux/slices/authSlice';
 // thrid-party
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { logOut } from '@/lib/redux/slices/authSlice';
 
 // components
 import { Avatar, LoadingIcon } from '@/components';
@@ -15,14 +14,14 @@ import { Avatar, LoadingIcon } from '@/components';
 // hooks
 import { useModal } from '@/hooks';
 import useEmail from '@/hooks/Form/useEmail';
+import useInputImage from '@/hooks/Form/useInputImage';
 
 // service
-import { BASE_URL } from '@/service/base/api';
 import { userManager } from '@/service/user';
+import { logOut } from '@/lib/redux/slices/authSlice';
 
 // constant
 import {
-  IMAGE_FILE_MAX_SIZE,
   ModalType,
   developExperience,
   errorMessage,
@@ -99,6 +98,9 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     handleCheckEmail: handleCheckCompanyEmail,
   } = useEmail('COMPANY');
 
+  const { imgRef, profileImg, imgFile, handleChooseFile, handleImgInput } =
+    useInputImage(userProfileImgPath);
+
   const handleLogout = async () => {
     try {
       await fetch('/api/deleteToken', {
@@ -111,47 +113,6 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         type: ModalType.ERROR,
         message: errorMessage.tryAgain,
       });
-    }
-  };
-
-  // profileImg 관련
-  const imgRef = useRef<HTMLInputElement>(null);
-  const [profileImg, setProfileImg] = useState<string>(
-    `${BASE_URL}${userProfileImgPath === undefined ? '' : userProfileImgPath}`
-  );
-  const [imgFile, setImgFile] = useState<Blob | null>(null);
-
-  const handleChooseFile = () => {
-    imgRef.current?.click();
-  };
-
-  const handleImgInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length !== 0) {
-      const file = e.target.files[0];
-      const fileSize = file.size;
-      if (fileSize > IMAGE_FILE_MAX_SIZE) {
-        alert('이미지 파일 용량 초과');
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        // null 방지
-        if (reader.result) {
-          if (typeof reader.result === 'string') {
-            setImgFile(file);
-            setProfileImg(reader.result);
-          } else {
-            // ArrayBuffer인 경우 string으로 변경
-            setProfileImg(
-              String.fromCharCode.apply(
-                null,
-                Array.from(new Uint16Array(reader.result))
-              )
-            );
-          }
-        }
-      };
     }
   };
 
@@ -293,9 +254,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   <button
                     type="button"
                     disabled={errors.email !== undefined || values.email === ''}
-                    onClick={() =>
-                      handleRequestUserEmail(values.email as string)
-                    }
+                    onClick={() => handleRequestUserEmail(values.email)}
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                   >
                     {userEmailState === EmailState.Submitting ? (
@@ -320,7 +279,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   <button
                     type="button"
                     className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
-                    onClick={() => handleCheckUserEmail(values.email as string)}
+                    onClick={() => handleCheckUserEmail(values.email)}
                   >
                     인증번호확인
                   </button>

@@ -1,5 +1,5 @@
 // react, next
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
 // packages
@@ -17,10 +17,10 @@ import {
 
 // hooks
 import useEmail from '@/hooks/Form/useEmail';
+import useInputImage from '@/hooks/Form/useInputImage';
 
 // constant
 import {
-  IMAGE_FILE_MAX_SIZE,
   developExperience,
   ModalType,
   successMessage,
@@ -57,14 +57,9 @@ const ValidationSchema = Yup.object().shape({
 export default function SignUp() {
   const router = useRouter();
 
-  const imgRef = useRef<HTMLInputElement>(null);
-  const [profileImg, setProfileImg] = useState<string>('');
-  const [imgFile, setImgFile] = useState<Blob | null>(null);
-
   // Modal
   const { openModal, closeModal } = useModal();
 
-  // email
   const {
     certificateRef,
     emailState,
@@ -74,74 +69,29 @@ export default function SignUp() {
     handleCheckEmail,
   } = useEmail('SIGNUP');
 
+  const { imgRef, profileImg, imgFile, handleChooseFile, handleImgInput } =
+    useInputImage();
+
   // 아이디 중복 체크 여부
   const [checkedId, setCheckedId] = useState<string>('');
 
-  const checkDuplicateID = async (
-    userId: string,
-    isTouched: boolean | undefined,
-    errorMsg: string | undefined
-  ) => {
-    if (!isTouched || errorMsg) {
+  const checkDuplicateID = async (userId: string) => {
+    try {
+      await userManager.checkDuplicateUser(userId);
+      setCheckedId(userId);
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.availableIdSuccess,
+      });
+    } catch (error) {
+      setCheckedId('');
       openModal({
         type: ModalType.ERROR,
-        message: errorMsg || errorMessage.blankID,
+        message:
+          error === 'duplicate'
+            ? errorMessage.duplicateId
+            : errorMessage.network,
       });
-    } else {
-      try {
-        await userManager.checkDuplicateUser(userId);
-        setCheckedId(userId);
-        openModal({
-          type: ModalType.SUCCESS,
-          message: successMessage.availableIdSuccess,
-        });
-      } catch (error) {
-        setCheckedId('');
-        openModal({
-          type: ModalType.ERROR,
-          message:
-            error === 'duplicate'
-              ? errorMessage.duplicateId
-              : errorMessage.network,
-        });
-      }
-    }
-  };
-
-  const handleChooseFile = () => {
-    imgRef.current?.click();
-  };
-
-  const handleImgInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length !== 0) {
-      const file = e.target.files[0];
-      const fileSize = file.size;
-      if (fileSize > IMAGE_FILE_MAX_SIZE) {
-        openModal({
-          type: ModalType.ERROR,
-          message: errorMessage.imageCapacityExceeded,
-        });
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        // null 방지
-        if (reader.result) {
-          if (typeof reader.result === 'string') {
-            setImgFile(file);
-            setProfileImg(reader.result);
-          } else {
-            // ArrayBuffer인 경우 string으로 변경
-            setProfileImg(
-              String.fromCharCode.apply(
-                null,
-                Array.from(new Uint16Array(reader.result))
-              )
-            );
-          }
-        }
-      };
     }
   };
 
@@ -215,16 +165,13 @@ export default function SignUp() {
                   <CustomForm.FormButton
                     type="button"
                     name="중복확인"
-                    onClick={() =>
-                      checkDuplicateID(
-                        values.userId,
-                        touched.userId,
-                        errors.userId
-                      )
+                    disabled={
+                      values.userId === '' || errors.userId !== undefined
                     }
+                    onClick={() => checkDuplicateID(values.userId)}
                   />
                   <CustomForm.FormError
-                    isDisplay={errors.userId !== undefined && touched.userId}
+                    isDisplay={errors.userId !== undefined}
                     name={errors.userId}
                   />
                 </CustomForm.FormBox>

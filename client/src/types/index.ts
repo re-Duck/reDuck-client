@@ -32,7 +32,7 @@ export interface IUserInfo {
   companyEmail?: string;
   companyEmailAuthentication?: boolean;
   developAnnual?: number;
-  email?: string;
+  email: string;
   name: string;
   post?: Array<object>;
   school?: string;

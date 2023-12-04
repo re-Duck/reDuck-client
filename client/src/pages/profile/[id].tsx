@@ -40,11 +40,11 @@ export default function Profile({
   const handleSelectMenu = (content: string) => {
     setSelectedMenu(content);
   };
-  //TODO: 반응형 디자인 고려하기 (모바일 디자인)
+
   return (
     <Layout>
-      <div className="flex max-w-5xl p-8 mx-auto gap-x-16">
-        <div className="flex-none text-center">
+      <div className="flex flex-col sm:flex-row sm:max-w-5xl sm:p-8 sm:mx-auto sm:gap-x-16">
+        <div className="hidden sm:flex-none sm:text-center sm:block">
           <Avatar
             src={`${BASE_URL}${
               userProfileImgPath === undefined ? '' : userProfileImgPath
@@ -54,11 +54,11 @@ export default function Profile({
           />
           <div className="mt-4">
             <p>{name}</p>
-            <p>@{company}</p>
+            <p>{company}</p>
             <p>{school}</p>
           </div>
           <Divider type="horizental" margin={4} thin={2} />
-          <ul className="hidden sm:block">
+          <ul>
             {sideBarList.map(({ content, iconName }) => (
               <li
                 key={content}
@@ -79,6 +79,26 @@ export default function Profile({
             ))}
           </ul>
         </div>
+        <ul className="flex mb-4 sm:hidden">
+          {sideBarList.map(({ content, iconName }) => (
+            <li
+              key={content}
+              className={`${
+                content === selectedMenu &&
+                'before:block before:absolute before:w-1/5 before:h-1 before:translate-y-[28px] before:bg-indigo-600 before:rounded-sm bg-gray-200'
+              } rounded-md p-2 text-sm font-semibold text-black hover:bg-gray-200 flex flex-col grow justify-center items-center`}
+              onClick={() => handleSelectMenu(content)}
+            >
+              <Icon
+                icon={iconName}
+                fontSize={24}
+                strokeWidth={3}
+                color="black"
+              />
+              <span>{content}</span>
+            </li>
+          ))}
+        </ul>
         <div className="flex flex-1 bg-white border">
           {isMyPage ? (
             <EditProfile userData={userData} />

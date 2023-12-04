@@ -214,7 +214,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       onSubmit={(data, { setSubmitting }) => handleSubmit(data, setSubmitting)}
     >
       {({ values, errors, touched, isSubmitting }) => (
-        <Form className="flex flex-1 flex-col p-8 gap-6">
+        <Form className="flex flex-1 flex-col p-4 gap-6 sm:p-8">
           <CustomForm.FormContainer>
             <CustomForm.FormLabel name="아이디" />
             <span>{userId}</span>

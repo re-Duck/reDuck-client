@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useModal } from '@/hooks';
-import { useDispatch, useSelector } from 'react-redux';
-import { logOut } from '@/lib/redux/slices/authSlice';
+import { useSelector } from 'react-redux';
 
 // components
 import { Layout, Avatar, Divider, UserInfo, EditProfile } from '@/components';
@@ -12,13 +10,7 @@ import { BASE_URL } from '@/service/base/api';
 import { userManager } from '@/service/user';
 
 // constant
-import {
-  ModalType,
-  errorMessage,
-  sideBarList,
-  successMessage,
-  warningMessage,
-} from '@/constants/constant';
+import { sideBarList } from '@/constants/constant';
 
 // types
 import { IUserInfo } from '@/types';
@@ -36,10 +28,7 @@ export default function Profile({
 }) {
   const router = useRouter();
 
-  const dispatch = useDispatch();
   const user = useSelector((state: IReduxState) => state.auth);
-
-  const { openModal, closeModal } = useModal();
 
   const isMyPage = router.query.id === user.userId;
 
@@ -49,37 +38,7 @@ export default function Profile({
   const { company, name, school, userProfileImgPath } = userData;
 
   const handleSelectMenu = (content: string) => {
-    if (content === '회원탈퇴') {
-      openModal({
-        type: ModalType.WARNING,
-        message: warningMessage.confirmWithdrawal,
-        callback: async () => {
-          closeModal();
-          try {
-            await userManager.deleteUser();
-            await fetch('/api/deleteToken', {
-              method: 'DELETE',
-            });
-            dispatch(logOut());
-            openModal({
-              type: ModalType.SUCCESS,
-              message: successMessage.withdrawalSuccess,
-              callback: () => {
-                closeModal();
-                router.replace('/');
-              },
-            });
-          } catch {
-            openModal({
-              type: ModalType.ERROR,
-              message: errorMessage.error,
-            });
-          }
-        },
-      });
-    } else {
-      setSelectedMenu(content);
-    }
+    setSelectedMenu(content);
   };
   //TODO: 반응형 디자인 고려하기 (모바일 디자인)
   return (
@@ -106,8 +65,7 @@ export default function Profile({
                 className={`${
                   content === selectedMenu &&
                   'before:block before:absolute before:w-1 before:h-8 before:translate-x-[-15px] before:bg-indigo-600 before:rounded-sm bg-gray-200'
-                } text-left rounded-md p-2 text-sm font-semibold text-black hover:bg-gray-200 flex items-center
-                ${content === '회원탈퇴' && !isMyPage && `hidden`}`}
+                } text-left rounded-md p-2 text-sm font-semibold text-black hover:bg-gray-200 flex items-center`}
                 onClick={() => handleSelectMenu(content)}
               >
                 <Icon

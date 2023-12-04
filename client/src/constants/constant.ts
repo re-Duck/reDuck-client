@@ -121,10 +121,6 @@ export const sideBarList = [
     content: '덕력치',
     iconName: 'bi:bar-chart-fill',
   },
-  {
-    content: '회원탈퇴',
-    iconName: 'ic:outline-log-out',
-  },
 ];
 
 export enum ModalType {

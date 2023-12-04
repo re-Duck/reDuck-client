@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { update } from '@/lib/redux/slices/authSlice';
 
 // thrid-party
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 // components
@@ -26,6 +26,7 @@ import {
   developExperience,
   errorCodeToMessage,
   errorMessage,
+  warningMessage,
   regex,
   successMessage,
 } from '@/constants/constant';
@@ -70,7 +71,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userProfileImgPath,
   }: IUserInfo = userData;
 
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   // 이메일
   const {
@@ -116,6 +117,36 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         message: errorMessage.tryAgain,
       });
     }
+  };
+
+  const handleWithdrawal = () => {
+    openModal({
+      type: ModalType.WARNING,
+      message: warningMessage.confirmWithdrawal,
+      callback: async () => {
+        closeModal();
+        try {
+          await userManager.deleteUser();
+          await fetch('/api/deleteToken', {
+            method: 'DELETE',
+          });
+          dispatch(logOut());
+          openModal({
+            type: ModalType.SUCCESS,
+            message: successMessage.withdrawalSuccess,
+            callback: () => {
+              closeModal();
+              router.replace('/');
+            },
+          });
+        } catch {
+          openModal({
+            type: ModalType.ERROR,
+            message: errorMessage.error,
+          });
+        }
+      },
+    });
   };
 
   const initialValues = {
@@ -438,6 +469,11 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
               type="button"
               name="로그아웃"
               onClick={handleLogout}
+            />
+            <CustomForm.FormButton
+              type="button"
+              name="회원탈퇴"
+              onClick={handleWithdrawal}
             />
           </div>
         </Form>

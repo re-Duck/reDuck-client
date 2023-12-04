@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from '@/lib/redux/slices/authSlice';
@@ -138,12 +137,7 @@ export default function Login() {
                   })
                 }
               >
-                <Image
-                  src="/images/google_logo.png"
-                  alt="googleLogo"
-                  width={20}
-                  height={20}
-                />
+                <Icon icon="devicon:google" fontSize={20} />
                 <span className="flex-grow">구글 계정으로 로그인</span>
               </button>
               <button
@@ -156,7 +150,7 @@ export default function Login() {
                   })
                 }
               >
-                <Icon icon="mdi:github" style={{ fontSize: '20px' }} />
+                <Icon icon="mdi:github" fontSize={20} />
                 <span className="flex-grow">깃허브 계정으로 로그인</span>
               </button>
               <div className="flex justify-evenly">

@@ -3,6 +3,9 @@ import Image from 'next/image';
 
 import { positionStyle, avatarSizeStyle } from '@/styles/styleConstant';
 
+// thrid-party
+import { Icon } from '@iconify/react';
+
 // service
 import { BASE_URL } from '@/service/base/api';
 
@@ -24,15 +27,20 @@ export default function Avatar({
   const avatarStyle = `relative rounded-full border border-slate-200 ${avatarSizeStyle[size]} max-w-[200px] max-h-[200px] overflow-hidden`;
   return (
     <div className={avatarStyle}>
-      <Image
-        src={
-          src === `${BASE_URL}` || src === '' ? '/images/user_icon.png' : src
-        }
-        width={80}
-        height={80}
-        alt={alt}
-        className="object-cover w-full h-full"
-      />
+      {src === BASE_URL || src === '' ? (
+        <Icon
+          icon="iconamoon:profile-fill"
+          className="object-cover w-full h-full"
+        />
+      ) : (
+        <Image
+          src={src}
+          width={80}
+          height={80}
+          alt={alt}
+          className="object-cover w-full h-full"
+        />
+      )}
       {hasDot && (
         <div
           className={`${positionStyle[position]} absolute z-10 bg-white rounded-full p-4`}

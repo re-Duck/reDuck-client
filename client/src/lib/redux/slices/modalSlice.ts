@@ -14,12 +14,8 @@ export const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    openModal: (state, action) => {
-      Object.assign(state, action.payload);
-    },
-    closeModal: () => {
-      return initialState;
-    },
+    openModal: (state, action) => Object.assign(state, action.payload),
+    closeModal: () => initialState,
   },
 });
 

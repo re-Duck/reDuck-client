@@ -12,15 +12,10 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logIn: (state, actions: PayloadAction<IUserState>) => {
-      state.userId = actions.payload.userId;
-      state.userName = actions.payload.userName;
-      state.userProfileImgPath = actions.payload.userProfileImgPath;
-    },
-    update: (state, actions: PayloadAction<Omit<IUserState, 'userId'>>) => {
-      state.userName = actions.payload.userName;
-      state.userProfileImgPath = actions.payload.userProfileImgPath;
-    },
+    logIn: (state, actions: PayloadAction<IUserState>) =>
+      Object.assign(state, actions.payload),
+    update: (state, actions: PayloadAction<Omit<IUserState, 'userId'>>) =>
+      Object.assign(state, actions.payload),
     logOut: () => initialState,
   },
 });

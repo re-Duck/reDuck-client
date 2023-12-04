@@ -24,6 +24,7 @@ import { logOut } from '@/lib/redux/slices/authSlice';
 import {
   ModalType,
   developExperience,
+  errorCodeToMessage,
   errorMessage,
   regex,
   successMessage,
@@ -162,9 +163,13 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         message: successMessage.profileUpdateSuccess,
       });
     } catch (error) {
+      type Code = 'INVALID_PARAMETER' | 'INVALID_PASSWORD';
       openModal({
         type: ModalType.ERROR,
-        message: error instanceof Error ? error.message : errorMessage.error,
+        message:
+          error instanceof Error
+            ? errorCodeToMessage[error.message as Code]
+            : errorMessage.Unknown,
       });
     } finally {
       setSubmitting(false);
@@ -377,7 +382,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                   }
                   disabled={
                     errors.companyEmail !== undefined ||
-                    values.companyEmail !== ''
+                    values.companyEmail === ''
                   }
                   onClick={() => handleRequestCompanyEmail(values.companyEmail)}
                 />

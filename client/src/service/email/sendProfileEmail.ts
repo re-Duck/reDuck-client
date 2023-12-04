@@ -2,12 +2,10 @@
 import { axios_post } from '../base/api';
 
 interface PropType {
-  data: {
-    email: string;
-  };
+  email: string;
 }
 
-export default async function sendProfileEmail({ data }: PropType) {
+export default async function sendProfileEmail(data: PropType) {
   const suburl = '/auth/email/profile/number';
   const result = await axios_post({ suburl, data });
 

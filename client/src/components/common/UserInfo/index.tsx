@@ -112,12 +112,12 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
 
   return (
     <>
-      <div className="flex flex-1 flex-col p-8 gap-4">
+      <div className="flex flex-1 flex-col bg-white border p-4 gap-4 sm:p-8">
         {labelContent.map(({ label, content }) => (
           <FlexLabelContent key={label} label={label} content={content} />
         ))}
       </div>
-      <div className="flex items-baseline">
+      <div className="m-2 text-right">
         <button
           onClick={handleChatRoute}
           disabled={isDisable}

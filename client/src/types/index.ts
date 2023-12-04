@@ -32,7 +32,7 @@ export interface IUserInfo {
   companyEmail?: string;
   companyEmailAuthentication?: boolean;
   developAnnual?: number;
-  email?: string;
+  email: string;
   name: string;
   post?: Array<object>;
   school?: string;
@@ -108,4 +108,6 @@ export interface IChatUserDto {
   unReadMessageCount: number;
 }
 
-export type EmailType = 'USER' | 'COMPANY' | 'SCHOOL';
+export type EmailType = 'SIGNUP' | 'USER' | 'COMPANY' | 'SCHOOL';
+
+export type MyPageTab = '프로필' | '활동기록' | '친구목록' | '덕력치';

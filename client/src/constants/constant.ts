@@ -106,7 +106,7 @@ export const MODAL_TITLE = {
 
 export const sideBarList = [
   {
-    content: '내 정보',
+    content: '프로필',
     iconName: 'uil:user',
   },
   {

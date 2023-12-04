@@ -32,7 +32,7 @@ export default function Profile({
 
   const isMyPage = router.query.id === user.userId;
 
-  const [selectedMenu, setSelectedMenu] = useState<string>('내 정보');
+  const [selectedMenu, setSelectedMenu] = useState<string>('프로필');
 
   const { userData } = pageProps;
   const { company, name, school, userProfileImgPath } = userData;
@@ -99,7 +99,7 @@ export default function Profile({
             </li>
           ))}
         </ul>
-        <div className="flex flex-1 bg-white border">
+        <div className="flex flex-col flex-1">
           {isMyPage ? (
             <EditProfile userData={userData} />
           ) : (

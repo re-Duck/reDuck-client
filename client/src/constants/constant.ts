@@ -1,3 +1,5 @@
+import { MyPageTab } from '@/types';
+
 export const linkList = [
   { name: '채팅방', href: '/chat' },
   { name: 'GPT', href: '/mygpt' },
@@ -104,7 +106,7 @@ export const MODAL_TITLE = {
   error: '오류',
 };
 
-export const sideBarList = [
+export const sideBarList: { content: MyPageTab; iconName: string }[] = [
   {
     content: '프로필',
     iconName: 'uil:user',

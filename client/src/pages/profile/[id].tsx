@@ -13,7 +13,7 @@ import { userManager } from '@/service/user';
 import { sideBarList } from '@/constants/constant';
 
 // types
-import { IUserInfo } from '@/types';
+import { IUserInfo, MyPageTab } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
 
 // icons
@@ -32,12 +32,12 @@ export default function Profile({
 
   const isMyPage = router.query.id === user.userId;
 
-  const [selectedMenu, setSelectedMenu] = useState<string>('프로필');
+  const [selectedMenu, setSelectedMenu] = useState<MyPageTab>('프로필');
 
   const { userData } = pageProps;
   const { company, name, school, userProfileImgPath } = userData;
 
-  const handleSelectMenu = (content: string) => {
+  const handleSelectMenu = (content: MyPageTab) => {
     setSelectedMenu(content);
   };
 
@@ -46,9 +46,7 @@ export default function Profile({
       <div className="flex flex-col sm:flex-row sm:max-w-5xl sm:p-8 sm:mx-auto sm:gap-x-16">
         <div className="hidden sm:flex-none sm:text-center sm:block">
           <Avatar
-            src={`${BASE_URL}${
-              userProfileImgPath === undefined ? '' : userProfileImgPath
-            }`}
+            src={`${BASE_URL}${userProfileImgPath || ''}`}
             alt="profileImg"
             size="xl"
           />

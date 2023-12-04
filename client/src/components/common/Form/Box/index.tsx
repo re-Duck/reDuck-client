@@ -1,8 +1,7 @@
 import React from 'react';
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: 'row' | 'column';
-  children: React.ReactNode;
 }
 
 function FormBox({ type = 'row', children }: IProps) {

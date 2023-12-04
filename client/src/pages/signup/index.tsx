@@ -164,12 +164,13 @@ export default function SignUp() {
                   />
                   <CustomForm.FormButton
                     type="button"
-                    name="중복확인"
                     disabled={
                       values.userId === '' || errors.userId !== undefined
                     }
                     onClick={() => checkDuplicateID(values.userId)}
-                  />
+                  >
+                    중복확인
+                  </CustomForm.FormButton>
                   <CustomForm.FormError
                     isDisplay={errors.userId !== undefined}
                     name={errors.userId}
@@ -236,9 +237,10 @@ export default function SignUp() {
                   />
                   <CustomForm.FormButton
                     type="button"
-                    name="파일 업로드"
                     onClick={handleChooseFile}
-                  />
+                  >
+                    파일 업로드
+                  </CustomForm.FormButton>
                   <CustomForm.FormDiscription name="이미지 크기의 최대용량은 10MB 입니다." />
                 </CustomForm.FormBox>
               </CustomForm.FormContainer>
@@ -257,14 +259,13 @@ export default function SignUp() {
                         errors.email !== undefined || values.email === ''
                       }
                       onClick={() => handleRequestEmail(values.email)}
-                      name={
-                        emailState === EmailState.Submitting ? (
-                          <LoadingIcon size="25px" />
-                        ) : (
-                          '인증번호 발송'
-                        )
-                      }
-                    />
+                    >
+                      {emailState === EmailState.Submitting ? (
+                        <LoadingIcon size="25px" />
+                      ) : (
+                        '인증번호 발송'
+                      )}
+                    </CustomForm.FormButton>
                   </CustomForm.FormBox>
                   {emailState === EmailState.Submitted && (
                     <CustomForm.FormBox>
@@ -276,9 +277,10 @@ export default function SignUp() {
                       />
                       <CustomForm.FormButton
                         type="button"
-                        name="인증번호확인"
                         onClick={() => handleCheckEmail(values.email)}
-                      />
+                      >
+                        인증번호 확인
+                      </CustomForm.FormButton>
                     </CustomForm.FormBox>
                   )}
                 </CustomForm.FormBox>
@@ -323,11 +325,9 @@ export default function SignUp() {
               </CustomForm.FormContainer>
               <Divider type="horizental" thin={2} margin={1} />
               <div className="text-center">
-                <CustomForm.FormButton
-                  type="submit"
-                  disabled={isSubmitting}
-                  name="회원가입"
-                />
+                <CustomForm.FormButton type="submit" disabled={isSubmitting}>
+                  회원가입
+                </CustomForm.FormButton>
               </div>
             </Form>
           )}

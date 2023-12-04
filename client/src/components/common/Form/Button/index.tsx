@@ -1,13 +1,10 @@
 import React from 'react';
 
-interface IProps {
+interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   type: 'button' | 'submit';
-  onClick?: () => void;
-  disabled?: boolean;
-  name: string | React.ReactNode;
 }
 
-function FormButton({ type, onClick, disabled, name }: IProps) {
+function FormButton({ type, onClick, disabled, children }: IProps) {
   return (
     <button
       type={type}
@@ -15,7 +12,7 @@ function FormButton({ type, onClick, disabled, name }: IProps) {
       onClick={onClick}
       className="min-w-fit p-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base"
     >
-      {name}
+      {children}
     </button>
   );
 }

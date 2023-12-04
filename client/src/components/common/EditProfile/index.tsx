@@ -278,11 +278,9 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 ref={imgRef}
                 onChange={handleImgInput}
               />
-              <CustomForm.FormButton
-                type="button"
-                name="사진 변경"
-                onClick={handleChooseFile}
-              />
+              <CustomForm.FormButton type="button" onClick={handleChooseFile}>
+                사진 변경
+              </CustomForm.FormButton>
               <CustomForm.FormDiscription name="이미지 크기의 최대용량은 10MB 입니다." />
             </CustomForm.FormBox>
           </CustomForm.FormContainer>
@@ -293,20 +291,19 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 <CustomForm.FormInput type="text" name="email" />
                 <CustomForm.FormButton
                   type="button"
-                  name={
-                    userEmailState === EmailState.Submitting ? (
-                      <LoadingIcon size={'25px'} />
-                    ) : (
-                      '인증번호 전송'
-                    )
-                  }
                   disabled={
                     errors.email !== undefined ||
                     values.email === '' ||
                     initialValues.email === values.email
                   }
                   onClick={() => handleRequestUserEmail(values.email)}
-                />
+                >
+                  {userEmailState === EmailState.Submitting ? (
+                    <LoadingIcon size={'25px'} />
+                  ) : (
+                    '인증번호 전송'
+                  )}
+                </CustomForm.FormButton>
               </CustomForm.FormBox>
               {userEmailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
@@ -316,13 +313,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     ref={userCertificateNumberRef}
                     onChange={handleChangeUserCertificationNumber}
                   />
-                  <button
+                  <CustomForm.FormButton
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
                     onClick={() => handleCheckUserEmail(values.email)}
                   >
                     인증번호확인
-                  </button>
+                  </CustomForm.FormButton>
                 </div>
               ) : (
                 <span className="text-xs text-zinc-500">
@@ -349,19 +345,18 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 <CustomForm.FormInput type="text" name="schoolEmail" />
                 <CustomForm.FormButton
                   type="button"
-                  name={
-                    schoolEmailState === EmailState.Submitting ? (
-                      <LoadingIcon size={'25px'} />
-                    ) : (
-                      '인증번호 전송'
-                    )
-                  }
                   disabled={
                     errors.schoolEmail !== undefined ||
                     values.schoolEmail === ''
                   }
                   onClick={() => handleRequestSchoolEmail(values.schoolEmail)}
-                />
+                >
+                  {schoolEmailState === EmailState.Submitting ? (
+                    <LoadingIcon size={'25px'} />
+                  ) : (
+                    '인증번호 전송'
+                  )}
+                </CustomForm.FormButton>
               </CustomForm.FormBox>
               {schoolEmailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
@@ -371,13 +366,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     ref={schoolCertificateNumberRef}
                     onChange={handleChangeSchoolCertificationNumber}
                   />
-                  <button
+                  <CustomForm.FormButton
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                     onClick={() => handleCheckSchoolEmail(values.schoolEmail)}
                   >
                     인증번호확인
-                  </button>
+                  </CustomForm.FormButton>
                 </div>
               ) : (
                 <span className="text-xs text-zinc-500">
@@ -404,19 +398,18 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 <CustomForm.FormInput type="text" name="companyEmail" />
                 <CustomForm.FormButton
                   type="button"
-                  name={
-                    companyEmailState === EmailState.Submitting ? (
-                      <LoadingIcon size={'25px'} />
-                    ) : (
-                      '인증번호 전송'
-                    )
-                  }
                   disabled={
                     errors.companyEmail !== undefined ||
                     values.companyEmail === ''
                   }
                   onClick={() => handleRequestCompanyEmail(values.companyEmail)}
-                />
+                >
+                  {companyEmailState === EmailState.Submitting ? (
+                    <LoadingIcon size={'25px'} />
+                  ) : (
+                    '인증번호 전송'
+                  )}
+                </CustomForm.FormButton>
               </CustomForm.FormBox>
               {companyEmailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
@@ -426,13 +419,12 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                     ref={companyCertificateNumberRef}
                     onChange={handleChangeCompanyCertificationNumber}
                   />
-                  <button
+                  <CustomForm.FormButton
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
                     onClick={() => handleCheckCompanyEmail(values.companyEmail)}
                   >
                     인증번호확인
-                  </button>
+                  </CustomForm.FormButton>
                 </div>
               ) : (
                 <span className="text-xs text-zinc-500">
@@ -460,21 +452,15 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
             </CustomForm.FormBox>
           </CustomForm.FormContainer>
           <div className="flex justify-evenly">
-            <CustomForm.FormButton
-              type="submit"
-              name="정보수정"
-              disabled={isSubmitting}
-            />
-            <CustomForm.FormButton
-              type="button"
-              name="로그아웃"
-              onClick={handleLogout}
-            />
-            <CustomForm.FormButton
-              type="button"
-              name="회원탈퇴"
-              onClick={handleWithdrawal}
-            />
+            <CustomForm.FormButton type="submit" disabled={isSubmitting}>
+              정보수정
+            </CustomForm.FormButton>
+            <CustomForm.FormButton type="button" onClick={handleLogout}>
+              로그아웃
+            </CustomForm.FormButton>
+            <CustomForm.FormButton type="button" onClick={handleWithdrawal}>
+              회원탈퇴
+            </CustomForm.FormButton>
           </div>
         </Form>
       )}

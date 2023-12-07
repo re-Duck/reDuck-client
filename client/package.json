@@ -10,12 +10,6 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "proxy": {
-    "/ws-connection": {
-      "target": "wss://www.reduck.site",
-      "ws": true
-    }
-  },
   "dependencies": {
     "@iconify/react": "^4.1.0",
     "@reduxjs/toolkit": "^1.9.5",

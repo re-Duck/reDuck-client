@@ -62,7 +62,7 @@ export default function ChatRoom({
   };
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ['chat'],
+    queryKey: ['chat', roomId],
     queryFn: ({ pageParam }) => getRoomChat({ roomId, messageId: pageParam }),
     getNextPageParam: (lastPage) => lastPage?.nextPageParam,
   });

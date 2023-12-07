@@ -23,7 +23,7 @@ interface IUserTile {
   enteredRoomId: string;
   src?: string;
   userId: string;
-  name?: string;
+  name: string;
   description: string;
   handleEnterRoom: (roomId: string) => void;
   type: 'recommand' | 'room';
@@ -81,7 +81,7 @@ const UserTile = ({
           {description}
         </span>
       </div>
-      <div className="inline-block w-8 h-8 disabled:opacity-70 sm:w-14 sm:h-10">
+      <div className="inline-block w-14 h-10 disabled:opacity-70">
         {type === 'recommand' ? (
           <button className="w-8 text-right sm:w-14" onClick={handleRoomCheck}>
             <Icon icon="lucide:message-circle" fontSize={28} color="black" />

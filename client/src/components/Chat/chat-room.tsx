@@ -123,6 +123,9 @@ export default function ChatRoom({
 
   return (
     <div className="relative flex flex-col flex-1 ml-4 border border-black">
+      <div className="p-2 text-center">
+        <p>채팅방 이름</p>
+      </div>
       <div className="flex flex-col h-full overflow-y-scroll" ref={chatRoomRef}>
         {chatList?.map((val, idx) => {
           const {
@@ -155,7 +158,7 @@ export default function ChatRoom({
           );
         })}
       </div>
-      <div className="flex p-2.5  sticky bottom-0 bg-white">
+      <div className="flex p-2.5 sticky bottom-0 bg-white">
         <input
           type="text"
           className="relative flex-1 p-1 border border-black"

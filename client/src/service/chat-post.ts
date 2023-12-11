@@ -15,7 +15,8 @@ interface ICreateChatRoom {
 
 interface ResponseType {
   roomId: string;
-  chatMessages: IChatMessage[];
+  roomName: string;
+  chatMessages?: IChatMessage[];
 }
 
 const createChatRoom = async ({

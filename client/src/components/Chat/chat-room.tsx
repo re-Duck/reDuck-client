@@ -1,5 +1,6 @@
 // react, next
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 // react-query
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -9,7 +10,8 @@ import ChatMessage from '@/components/Chat/chat-message';
 import DateDivider from '@/components/Chat/date-divider';
 
 // types
-import { IChatMessage } from '@/types';
+import { IChatMessage, IChatRoomInfo } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 // utils
 import { parseDate } from '@/util';
@@ -24,20 +26,22 @@ import {
 } from '@/constants/constant';
 
 interface IChatRoom {
-  roomId: string;
+  roomInfo: IChatRoomInfo;
   chatList: IChatMessage[];
-  currentUid: string;
   setChatList: React.Dispatch<React.SetStateAction<IChatMessage[]>>;
   handleSendMessage: (chatMessage: string) => void;
 }
 
 export default function ChatRoom({
-  roomId,
+  roomInfo,
   chatList,
-  currentUid,
   setChatList,
   handleSendMessage,
 }: IChatRoom) {
+  const user = useSelector((state: IReduxState) => state.auth);
+
+  const { roomId, roomName } = roomInfo;
+
   const [chatMessage, setChatMessage] = useState('');
   const [isScrolling, setIsScrolling] = useState(false);
 
@@ -64,7 +68,7 @@ export default function ChatRoom({
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['chat', roomId],
     queryFn: ({ pageParam }) => getRoomChat({ roomId, messageId: pageParam }),
-    getNextPageParam: (lastPage) => lastPage?.nextPageParam,
+    getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });
 
   useEffect(() => {
@@ -123,8 +127,8 @@ export default function ChatRoom({
 
   return (
     <div className="relative flex flex-col flex-1 ml-4 border border-black">
-      <div className="p-2 text-center">
-        <p>채팅방 이름</p>
+      <div className="p-2 text-center shadow-md mb-1">
+        <p>{roomName}</p>
       </div>
       <div className="flex flex-col h-full overflow-y-scroll" ref={chatRoomRef}>
         {chatList?.map((val, idx) => {
@@ -148,7 +152,7 @@ export default function ChatRoom({
                     />
                   ))}
               <ChatMessage
-                type={senderId === currentUid ? 'my' : 'other'}
+                type={senderId === user.userId ? 'my' : 'other'}
                 message={message}
                 name={name}
                 userProfileImgPath={userProfileImgPath}

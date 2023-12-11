@@ -15,6 +15,9 @@ import { BASE_URL } from '@/service/base/api';
 // utils
 import { formatDateToString } from '@/util';
 
+// types
+import { IChatRoomInfo } from '@/types';
+
 // constant
 import { ModalType, errorMessage } from '@/constants/constant';
 
@@ -25,7 +28,7 @@ interface IUserTile {
   userId: string;
   name: string;
   description: string;
-  handleEnterRoom: (roomId: string) => void;
+  handleEnterRoom: (roomInfo: IChatRoomInfo) => void;
   type: 'recommand' | 'room';
   lastChatMessageTime?: string;
   unReadMessageCount?: number;
@@ -46,7 +49,7 @@ const UserTile = ({
   const { openModal } = useModal();
   const handleRoomCheck = async () => {
     if (type === 'room') {
-      handleEnterRoom(roomId as string);
+      handleEnterRoom({ roomId: roomId as string, roomName: name });
     } else {
       const otherIds = [userId];
       try {
@@ -54,8 +57,8 @@ const UserTile = ({
           otherIds,
           roomName: '',
         });
-        const { roomId } = data;
-        handleEnterRoom(roomId);
+        const { roomId, roomName } = data;
+        handleEnterRoom({ roomId, roomName });
       } catch {
         openModal({
           type: ModalType.ERROR,

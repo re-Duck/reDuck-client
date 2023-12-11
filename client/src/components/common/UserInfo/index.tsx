@@ -92,13 +92,14 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
     try {
       const data = await createChatRoom({
         otherIds: [userId],
-        roomName: '',
+        roomName: name,
       });
-      const { roomId } = data;
+      const { roomId, roomName } = data;
       router.push({
         pathname: '/chat',
         query: {
           roomId,
+          roomName,
         },
       });
     } catch (error) {

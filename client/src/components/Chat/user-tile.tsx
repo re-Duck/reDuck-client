@@ -47,24 +47,27 @@ const UserTile = ({
   unReadMessageCount,
 }: IUserTile) => {
   const { openModal } = useModal();
-  const handleRoomCheck = async () => {
+
+  const handleClick = async () => {
     if (type === 'room') {
       handleEnterRoom({ roomId: roomId as string, roomName: name });
-    } else {
-      const otherIds = [userId];
-      try {
-        const data = await createChatRoom({
-          otherIds,
-          roomName: '',
-        });
-        const { roomId, roomName } = data;
-        handleEnterRoom({ roomId, roomName });
-      } catch {
-        openModal({
-          type: ModalType.ERROR,
-          message: errorMessage.failedCreateChatRoom,
-        });
-      }
+    }
+  };
+
+  const handleRecommandChatStart = async () => {
+    const otherIds = [userId];
+    try {
+      const data = await createChatRoom({
+        otherIds,
+        roomName: name,
+      });
+      const { roomId, roomName } = data;
+      handleEnterRoom({ roomId, roomName });
+    } catch {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.failedCreateChatRoom,
+      });
     }
   };
 
@@ -75,7 +78,7 @@ const UserTile = ({
   return (
     <div
       className={`flex gap-2 font-semibold items-center px-2 py-4 ${addedStyle}`}
-      onDoubleClick={handleRoomCheck}
+      onClick={handleClick}
     >
       <Avatar src={src ? `${BASE_URL}${src}` : ''} alt="user_icon" size="sm" />
       <div className="flex flex-col flex-1 overflow-hidden text-left">
@@ -86,7 +89,10 @@ const UserTile = ({
       </div>
       <div className="inline-block w-14 h-10 disabled:opacity-70">
         {type === 'recommand' ? (
-          <button className="w-8 text-right sm:w-14" onClick={handleRoomCheck}>
+          <button
+            className="w-8 text-right sm:w-14"
+            onClick={handleRecommandChatStart}
+          >
             <Icon icon="lucide:message-circle" fontSize={28} color="black" />
           </button>
         ) : (

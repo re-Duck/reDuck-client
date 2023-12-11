@@ -6,6 +6,7 @@ import Image from '@tiptap/extension-image';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 
 import { common, createLowlight } from 'lowlight';
+import ImageResize from './ImageResize';
 
 function useTipTap() {
   const lowlight = createLowlight(common);
@@ -17,6 +18,7 @@ function useTipTap() {
       CodeBlockLowlight.configure({
         lowlight,
       }),
+      ImageResize,
     ],
   });
   return { editor };

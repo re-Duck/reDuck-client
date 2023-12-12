@@ -2,11 +2,10 @@
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
-import Image from '@tiptap/extension-image';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 
 import { common, createLowlight } from 'lowlight';
-import ImageResize from './ImageResize';
+import { ImageResize } from 'tiptap-extension-resize-image';
 
 function useTipTap() {
   const lowlight = createLowlight(common);
@@ -14,11 +13,10 @@ function useTipTap() {
     extensions: [
       StarterKit,
       Highlight,
-      Image.configure({ inline: true, allowBase64: true }),
       CodeBlockLowlight.configure({
         lowlight,
       }),
-      ImageResize,
+      ImageResize.configure({ inline: true, allowBase64: true }),
     ],
   });
   return { editor };

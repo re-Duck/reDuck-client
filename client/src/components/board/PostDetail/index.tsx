@@ -1,5 +1,5 @@
 //core
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 //interface
@@ -17,11 +17,10 @@ import { BASE_URL } from '@/service/base/api';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
-import Image from '@tiptap/extension-image';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 
 import { common, createLowlight } from 'lowlight';
-import ImageResize from '@/hooks/Write/ImageResize';
+import { ImageResize } from 'tiptap-extension-resize-image';
 
 interface PostDetail {
   data: Omit<IPostInformation, 'commentsCount'>;
@@ -33,23 +32,18 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
   const url = data.postAuthorId
     ? `${BASE_URL}${data.postAuthorProfileImgPath}`
     : '';
-
   const editor = useEditor({
     extensions: [
       StarterKit,
       Highlight,
-      Image.configure({ inline: true, allowBase64: true }),
       CodeBlockLowlight.configure({
         lowlight,
       }),
-      ImageResize,
+      ImageResize.configure({ inline: true, allowBase64: true }),
     ],
     editable: false,
+    content: data.postContent,
   });
-
-  useEffect(() => {
-    editor?.commands.setContent(data.postContent);
-  }, [data, editor]);
 
   return (
     <article className="flex flex-col max-w-4xl min-w-full gap-8 px-4 py-6 m-auto bg-white border-2 border-gray-100 sm:p-12">

@@ -1,51 +1,41 @@
 // react, next
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { update } from '@/lib/redux/slices/authSlice';
 
 // thrid-party
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { logOut } from '@/lib/redux/slices/authSlice';
 
 // components
-import { Avatar, LoadingIcon } from '@/components';
+import { Avatar, LoadingIcon, Form as CustomForm } from '@/components';
 
 // hooks
 import { useModal } from '@/hooks';
+import useEmail from '@/hooks/Form/useEmail';
+import useInputImage from '@/hooks/Form/useInputImage';
 
 // service
-import { BASE_URL } from '@/service/base/api';
-import { emailManager } from '@/service/email';
 import { userManager } from '@/service/user';
+import { logOut } from '@/lib/redux/slices/authSlice';
 
 // constant
 import {
-  IMAGE_FILE_MAX_SIZE,
   ModalType,
   developExperience,
+  errorCodeToMessage,
   errorMessage,
+  warningMessage,
   regex,
   successMessage,
 } from '@/constants/constant';
 
 // types
-import { IUserInfo, EmailState, UserInputData, EmailType } from '@/types';
-
-interface ICheckEmailDto {
-  email: string;
-  number: number;
-  type: EmailType;
-}
-
-interface IAuthToken {
-  emailAuthToken?: string;
-  schoolEmailAuthToken?: string;
-  companyEmailAuthToken?: string;
-}
+import { IUserInfo, EmailState, UserInputData } from '@/types';
 
 const ValidationSchema = Yup.object().shape({
+  name: Yup.string().required(errorMessage.blankName),
   password: Yup.string().matches(
     regex.password,
     errorMessage.invalidFormatPassword
@@ -81,7 +71,38 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     userProfileImgPath,
   }: IUserInfo = userData;
 
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
+
+  // 이메일
+  const {
+    certificateRef: userCertificateNumberRef,
+    emailState: userEmailState,
+    emailAuthToken,
+    handleChangeCertifiactionNumber: handleChangeUserCertificationNumber,
+    handleRequestEmail: handleRequestUserEmail,
+    handleCheckEmail: handleCheckUserEmail,
+  } = useEmail('USER');
+
+  const {
+    certificateRef: schoolCertificateNumberRef,
+    emailState: schoolEmailState,
+    emailAuthToken: schoolEmailAuthToken,
+    handleChangeCertifiactionNumber: handleChangeSchoolCertificationNumber,
+    handleRequestEmail: handleRequestSchoolEmail,
+    handleCheckEmail: handleCheckSchoolEmail,
+  } = useEmail('SCHOOL');
+
+  const {
+    certificateRef: companyCertificateNumberRef,
+    emailState: companyEmailState,
+    emailAuthToken: companyEmailAuthToken,
+    handleChangeCertifiactionNumber: handleChangeCompanyCertificationNumber,
+    handleRequestEmail: handleRequestCompanyEmail,
+    handleCheckEmail: handleCheckCompanyEmail,
+  } = useEmail('COMPANY');
+
+  const { imgRef, profileImg, imgFile, handleChooseFile, handleImgInput } =
+    useInputImage(userProfileImgPath);
 
   const handleLogout = async () => {
     try {
@@ -98,200 +119,62 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     }
   };
 
-  // profileImg 관련
-  const imgRef = useRef<HTMLInputElement>(null);
-  const [profileImg, setProfileImg] = useState<string>(
-    `${BASE_URL}${userProfileImgPath === undefined ? '' : userProfileImgPath}`
-  );
-  const [imgFile, setImgFile] = useState<Blob | null>(null);
-
-  // TODO 이메일 Custom Hook 만들기
-  const [authToken, setAuthToken] = useState<IAuthToken>({});
-
-  // User 이메일 관련
-  const userCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [userEmailState, setUserEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [userCertificationNumber, setUserCertificationNumber] =
-    useState<string>('');
-
-  // School 이메일 관련
-  const schoolCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [schoolEmailState, setSchoolEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [schoolCertificationNumber, setSchoolCertificationNumber] =
-    useState<string>('');
-
-  // Comapny 이메일 관련
-  const companyCertificateNumberRef = useRef<HTMLInputElement>(null);
-  const [companyEmailState, setCompanyEmailState] = useState<EmailState>(
-    EmailState.None
-  );
-  const [companyCertificationNumber, setCompanyCertificationNumber] =
-    useState<string>('');
-
-  const handleChooseFile = () => {
-    imgRef.current?.click();
-  };
-
-  const handleImgInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length !== 0) {
-      const file = e.target.files[0];
-      const fileSize = file.size;
-      if (fileSize > IMAGE_FILE_MAX_SIZE) {
-        alert('이미지 파일 용량 초과');
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        // null 방지
-        if (reader.result) {
-          if (typeof reader.result === 'string') {
-            setImgFile(file);
-            setProfileImg(reader.result);
-          } else {
-            // ArrayBuffer인 경우 string으로 변경
-            setProfileImg(
-              String.fromCharCode.apply(
-                null,
-                Array.from(new Uint16Array(reader.result))
-              )
-            );
-          }
+  const handleWithdrawal = () => {
+    openModal({
+      type: ModalType.WARNING,
+      message: warningMessage.confirmWithdrawal,
+      callback: async () => {
+        closeModal();
+        try {
+          await userManager.deleteUser();
+          await fetch('/api/deleteToken', {
+            method: 'DELETE',
+          });
+          dispatch(logOut());
+          openModal({
+            type: ModalType.SUCCESS,
+            message: successMessage.withdrawalSuccess,
+            callback: () => {
+              closeModal();
+              router.replace('/');
+            },
+          });
+        } catch {
+          openModal({
+            type: ModalType.ERROR,
+            message: errorMessage.error,
+          });
         }
-      };
-    }
-  };
-
-  const handleSubmitEmail = async (type: EmailType, email: string) => {
-    switch (type) {
-      case 'USER': {
-        setUserEmailState(EmailState.Submitting);
-        break;
-      }
-      case 'SCHOOL': {
-        setSchoolEmailState(EmailState.Submitting);
-        break;
-      }
-      case 'COMPANY': {
-        setCompanyEmailState(EmailState.Submitting);
-        break;
-      }
-    }
-    try {
-      await emailManager.sendProfileEmail({
-        data: {
-          email,
-        },
-      });
-      switch (type) {
-        case 'USER': {
-          setUserEmailState(EmailState.Submitted);
-          break;
-        }
-        case 'SCHOOL': {
-          setSchoolEmailState(EmailState.Submitted);
-          break;
-        }
-        case 'COMPANY': {
-          setCompanyEmailState(EmailState.Submitted);
-          break;
-        }
-      }
-      openModal({
-        type: ModalType.SUCCESS,
-        message: successMessage.sendingEmailSuccess,
-      });
-    } catch (e) {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.failedSendingEmail,
-      });
-      switch (type) {
-        case 'USER': {
-          setUserEmailState(EmailState.None);
-          break;
-        }
-        case 'SCHOOL': {
-          setSchoolEmailState(EmailState.None);
-          break;
-        }
-        case 'COMPANY': {
-          setCompanyEmailState(EmailState.None);
-          break;
-        }
-      }
-    }
-  };
-
-  const handleCheckEmail = async (type: EmailType, email: string) => {
-    // 인증번호가 일치한다면 토큰 받아옴
-    const number = {
-      USER: userCertificationNumber,
-      SCHOOL: schoolCertificationNumber,
-      COMPANY: companyCertificationNumber,
-    };
-    const dto: ICheckEmailDto = {
-      email,
-      number: parseInt(number[type]),
-      type,
-    };
-    try {
-      const emailAuthToken = await emailManager.checkProfileEmailNumber({
-        data: dto,
-      });
-      if (type === 'USER') {
-        setAuthToken({ ...authToken, emailAuthToken });
-      } else if (type === 'COMPANY') {
-        setAuthToken({ ...authToken, companyEmailAuthToken: emailAuthToken });
-      } else if (type === 'SCHOOL') {
-        setAuthToken({ ...authToken, schoolEmailAuthToken: emailAuthToken });
-      }
-    } catch {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.checkCertificateEmail,
-      });
-    }
+      },
+    });
   };
 
   const initialValues = {
-    name: name,
+    name,
+    email,
+    school,
+    company,
+    developAnnual,
     password: '',
     newPassword: '',
     newPasswordConfirm: '',
-    email: email,
-    school: school,
     schoolEmail: schoolEmail || '',
-    company: company,
     companyEmail: companyEmail || '',
-    developAnnual: developAnnual,
   };
 
   const handleSubmit = async (
     inputData: UserInputData,
     setSubmitting: (value: boolean) => void
   ) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { newPasswordConfirm, ...modifyUserDto } = inputData;
 
     const data = {
       modifyUserDto: {
         ...modifyUserDto,
-        emailAuthToken:
-          userEmailState === EmailState.Submitted
-            ? authToken.emailAuthToken
-            : '',
-        schoolEmailAuthToken:
-          schoolEmailState === EmailState.Submitted
-            ? authToken.schoolEmailAuthToken
-            : '',
-        companyEmailAuthToken:
-          companyEmailState === EmailState.Submitted
-            ? authToken.companyEmailAuthToken
-            : '',
+        emailAuthToken,
+        schoolEmailAuthToken,
+        companyEmailAuthToken,
       },
       imgFile,
     };
@@ -311,14 +194,19 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         message: successMessage.profileUpdateSuccess,
       });
     } catch (error) {
+      type Code = 'INVALID_PARAMETER' | 'INVALID_PASSWORD';
       openModal({
         type: ModalType.ERROR,
-        message: error instanceof Error ? error.message : errorMessage.error,
+        message:
+          error instanceof Error
+            ? errorCodeToMessage[error.message as Code]
+            : errorMessage.Unknown,
       });
     } finally {
       setSubmitting(false);
     }
   };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -326,51 +214,62 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
       onSubmit={(data, { setSubmitting }) => handleSubmit(data, setSubmitting)}
     >
       {({ values, errors, touched, isSubmitting }) => (
-        <Form className="flex flex-1 flex-col p-8 gap-4">
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">아이디</label>
+        <Form className="flex flex-1 flex-col p-4 gap-6 bg-white border sm:p-8">
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="아이디" />
             <span>{userId}</span>
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">이름</label>
-            <Field
-              type="text"
-              name="name"
-              className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-            />
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">현재 비밀번호</label>
-            <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
-              <Field
-                type="password"
-                name="password"
-                className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="이름" />
+            <CustomForm.FormBox>
+              <CustomForm.FormInput type="text" name="name" />
+              <CustomForm.FormError
+                isDisplay={errors.name !== undefined && touched.name}
+                name={errors.name}
               />
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="현재 비밀번호" isEssential={true} />
+            <CustomForm.FormBox>
+              <CustomForm.FormInput type="password" name="password" />
               <span className="text-xs text-zinc-500 before:content-['*'] before:text-red-500">
                 {` 현재 비밀번호는 필수 입력입니다.`}
               </span>
-            </div>
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">새 비밀번호</label>
-            <Field
-              type="password"
-              name="newPassword"
-              className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-            />
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">비밀번호 확인</label>
-            <Field
-              type="password"
-              name="newPasswordConfirm"
-              className="grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-            />
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">프로필이미지</label>
-            <div className="flex gap-x-4 items-baseline flex-wrap">
+              <CustomForm.FormError
+                isDisplay={errors.password !== undefined && touched.password}
+                name={errors.password}
+              />
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="새 비밀번호" />
+            <CustomForm.FormBox>
+              <CustomForm.FormInput type="password" name="newPassword" />
+              <CustomForm.FormError
+                isDisplay={
+                  errors.newPassword !== undefined && touched.newPassword
+                }
+                name={errors.newPassword}
+              />
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="비밀번호 확인" />
+            <CustomForm.FormBox>
+              <CustomForm.FormInput type="password" name="newPasswordConfirm" />
+              <CustomForm.FormError
+                isDisplay={
+                  errors.newPasswordConfirm !== undefined &&
+                  touched.newPasswordConfirm
+                }
+                name={errors.newPasswordConfirm}
+              />
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="프로필 이미지" />
+            <CustomForm.FormBox>
               <Avatar src={profileImg} alt="profileImg" size="md" />
               <input
                 type="file"
@@ -379,233 +278,190 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
                 ref={imgRef}
                 onChange={handleImgInput}
               />
-              <button
-                type="button"
-                onClick={handleChooseFile}
-                className="rounded-md bg-indigo-600 p-1 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
-              >
+              <CustomForm.FormButton type="button" onClick={handleChooseFile}>
                 사진 변경
-              </button>
-              <span className="text-xs text-zinc-500">
-                이미지 크기의 최대용량은 10MB 입니다.
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">이메일</label>
-            <div>
-              <div className="flex gap-x-4 items-baseline flex-wrap">
-                <Field
-                  type="text"
-                  name="email"
-                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                />
-                {initialValues.email !== values.email && (
-                  <button
-                    type="button"
-                    disabled={!(touched.email && !errors.email)}
-                    onClick={() =>
-                      handleSubmitEmail('USER', values.email || '')
-                    }
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
-                  >
-                    {userEmailState === EmailState.Submitting ? (
-                      <LoadingIcon size={'25px'} />
-                    ) : (
-                      '인증번호 전송'
-                    )}
-                  </button>
-                )}
-                <span className="text-xs text-zinc-500">
-                  * 변경시 재인증이 필요합니다.
-                </span>
-              </div>
-              {userEmailState === EmailState.Submitted && (
+              </CustomForm.FormButton>
+              <CustomForm.FormDiscription name="이미지 크기의 최대용량은 10MB 입니다." />
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="이메일" />
+            <CustomForm.FormBox type="column">
+              <CustomForm.FormBox>
+                <CustomForm.FormInput type="text" name="email" />
+                <CustomForm.FormButton
+                  type="button"
+                  disabled={
+                    errors.email !== undefined ||
+                    values.email === '' ||
+                    initialValues.email === values.email
+                  }
+                  onClick={() => handleRequestUserEmail(values.email)}
+                >
+                  {userEmailState === EmailState.Submitting ? (
+                    <LoadingIcon size={'25px'} />
+                  ) : (
+                    '인증번호 전송'
+                  )}
+                </CustomForm.FormButton>
+              </CustomForm.FormBox>
+              {userEmailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
                   <input
                     type="text"
                     className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={userCertificateNumberRef}
-                    onChange={(e) => setUserCertificationNumber(e.target.value)}
+                    onChange={handleChangeUserCertificationNumber}
                   />
-                  <button
+                  <CustomForm.FormButton
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
-                    onClick={() => handleCheckEmail('USER', values.email || '')}
+                    onClick={() => handleCheckUserEmail(values.email)}
                   >
                     인증번호확인
-                  </button>
+                  </CustomForm.FormButton>
                 </div>
+              ) : (
+                <span className="text-xs text-zinc-500">
+                  * 변경시 재인증이 필요합니다.
+                </span>
               )}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">학교</label>
-            <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
-              <Field
-                type="text"
-                name="school"
-                className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-              />
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="학교" />
+            <CustomForm.FormBox>
+              <CustomForm.FormInput type="text" name="school" />
               {!schoolEmailAuthentication && (
                 <span className="text-xs text-zinc-500">
                   메일 인증이 필요합니다.
                 </span>
               )}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">학교이메일</label>
-            <div>
-              <div className="flex gap-x-4 items-baseline flex-wrap">
-                <Field
-                  type="text"
-                  name="schoolEmail"
-                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                />
-                <button
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="학교이메일" />
+            <CustomForm.FormBox type="column">
+              <CustomForm.FormBox>
+                <CustomForm.FormInput type="text" name="schoolEmail" />
+                <CustomForm.FormButton
                   type="button"
-                  disabled={!(touched.schoolEmail && !errors.schoolEmail)}
-                  onClick={() =>
-                    handleSubmitEmail('SCHOOL', values.schoolEmail)
+                  disabled={
+                    errors.schoolEmail !== undefined ||
+                    values.schoolEmail === ''
                   }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
+                  onClick={() => handleRequestSchoolEmail(values.schoolEmail)}
                 >
                   {schoolEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
-                </button>
-                <span className="text-xs text-zinc-500">
-                  * 변경시 재인증이 필요합니다.
-                </span>
-              </div>
-              {schoolEmailState === EmailState.Submitted && (
+                </CustomForm.FormButton>
+              </CustomForm.FormBox>
+              {schoolEmailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
                   <input
                     type="text"
                     className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={schoolCertificateNumberRef}
-                    onChange={(e) =>
-                      setSchoolCertificationNumber(e.target.value)
-                    }
+                    onChange={handleChangeSchoolCertificationNumber}
                   />
-                  <button
+                  <CustomForm.FormButton
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                    onClick={() =>
-                      handleCheckEmail('SCHOOL', values.schoolEmail)
-                    }
+                    onClick={() => handleCheckSchoolEmail(values.schoolEmail)}
                   >
                     인증번호확인
-                  </button>
+                  </CustomForm.FormButton>
                 </div>
+              ) : (
+                <span className="text-xs text-zinc-500">
+                  * 변경시 재인증이 필요합니다.
+                </span>
               )}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">회사</label>
-            <div className="flex flex-1 gap-x-4 items-baseline flex-wrap">
-              <Field
-                type="text"
-                name="company"
-                className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-              />
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="회사" />
+            <CustomForm.FormBox>
+              <CustomForm.FormInput type="text" name="company" />
               {!companyEmailAuthentication && (
                 <span className="text-xs text-zinc-500">
                   메일 인증이 필요합니다.
                 </span>
               )}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">회사이메일</label>
-            <div>
-              <div className="flex gap-x-4 items-baseline flex-wrap">
-                <Field
-                  type="text"
-                  name="companyEmail"
-                  className="w-full h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                />
-                <button
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="회사이메일" />
+            <CustomForm.FormBox type="column">
+              <CustomForm.FormBox>
+                <CustomForm.FormInput type="text" name="companyEmail" />
+                <CustomForm.FormButton
                   type="button"
-                  disabled={!(touched.companyEmail && !errors.companyEmail)}
-                  onClick={() =>
-                    handleSubmitEmail('COMPANY', values.companyEmail)
+                  disabled={
+                    errors.companyEmail !== undefined ||
+                    values.companyEmail === ''
                   }
-                  className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-28 sm:text-sm"
+                  onClick={() => handleRequestCompanyEmail(values.companyEmail)}
                 >
                   {companyEmailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
-                </button>
-                <span className="text-xs text-zinc-500">
-                  * 변경시 재인증이 필요합니다.
-                </span>
-              </div>
-              {companyEmailState === EmailState.Submitted && (
+                </CustomForm.FormButton>
+              </CustomForm.FormBox>
+              {companyEmailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
                   <input
                     type="text"
                     className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
                     ref={companyCertificateNumberRef}
-                    onChange={(e) =>
-                      setCompanyCertificationNumber(e.target.value)
-                    }
+                    onChange={handleChangeCompanyCertificationNumber}
                   />
-                  <button
+                  <CustomForm.FormButton
                     type="button"
-                    className="rounded-md bg-indigo-600 p-2 ml-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-xs sm:w-24 sm:text-sm"
-                    onClick={() =>
-                      handleCheckEmail('COMPANY', values.companyEmail)
-                    }
+                    onClick={() => handleCheckCompanyEmail(values.companyEmail)}
                   >
                     인증번호확인
-                  </button>
+                  </CustomForm.FormButton>
                 </div>
+              ) : (
+                <span className="text-xs text-zinc-500">
+                  * 변경시 재인증이 필요합니다.
+                </span>
               )}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <label className="w-28 min-w-fit">개발연차</label>
-            <div className="flex flex-col grow self-baseline">
-              <Field
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <CustomForm.FormContainer>
+            <CustomForm.FormLabel name="개발 시작연도" />
+            <CustomForm.FormBox type="column">
+              <CustomForm.FormInput
                 as="select"
                 name="developYear"
-                default={developAnnual}
+                default={0}
                 disabled={values.company === ''}
-                className={`${
-                  values.company === '' && 'opacity-30'
-                } grow h-full p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 max-w-xs focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
               >
                 {developExperience.map((val) => (
                   <option value={val} key={val}>
                     {val}
                   </option>
                 ))}
-              </Field>
-              <span className="text-gray-500 text-xs">
-                개발 시작연도는 실제 직장에 입사한 연도입니다.
-              </span>
-            </div>
+              </CustomForm.FormInput>
+              <CustomForm.FormDiscription name="개발 시작연도는 실제 직장에 입사한 연도입니다." />
+            </CustomForm.FormBox>
+          </CustomForm.FormContainer>
+          <div className="flex justify-evenly">
+            <CustomForm.FormButton type="submit" disabled={isSubmitting}>
+              정보수정
+            </CustomForm.FormButton>
+            <CustomForm.FormButton type="button" onClick={handleLogout}>
+              로그아웃
+            </CustomForm.FormButton>
+            <CustomForm.FormButton type="button" onClick={handleWithdrawal}>
+              회원탈퇴
+            </CustomForm.FormButton>
           </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex-none rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-          >
-            정보수정
-          </button>
-          <button
-            type="button"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70"
-            onClick={handleLogout}
-          >
-            로그아웃
-          </button>
         </Form>
       )}
     </Formik>

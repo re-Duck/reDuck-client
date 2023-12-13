@@ -1,3 +1,5 @@
+import { MyPageTab } from '@/types';
+
 export const linkList = [
   { name: '채팅방', href: '/chat' },
   { name: 'GPT', href: '/mygpt' },
@@ -48,6 +50,7 @@ export const errorCodeToMessage = Object.freeze({
   'USER_NOT_EXIST': '유저가 존재하지 않습니다.',
   'INVALID_PASSWORD': '비밀번호가 맞지 않습니다.',
   'UNAUTHENTICATED_EMAIL': '이메일 인증이 필요합니다.',
+  'INVALID_PARAMETER': '필수 입력 값을 채워주세요',
   '': '알 수 없는 오류입니다.',
   'undefined': '알 수 없는 오류입니다.',
 });
@@ -103,9 +106,9 @@ export const MODAL_TITLE = {
   error: '오류',
 };
 
-export const sideBarList = [
+export const sideBarList: { content: MyPageTab; iconName: string }[] = [
   {
-    content: '내 정보',
+    content: '프로필',
     iconName: 'uil:user',
   },
   {
@@ -119,10 +122,6 @@ export const sideBarList = [
   {
     content: '덕력치',
     iconName: 'bi:bar-chart-fill',
-  },
-  {
-    content: '회원탈퇴',
-    iconName: 'ic:outline-log-out',
   },
 ];
 

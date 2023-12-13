@@ -37,6 +37,6 @@ export default async function updateUser({
   if (result.isOkay) {
     return result.data as IUserInfo;
   } else {
-    throw new Error(result.error);
+    throw new Error(result.error.code);
   }
 }

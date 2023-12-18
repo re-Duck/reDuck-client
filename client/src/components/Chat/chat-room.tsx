@@ -129,7 +129,7 @@ export default function ChatRoom({
   }, [isFetching, hasNextPage]);
 
   return (
-    <div className="absolute bg-white h-full w-full sm:relative">
+    <div className="absolute z-10 bg-white h-full w-full sm:relative">
       <div className="relative flex flex-col h-full flex-1 border border-black sm:ml-4">
         <div className="p-2 text-center shadow-md mb-1">
           <Icon

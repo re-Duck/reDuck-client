@@ -31,6 +31,7 @@ interface IChatRoom {
   chatList: IChatMessage[];
   setChatList: React.Dispatch<React.SetStateAction<IChatMessage[]>>;
   handleSendMessage: (chatMessage: string) => void;
+  handleDisconnect: () => void;
 }
 
 export default function ChatRoom({
@@ -38,6 +39,7 @@ export default function ChatRoom({
   chatList,
   setChatList,
   handleSendMessage,
+  handleDisconnect,
 }: IChatRoom) {
   const user = useSelector((state: IReduxState) => state.auth);
 
@@ -134,7 +136,8 @@ export default function ChatRoom({
             icon="eva:arrow-ios-back-outline"
             fontSize={28}
             color="black"
-            className="absolute left-0 top-1.5"
+            className="absolute left-0 top-1.5 hover:cursor-pointer"
+            onClick={handleDisconnect}
           />
           <p>{roomName}</p>
         </div>

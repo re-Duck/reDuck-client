@@ -66,7 +66,6 @@ export default function Chatroom() {
           headers
         );
         setSubId(subscription.id);
-        setOpenChat(true);
       };
       client.connect(headers, connect_callback);
     } else if (client && client.connected) {
@@ -78,12 +77,15 @@ export default function Chatroom() {
       setSubId(subscription.id);
     }
     setSelectedRoom({ roomId, roomName });
+    setOpenChat(true);
   };
 
   const handleDisconnect = () => {
     const client = clientRef.current;
     if (client && client.connected) {
       client.unsubscribe(subId, headers);
+      setOpenChat(false);
+      setSelectedRoom({ roomId: '', roomName: '' });
     }
   };
 
@@ -157,6 +159,7 @@ export default function Chatroom() {
             chatList={chatList}
             setChatList={setChatList}
             handleSendMessage={handleSendMessage}
+            handleDisconnect={handleDisconnect}
           />
         )}
       </div>

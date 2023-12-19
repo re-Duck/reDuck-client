@@ -9,12 +9,12 @@ import { getRecommandUser, getUserChatRoom } from '@/service/chat-get';
 import UserTile from './user-tile';
 
 // types
-import { IUserInfo, IChatUserDto } from '@/types';
+import { IUserInfo, IChatUserDto, IChatRoomInfo } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
 
 interface IChatUserList {
   enteredRoomId: string;
-  handleConnect: (roomId: string) => void;
+  handleConnect: (roomInfo: IChatRoomInfo) => void;
   handleDisconnect: () => void;
 }
 export default function ChatUserList({
@@ -44,9 +44,9 @@ export default function ChatUserList({
     setRecommandUser(recommandData);
   }, [userId]);
 
-  const handleEnterRoom = (roomId: string) => {
+  const handleEnterRoom = (roomInfo: IChatRoomInfo) => {
     handleDisconnect();
-    handleConnect(roomId);
+    handleConnect(roomInfo);
     loadUserChatList();
   };
 
@@ -55,9 +55,11 @@ export default function ChatUserList({
   }, [user]);
 
   return (
-    <section className="relative border border-black w-[30%] text-center">
-      <section className="flex flex-col my-2.5 overflow-y-scroll">
-        <span>채팅방 목록</span>
+    <section className="relative border border-black w-full sm:w-[30%] text-center">
+      <div className="p-2 text-center shadow-md">
+        <p>채팅방 목록</p>
+      </div>
+      <section className="flex flex-col mb-2.5 overflow-y-scroll">
         {chatUserList?.map((dto) => {
           const {
             lastChatMessage,

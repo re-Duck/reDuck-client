@@ -1,9 +1,9 @@
 name: Run lighthouse CI When Push
 on:
-  push:
+  pull_request:
     branches-ignore:
-    - 'dev'
-    - 'main'
+      - 'dev'
+      - 'main'
 jobs:
   lhci:
     name: Lighthouse CI

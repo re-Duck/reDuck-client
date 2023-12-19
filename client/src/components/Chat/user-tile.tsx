@@ -15,6 +15,9 @@ import { BASE_URL } from '@/service/base/api';
 // utils
 import { formatDateToString } from '@/util';
 
+// types
+import { IChatRoomInfo } from '@/types';
+
 // constant
 import { ModalType, errorMessage } from '@/constants/constant';
 
@@ -23,9 +26,9 @@ interface IUserTile {
   enteredRoomId: string;
   src?: string;
   userId: string;
-  name?: string;
+  name: string;
   description: string;
-  handleEnterRoom: (roomId: string) => void;
+  handleEnterRoom: (roomInfo: IChatRoomInfo) => void;
   type: 'recommand' | 'room';
   lastChatMessageTime?: string;
   unReadMessageCount?: number;
@@ -44,24 +47,27 @@ const UserTile = ({
   unReadMessageCount,
 }: IUserTile) => {
   const { openModal } = useModal();
-  const handleRoomCheck = async () => {
+
+  const handleClick = async () => {
     if (type === 'room') {
-      handleEnterRoom(roomId as string);
-    } else {
-      const otherIds = [userId];
-      try {
-        const data = await createChatRoom({
-          otherIds,
-          roomName: '',
-        });
-        const { roomId } = data;
-        handleEnterRoom(roomId);
-      } catch {
-        openModal({
-          type: ModalType.ERROR,
-          message: errorMessage.failedCreateChatRoom,
-        });
-      }
+      handleEnterRoom({ roomId: roomId as string, roomName: name });
+    }
+  };
+
+  const handleRecommandChatStart = async () => {
+    const otherIds = [userId];
+    try {
+      const data = await createChatRoom({
+        otherIds,
+        roomName: name,
+      });
+      const { roomId, roomName } = data;
+      handleEnterRoom({ roomId, roomName });
+    } catch {
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.failedCreateChatRoom,
+      });
     }
   };
 
@@ -72,7 +78,7 @@ const UserTile = ({
   return (
     <div
       className={`flex gap-2 font-semibold items-center px-2 py-4 ${addedStyle}`}
-      onDoubleClick={handleRoomCheck}
+      onClick={handleClick}
     >
       <Avatar src={src ? `${BASE_URL}${src}` : ''} alt="user_icon" size="sm" />
       <div className="flex flex-col flex-1 overflow-hidden text-left">
@@ -81,9 +87,12 @@ const UserTile = ({
           {description}
         </span>
       </div>
-      <div className="inline-block w-8 h-8 disabled:opacity-70 sm:w-14 sm:h-10">
+      <div className="inline-block w-14 h-10 disabled:opacity-70">
         {type === 'recommand' ? (
-          <button className="w-8 text-right sm:w-14" onClick={handleRoomCheck}>
+          <button
+            className="w-8 text-right sm:w-14"
+            onClick={handleRecommandChatStart}
+          >
             <Icon icon="lucide:message-circle" fontSize={28} color="black" />
           </button>
         ) : (

@@ -18,7 +18,7 @@ import { Stomp, CompatClient, IMessage } from '@stomp/stompjs';
 import { v4 } from 'uuid';
 
 // types
-import { IChatMessage } from '@/types';
+import { IChatMessage, IChatRoomInfo } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
 
 // constant
@@ -35,7 +35,10 @@ export default function Chatroom() {
   const { openModal } = useModal();
 
   const [openChat, setOpenChat] = useState(false);
-  const [roomId, setRoomId] = useState('');
+  const [selectedRoom, setSelectedRoom] = useState<IChatRoomInfo>({
+    roomId: '',
+    roomName: '',
+  });
   const [subId, setSubId] = useState('');
 
   const [chatList, setChatList] = useState<IChatMessage[]>([]);
@@ -43,7 +46,7 @@ export default function Chatroom() {
   const clientRef = useRef<CompatClient>();
 
   // 채팅방 연결
-  const handleConnect = (id: string) => {
+  const handleConnect = ({ roomId, roomName }: IChatRoomInfo) => {
     const client = clientRef.current;
 
     const subscribe_callback = (message: IMessage) => {
@@ -58,29 +61,31 @@ export default function Chatroom() {
           return;
         }
         const subscription = client.subscribe(
-          `/sub/chat/room/${id}`,
+          `/sub/chat/room/${roomId}`,
           subscribe_callback,
           headers
         );
         setSubId(subscription.id);
-        setOpenChat(true);
       };
       client.connect(headers, connect_callback);
     } else if (client && client.connected) {
       const subscription = client.subscribe(
-        `/sub/chat/room/${id}`,
-        subscribe_callback
-        //headers
+        `/sub/chat/room/${roomId}`,
+        subscribe_callback,
+        headers
       );
       setSubId(subscription.id);
     }
-    setRoomId(id);
+    setSelectedRoom({ roomId, roomName });
+    setOpenChat(true);
   };
 
   const handleDisconnect = () => {
     const client = clientRef.current;
     if (client && client.connected) {
       client.unsubscribe(subId, headers);
+      setOpenChat(false);
+      setSelectedRoom({ roomId: '', roomName: '' });
     }
   };
 
@@ -91,7 +96,7 @@ export default function Chatroom() {
       if (user) {
         if (client && client.connected) {
           const objectbody = {
-            roomId,
+            roomId: selectedRoom.roomId,
             message: chatMessage,
             messageId: v4(),
             userId,
@@ -108,7 +113,7 @@ export default function Chatroom() {
         }
       }
     },
-    [user, roomId]
+    [user, selectedRoom]
   );
 
   useEffect(() => {
@@ -129,7 +134,10 @@ export default function Chatroom() {
     };
 
     if (query.roomId) {
-      handleConnect(query.roomId as string);
+      handleConnect({
+        roomId: query.roomId as string,
+        roomName: query.roomName as string,
+      });
     }
 
     return () => {
@@ -139,19 +147,19 @@ export default function Chatroom() {
 
   return (
     <Layout>
-      <div className="relative pt-8 mx-auto flex max-w-5xl h-[calc(100vh-6rem)]">
+      <div className="relative mx-auto flex max-w-5xl h-[calc(100vh-6rem)] sm:pt-8">
         <ChatUserList
-          enteredRoomId={roomId}
+          enteredRoomId={selectedRoom.roomId}
           handleConnect={handleConnect}
           handleDisconnect={handleDisconnect}
         />
         {openChat && (
           <ChatRoom
-            roomId={roomId}
+            roomInfo={selectedRoom}
             chatList={chatList}
             setChatList={setChatList}
-            currentUid={userId}
             handleSendMessage={handleSendMessage}
+            handleDisconnect={handleDisconnect}
           />
         )}
       </div>

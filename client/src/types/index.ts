@@ -108,6 +108,11 @@ export interface IChatUserDto {
   unReadMessageCount: number;
 }
 
+export interface IChatRoomInfo {
+  roomId: string;
+  roomName: string;
+}
+
 export type EmailType = 'SIGNUP' | 'USER' | 'COMPANY' | 'SCHOOL';
 
 export type MyPageTab = '프로필' | '활동기록' | '친구목록' | '덕력치';

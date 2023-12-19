@@ -1,5 +1,6 @@
 // react, next
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 // react-query
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -7,9 +8,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 // components
 import ChatMessage from '@/components/Chat/chat-message';
 import DateDivider from '@/components/Chat/date-divider';
+import { Icon } from '@iconify/react';
 
 // types
-import { IChatMessage } from '@/types';
+import { IChatMessage, IChatRoomInfo } from '@/types';
+import { IReduxState } from '@/types/redux/IReduxState';
 
 // utils
 import { parseDate } from '@/util';
@@ -24,20 +27,24 @@ import {
 } from '@/constants/constant';
 
 interface IChatRoom {
-  roomId: string;
+  roomInfo: IChatRoomInfo;
   chatList: IChatMessage[];
-  currentUid: string;
   setChatList: React.Dispatch<React.SetStateAction<IChatMessage[]>>;
   handleSendMessage: (chatMessage: string) => void;
+  handleDisconnect: () => void;
 }
 
 export default function ChatRoom({
-  roomId,
+  roomInfo,
   chatList,
-  currentUid,
   setChatList,
   handleSendMessage,
+  handleDisconnect,
 }: IChatRoom) {
+  const user = useSelector((state: IReduxState) => state.auth);
+
+  const { roomId, roomName } = roomInfo;
+
   const [chatMessage, setChatMessage] = useState('');
   const [isScrolling, setIsScrolling] = useState(false);
 
@@ -62,9 +69,9 @@ export default function ChatRoom({
   };
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ['chat'],
+    queryKey: ['chat', roomId],
     queryFn: ({ pageParam }) => getRoomChat({ roomId, messageId: pageParam }),
-    getNextPageParam: (lastPage) => lastPage?.nextPageParam,
+    getNextPageParam: (lastPage) => lastPage.nextPageParam,
   });
 
   useEffect(() => {
@@ -122,56 +129,71 @@ export default function ChatRoom({
   }, [isFetching, hasNextPage]);
 
   return (
-    <div className="relative flex flex-col flex-1 ml-4 border border-black">
-      <div className="flex flex-col h-full overflow-y-scroll" ref={chatRoomRef}>
-        {chatList?.map((val, idx) => {
-          const {
-            messageId,
-            message,
-            userId: senderId,
-            name,
-            userProfileImgPath,
-            messageTime,
-          } = val;
-
-          return (
-            <React.Fragment key={messageId}>
-              {idx === 0 ||
-                (idx !== 0 &&
-                  parseDate(chatList[idx - 1].messageTime) !==
-                    parseDate(messageTime) && (
-                    <DateDivider
-                      messageTime={parseDate(messageTime) as string}
-                    />
-                  ))}
-              <ChatMessage
-                type={senderId === currentUid ? 'my' : 'other'}
-                message={message}
-                name={name}
-                userProfileImgPath={userProfileImgPath}
-                messageTime={messageTime}
-              />
-            </React.Fragment>
-          );
-        })}
-      </div>
-      <div className="flex p-2.5  sticky bottom-0 bg-white">
-        <input
-          type="text"
-          className="relative flex-1 p-1 border border-black"
-          value={chatMessage}
-          ref={messageRef}
-          onChange={handleMessageChange}
-          onKeyDown={handleKeyDown}
-        />
-        <button
-          type="button"
-          disabled={chatMessage.length === 0}
-          onClick={handleClickSend}
-          className="w-20 p-2 ml-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base"
+    <div className="absolute z-10 bg-white h-full w-full sm:relative">
+      <div className="relative flex flex-col h-full flex-1 border border-black sm:ml-4">
+        <div className="p-2 text-center shadow-md mb-1">
+          <Icon
+            icon="eva:arrow-ios-back-outline"
+            fontSize={28}
+            color="black"
+            className="absolute left-0 top-1.5 hover:cursor-pointer"
+            onClick={handleDisconnect}
+          />
+          <p>{roomName}</p>
+        </div>
+        <div
+          className="flex flex-col h-full overflow-y-scroll"
+          ref={chatRoomRef}
         >
-          전송
-        </button>
+          {chatList?.map((val, idx) => {
+            const {
+              messageId,
+              message,
+              userId: senderId,
+              name,
+              userProfileImgPath,
+              messageTime,
+            } = val;
+
+            return (
+              <React.Fragment key={messageId}>
+                {idx === 0 ||
+                  (idx !== 0 &&
+                    parseDate(chatList[idx - 1].messageTime) !==
+                      parseDate(messageTime) && (
+                      <DateDivider
+                        messageTime={parseDate(messageTime) as string}
+                      />
+                    ))}
+                <ChatMessage
+                  type={senderId === user.userId ? 'my' : 'other'}
+                  message={message}
+                  name={name}
+                  userProfileImgPath={userProfileImgPath}
+                  messageTime={messageTime}
+                />
+              </React.Fragment>
+            );
+          })}
+        </div>
+        <div className="flex p-2.5 sticky bottom-0 bg-white">
+          <input
+            type="text"
+            className="relative flex-1 p-1 border border-black"
+            value={chatMessage}
+            ref={messageRef}
+            onChange={handleMessageChange}
+            onKeyDown={handleKeyDown}
+          />
+          <button
+            type="button"
+            disabled={chatMessage.length === 0}
+            onClick={handleClickSend}
+            className="w-20 p-2 ml-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base"
+          >
+            전송
+          </button>
+        </div>
       </div>
     </div>
   );

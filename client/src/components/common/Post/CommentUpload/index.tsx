@@ -1,5 +1,5 @@
 //core
-import React from 'react';
+import React, { use } from 'react';
 import { useRouter } from 'next/router';
 
 //components
@@ -19,10 +19,10 @@ import * as Yup from 'yup';
 
 //types
 import { IUserState } from '@/types/redux/IUserState';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface IComentUpload {
   user: IUserState;
-  refetch: () => void;
 }
 
 interface IHnadlerComment {
@@ -35,31 +35,37 @@ const ValidationSchema = Yup.object().shape({
   content: Yup.string().required(errorMessage.blankTitle),
 });
 
-export default function CommentUpload({ user, refetch }: IComentUpload) {
+export default function CommentUpload({ user }: IComentUpload) {
   const router = useRouter();
-  const postOriginId = router.query.id;
+  const postOriginId = router.query.id as string;
 
   const { openModal } = useModal();
   const comentImgSrc = user ? `${BASE_URL}${user.userProfileImgPath}` : '';
+
+  const queryClient = useQueryClient();
+  const { mutate, isSuccess, isError } = useMutation({
+    mutationFn: (content: string) =>
+      commentManager.createComment({ content, postOriginId }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [postOriginId] }),
+  });
   const handleComment = async ({
     content,
     setSubmitting,
     resetForm,
   }: IHnadlerComment) => {
-    try {
-      if (user === undefined) {
-        openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
-        setSubmitting(false);
-        return;
-      }
-      await commentManager.createComment({
-        content,
-        postOriginId,
-      });
+    if (user === undefined) {
+      openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+      setSubmitting(false);
+      return;
+    }
+    mutate(content);
+
+    if (isSuccess) {
       resetForm();
       setSubmitting(false);
-      refetch();
-    } catch (e) {
+    }
+    if (isError) {
       setSubmitting(false);
       openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain });
     }

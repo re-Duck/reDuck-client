@@ -22,7 +22,7 @@ function PostContent({ postOriginId }: IProps) {
 
   const { data } = useQuery({
     queryKey: [`${postOriginId}`],
-    queryFn: async () => await postManager.getPost({ postOriginId }),
+    queryFn: () => postManager.getPost({ postOriginId }),
     retry: false,
     suspense: true,
   });

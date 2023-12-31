@@ -17,9 +17,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 interface IDeleteButton {
   id: string;
   type: 'comment' | 'post';
+  postOriginId: string;
 }
 
-export default function DeleteButton({ id, type }: IDeleteButton) {
+export default function DeleteButton({
+  id,
+  type,
+  postOriginId,
+}: IDeleteButton) {
   const { openModal } = useModal();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -43,8 +48,8 @@ export default function DeleteButton({ id, type }: IDeleteButton) {
       commentManager.deleteComment({
         commentOriginId: id,
       }),
-    //TODO: id가 아닌 postOriginId를 넘겨줘야함
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [id] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [postOriginId] }),
     onError: () =>
       openModal({
         type: ModalType.ERROR,

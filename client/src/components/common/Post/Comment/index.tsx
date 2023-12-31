@@ -64,7 +64,11 @@ export default function Comment({
                 취소
               </button>
             )}
-            <DeleteButton id={data.commentOriginId} type="comment" />
+            <DeleteButton
+              id={data.commentOriginId}
+              type="comment"
+              postOriginId={postOriginId}
+            />
           </div>
         )}
       </div>

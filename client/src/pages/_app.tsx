@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -18,7 +18,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
-  const [queryClient] = useState(() => new QueryClient());
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
   return (
     <>
       <Head>

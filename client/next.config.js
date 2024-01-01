@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['168.188.123.234', 'reduck.site', 'reduckas.site'],
+    domains: ['3.39.78.198', 'reduck.site', 'api.reduckas.site'],
   },
 };
 module.exports = nextConfig;

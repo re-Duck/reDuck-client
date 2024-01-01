@@ -49,10 +49,6 @@ const meta: Meta<typeof Comment> = {
     postOriginId: {
       description: '댓글이 속한 게시글의 고유 아이디입니다.',
     },
-    refetch: {
-      description:
-        '새로운 댓글 리스트를 불러오는 react-query 함수입니다. 댓글을 수정하거나 삭제한 후에 실행합니다.',
-    },
   },
 };
 

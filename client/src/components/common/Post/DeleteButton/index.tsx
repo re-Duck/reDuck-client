@@ -12,42 +12,61 @@ import {
 //service
 import { postManager } from '@/service/post';
 import { commentManager } from '@/service/comment';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface IDeleteButton {
   id: string;
   type: 'comment' | 'post';
-  refetch?: () => void;
+  postOriginId: string;
 }
 
-export default function DeleteButton({ id, type, refetch }: IDeleteButton) {
+export default function DeleteButton({
+  id,
+  type,
+  postOriginId,
+}: IDeleteButton) {
   const { openModal } = useModal();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const postMutation = useMutation({
+    mutationFn: (id: string) => postManager.deletePost({ postOriginId: id }),
+    onSuccess: () => {
+      router.push('/');
+      openModal({
+        type: ModalType.SUCCESS,
+        message: successMessage.postDeleteSuccess,
+      });
+    },
+    onError: () =>
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.tryAgain,
+      }),
+  });
+  const commentMutation = useMutation({
+    mutationFn: (id: string) =>
+      commentManager.deleteComment({
+        commentOriginId: id,
+      }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [postOriginId] }),
+    onError: () =>
+      openModal({
+        type: ModalType.ERROR,
+        message: errorMessage.tryAgain,
+      }),
+  });
+
   const IS_CHECK_MODAL_MESSAGE =
     type === 'post'
       ? warningMessage.confirmDeletePost
       : warningMessage.confirmDeleteComment;
 
   const handdleDelete = async () => {
-    try {
-      if (type === 'post') {
-        await postManager.deletePost({ postOriginId: id });
-
-        router.push('/');
-        openModal({
-          type: ModalType.SUCCESS,
-          message: successMessage.postDeleteSuccess,
-        });
-      } else if (type === 'comment') {
-        await commentManager.deleteComment({
-          commentOriginId: id,
-        });
-        refetch && refetch();
-      }
-    } catch (e) {
-      openModal({
-        type: ModalType.ERROR,
-        message: errorMessage.tryAgain,
-      });
+    if (type === 'post') {
+      postMutation.mutate(id);
+    } else if (type === 'comment') {
+      commentMutation.mutate(id);
     }
   };
   return (

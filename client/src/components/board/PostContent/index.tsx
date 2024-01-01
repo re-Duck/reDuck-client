@@ -20,9 +20,9 @@ interface IProps {
 function PostContent({ postOriginId }: IProps) {
   const user = useSelector((state: IReduxState) => state.auth);
 
-  const { data, refetch } = useQuery({
+  const { data } = useQuery({
     queryKey: [`${postOriginId}`],
-    queryFn: async () => await postManager.getPost({ postOriginId }),
+    queryFn: () => postManager.getPost({ postOriginId }),
     retry: false,
     suspense: true,
   });
@@ -37,23 +37,13 @@ function PostContent({ postOriginId }: IProps) {
       />
       <h3 className="pl-3 text-2xl font-bold">댓글 {comments?.length}</h3>
       <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
-        <CommentUpload
-          user={user}
-          refetch={() => {
-            refetch();
-            setTimeout(
-              () => window.scrollTo(0, document.body.scrollHeight),
-              100
-            );
-          }}
-        />
+        <CommentUpload user={user} />
         {comments?.map((comment: IComment) => (
           <Comment
             key={comment.commentOriginId}
             data={comment}
             IS_AUTHOR={user.userId === comment.commentAuthorId}
             postOriginId={postOriginId}
-            refetch={refetch}
           />
         ))}
       </div>

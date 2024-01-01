@@ -1,5 +1,5 @@
 //core
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 
 //interface
@@ -45,6 +45,12 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
     content: data.postContent,
   });
 
+  useEffect(() => {
+    if (editor) {
+      editor.commands.setContent(data.postContent);
+    }
+  }, [data]);
+
   return (
     <article className="flex flex-col max-w-4xl min-w-full gap-8 px-4 py-6 m-auto bg-white border-2 border-gray-100 sm:p-12">
       <h1 className="text-4xl font-extrabold ">{data.postTitle}</h1>
@@ -63,7 +69,11 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
         {IS_AUTHOR && (
           <div className="flex gap-1 font-normal text-gray-500">
             <ModifyCotentButton postOriginId={data.postOriginId} />
-            <DeleteButton id={data.postOriginId} type="post" />
+            <DeleteButton
+              id={data.postOriginId}
+              type="post"
+              postOriginId={data.postOriginId}
+            />
           </div>
         )}
       </div>

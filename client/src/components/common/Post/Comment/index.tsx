@@ -16,13 +16,11 @@ interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
   postOriginId: string;
-  refetch: () => void;
 }
 export default function Comment({
   data,
   IS_AUTHOR,
   postOriginId,
-  refetch,
 }: ICommentProps) {
   const [isModifying, setIsModifying] = useState(false);
   const [comment, setComment] = useState(data.commentContent);
@@ -69,7 +67,7 @@ export default function Comment({
             <DeleteButton
               id={data.commentOriginId}
               type="comment"
-              refetch={refetch}
+              postOriginId={postOriginId}
             />
           </div>
         )}

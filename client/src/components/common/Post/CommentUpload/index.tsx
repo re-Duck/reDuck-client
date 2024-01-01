@@ -61,7 +61,10 @@ export default function CommentUpload({ user }: IComentUpload) {
       return;
     }
     mutate(content, {
-      onSuccess: resetForm,
+      onSuccess: () => {
+        resetForm();
+        setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
+      },
       onError: () =>
         openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain }),
     });

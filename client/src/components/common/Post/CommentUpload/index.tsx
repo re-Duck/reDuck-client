@@ -43,12 +43,13 @@ export default function CommentUpload({ user }: IComentUpload) {
   const comentImgSrc = user ? `${BASE_URL}${user.userProfileImgPath}` : '';
 
   const queryClient = useQueryClient();
-  const { mutate, isSuccess, isError } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (content: string) =>
       commentManager.createComment({ content, postOriginId }),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: [postOriginId] }),
   });
+
   const handleComment = async ({
     content,
     setSubmitting,
@@ -59,16 +60,12 @@ export default function CommentUpload({ user }: IComentUpload) {
       setSubmitting(false);
       return;
     }
-    mutate(content);
-
-    if (isSuccess) {
-      resetForm();
-      setSubmitting(false);
-    }
-    if (isError) {
-      setSubmitting(false);
-      openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain });
-    }
+    mutate(content, {
+      onSuccess: resetForm,
+      onError: () =>
+        openModal({ type: ModalType.ERROR, message: errorMessage.tryAgain }),
+    });
+    setSubmitting(false);
   };
   return (
     <Formik

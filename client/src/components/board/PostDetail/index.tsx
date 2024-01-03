@@ -81,7 +81,7 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
 
       <p className="text-gray-400">{parseDate(data?.postCreatedAt)}</p>
       <hr />
-      <p className="text-sm text-gray-400">좋아요 0 | 조회 0</p>
+      <p className="text-sm text-gray-400">{`좋아요 ${data.likes} | 조회 ${data.hits}`}</p>
     </article>
   );
 }

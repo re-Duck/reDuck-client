@@ -46,7 +46,7 @@ export function PostSummary({
         />
         <div className="flex justify-between">
           <div className="flex flex-col gap-1">
-            <p className="text-sm text-gray-400">좋아요 0 | 조회 0</p>
+            <p className="text-sm text-gray-400">{`좋아요 ${postInfoData.likes} | 조회 ${postInfoData.hits}`}</p>
             <p className="text-gray-400">
               {parseDate(postInfoData?.postCreatedAt)}
             </p>

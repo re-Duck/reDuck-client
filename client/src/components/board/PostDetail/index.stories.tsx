@@ -43,6 +43,8 @@ display: none;
   postTitle: 'Test Post',
   postType: 'qna',
   postUpdatedAt: '2023-06-01T02:25:31.176242',
+  likes: 0,
+  hits: 0,
 };
 
 const meta: Meta<typeof PostDetail> = {

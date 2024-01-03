@@ -20,6 +20,8 @@ export interface IPostInformation {
   postTitle: string;
   postType: string;
   postUpdatedAt: string;
+  hits: number;
+  likes: number;
 }
 
 export interface IBoardPostInformation

@@ -21,6 +21,7 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 
 import { common, createLowlight } from 'lowlight';
 import { ImageResize } from 'tiptap-extension-resize-image';
+import tiptapLink from '@tiptap/extension-link';
 
 interface PostDetail {
   data: Omit<IPostInformation, 'commentsCount'>;
@@ -40,6 +41,7 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
         lowlight,
       }),
       ImageResize.configure({ inline: true, allowBase64: true }),
+      tiptapLink,
     ],
     editable: false,
     content: data.postContent,

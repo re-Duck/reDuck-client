@@ -7,8 +7,8 @@
 
 |                                          FE                                          |                                         FE                                          |                                          BE                                          |
 | :----------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
-| <img src="https://avatars.githubusercontent.com/bae-sh" width="100px" alt="배성현"/> | <img src="https://avatars.githubusercontent.com/DongYounYim" width="100px" alt="임동윤"/> | <img src="https://avatars.githubusercontent.com/NuhGnod" width="100px" alt="김동훈"/> |
-|                    [배성현](https://github.com/bae-sh)                     |                         [임동윤](https://github.com/DongYounYim)                          |                         [김동훈](https://github.com/NuhGnod)                          |
+| <img src="https://avatars.githubusercontent.com/bae-sh" width="100px" alt="배성현"/> | <img src="https://avatars.githubusercontent.com/Im-younique" width="100px" alt="임동윤"/> | <img src="https://avatars.githubusercontent.com/NuhGnod" width="100px" alt="김동훈"/> |
+|                    [배성현](https://github.com/bae-sh)                     |                         [임동윤](https://github.com/Im-younique)                          |                         [김동훈](https://github.com/NuhGnod)                          |
 
 
 

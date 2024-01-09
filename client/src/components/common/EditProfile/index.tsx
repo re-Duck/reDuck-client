@@ -185,8 +185,10 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
         userId,
       });
       const payload = {
-        userName: userData.name as string,
+        userName: userData.name,
         userProfileImgPath: userData.userProfileImgPath || '',
+        company: userData.company,
+        school: userData.school,
       };
       dispatch(update(payload));
       openModal({

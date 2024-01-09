@@ -30,14 +30,14 @@ export interface IBoardPostInformation
 }
 
 export interface IUserInfo {
-  company?: string;
+  company: string;
   companyEmail?: string;
   companyEmailAuthentication?: boolean;
   developAnnual?: number;
   email: string;
   name: string;
   post?: Array<object>;
-  school?: string;
+  school: string;
   schoolEmail?: string;
   schoolEmailAuthentication?: boolean;
   userId: string;

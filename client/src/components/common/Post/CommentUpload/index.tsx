@@ -22,7 +22,7 @@ import { IUserState } from '@/types/redux/IUserState';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface IComentUpload {
-  user: IUserState;
+  user: Omit<IUserState, 'school' | 'company'>;
 }
 
 interface IHnadlerComment {

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { IUserState } from '@/types/redux/IUserState';
 
-const mockUser: IUserState = {
+const mockUser: Omit<IUserState, 'school' | 'company'> = {
   userId: 'test1234',
   userName: '테스터',
   userProfileImgPath:

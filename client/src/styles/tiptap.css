@@ -57,7 +57,13 @@
     background-color: #efefef;
     color: #616161;
   }
-
+  a {
+    color: #68cef8;
+    cursor: pointer;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
   pre {
     background: #0d0d0d;
     border-radius: 0.5rem;

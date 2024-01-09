@@ -7,6 +7,7 @@ import Quote from './quote';
 import Strikethrough from './strikethrough';
 import Bold from './bold';
 import Code from './code';
+import Link from './link';
 
 export const Icon = {
   AddPhoto,
@@ -18,4 +19,5 @@ export const Icon = {
   Quote,
   Strikethrough,
   Code,
+  Link,
 };

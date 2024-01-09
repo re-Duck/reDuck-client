@@ -25,6 +25,7 @@ function ToolBar({ editor }: ToolBarProps) {
       <div className="flex items-center justify-center gap-1">
         <Icon.Quote editor={editor} />
         <Icon.AddPhoto editor={editor} />
+        <Icon.Link editor={editor} />
       </div>
     </div>
   );

@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 // components
-import { Layout, Avatar, Divider, UserInfo, EditProfile } from '@/components';
+import { Layout, Avatar, Divider } from '@/components';
+import { UserInfo, EditProfile } from '@/components/profile';
 
 // service
 import { BASE_URL } from '@/service/base/api';

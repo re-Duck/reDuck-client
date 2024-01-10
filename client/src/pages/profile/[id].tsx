@@ -3,8 +3,13 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 // components
-import { Layout, Divider } from '@/components';
-import { UserInfo, EditProfile, SideProfile } from '@/components/profile';
+import { Layout, Divider, Skeleton } from '@/components';
+import {
+  UserInfo,
+  EditProfile,
+  SideProfile,
+  SideSkeleton,
+} from '@/components/profile';
 
 // constant
 import { sideBarList } from '@/constants/constant';
@@ -29,11 +34,15 @@ export default function Profile() {
     setSelectedMenu(content);
   };
 
+  if (router.query.id === undefined) {
+    return null;
+  }
+
   return (
     <Layout>
       <div className="flex flex-col sm:flex-row sm:max-w-5xl sm:p-8 sm:mx-auto sm:gap-x-16">
         <div className="hidden sm:flex-none sm:text-center sm:block">
-          <Suspense fallback={<p>loading..</p>}>
+          <Suspense fallback={<SideSkeleton />}>
             <SideProfile targetUserId={router.query.id as string} />
           </Suspense>
           <Divider type="horizental" margin={4} thin={2} />
@@ -79,7 +88,7 @@ export default function Profile() {
           ))}
         </ul>
         <div className="flex flex-col flex-1">
-          <Suspense fallback={<p>loding...</p>}>
+          <Suspense fallback={<Skeleton.Box width="w-full" height="h-full" />}>
             {isMyPage ? (
               <EditProfile targetUserId={router.query.id as string} />
             ) : (

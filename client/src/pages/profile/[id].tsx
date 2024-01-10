@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
@@ -9,6 +9,7 @@ import {
   EditProfile,
   SideProfile,
   SideSkeleton,
+  Follow,
 } from '@/components/profile';
 
 // constant
@@ -37,6 +38,21 @@ export default function Profile() {
   if (router.query.id === undefined) {
     return null;
   }
+
+  const profileContent = useMemo(() => {
+    switch (selectedMenu) {
+      case '프로필':
+        return isMyPage ? (
+          <EditProfile targetUserId={router.query.id as string} />
+        ) : (
+          <UserInfo targetUserId={router.query.id as string} />
+        );
+      case '친구목록':
+        return <Follow targetUserId={router.query.id as string} />;
+      default:
+        return <div>준비중</div>;
+    }
+  }, [selectedMenu]);
 
   return (
     <Layout>
@@ -89,11 +105,7 @@ export default function Profile() {
         </ul>
         <div className="flex flex-col flex-1">
           <Suspense fallback={<Skeleton.Box width="w-full" height="h-full" />}>
-            {isMyPage ? (
-              <EditProfile targetUserId={router.query.id as string} />
-            ) : (
-              <UserInfo targetUserId={router.query.id as string} />
-            )}
+            {profileContent}
           </Suspense>
         </div>
       </div>

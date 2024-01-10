@@ -3,6 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { update } from '@/lib/redux/slices/authSlice';
+import { useQuery } from '@tanstack/react-query';
 
 // thrid-party
 import { Formik, Form } from 'formik';
@@ -53,9 +54,21 @@ const ValidationSchema = Yup.object().shape({
   companyEmail: Yup.string().email(errorMessage.invalidFormatEmail),
 });
 
-export default function EditProfile({ userData }: { userData: IUserInfo }) {
+export default function EditProfile({
+  targetUserId,
+}: {
+  targetUserId: string;
+}) {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const { openModal, closeModal } = useModal();
+
+  const { data: userData } = useQuery({
+    queryKey: ['editProfile', targetUserId],
+    queryFn: () => userManager.getUser(targetUserId),
+    suspense: true,
+  });
 
   const {
     company,
@@ -69,9 +82,7 @@ export default function EditProfile({ userData }: { userData: IUserInfo }) {
     schoolEmailAuthentication,
     userId,
     userProfileImgPath,
-  }: IUserInfo = userData;
-
-  const { openModal, closeModal } = useModal();
+  } = userData as IUserInfo;
 
   // 이메일
   const {

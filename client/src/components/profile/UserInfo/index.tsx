@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
 import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
 
 // components
 import { Avatar } from '@/components';
@@ -10,6 +11,7 @@ import FlexLabelContent from './flex-label-content';
 // service
 import { BASE_URL } from '@/service/base/api';
 import { createChatRoom } from '@/service/chat-post';
+import { userManager } from '@/service/user';
 
 // constant
 import { ModalType, errorMessage } from '@/constants/constant';
@@ -18,12 +20,19 @@ import { ModalType, errorMessage } from '@/constants/constant';
 import { IUserInfo } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
 
-export default function UserInfo({ userData }: { userData: IUserInfo }) {
+export default function UserInfo({ targetUserId }: { targetUserId: string }) {
   const user = useSelector((state: IReduxState) => state.auth);
   const router = useRouter();
   const { openModal } = useModal();
 
   const [isDisable, setIsDisable] = useState(false);
+
+  const { data: userData } = useQuery({
+    queryKey: ['userInfo', targetUserId],
+    queryFn: () => userManager.getUser(targetUserId),
+    suspense: true,
+  });
+
   const {
     company,
     companyEmail,
@@ -34,7 +43,8 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
     schoolEmail,
     userId,
     userProfileImgPath,
-  }: IUserInfo = userData;
+  } = userData as IUserInfo;
+
   const labelContent = [
     {
       label: '이름',

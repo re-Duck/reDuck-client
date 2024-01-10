@@ -1,32 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 // components
-import { Layout, Avatar, Divider } from '@/components';
-import { UserInfo, EditProfile } from '@/components/profile';
-
-// service
-import { BASE_URL } from '@/service/base/api';
-import { userManager } from '@/service/user';
+import { Layout, Divider } from '@/components';
+import { UserInfo, EditProfile, SideProfile } from '@/components/profile';
 
 // constant
 import { sideBarList } from '@/constants/constant';
 
 // types
-import { IUserInfo, MyPageTab } from '@/types';
+import { MyPageTab } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
 
 // icons
 import { Icon } from '@iconify/react';
 
-export default function Profile({
-  pageProps,
-}: {
-  pageProps: {
-    userData: IUserInfo;
-  };
-}) {
+export default function Profile() {
   const router = useRouter();
 
   const user = useSelector((state: IReduxState) => state.auth);
@@ -34,9 +24,6 @@ export default function Profile({
   const isMyPage = router.query.id === user.userId;
 
   const [selectedMenu, setSelectedMenu] = useState<MyPageTab>('프로필');
-
-  const { userData } = pageProps;
-  const { company, name, school, userProfileImgPath } = userData;
 
   const handleSelectMenu = (content: MyPageTab) => {
     setSelectedMenu(content);
@@ -46,16 +33,9 @@ export default function Profile({
     <Layout>
       <div className="flex flex-col sm:flex-row sm:max-w-5xl sm:p-8 sm:mx-auto sm:gap-x-16">
         <div className="hidden sm:flex-none sm:text-center sm:block">
-          <Avatar
-            src={`${BASE_URL}${userProfileImgPath || ''}`}
-            alt="profileImg"
-            size="xl"
-          />
-          <div className="mt-4">
-            <p>{name}</p>
-            <p>{company}</p>
-            <p>{school}</p>
-          </div>
+          <Suspense fallback={<p>loading..</p>}>
+            <SideProfile targetUserId={router.query.id as string} />
+          </Suspense>
           <Divider type="horizental" margin={4} thin={2} />
           <ul>
             {sideBarList.map(({ content, iconName }) => (
@@ -99,26 +79,15 @@ export default function Profile({
           ))}
         </ul>
         <div className="flex flex-col flex-1">
-          {isMyPage ? (
-            <EditProfile userData={userData} />
-          ) : (
-            <UserInfo userData={userData} />
-          )}
+          <Suspense fallback={<p>loding...</p>}>
+            {isMyPage ? (
+              <EditProfile targetUserId={router.query.id as string} />
+            ) : (
+              <UserInfo targetUserId={router.query.id as string} />
+            )}
+          </Suspense>
         </div>
       </div>
     </Layout>
   );
-}
-
-export async function getServerSideProps({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
-  const userData = await userManager.getUser(id);
-  return {
-    props: {
-      userData,
-    },
-  };
 }

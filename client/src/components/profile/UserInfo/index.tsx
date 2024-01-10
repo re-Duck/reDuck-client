@@ -128,7 +128,13 @@ export default function UserInfo({ targetUserId }: { targetUserId: string }) {
           <FlexLabelContent key={label} label={label} content={content} />
         ))}
       </div>
-      <div className="m-2 text-right">
+      <div className="flex justify-end gap-1 m-2">
+        <button
+          onClick={() => console.log('팔로우 등록 / 팔취로 바꾸기')}
+          className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+        >
+          팔로우+
+        </button>
         <button
           onClick={handleChatRoute}
           disabled={isDisable}

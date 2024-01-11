@@ -3,11 +3,13 @@ import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
+import { ErrorBoundary } from 'react-error-boundary';
 
 // components
 import { Avatar } from '@/components';
 import FlexLabelContent from './flex-label-content';
 import FollowButton from './follow-button';
+import FollowButtonErrorFallback from './follow-button-errorfallback';
 
 // service
 import { BASE_URL } from '@/service/base/api';
@@ -144,7 +146,9 @@ export default function UserInfo({ targetUserId }: { targetUserId: string }) {
             </button>
           }
         >
-          <FollowButton userId={targetUserId} />
+          <ErrorBoundary FallbackComponent={FollowButtonErrorFallback}>
+            <FollowButton userId={targetUserId} />
+          </ErrorBoundary>
         </Suspense>
         <button
           onClick={handleChatRoute}

@@ -16,7 +16,9 @@ const FollowButton = ({ userId }: { userId: string }) => {
   const { data } = useQuery({
     queryKey: ['followStatus', userId],
     queryFn: () => followManager.checkFollowStatus({ userId }),
+    retry: 1,
     suspense: true,
+    useErrorBoundary: true,
   });
 
   const calculateFollowState = ({
@@ -54,7 +56,7 @@ const FollowButton = ({ userId }: { userId: string }) => {
       dispatch(
         openAlert({
           type: AlertType.ERROR,
-          message: errorMessage.UnknownFollow,
+          message: errorMessage.UnknownFollowCheck,
         })
       );
     } finally {

@@ -39,6 +39,7 @@ export const errorMessage = Object.freeze({
   maxQuestion: '하루 최대 질문 수를 초과했습니다.',
   sessionExpiration: '세션이 만료됐습니다. 다시 로그인해주세요',
   failedGetUser: '유저 정보 불러오는데 실패했습니다. 다시 시도해주세요',
+  UnknownFollow: '팔로우 과정에서 알 수 없는 오류 발생',
   Unknown: '알 수 없는 에러가 발생했습니다. 관리자에게 문의하세요',
   networkError: '일시적인 네트워크 오류입니다.',
   tryAgain: '잠시후 다시 시도해주세요.',

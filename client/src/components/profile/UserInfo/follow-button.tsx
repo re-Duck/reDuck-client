@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useDispatch } from 'react-redux';
+import { openAlert } from '@/lib/redux/slices/alertSlice';
 
 // services
 import { followManager } from '@/service/follow';
 
 // types
 import { IFollowStatus, TFollowText } from '@/types';
+import { AlertType, errorMessage } from '@/constants/constant';
 
 const FollowButton = ({ userId }: { userId: string }) => {
+  const dispatch = useDispatch();
+
   const { data } = useQuery({
     queryKey: ['followStatus', userId],
     queryFn: () => followManager.checkFollowStatus({ userId }),
@@ -46,7 +51,12 @@ const FollowButton = ({ userId }: { userId: string }) => {
         setFollowState('팔로우 취소');
       }
     } catch {
-      // TODO: 팔로우 과정에서 오류 발생
+      dispatch(
+        openAlert({
+          type: AlertType.ERROR,
+          message: errorMessage.UnknownFollow,
+        })
+      );
     } finally {
       setDisabled(false);
     }

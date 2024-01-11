@@ -32,14 +32,12 @@ export default function Alert() {
     let timer: NodeJS.Timeout;
 
     if (type !== AlertType.CLOSE) {
-      // 3초 후에 Alert 자동으로 닫힘
       timer = setTimeout(() => {
         dispatch(closeAlert());
-      }, 3000);
+      }, 2500);
     }
 
     return () => {
-      // 컴포넌트가 언마운트되거나 업데이트되기 전에 타이머 정리
       clearTimeout(timer);
     };
   }, [type, dispatch]);

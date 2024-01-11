@@ -32,19 +32,9 @@ export default function AuthComponent({
       const accessToken = await getAccessToken();
       if (accessToken) {
         const { sub: userId } = decodeJWT(accessToken);
-        const {
-          name: userName,
-          userProfileImgPath,
-          school,
-          company,
-        } = await userManager.getUser(userId);
-        const payload = {
-          userId,
-          userName,
-          userProfileImgPath,
-          school,
-          company,
-        };
+        const { name: userName, userProfileImgPath } =
+          await userManager.getUser(userId);
+        const payload = { userId, userName, userProfileImgPath };
         dispatch(logIn(payload));
       } else {
         dispatch(logOut());

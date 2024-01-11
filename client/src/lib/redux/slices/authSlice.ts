@@ -6,8 +6,6 @@ const initialState: IUserState = {
   userId: '',
   userName: '',
   userProfileImgPath: '',
-  school: '',
-  company: '',
 };
 
 export const authSlice = createSlice({
@@ -18,14 +16,10 @@ export const authSlice = createSlice({
       state.userId = actions.payload.userId;
       state.userName = actions.payload.userName;
       state.userProfileImgPath = actions.payload.userProfileImgPath;
-      state.school = actions.payload.school;
-      state.company = actions.payload.company;
     },
     update: (state, actions: PayloadAction<Omit<IUserState, 'userId'>>) => {
       state.userName = actions.payload.userName;
       state.userProfileImgPath = actions.payload.userProfileImgPath;
-      state.school = actions.payload.school;
-      state.company = actions.payload.company;
     },
     logOut: () => initialState,
   },

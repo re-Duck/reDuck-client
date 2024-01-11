@@ -198,8 +198,6 @@ export default function EditProfile({
       const payload = {
         userName: userData.name,
         userProfileImgPath: userData.userProfileImgPath || '',
-        company: userData.company,
-        school: userData.school,
       };
       dispatch(update(payload));
       openModal({

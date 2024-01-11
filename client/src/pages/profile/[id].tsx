@@ -35,11 +35,10 @@ export default function Profile() {
     setSelectedMenu(content);
   };
 
-  if (router.query.id === undefined) {
-    return null;
-  }
-
   const profileContent = useMemo(() => {
+    if (router.query.id === undefined) {
+      return;
+    }
     switch (selectedMenu) {
       case '프로필':
         return isMyPage ? (
@@ -52,7 +51,11 @@ export default function Profile() {
       default:
         return <div>준비중</div>;
     }
-  }, [selectedMenu]);
+  }, [selectedMenu, router.query.id]);
+
+  if (router.query.id === undefined) {
+    return null;
+  }
 
   return (
     <Layout>

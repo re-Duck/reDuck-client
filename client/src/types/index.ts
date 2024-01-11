@@ -115,6 +115,13 @@ export interface IChatRoomInfo {
   roomName: string;
 }
 
+export interface IFollowStatus {
+  isFollower: boolean;
+  isFollowing: boolean;
+}
+
+export type TFollowText = '팔로우' | '맞팔로우' | '팔로우 취소';
+
 export type EmailType = 'SIGNUP' | 'USER' | 'COMPANY' | 'SCHOOL';
 
 export type MyPageTab = '프로필' | '활동기록' | '친구목록' | '덕력치';

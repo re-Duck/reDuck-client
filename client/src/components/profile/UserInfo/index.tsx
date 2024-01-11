@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
 import { useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 // components
 import { Avatar } from '@/components';
 import FlexLabelContent from './flex-label-content';
+import FollowButton from './follow-button';
 
 // service
 import { BASE_URL } from '@/service/base/api';
@@ -129,12 +130,16 @@ export default function UserInfo({ targetUserId }: { targetUserId: string }) {
         ))}
       </div>
       <div className="flex justify-end gap-1 m-2">
-        <button
-          onClick={() => console.log('팔로우 등록 / 팔취로 바꾸기')}
-          className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+        <Suspense
+          fallback={
+            <button className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base">
+              loading..
+            </button>
+          }
         >
-          팔로우+
-        </button>
+          <FollowButton userId={targetUserId} />
+        </Suspense>
+
         <button
           onClick={handleChatRoute}
           disabled={isDisable}

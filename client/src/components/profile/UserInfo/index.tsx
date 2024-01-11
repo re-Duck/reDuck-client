@@ -21,6 +21,9 @@ import { ModalType, errorMessage } from '@/constants/constant';
 import { IUserInfo } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
 
+// icon
+import { Icon } from '@iconify/react';
+
 export default function UserInfo({ targetUserId }: { targetUserId: string }) {
   const user = useSelector((state: IReduxState) => state.auth);
   const router = useRouter();
@@ -133,13 +136,16 @@ export default function UserInfo({ targetUserId }: { targetUserId: string }) {
         <Suspense
           fallback={
             <button className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base">
-              loading..
+              <Icon
+                icon="line-md:loading-loop"
+                fontSize={25}
+                className="mx-auto"
+              />
             </button>
           }
         >
           <FollowButton userId={targetUserId} />
         </Suspense>
-
         <button
           onClick={handleChatRoute}
           disabled={isDisable}

@@ -33,24 +33,29 @@ const FollowButton = ({ userId }: { userId: string }) => {
   const [followState, setFollowState] = useState<TFollowText>(
     calculateFollowState(data as IFollowStatus)
   );
+  const [disabled, setDisabled] = useState<boolean>(false);
 
-  const handleClickFollowButton = () => {
-    setFollowState((prevState) => {
-      if (prevState === '팔로우 취소') {
-        if (data?.isFollower) {
-          return '맞팔로우';
-        } else {
-          return '팔로우';
-        }
+  const handleClickFollowButton = async () => {
+    setDisabled(true);
+    try {
+      if (followState === '팔로우 취소') {
+        await followManager.cancleFollow({ userId });
+        setFollowState(data?.isFollower ? '맞팔로우' : '팔로우');
       } else {
-        return '팔로우 취소';
+        await followManager.requestFollow({ userId });
+        setFollowState('팔로우 취소');
       }
-    });
+    } catch {
+      // TODO: 팔로우 과정에서 오류 발생
+    } finally {
+      setDisabled(false);
+    }
   };
 
   return (
     <button
       onClick={handleClickFollowButton}
+      disabled={disabled}
       className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
     >
       {followState}

@@ -132,6 +132,14 @@ export enum ModalType {
   CLOSE = 'close',
 }
 
+export enum AlertType {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  INFO = 'info',
+  ERROR = 'error',
+  CLOSE = 'close',
+}
+
 export const iconInfo = Object.freeze({
   success: {
     color: 'green',
@@ -140,6 +148,10 @@ export const iconInfo = Object.freeze({
   warning: {
     color: 'orange',
     shape: 'tabler:alert-triangle',
+  },
+  info: {
+    color: 'cyan',
+    shape: 'material-symbols:info-outline',
   },
   error: {
     color: 'red',

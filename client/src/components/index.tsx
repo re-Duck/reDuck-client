@@ -11,3 +11,4 @@ export { default as AuthComponent } from '@/components/common/AuthComponent';
 export { default as Gpt } from '@/components/mygpt/gpt';
 export { default as Skeleton } from '@/components/common/Skeleton';
 export { default as Form } from '@/components/common/Form';
+export { default as Alert } from '@/components/common/Alert';

@@ -66,7 +66,7 @@ const FollowButton = ({ userId }: { userId: string }) => {
     <button
       onClick={handleClickFollowButton}
       disabled={disabled}
-      className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+      className="rounded-md bg-indigo-600 p-2 font-semibold text-pretty text-white text hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
     >
       {followState}
     </button>

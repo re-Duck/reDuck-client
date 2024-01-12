@@ -8,8 +8,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 // components
 import { Avatar } from '@/components';
 import FlexLabelContent from './flex-label-content';
-import FollowButton from './follow-button';
-import FollowButtonErrorFallback from './follow-button-errorfallback';
+import FollowButton from '../Follow/follow-button';
+import FollowButtonErrorFallback from '../Follow/follow-button-errorfallback';
 
 // service
 import { BASE_URL } from '@/service/base/api';

@@ -5,7 +5,6 @@ import { alertSelector } from '@/lib/redux/slices/alertSlice';
 
 // components
 import AlertIcon from './alert-icon';
-import AlertWrapper from './alert-wrapper';
 import { Icon } from '@iconify/react';
 
 // constants
@@ -15,12 +14,18 @@ export default function Alert() {
   const { type, message } = useSelector(alertSelector);
   const dispatch = useDispatch();
 
-  const typeColor = useMemo(() => {
+  const borderColor = useMemo(() => {
     if (type === AlertType.CLOSE) {
       return '';
     } else {
       const { color } = iconInfo[type];
-      return color;
+      return color === 'red'
+        ? 'border-red-300'
+        : color === 'orange'
+        ? 'border-orange-300'
+        : color === 'green'
+        ? 'border-green-300'
+        : 'border-cyan-300';
     }
   }, [type]);
 
@@ -45,18 +50,22 @@ export default function Alert() {
   return (
     <>
       {type !== AlertType.CLOSE && (
-        <AlertWrapper color={typeColor}>
-          <div className="flex gap-2 items-center">
-            <AlertIcon type={type} />
-            <p>{message}</p>
+        <div
+          className={`${borderColor} border fixed w-11/12 h-fit p-6 top-auto right-0 left-0 mx-auto bottom-2 z-20 rounded-lg bg-white sm:top-3 sm:right-3 sm:left-auto sm:mx-0 sm:w-fit`}
+        >
+          <div className="relative w-full inline-flex pr-8">
+            <div className="flex gap-2 items-center">
+              <AlertIcon type={type} />
+              <p>{message}</p>
+            </div>
+            <Icon
+              icon="material-symbols:close"
+              fontSize={24}
+              className="absolute right-0"
+              onClick={handleAlertClose}
+            />
           </div>
-          <Icon
-            icon="material-symbols:close"
-            fontSize={24}
-            className="absolute right-0"
-            onClick={handleAlertClose}
-          />
-        </AlertWrapper>
+        </div>
       )}
     </>
   );

@@ -1,6 +1,17 @@
 // service
 import { axios_get } from '../base/api';
 
+import { IUserState } from '@/types/redux/IUserState';
+interface IFollowUser extends Pick<IUserState, 'userId' | 'userName'> {
+  profileImg: string;
+}
+
+interface IRawData {
+  data: IFollowUser[];
+  status: string;
+  message: string;
+}
+
 export default async function getFollower({ userId }: { userId: string }) {
   const suburl = `/follow/followers/${userId}`;
 
@@ -10,5 +21,7 @@ export default async function getFollower({ userId }: { userId: string }) {
     throw new Error(result.error);
   }
 
-  return result.data;
+  const rawData = result.data as IRawData;
+
+  return rawData.data;
 }

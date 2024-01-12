@@ -12,7 +12,7 @@ export default function Follow({ targetUserId }: { targetUserId: string }) {
         <div
           className={`flex-1 p-2 text-center ${
             tab === 'follower'
-              ? 'shadow-[-2px_-8px_15px_-3px_rgba(0,0,0,0.1)]'
+              ? 'shadow-[-2px_-8px_15px_-3px_rgba(0,0,0,0.1)] bg-white'
               : 'shadow-inner shadow-slate-200 bg-slate-100'
           }`}
           onClick={() => setTab('follower')}
@@ -22,7 +22,7 @@ export default function Follow({ targetUserId }: { targetUserId: string }) {
         <div
           className={`flex-1 p-2 text-center ${
             tab === 'following'
-              ? 'shadow-[2px_-8px_15px_-3px_rgba(0,0,0,0.1)]'
+              ? 'shadow-[2px_-8px_15px_-3px_rgba(0,0,0,0.1)] bg-white'
               : 'shadow-inner shadow-slate-200 bg-slate-100'
           }`}
           onClick={() => setTab('following')}

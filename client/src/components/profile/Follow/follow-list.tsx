@@ -23,13 +23,15 @@ export default function FollowList({ type, userId }: IProp) {
     suspense: true,
   });
 
-  console.log(data);
-
   return (
-    <div className="flex flex-col gap-4">
-      {data?.map((value) => (
-        <FollowUser key={value.userId} {...value} />
-      ))}
-    </div>
+    <>
+      {data?.length !== 0 ? (
+        data?.map((value) => <FollowUser key={value.userId} {...value} />)
+      ) : (
+        <div className="text-center font-bold">
+          <p>친구리스트가 없습니다!</p> <p>활동하여 친구를 늘려보세요!</p>
+        </div>
+      )}
+    </>
   );
 }

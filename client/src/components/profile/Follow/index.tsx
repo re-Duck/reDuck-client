@@ -2,11 +2,12 @@ import React, { useState, Suspense } from 'react';
 
 // components
 import FollowList from './follow-list';
+import FollowUserSkeleton from './follow-user-skeleton';
 
 export default function Follow({ targetUserId }: { targetUserId: string }) {
   const [tab, setTab] = useState<'follower' | 'following'>('follower');
   return (
-    <div className="bg-white h-full">
+    <div>
       <div className="flex ">
         <div
           className={`flex-1 p-2 text-center ${
@@ -29,8 +30,8 @@ export default function Follow({ targetUserId }: { targetUserId: string }) {
           팔로잉
         </div>
       </div>
-      <div className="bg-white p-5 shadow-lg sm:p-10 h-full overflow-y-scroll">
-        <Suspense fallback={<p>loading..</p>}>
+      <div className="bg-white p-5 h-[70vh] shadow-lg overflow-y-scroll flex flex-col gap-4 sm:p-10">
+        <Suspense fallback={<FollowUserSkeleton />}>
           <FollowList type={tab} userId={targetUserId} />
         </Suspense>
       </div>

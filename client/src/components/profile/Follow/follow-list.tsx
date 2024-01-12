@@ -28,8 +28,8 @@ export default function FollowList({ type, userId }: IProp) {
       {data?.length !== 0 ? (
         data?.map((value) => <FollowUser key={value.userId} {...value} />)
       ) : (
-        <div className="text-center font-bold">
-          <p>친구리스트가 없습니다!</p> <p>활동하여 친구를 늘려보세요!</p>
+        <div className="text-center text-lg font-bold">
+          <p>목록이 텅! 비었습니다.</p>
         </div>
       )}
     </>

@@ -96,9 +96,7 @@ export default function EditProfile({
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/deleteToken', {
-        method: 'DELETE',
-      });
+      await userManager.logoutUser();
       dispatch(logOut());
       router.replace('/');
     } catch {
@@ -117,9 +115,7 @@ export default function EditProfile({
         closeModal();
         try {
           await userManager.deleteUser();
-          await fetch('/api/deleteToken', {
-            method: 'DELETE',
-          });
+          await userManager.logoutUser();
           dispatch(logOut());
           openModal({
             type: ModalType.SUCCESS,

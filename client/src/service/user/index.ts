@@ -4,6 +4,7 @@ import updateUser from './updateUser';
 import deleteUser from './deleteUser';
 import checkDuplicateUser from './checkDuplicateUser';
 import loginUser from './loginUser';
+import logoutUser from './logoutUser';
 
 export const userManager = {
   createUser,
@@ -12,4 +13,5 @@ export const userManager = {
   deleteUser,
   checkDuplicateUser,
   loginUser,
+  logoutUser,
 };

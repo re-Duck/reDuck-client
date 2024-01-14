@@ -1,11 +1,17 @@
 'use client';
 
 import getAllPosts from '@/service/post/getAllPosts';
+import { IPostInformation } from '@/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-function useScroll() {
+function useScroll({
+  initialData,
+}: {
+  initialData?: { data: IPostInformation[]; nextPageParms?: string };
+}) {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
+    ...(!!initialData && initialData),
     queryKey: ['projects'],
     queryFn: getAllPosts,
     getNextPageParam: (lastPage) => lastPage?.nextPageParms,

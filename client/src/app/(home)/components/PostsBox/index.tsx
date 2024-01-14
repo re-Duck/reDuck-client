@@ -6,8 +6,12 @@ import { IPostInformation } from '@/types';
 import { PostSummary } from '@/components/Post';
 import { LoadingIcon } from '@/components';
 
-function PostsBox() {
-  const { datas, hasNextPage } = useScroll();
+interface PostsBoxProps {
+  initialData?: { data: IPostInformation[]; nextPageParms?: string };
+}
+
+function PostsBox({ initialData }: PostsBoxProps) {
+  const { datas, hasNextPage } = useScroll({ initialData });
 
   return (
     <>

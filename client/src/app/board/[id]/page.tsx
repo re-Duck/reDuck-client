@@ -2,7 +2,8 @@
 import React, { Suspense } from 'react';
 
 //components
-import { Loading, PostContent } from '@/app/board/components';
+import { PostContent } from '@/app/board/components';
+import Loading from './loading';
 
 //types
 import { postManager } from '@/service/post';

@@ -9,5 +9,5 @@ export default async function logoutUser() {
     throw new Error('Logout Error');
   }
 
-  axios.defaults.headers.common['Authorization'] = ``;
+  axios.defaults.headers.common['Authorization'] = null;
 }

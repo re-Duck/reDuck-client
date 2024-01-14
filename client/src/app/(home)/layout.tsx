@@ -6,5 +6,9 @@ export default function LayoutComponent({
 }: {
   children: React.ReactNode;
 }) {
-  return <Layout>{children}</Layout>;
+  return (
+    <Layout>
+      <div className="flex justify-between max-w-5xl mx-auto">{children}</div>
+    </Layout>
+  );
 }

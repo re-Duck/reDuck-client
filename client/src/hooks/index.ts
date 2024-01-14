@@ -1,2 +1,1 @@
-export { default as useModal } from './useModal';
-export { default as useWriting } from './Write/useWriting';
+export { default as useModal } from './modal/useModal';

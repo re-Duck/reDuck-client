@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 
 // 전역
-import { useModal } from '../';
+import { useModal } from '..';
 
 // types
 import { EmailState, EmailType } from '@/types';

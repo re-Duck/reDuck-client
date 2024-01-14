@@ -18,7 +18,6 @@ function PostsBox() {
           ))}
         </React.Fragment>
       ))}
-
       <div className="flex justify-center">
         {hasNextPage && <LoadingIcon size="40px" />}
       </div>

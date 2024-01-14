@@ -25,7 +25,7 @@ export default function RootLayout({
           <QueryProvider>
             <AuthComponent>
               <Modal />
-              {/* <Alert /> */}
+              <Alert />
               {children}
             </AuthComponent>
             <ReactQueryDevtools initialIsOpen={false} />

@@ -1,3 +1,5 @@
+'use client';
+
 // react, next
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -15,14 +17,16 @@ import { postManager } from '@/service/post';
 
 interface IProps {
   postOriginId: string;
+  initialData?: IBoardPostInformation;
 }
 
-function PostContent({ postOriginId }: IProps) {
+function PostContent({ postOriginId, initialData }: IProps) {
   const user = useSelector((state: IReduxState) => state.auth);
 
   const { data } = useQuery({
     queryKey: [`${postOriginId}`],
     queryFn: () => postManager.getPost({ postOriginId }),
+    initialData: initialData,
     retry: false,
     suspense: true,
   });

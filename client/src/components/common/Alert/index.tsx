@@ -42,9 +42,7 @@ export default function Alert() {
       }, 2500);
     }
 
-    return () => {
-      clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, [type, dispatch]);
 
   return (
@@ -53,8 +51,8 @@ export default function Alert() {
         <div
           className={`${borderColor} border fixed w-11/12 h-fit p-6 top-auto right-0 left-0 mx-auto bottom-2 z-20 rounded-lg bg-white sm:top-3 sm:right-3 sm:left-auto sm:mx-0 sm:w-fit`}
         >
-          <div className="relative w-full inline-flex pr-8">
-            <div className="flex gap-2 items-center">
+          <div className="relative inline-flex w-full pr-8">
+            <div className="flex items-center gap-2">
               <AlertIcon type={type} />
               <p>{message}</p>
             </div>

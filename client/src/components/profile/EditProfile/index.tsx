@@ -85,32 +85,11 @@ export default function EditProfile({
   } = userData as IUserInfo;
 
   // 이메일
-  const {
-    certificateRef: userCertificateNumberRef,
-    emailState: userEmailState,
-    emailAuthToken,
-    handleChangeCertifiactionNumber: handleChangeUserCertificationNumber,
-    handleRequestEmail: handleRequestUserEmail,
-    handleCheckEmail: handleCheckUserEmail,
-  } = useEmail('USER');
+  const userEmail = useEmail('USER');
 
-  const {
-    certificateRef: schoolCertificateNumberRef,
-    emailState: schoolEmailState,
-    emailAuthToken: schoolEmailAuthToken,
-    handleChangeCertifiactionNumber: handleChangeSchoolCertificationNumber,
-    handleRequestEmail: handleRequestSchoolEmail,
-    handleCheckEmail: handleCheckSchoolEmail,
-  } = useEmail('SCHOOL');
+  const userSchoolEmail = useEmail('SCHOOL');
 
-  const {
-    certificateRef: companyCertificateNumberRef,
-    emailState: companyEmailState,
-    emailAuthToken: companyEmailAuthToken,
-    handleChangeCertifiactionNumber: handleChangeCompanyCertificationNumber,
-    handleRequestEmail: handleRequestCompanyEmail,
-    handleCheckEmail: handleCheckCompanyEmail,
-  } = useEmail('COMPANY');
+  const userCompanyEmail = useEmail('COMPANY');
 
   const { imgRef, profileImg, imgFile, handleChooseFile, handleImgInput } =
     useInputImage(userProfileImgPath);
@@ -183,9 +162,9 @@ export default function EditProfile({
     const data = {
       modifyUserDto: {
         ...modifyUserDto,
-        emailAuthToken,
-        schoolEmailAuthToken,
-        companyEmailAuthToken,
+        emailAuthToken: userEmail.emailAuthToken,
+        schoolEmailAuthToken: userSchoolEmail.emailAuthToken,
+        companyEmailAuthToken: userCompanyEmail.emailAuthToken,
       },
       imgFile,
     };
@@ -225,7 +204,7 @@ export default function EditProfile({
       onSubmit={(data, { setSubmitting }) => handleSubmit(data, setSubmitting)}
     >
       {({ values, errors, touched, isSubmitting }) => (
-        <Form className="flex flex-1 flex-col p-4 gap-6 bg-white border sm:p-8">
+        <Form className="flex flex-col flex-1 gap-6 p-4 bg-white border sm:p-8">
           <CustomForm.FormContainer>
             <CustomForm.FormLabel name="아이디" />
             <span>{userId}</span>
@@ -307,26 +286,26 @@ export default function EditProfile({
                     values.email === '' ||
                     initialValues.email === values.email
                   }
-                  onClick={() => handleRequestUserEmail(values.email)}
+                  onClick={() => userEmail.handleRequestEmail(values.email)}
                 >
-                  {userEmailState === EmailState.Submitting ? (
+                  {userEmail.emailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
                 </CustomForm.FormButton>
               </CustomForm.FormBox>
-              {userEmailState === EmailState.Submitted ? (
+              {userEmail.emailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
                   <input
                     type="text"
-                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                    ref={userCertificateNumberRef}
-                    onChange={handleChangeUserCertificationNumber}
+                    className="p-2 rounded-md shadow-sm flex-0 ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    ref={userEmail.certificateRef}
+                    onChange={userEmail.handleChangeCertifiactionNumber}
                   />
                   <CustomForm.FormButton
                     type="button"
-                    onClick={() => handleCheckUserEmail(values.email)}
+                    onClick={() => userEmail.handleCheckEmail(values.email)}
                   >
                     인증번호확인
                   </CustomForm.FormButton>
@@ -360,26 +339,30 @@ export default function EditProfile({
                     errors.schoolEmail !== undefined ||
                     values.schoolEmail === ''
                   }
-                  onClick={() => handleRequestSchoolEmail(values.schoolEmail)}
+                  onClick={() =>
+                    userSchoolEmail.handleRequestEmail(values.schoolEmail)
+                  }
                 >
-                  {schoolEmailState === EmailState.Submitting ? (
+                  {userSchoolEmail.emailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
                 </CustomForm.FormButton>
               </CustomForm.FormBox>
-              {schoolEmailState === EmailState.Submitted ? (
+              {userSchoolEmail.emailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
                   <input
                     type="text"
-                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                    ref={schoolCertificateNumberRef}
-                    onChange={handleChangeSchoolCertificationNumber}
+                    className="p-2 rounded-md shadow-sm flex-0 ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    ref={userSchoolEmail.certificateRef}
+                    onChange={userSchoolEmail.handleChangeCertifiactionNumber}
                   />
                   <CustomForm.FormButton
                     type="button"
-                    onClick={() => handleCheckSchoolEmail(values.schoolEmail)}
+                    onClick={() =>
+                      userSchoolEmail.handleCheckEmail(values.schoolEmail)
+                    }
                   >
                     인증번호확인
                   </CustomForm.FormButton>
@@ -413,26 +396,30 @@ export default function EditProfile({
                     errors.companyEmail !== undefined ||
                     values.companyEmail === ''
                   }
-                  onClick={() => handleRequestCompanyEmail(values.companyEmail)}
+                  onClick={() =>
+                    userCompanyEmail.handleRequestEmail(values.companyEmail)
+                  }
                 >
-                  {companyEmailState === EmailState.Submitting ? (
+                  {userCompanyEmail.emailState === EmailState.Submitting ? (
                     <LoadingIcon size={'25px'} />
                   ) : (
                     '인증번호 전송'
                   )}
                 </CustomForm.FormButton>
               </CustomForm.FormBox>
-              {companyEmailState === EmailState.Submitted ? (
+              {userCompanyEmail.emailState === EmailState.Submitted ? (
                 <div className="flex flex-none">
                   <input
                     type="text"
-                    className="flex-0 p-2 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
-                    ref={companyCertificateNumberRef}
-                    onChange={handleChangeCompanyCertificationNumber}
+                    className="p-2 rounded-md shadow-sm flex-0 ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600"
+                    ref={userCompanyEmail.certificateRef}
+                    onChange={userCompanyEmail.handleChangeCertifiactionNumber}
                   />
                   <CustomForm.FormButton
                     type="button"
-                    onClick={() => handleCheckCompanyEmail(values.companyEmail)}
+                    onClick={() =>
+                      userCompanyEmail.handleCheckEmail(values.companyEmail)
+                    }
                   >
                     인증번호확인
                   </CustomForm.FormButton>

@@ -31,21 +31,21 @@ export default function FollowUser({ userName, userId, profileImg }: IProp) {
         </div>
       </Link>
       <div className="absolute right-0">
-        <Suspense
-          fallback={
-            <button className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base">
-              <Icon
-                icon="line-md:loading-loop"
-                fontSize={25}
-                className="mx-auto"
-              />
-            </button>
-          }
-        >
-          <ErrorBoundary FallbackComponent={FollowButtonErrorFallback}>
+        <ErrorBoundary FallbackComponent={FollowButtonErrorFallback}>
+          <Suspense
+            fallback={
+              <button className="w-20 p-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base">
+                <Icon
+                  icon="line-md:loading-loop"
+                  fontSize={25}
+                  className="mx-auto"
+                />
+              </button>
+            }
+          >
             <FollowButton userId={userId} />
-          </ErrorBoundary>
-        </Suspense>
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   );

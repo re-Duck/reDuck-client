@@ -18,7 +18,7 @@ export default async function checkFollowStatus({
   const result = await axios_get({ suburl });
 
   if (!result.isOkay) {
-    throw result.error;
+    throw new Error(result.error);
   }
 
   const rawData = result.data as IRawData;

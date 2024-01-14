@@ -2,7 +2,7 @@ import React from 'react';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { AuthComponent, Modal } from '@/components';
+import { AuthComponent, Modal, Alert } from '@/components';
 
 // redux
 import { Provider } from 'react-redux';
@@ -38,6 +38,7 @@ function App({ Component, ...rest }: AppProps) {
           <Hydrate state={props.dehydratedState}>
             <AuthComponent>
               <Modal />
+              <Alert />
               <Component {...props} />
             </AuthComponent>
           </Hydrate>

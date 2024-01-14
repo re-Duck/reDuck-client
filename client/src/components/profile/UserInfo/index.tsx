@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { useModal } from '@/hooks';
 import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import { ErrorBoundary } from 'react-error-boundary';
 
 // components
 import { Avatar } from '@/components';
 import FlexLabelContent from './flex-label-content';
+import FollowButton from '../Follow/follow-button';
+import FollowButtonErrorFallback from '../Follow/follow-button-errorfallback';
 
 // service
 import { BASE_URL } from '@/service/base/api';
 import { createChatRoom } from '@/service/chat-post';
+import { userManager } from '@/service/user';
 
 // constant
 import { ModalType, errorMessage } from '@/constants/constant';
@@ -18,12 +23,22 @@ import { ModalType, errorMessage } from '@/constants/constant';
 import { IUserInfo } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
 
-export default function UserInfo({ userData }: { userData: IUserInfo }) {
+// icon
+import { Icon } from '@iconify/react';
+
+export default function UserInfo({ targetUserId }: { targetUserId: string }) {
   const user = useSelector((state: IReduxState) => state.auth);
   const router = useRouter();
   const { openModal } = useModal();
 
   const [isDisable, setIsDisable] = useState(false);
+
+  const { data: userData } = useQuery({
+    queryKey: ['userInfo', targetUserId],
+    queryFn: () => userManager.getUser(targetUserId),
+    suspense: true,
+  });
+
   const {
     company,
     companyEmail,
@@ -34,7 +49,8 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
     schoolEmail,
     userId,
     userProfileImgPath,
-  }: IUserInfo = userData;
+  } = userData as IUserInfo;
+
   const labelContent = [
     {
       label: '이름',
@@ -113,16 +129,31 @@ export default function UserInfo({ userData }: { userData: IUserInfo }) {
 
   return (
     <>
-      <div className="flex flex-1 flex-col bg-white border p-4 gap-4 sm:p-8">
+      <div className="flex flex-col flex-1 gap-4 p-4 bg-white border sm:p-8">
         {labelContent.map(({ label, content }) => (
           <FlexLabelContent key={label} label={label} content={content} />
         ))}
       </div>
-      <div className="m-2 text-right">
+      <div className="flex justify-end gap-1 m-2">
+        <ErrorBoundary FallbackComponent={FollowButtonErrorFallback}>
+          <Suspense
+            fallback={
+              <button className="w-20 p-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base">
+                <Icon
+                  icon="line-md:loading-loop"
+                  fontSize={25}
+                  className="mx-auto"
+                />
+              </button>
+            }
+          >
+            <FollowButton userId={targetUserId} />
+          </Suspense>
+        </ErrorBoundary>
         <button
           onClick={handleChatRoute}
           disabled={isDisable}
-          className="rounded-md bg-indigo-600 p-2 font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 w-20 text-sm sm:w-24 sm:text-base"
+          className="w-20 p-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base"
         >
           1:1 채팅
         </button>

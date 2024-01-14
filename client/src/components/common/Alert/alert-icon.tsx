@@ -7,11 +7,7 @@ import { Icon } from '@iconify/react';
 import { AlertType, iconInfo } from '@/constants/constant';
 
 interface IProp {
-  type:
-    | AlertType.SUCCESS
-    | AlertType.WARNING
-    | AlertType.INFO
-    | AlertType.ERROR;
+  type: Exclude<AlertType, AlertType.CLOSE>;
 }
 
 const AlertIcon = ({ type }: IProp) => {

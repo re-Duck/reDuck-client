@@ -7,6 +7,9 @@ import Avatar from '../../Avatar';
 import { BASE_URL } from '@/service/base/api';
 import { parseDate } from '@/util';
 
+//XSS 방지
+import DOMPurify from 'isomorphic-dompurify';
+
 export function PostSummary({
   postInfoData,
 }: {
@@ -40,9 +43,11 @@ export function PostSummary({
       >
         <h1 className="mb-3 text-2xl font-bold">{postInfoData.postTitle}</h1>
 
-        <p
+        <div
           className="mb-3 text-gray-500 text-md line-clamp-3"
-          dangerouslySetInnerHTML={{ __html: postInfoData.postContent }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(postInfoData.postContent),
+          }}
         />
         <div className="flex justify-between">
           <div className="flex flex-col gap-1">

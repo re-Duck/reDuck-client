@@ -116,6 +116,7 @@ export default function Login() {
               type="password"
               name="password"
               placeholder="비밀번호를 입력하세요."
+              autoComplete="on"
               className={`${
                 touched.password && errors.password && 'ring-red-600'
               } relative block w-full rounded-b-md border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}

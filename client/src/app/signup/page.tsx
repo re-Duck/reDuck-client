@@ -30,9 +30,9 @@ import { EmailState, ISignupData } from '@/types';
 
 // service
 import { userManager } from '@/service/user';
+import useModal from '@/hooks/modal/useModal';
 
 // hooks
-import { useModal } from '@/hooks';
 
 const ValidationSchema = Yup.object().shape({
   userId: Yup.string()

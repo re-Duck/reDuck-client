@@ -8,7 +8,7 @@ import { Icon } from '@iconify/react';
 import { Avatar } from '@/components';
 
 // hooks
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 
 // services
 import { createChatRoom } from '@/service/chat-post';

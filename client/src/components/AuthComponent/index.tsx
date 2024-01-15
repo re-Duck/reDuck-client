@@ -7,8 +7,7 @@ import { useDispatch } from 'react-redux';
 import { logIn, logOut } from '@/lib/redux/features/auth/authSlice';
 
 // hooks
-import { useModal } from '@/hooks';
-
+import useModal from '@/hooks/modal/useModal';
 // services
 import axios, { AxiosError } from 'axios';
 import { userManager } from '@/service/user';

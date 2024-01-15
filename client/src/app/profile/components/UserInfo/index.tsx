@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';

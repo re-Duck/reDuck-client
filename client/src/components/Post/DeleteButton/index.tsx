@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 import {
   ModalType,
   errorMessage,

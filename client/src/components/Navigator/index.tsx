@@ -7,8 +7,7 @@ import Image from 'next/image';
 import { useSelector } from 'react-redux';
 
 // hooks
-import { useModal } from '@/hooks';
-
+import useModal from '@/hooks/modal/useModal';
 // constants
 import { ModalType, errorMessage } from '@/constants/constant';
 

@@ -4,8 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 // hooks
-import { useModal } from '@/hooks';
-
+import useModal from '@/hooks/modal/useModal';
 // constant
 import { linkList, ModalType, errorMessage } from '@/constants/constant';
 

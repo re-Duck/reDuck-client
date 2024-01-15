@@ -12,7 +12,7 @@ import { postManager } from '@/service/post';
 
 //third party
 import { Editor } from '@tiptap/react';
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 import { Icon } from '@iconify/react';
 
 function AddPhoto({ editor }: { editor: Editor }) {

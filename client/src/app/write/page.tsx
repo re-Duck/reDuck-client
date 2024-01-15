@@ -12,7 +12,7 @@ import { ModalType, errorMessage, warningMessage } from '@/constants/constant';
 import Tiptap from './components/Tiptap';
 
 //hooks
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 import useWriting from './hooks/useWriting';
 import useTipTap from './hooks/useTiptap';
 

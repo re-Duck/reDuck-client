@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 
 // 전역
-import { useModal } from '..';
+import useModal from '@/hooks/modal/useModal';
 
 // types
 import { EmailState, EmailType } from '@/types';

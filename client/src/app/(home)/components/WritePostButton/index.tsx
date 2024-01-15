@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { Avatar } from '@/components';
 
 // hooks
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 
 // service
 import { BASE_URL } from '@/service/base/api';

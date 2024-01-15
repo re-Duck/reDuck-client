@@ -15,9 +15,9 @@ import * as Yup from 'yup';
 import { Avatar, LoadingIcon, Form as CustomForm } from '@/components';
 
 // hooks
-import { useModal } from '@/hooks';
 import useEmail from '@/hooks/form/useEmail';
 import useInputImage from '@/hooks/form/useInputImage';
+import useModal from '@/hooks/modal/useModal';
 
 // service
 import { userManager } from '@/service/user';

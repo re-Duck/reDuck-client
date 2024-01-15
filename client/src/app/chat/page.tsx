@@ -9,7 +9,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { ChatRoom, ChatUserList } from './components';
 
 // hooks
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 
 // services
 import axios from 'axios';

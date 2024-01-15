@@ -10,7 +10,7 @@ import { Layout } from '@/components';
 import { ModalType, errorMessage } from '@/constants/constant';
 
 //hooks
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 
 //type
 import { IContent } from '@/types/mygpt';

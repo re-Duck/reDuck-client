@@ -2,7 +2,7 @@
 
 import { useSelector } from 'react-redux';
 import { modalSelector } from '@/lib/redux/features/modal/modalSlice';
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 import ModalIcon from './modal-icon';
 import ModalButton from './modal-button';
 import { MODAL_TITLE, ModalType } from '@/constants/constant';

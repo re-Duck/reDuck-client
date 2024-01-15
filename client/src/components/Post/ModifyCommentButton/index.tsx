@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 import { ModalType, errorMessage, successMessage } from '@/constants/constant';
 import { commentManager } from '@/service/comment';
 

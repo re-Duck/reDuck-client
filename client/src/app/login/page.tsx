@@ -18,7 +18,7 @@ import { Divider } from '@/components';
 import { userManager } from '@/service/user';
 
 // hooks
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 
 // constant
 import {

@@ -13,7 +13,7 @@ import { commentManager } from '@/service/comment';
 
 //assets
 import { ModalType, errorMessage } from '@/constants/constant';
-import { useModal } from '@/hooks';
+import useModal from '@/hooks/modal/useModal';
 
 //form
 import { Field, Form, Formik } from 'formik';

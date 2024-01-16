@@ -32,7 +32,10 @@ export async function GET(req: NextRequest) {
         });
       }
     } else {
-      return Response.json({ accessToken: null });
+      return Response.json({
+        message: '비로그인 유저',
+        data: { accessToken: null },
+      });
     }
   } catch (error) {
     return new Response('토큰이 만료됐습니다.', {

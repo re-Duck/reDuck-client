@@ -1,5 +1,5 @@
 // next, react
-import { type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 // services
 import { axios_get } from '@/service/base/api';
@@ -19,31 +19,45 @@ export async function GET(req: NextRequest) {
         const { data } = result;
         const { accessToken } = data as { accessToken: string };
 
-        return Response.json({
-          message: '토큰발급 성공',
-          data: { accessToken },
-        });
-      } catch {
-        return new Response('토큰이 만료됐습니다.', {
-          status: 401,
-          headers: {
-            'Set-Cookie': `token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure`,
+        return NextResponse.json(
+          {
+            message: '토큰발급 성공',
+            data: { accessToken },
           },
-        });
+          { status: 200 }
+        );
+      } catch {
+        return NextResponse.json(
+          { message: '토큰이 만료됐습니다.' },
+          {
+            status: 401,
+            headers: {
+              'Set-Cookie': `token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure`,
+            },
+          }
+        );
       }
     } else {
-      return Response.json({
-        message: '비로그인 유저',
-        data: { accessToken: null },
-      });
+      return NextResponse.json(
+        {
+          message: '비로그인 유저',
+          data: { accessToken: null },
+        },
+        {
+          status: 200,
+        }
+      );
     }
   } catch (error) {
-    return new Response('토큰이 만료됐습니다.', {
-      status: 500,
-      headers: {
-        'Set-Cookie': `token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure`,
-      },
-    });
+    return NextResponse.json(
+      { message: '토큰이 만료됐습니다.' },
+      {
+        status: 500,
+        headers: {
+          'Set-Cookie': `token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure`,
+        },
+      }
+    );
   }
 }
 
@@ -52,28 +66,37 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const { refreshToken }: { refreshToken: string } = data;
 
-    return new Response('쿠키설정 성공', {
-      status: 200,
-      headers: {
-        'Set-Cookie': `token=${refreshToken}; Path=/; HttpOnly; Secure`,
-      },
-    });
+    return NextResponse.json(
+      { message: '쿠키설정 성공' },
+      {
+        status: 200,
+        headers: {
+          'Set-Cookie': `token=${refreshToken}; Path=/; HttpOnly; Secure`,
+        },
+      }
+    );
   } catch (error) {
-    return new Response('쿠키설정 실패', { status: 500 });
+    return NextResponse.json({ message: '쿠키설정 실패' }, { status: 500 });
   }
 }
 
 export async function DELETE() {
   try {
-    return new Response('토큰삭제 성공', {
-      status: 200,
-      headers: {
-        'Set-Cookie': `token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure`,
-      },
-    });
+    return NextResponse.json(
+      { message: '토큰삭제 성공' },
+      {
+        status: 200,
+        headers: {
+          'Set-Cookie': `token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure`,
+        },
+      }
+    );
   } catch (error) {
-    return new Response('토큰삭제 실패', {
-      status: 500,
-    });
+    return NextResponse.json(
+      { message: '토큰삭제 실패' },
+      {
+        status: 500,
+      }
+    );
   }
 }

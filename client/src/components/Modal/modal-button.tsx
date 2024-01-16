@@ -28,7 +28,7 @@ const CONTENT = {
 export default function ModalButton({ type, onClick }: IType) {
   const { content, className } = CONTENT[type];
 
-  const handdleKeyup = (e: any) => {
+  const handdleKeyup = (e: KeyboardEvent) => {
     if ((e.keyCode === 13 || e.keyCode === 27) && type !== 'cancle') {
       onClick();
     }

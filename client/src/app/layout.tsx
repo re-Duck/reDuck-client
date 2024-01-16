@@ -24,7 +24,7 @@ export default function RootLayout({
         <StoreProvider>
           <QueryProvider>
             <AuthComponent>
-              {/* <Modal /> */}
+              <Modal />
               <Alert />
               {children}
             </AuthComponent>

@@ -1,3 +1,4 @@
+'use client';
 export const dynamic = 'force-dynamic';
 //core
 import React from 'react';
@@ -27,73 +28,71 @@ const initialLoginValue = {
 };
 
 export default function GptPage() {
-  const user = useSelector((state: IReduxState) => state.auth);
-  const { openModal } = useModal();
+  // const user = useSelector((state: IReduxState) => state.auth);
+  // const { openModal } = useModal();
 
-  const {
-    handdleSubmit,
-    answer,
-    answerRef,
-    isAnswerOpen,
-    remainUsageCount,
-    isPossibleQuestion,
-  } = useGpt(user);
+  // const {
+  //   handdleSubmit,
+  //   answer,
+  //   answerRef,
+  //   isAnswerOpen,
+  //   remainUsageCount,
+  //   isPossibleQuestion,
+  // } = useGpt(user);
 
-  const validate = () => {
-    if (!user.userId) {
-      openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
-      return false;
-    }
-    if (!isPossibleQuestion()) {
-      openModal({ type: ModalType.ERROR, message: errorMessage.maxQuestion });
-      return false;
-    }
-    return true;
-  };
+  // const validate = () => {
+  //   if (!user.userId) {
+  //     openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+  //     return false;
+  //   }
+  //   if (!isPossibleQuestion()) {
+  //     openModal({ type: ModalType.ERROR, message: errorMessage.maxQuestion });
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
-  const onSubmit = async (
-    { code, question }: IContent,
-    { setSubmitting }: FormikHelpers<IContent>
-  ) => {
-    try {
-      if (validate()) {
-        await handdleSubmit({ code, question });
-      }
-    } catch (e) {
-      openModal({ type: ModalType.ERROR, message: errorMessage.networkError });
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  // const onSubmit = async (
+  //   { code, question }: IContent,
+  //   { setSubmitting }: FormikHelpers<IContent>
+  // ) => {
+  //   try {
+  //     if (validate()) {
+  //       await handdleSubmit({ code, question });
+  //     }
+  //   } catch (e) {
+  //     openModal({ type: ModalType.ERROR, message: errorMessage.networkError });
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
 
   return (
     <>
-      <Formik initialValues={initialLoginValue} onSubmit={onSubmit}>
+      {/* <Formik initialValues={initialLoginValue} onSubmit={onSubmit}>
         {({ isSubmitting, values }) => (
           <>
-            <Layout>
-              <Gpt>
-                <Gpt.Title title="GPT" />
-                <Gpt.ContentBox>
-                  <Gpt.SubTitle title="Code" />
-                  <Gpt.Content height="md" name="code" />
-                </Gpt.ContentBox>
+            <Gpt>
+              <Gpt.Title title="GPT" />
+              <Gpt.ContentBox>
+                <Gpt.SubTitle title="Code" />
+                <Gpt.Content height="md" name="code" />
+              </Gpt.ContentBox>
 
-                <Gpt.ContentBox>
-                  <div className="flex items-end justify-between">
-                    <Gpt.SubTitle title="Question" />
-                    <Gpt.Remaining leftQuestionCount={remainUsageCount} />
-                  </div>
-                  <div className="flex justify-center gap-4">
-                    <Gpt.Question>
-                      <Gpt.SendButton
-                        disabled={isSubmitting || values.question === ''}
-                      />
-                    </Gpt.Question>
-                  </div>
-                </Gpt.ContentBox>
-              </Gpt>
-            </Layout>
+              <Gpt.ContentBox>
+                <div className="flex items-end justify-between">
+                  <Gpt.SubTitle title="Question" />
+                  <Gpt.Remaining leftQuestionCount={remainUsageCount} />
+                </div>
+                <div className="flex justify-center gap-4">
+                  <Gpt.Question>
+                    <Gpt.SendButton
+                      disabled={isSubmitting || values.question === ''}
+                    />
+                  </Gpt.Question>
+                </div>
+              </Gpt.ContentBox>
+            </Gpt>
             {isAnswerOpen && (
               <div className="pb-10 bg-slate-200">
                 <Gpt ref={answerRef}>
@@ -108,7 +107,7 @@ export default function GptPage() {
             )}
           </>
         )}
-      </Formik>
+      </Formik> */}
     </>
   );
 }

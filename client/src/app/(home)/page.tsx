@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 //core
 import { Suspense } from 'react';
 

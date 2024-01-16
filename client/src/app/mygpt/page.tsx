@@ -1,5 +1,4 @@
-'use client';
-
+export const dynamic = 'force-dynamic';
 //core
 import React from 'react';
 

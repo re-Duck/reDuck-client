@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
 import useModal from '@/hooks/modal/useModal';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
@@ -28,6 +29,8 @@ import { IReduxState } from '@/types/redux/IReduxState';
 import { Icon } from '@iconify/react';
 
 export default function UserInfo({ targetUserId }: { targetUserId: string }) {
+  const router = useRouter();
+
   const user = useSelector((state: IReduxState) => state.auth);
   const { openModal } = useModal();
 
@@ -111,14 +114,8 @@ export default function UserInfo({ targetUserId }: { targetUserId: string }) {
         roomName: name,
       });
       const { roomId, roomName } = data;
-      //TODO : next/navigation 이동
-      // router.push({
-      //   pathname: '/chat',
-      //   query: {
-      //     roomId,
-      //     roomName,
-      //   },
-      // });
+      const params = new URLSearchParams({ roomId, roomName });
+      router.push(`/chat?${params}`);
     } catch (error) {
       openModal({
         type: ModalType.ERROR,

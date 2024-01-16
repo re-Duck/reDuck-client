@@ -26,6 +26,9 @@ import { IReduxState } from '@/types/redux/IReduxState';
 import { ModalType, errorMessage } from '@/constants/constant';
 
 export default function Chatroom() {
+  const roomId = useSearchParams().get('roomId');
+  const roomName = useSearchParams().get('roomName');
+
   const user = useSelector((state: IReduxState) => state.auth);
   const headers = {
     Authorization: axios.defaults.headers.common['Authorization'] as string,
@@ -117,8 +120,6 @@ export default function Chatroom() {
 
   useEffect(() => {
     const client = Stomp.client(`${process.env.NEXT_PUBLIC_CHAT_URL}`);
-    const roomId = useSearchParams().get('roomId');
-    const roomName = useSearchParams().get('roomName');
 
     clientRef.current = client;
 

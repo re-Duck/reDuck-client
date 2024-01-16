@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, Suspense, useMemo } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 
 // components
@@ -24,8 +23,8 @@ import { IReduxState } from '@/types/redux/IReduxState';
 // icons
 import { Icon } from '@iconify/react';
 
-export default function Profile() {
-  const id = useSearchParams().get('id');
+export default function Profile({ params }: { params: { id: string } }) {
+  const id = params.id;
 
   const user = useSelector((state: IReduxState) => state.auth);
 

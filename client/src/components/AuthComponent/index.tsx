@@ -66,7 +66,7 @@ export default function AuthComponent({
   };
 
   const getAccessToken = async () => {
-    const response = await fetch('/api/getToken', { method: 'GET' });
+    const response = await fetch('/api/token', { method: 'GET' });
     const { message, data } = await response.json();
     if (!response.ok) {
       dispatch(logOut());

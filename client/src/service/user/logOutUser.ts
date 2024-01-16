@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default async function logoutUser() {
   try {
-    await fetch('/api/deleteToken', {
+    await fetch('/api/token', {
       method: 'DELETE',
     });
   } catch {

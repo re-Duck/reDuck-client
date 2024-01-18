@@ -1,10 +1,4 @@
 'use client';
-export const dynamic = 'force-dynamic';
-//core
-import React from 'react';
-
-//component
-import { Layout } from '@/components';
 
 //constant
 import { ModalType, errorMessage } from '@/constants/constant';
@@ -28,48 +22,48 @@ const initialLoginValue = {
 };
 
 export default function GptPage() {
-  // const user = useSelector((state: IReduxState) => state.auth);
-  // const { openModal } = useModal();
+  const user = useSelector((state: IReduxState) => state.auth);
+  const { openModal } = useModal();
 
-  // const {
-  //   handdleSubmit,
-  //   answer,
-  //   answerRef,
-  //   isAnswerOpen,
-  //   remainUsageCount,
-  //   isPossibleQuestion,
-  // } = useGpt(user);
+  const {
+    handdleSubmit,
+    answer,
+    answerRef,
+    isAnswerOpen,
+    remainUsageCount,
+    isPossibleQuestion,
+  } = useGpt(user);
 
-  // const validate = () => {
-  //   if (!user.userId) {
-  //     openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
-  //     return false;
-  //   }
-  //   if (!isPossibleQuestion()) {
-  //     openModal({ type: ModalType.ERROR, message: errorMessage.maxQuestion });
-  //     return false;
-  //   }
-  //   return true;
-  // };
+  const validate = () => {
+    if (!user.userId) {
+      openModal({ type: ModalType.ERROR, message: errorMessage.needLogin });
+      return false;
+    }
+    if (!isPossibleQuestion()) {
+      openModal({ type: ModalType.ERROR, message: errorMessage.maxQuestion });
+      return false;
+    }
+    return true;
+  };
 
-  // const onSubmit = async (
-  //   { code, question }: IContent,
-  //   { setSubmitting }: FormikHelpers<IContent>
-  // ) => {
-  //   try {
-  //     if (validate()) {
-  //       await handdleSubmit({ code, question });
-  //     }
-  //   } catch (e) {
-  //     openModal({ type: ModalType.ERROR, message: errorMessage.networkError });
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
-  // };
+  const onSubmit = async (
+    { code, question }: IContent,
+    { setSubmitting }: FormikHelpers<IContent>
+  ) => {
+    try {
+      if (validate()) {
+        await handdleSubmit({ code, question });
+      }
+    } catch (e) {
+      openModal({ type: ModalType.ERROR, message: errorMessage.networkError });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <>
-      {/* <Formik initialValues={initialLoginValue} onSubmit={onSubmit}>
+      <Formik initialValues={initialLoginValue} onSubmit={onSubmit}>
         {({ isSubmitting, values }) => (
           <>
             <Gpt>
@@ -107,7 +101,7 @@ export default function GptPage() {
             )}
           </>
         )}
-      </Formik> */}
+      </Formik>
     </>
   );
 }

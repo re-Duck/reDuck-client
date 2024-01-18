@@ -1,11 +1,16 @@
-import React from 'react';
 import '@/styles/globals.css';
 import { AuthComponent, Modal, Alert } from '@/components';
+import { Noto_Sans_KR } from 'next/font/google';
 
 // redux
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import StoreProvider from './StoreProvider';
 import QueryProvider from './QueryProvider';
+
+const notoSansKr = Noto_Sans_KR({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export default function RootLayout({
   children,
@@ -13,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={notoSansKr.className}>
       <head>
         <title>reDuck</title>
         <meta name="description" content="reDuck site" />

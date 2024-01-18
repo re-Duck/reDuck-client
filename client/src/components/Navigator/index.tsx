@@ -40,7 +40,7 @@ export function Navigator({
             className="text-2xl font-bold"
             onClick={() => setisClickedHamburger(false)}
           >
-            <div className="flex gap-1">
+            <div className="flex gap-1 font-pilseoung">
               reDuck
               <Image
                 src="/images/main-duck.png"

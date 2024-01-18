@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export const content = ['./src/**/*.{js,ts,jsx,tsx}'];
 export const theme = {
+  extends: {},
   colors: {
     'white': '#ffffff',
     'black': '#030712',
@@ -43,6 +44,9 @@ export const theme = {
       900: '#454545',
       950: '#242424',
     },
+  },
+  fontFamily: {
+    pilseoung: ['Pilseung_Gothic'],
   },
 };
 export const plugins = [];

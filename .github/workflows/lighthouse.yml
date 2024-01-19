@@ -16,7 +16,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Generate Environment Variables File for Production
         run: echo "NEXT_PUBLIC_OPEN_API=$NEXT_PUBLIC_OPEN_API\nNEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production

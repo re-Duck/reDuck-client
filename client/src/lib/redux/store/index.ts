@@ -1,5 +1,6 @@
+'use client';
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
-import { reducer } from '../reducer';
+import { reducer } from '../features';
 import { createWrapper } from 'next-redux-wrapper';
 
 const makeStore = () =>

@@ -1,7 +1,9 @@
 name: 'test-lint-build'
 
 on:
-  push:
+  pull_request:
+    branches-ignore:
+      - 'main'
 
 jobs:
   test:

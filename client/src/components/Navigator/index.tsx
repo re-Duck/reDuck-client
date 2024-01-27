@@ -53,7 +53,7 @@ export default function Navigator() {
               Chat GPT
             </li>
           </ul>
-          <Button>작성하기</Button>
+          <Button colorType="yellow">작성하기</Button>
         </div>
       </div>
     </div>

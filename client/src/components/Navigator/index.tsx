@@ -5,6 +5,7 @@ import SearchButton from './SearchButton';
 import ChatButton from './ChatButton';
 import AlarmButton from './AlarmButton';
 import ProfileButton from './ProfileButton';
+import { ArrowDownIcon } from '@/assets/Icon';
 
 export default function Navigator() {
   return (
@@ -53,7 +54,10 @@ export default function Navigator() {
               Chat GPT
             </li>
           </ul>
-          <Button colorType="yellow">작성하기</Button>
+          <Button colorType="yellow">
+            작성하기
+            <ArrowDownIcon />
+          </Button>
         </div>
       </div>
     </div>

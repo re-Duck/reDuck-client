@@ -6,7 +6,7 @@ export type ButtonColorType =
   | 'blue_gray'
   | 'blue_gray_line';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  colorType: ButtonColorType;
+  color: ButtonColorType;
 }
 
 export default function Button(props: ButtonProps) {
@@ -24,7 +24,7 @@ export default function Button(props: ButtonProps) {
   return (
     <button
       className={`h-8 px-5 py-1 text-[16px] leading-[20.48px] tracking-[-0.32px] flex gap-[6px] rounded-[2px] items-center ${
-        style[props.colorType]
+        style[props.color]
       }`}
       {...props}
     >

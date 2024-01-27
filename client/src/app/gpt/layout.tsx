@@ -5,5 +5,5 @@ export default function LayoutComponent({
 }: {
   children: React.ReactNode;
 }) {
-  return <Layout>{children}</Layout>;
+  return <Layout viewMode="gpt">{children}</Layout>;
 }

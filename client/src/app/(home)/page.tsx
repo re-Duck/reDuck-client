@@ -16,12 +16,11 @@ export default async function Home() {
   return (
     <>
       <div className="flex flex-col w-full gap-3 md:w-8/12">
-        <WritePostButton />
-        <Suspense fallback={<Loading />}>
+        {/* <WritePostButton /> */}
+        {/* <Suspense fallback={<Loading />}>
           <PostsBox initialData={data} />
-        </Suspense>
+        </Suspense> */}
       </div>
-      <Advertisement />
     </>
   );
 }

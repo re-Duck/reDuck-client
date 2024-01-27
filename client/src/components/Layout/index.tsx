@@ -1,28 +1,13 @@
-'use client';
-
-import React, { useState } from 'react';
 import Navigator from '../Navigator';
-import MenuView from '../MenuView';
 
 interface IProps {
   children: React.ReactNode;
-  hasLoginButton?: boolean;
 }
 
-export default function Layout({ children, hasLoginButton = true }: IProps) {
-  const [isClickedHamburger, setisClickedHamburger] = useState(false);
-
+export default function Layout({ children }: IProps) {
   return (
     <main className="w-full h-full">
-      <MenuView
-        isClickedHamburger={isClickedHamburger}
-        setisClickedHamburger={setisClickedHamburger}
-        hasLoginButton={hasLoginButton}
-      />
-      <Navigator
-        setisClickedHamburger={setisClickedHamburger}
-        hasLoginButton={hasLoginButton}
-      />
+      <Navigator />
       <main className="min-h-screen pt-20 m-auto bg-gray-50">{children}</main>
     </main>
   );

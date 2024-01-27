@@ -44,6 +44,13 @@ export const theme = {
       900: '#454545',
       950: '#242424',
     },
+    'red-scale': {
+      500: '#F2415A',
+      600: '#E5102E',
+    },
+    'green-scale': {
+      600: '#1F9854',
+    },
   },
   fontFamily: {
     pilseoung: ['Pilseung_Gothic'],

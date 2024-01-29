@@ -8,9 +8,11 @@ interface IProps {
 
 export default function Layout({ children, viewMode }: IProps) {
   return (
-    <main className="w-full h-full">
+    <main className="w-full min-h-screen ">
       <Navigator viewMode={viewMode} />
-      <main className="min-h-screen pt-20 m-auto bg-gray-50">{children}</main>
+      <main className="h-full pt-[120px] max-w-[1024px] m-auto px-4">
+        {children}
+      </main>
     </main>
   );
 }

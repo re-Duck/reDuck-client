@@ -14,8 +14,8 @@ interface NavitatorProps {
 }
 export default function Navigator({ viewMode }: NavitatorProps) {
   return (
-    <div className="w-full z-10 h-[120px] flex flex-col gap-[14px] items-center fixed bg-white">
-      <div className="px-6 sm:px-4 max-w-[1024px] w-full">
+    <div className="w-full z-10 h-[120px] fixed bg-white">
+      <div className="px-4 sm:px-4 max-w-[1024px] w-full h-full flex flex-col gap-[14px] m-auto">
         <div className="flex items-center justify-between  w-full h-[64px]">
           <Link href="/" className="flex gap-1  h-[30px] items-center">
             <span className="text-[24px] font-pilseoung flex items-center">
@@ -50,7 +50,7 @@ export default function Navigator({ viewMode }: NavitatorProps) {
           </div>
         </div>
 
-        <div className="w-full h-[42px] ">
+        <div className="w-full h-[40px]">
           <div className="border-b-[1px] border-gray-scale-400 w-full h-full flex justify-between">
             <PostModeNavigation viewMode={viewMode} />
             <Button color="yellow">

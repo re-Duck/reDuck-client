@@ -7,7 +7,7 @@ export default function LayoutComponent({
 }) {
   return (
     <Layout viewMode="qna">
-      <div className="flex justify-between max-w-5xl mx-auto">{children}</div>
+      <div className="">{children}</div>
     </Layout>
   );
 }

@@ -7,16 +7,33 @@ interface NavitatorProps {
 
 export default function PostModeNavigation({ viewMode }: NavitatorProps) {
   return (
-    <ul className="flex pt-[9px] text-[14px] text-gray-scale-500 font-bold leading-[17.92px] tracking-[-0.28px] gap-[18px]">
-      <li className={viewMode === 'community' ? 'text-black' : ''}>
+    <ul className="flex pt-[9px] text-[14px] text-gray-scale-500 font-bold leading-[17.92px] tracking-[-0.28px] gap-[18px] relative">
+      <li
+        className={`${viewMode === 'community' ? 'text-black' : ''} relative`}
+      >
         <Link href="/">커뮤니티</Link>
+        <hr
+          className={`h-[2px] w-full absolute bottom-[-1px] left-0 bg-yello-scale-400 z-10 text-yello-scale-400 ${
+            viewMode === 'community' ? 'visible' : 'invisible'
+          }`}
+        />
       </li>
-      <li className={viewMode === 'qna' ? 'text-black' : ''}>
+      <li className={viewMode === 'qna' ? 'text-black relative' : ''}>
         <Link href="/qna">QnA</Link>
+        <hr
+          className={`h-[2px] w-full absolute bottom-[-1px] left-0 bg-yello-scale-400 z-10 text-yello-scale-400 ${
+            viewMode === 'qna' ? 'visible' : 'invisible'
+          }`}
+        />
       </li>
       <div className="w-[1px] h-[12px] bg-gray-scale-600 mt-[3px]"></div>
-      <li className={viewMode === 'gpt' ? 'text-black' : ''}>
+      <li className={viewMode === 'gpt' ? 'text-black relative' : ''}>
         <Link href="/gpt">Chat GPT</Link>
+        <hr
+          className={`h-[2px] w-full absolute bottom-[-1px] left-0 bg-yello-scale-400 z-10 text-yello-scale-400 ${
+            viewMode === 'gpt' ? 'visible' : 'invisible'
+          }`}
+        />
       </li>
     </ul>
   );

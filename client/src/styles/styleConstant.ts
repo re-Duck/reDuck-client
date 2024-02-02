@@ -20,15 +20,21 @@ export const heightStyle = {
 };
 
 export const mxStyle = {
+  0: 'mx-0',
   1: 'mx-1',
+  3: 'mx-3',
   4: 'mx-4',
+  6: 'mx-6',
   8: 'mx-8',
   16: 'mx-16',
 };
 
 export const myStyle = {
+  0: 'my-0',
   1: 'my-1',
+  3: 'my-3',
   4: 'my-4',
+  6: 'my-6',
   8: 'my-8',
   16: 'my-16',
 };

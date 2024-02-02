@@ -8,8 +8,9 @@ import Link from 'next/link';
 import { IPostInformation } from '@/types';
 
 //component
-import { Avatar } from '@/components';
+import { Avatar, Divider } from '@/components';
 import { DeleteButton, ModifyCotentButton } from '../../../../components/Post';
+import { Icon } from '@iconify/react';
 
 //util and constant
 import { parseDate } from '@/util';
@@ -56,8 +57,24 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
   }, [data]);
 
   return (
-    <article className="flex flex-col max-w-4xl min-w-full gap-8 px-4 py-6 m-auto bg-white border-2 border-gray-100 sm:p-12">
-      <h1 className="text-4xl font-extrabold ">{data.postTitle}</h1>
+    <article className="flex flex-col max-w-4xl min-w-full m-auto bg-white">
+      <h1 className="text-4xl font-bold pt-12 pb-[38px] ">{data.postTitle}</h1>
+      <div className="relative flex items-center pb-4 border-b border-blue-gray-scale-50">
+        <Avatar src={url} alt="user_icon" size="xs" />
+        <span className="ml-1 text-sm">{data.postAuthorName}</span>
+        <Divider type="vertical" margin={3} thin={1} />
+        <span className="text-sm text-gray-scale-600">
+          {parseDate(data?.postCreatedAt)}
+        </span>
+        <Icon
+          icon="mingcute:more-2-fill"
+          fontSize={24}
+          className="absolute right-0 top-1/2 -translate-y-2/4 text-gray-scale-600"
+        />
+      </div>
+
+      <EditorContent id="tiptap-board" editor={editor} />
+
       <div className="flex justify-between">
         <Link
           className="flex items-center gap-2 font-semibold"
@@ -81,8 +98,6 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
           </div>
         )}
       </div>
-      <EditorContent id="tiptap-board" editor={editor} />
-
       <p className="text-gray-400">{parseDate(data?.postCreatedAt)}</p>
       <hr />
       <p className="text-sm text-gray-400">{`좋아요 ${data.likes} | 조회 ${data.hits}`}</p>

@@ -34,7 +34,7 @@ function PostContent({ postOriginId, initialData }: IProps) {
   const IS_POST_AUTHOR = user.userId === data?.postAuthorId;
 
   return (
-    <div className="flex flex-col max-w-4xl m-auto mb-4 gap-14">
+    <div className="flex flex-col max-w-[850px] m-auto mb-4 gap-14">
       <PostDetail
         data={data as IBoardPostInformation}
         IS_AUTHOR={IS_POST_AUTHOR}

@@ -1,7 +1,4 @@
 import { SVGProps } from 'react';
-interface Props {
-  SVGProps: SVGProps<SVGSVGElement>;
-}
 export default function Close(props: SVGProps<SVGSVGElement>) {
   return (
     <svg

@@ -4,7 +4,8 @@ export type ButtonColorType =
   | 'yellow'
   | 'yellow_line'
   | 'blue_gray'
-  | 'blue_gray_line';
+  | 'blue_gray_line'
+  | 'blue_gray_line_disabled';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color: ButtonColorType;
 }
@@ -18,14 +19,16 @@ export default function Button(props: ButtonProps) {
     yellow_line:
       'bg-yellow-50 border-[1px] border-yellow-500 text-black disabled:bg-gray-50 disabled:border-gray-800 disabled:text-gray-scale-600',
     blue_gray_line:
-      'bg-blue-gray-scale-100 border-[1px] border-gray-900 disabled:bg-gray-scale-50 disabled:border-gray-800 disabled:text-blue-gray-600',
+      'bg-blue-gray-scale-100 border-[1px] border-gray-900 disabled:bg-gray-scale-50 disabled:border-gray-800 disabled:text-blue-gray-scale-600 opacity-80 disabled:opacity-40',
+    blue_gray_line_disabled:
+      'bg-gray-scale-50 border-[1px] border-gray-800 text-blue-gray-scale-600 opacity-40',
   } as const;
 
   return (
     <button
       className={`h-8 px-5 py-1 text-[16px] leading-[20.48px] tracking-[-0.32px] flex gap-[6px] rounded-[2px] items-center ${
         style[props.color]
-      }`}
+      } `}
       {...props}
     >
       {props.children}

@@ -26,7 +26,7 @@ export default function Avatar({
   hasDot = false,
   position = 'topRight',
 }: IAvatarProp) {
-  const avatarStyle = `relative rounded-full border border-slate-200 ${avatarSizeStyle[size]} max-w-[200px] max-h-[200px] overflow-hidden`;
+  const avatarStyle = `relative rounded-full border border-gray-scale-400 ${avatarSizeStyle[size]} max-w-[200px] max-h-[200px] overflow-hidden`;
   return (
     <div className={avatarStyle}>
       {src === BASE_URL || src === '' ? (

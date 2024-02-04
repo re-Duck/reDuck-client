@@ -2,13 +2,13 @@
 
 //core
 import React, { useEffect } from 'react';
-import Link from 'next/link';
 
 //interface
 import { IPostInformation } from '@/types';
 
 //component
 import { Avatar, Divider } from '@/components';
+import PostProfile from '../PostProfile';
 import { DeleteButton, ModifyCotentButton } from '../../../../components/Post';
 import { Icon } from '@iconify/react';
 
@@ -59,7 +59,7 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
   return (
     <article className="flex flex-col max-w-4xl min-w-full m-auto bg-white">
       <h1 className="text-4xl font-bold pt-12 pb-[38px] ">{data.postTitle}</h1>
-      <div className="relative flex items-center pb-4 border-b border-blue-gray-scale-50">
+      <div className="relative flex items-center pb-4 mb-10 border-b border-blue-gray-scale-50">
         <Avatar src={url} alt="user_icon" size="xs" />
         <span className="ml-1 text-sm">{data.postAuthorName}</span>
         <Divider type="vertical" margin={3} thin={1} />
@@ -69,38 +69,27 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
         <Icon
           icon="mingcute:more-2-fill"
           fontSize={24}
-          className="absolute right-0 top-1/2 -translate-y-2/4 text-gray-scale-600"
+          className="absolute right-0 text-gray-scale-600"
         />
       </div>
-
       <EditorContent id="tiptap-board" editor={editor} />
+      <PostProfile
+        userId={data.postAuthorId}
+        userName={data.postAuthorName}
+        imageUrl={url}
+      />
 
-      <div className="flex justify-between">
-        <Link
-          className="flex items-center gap-2 font-semibold"
-          href={`/profile/${data.postAuthorId}`}
-        >
-          <Avatar src={url} alt="user_icon" size="sm" />
-          <div className="flex flex-col gap-1 font-bold">
-            <span className="text-md ">{data.postAuthorName}</span>
-            <span className="text-xs text-gray-400">{`${data.postAuthorDevelopAnnual}년차 개발자 `}</span>
-          </div>
-        </Link>
-
-        {IS_AUTHOR && (
-          <div className="flex gap-1 font-normal text-gray-500">
-            <ModifyCotentButton postOriginId={data.postOriginId} />
-            <DeleteButton
-              id={data.postOriginId}
-              type="post"
-              postOriginId={data.postOriginId}
-            />
-          </div>
-        )}
-      </div>
-      <p className="text-gray-400">{parseDate(data?.postCreatedAt)}</p>
-      <hr />
-      <p className="text-sm text-gray-400">{`좋아요 ${data.likes} | 조회 ${data.hits}`}</p>
+      {/* 상단 우측 점 세개 눌렀을 때 게시글 수정 삭제 나타낼수 있도록 */}
+      {IS_AUTHOR && (
+        <div className="flex gap-1 font-normal text-gray-500">
+          <ModifyCotentButton postOriginId={data.postOriginId} />
+          <DeleteButton
+            id={data.postOriginId}
+            type="post"
+            postOriginId={data.postOriginId}
+          />
+        </div>
+      )}
     </article>
   );
 }

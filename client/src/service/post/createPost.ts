@@ -14,6 +14,7 @@ interface Request {
   content: string;
   postOriginId: string;
   postType: 'qna' | 'stack';
+  tags: string[];
 }
 async function createPost({ title, content }: ICreatePost) {
   const postOriginId = uuidv4();
@@ -24,6 +25,7 @@ async function createPost({ title, content }: ICreatePost) {
     content,
     postOriginId,
     postType: 'qna',
+    tags: [],
   };
 
   const result = await axios_post<unknown, Request>({

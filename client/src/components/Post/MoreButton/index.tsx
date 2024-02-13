@@ -76,7 +76,7 @@ export default function MoreButton({ IS_AUTHOR, postOriginId }: IProps) {
         onClick={() => setOpen(true)}
       />
       {open && (
-        <div className="absolute right-0 z-20 flex flex-col w-32 gap-1 px-4 py-1 border min-w-max bg-gray-scale-50 border-gray-scale-400">
+        <div className="absolute right-0 z-20 flex flex-col w-32 gap-1 px-4 py-1 border shadow-lg min-w-max bg-gray-scale-50 border-gray-scale-400">
           {IS_AUTHOR && (
             <>
               <div

@@ -9,8 +9,7 @@ import { IPostInformation } from '@/types';
 //component
 import { Avatar, Divider } from '@/components';
 import PostProfile from '../PostProfile';
-import { DeleteButton, ModifyCotentButton } from '../../../../components/Post';
-import { Icon } from '@iconify/react';
+import { MoreButton } from '../../../../components/Post';
 
 //util and constant
 import { parseDate } from '@/util';
@@ -61,16 +60,14 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
       <h1 className="text-4xl font-bold pt-12 pb-[38px] ">{data.postTitle}</h1>
       <div className="relative flex items-center pb-4 mb-10 border-b border-blue-gray-scale-50">
         <Avatar src={url} alt="user_icon" size="xs" />
-        <span className="ml-1 text-sm">{data.postAuthorName}</span>
+        <span className="ml-1 text-sm text-gray-scale-900">
+          {data.postAuthorName}
+        </span>
         <Divider type="vertical" margin={3} thin={1} />
         <span className="text-sm text-gray-scale-600">
           {parseDate(data?.postCreatedAt)}
         </span>
-        <Icon
-          icon="mingcute:more-2-fill"
-          fontSize={24}
-          className="absolute right-0 text-gray-scale-600"
-        />
+        <MoreButton IS_AUTHOR={IS_AUTHOR} />
       </div>
       <EditorContent id="tiptap-board" editor={editor} />
       <PostProfile
@@ -78,18 +75,6 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
         userName={data.postAuthorName}
         imageUrl={url}
       />
-
-      {/* 상단 우측 점 세개 눌렀을 때 게시글 수정 삭제 나타낼수 있도록 */}
-      {IS_AUTHOR && (
-        <div className="flex gap-1 font-normal text-gray-500">
-          <ModifyCotentButton postOriginId={data.postOriginId} />
-          <DeleteButton
-            id={data.postOriginId}
-            type="post"
-            postOriginId={data.postOriginId}
-          />
-        </div>
-      )}
     </article>
   );
 }

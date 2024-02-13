@@ -65,7 +65,7 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
         <span className="text-sm text-gray-scale-600">
           {parseDate(data?.postCreatedAt)}
         </span>
-        <MoreButton IS_AUTHOR={IS_AUTHOR} />
+        <MoreButton IS_AUTHOR={IS_AUTHOR} postOriginId={data.postOriginId} />
       </div>
       <EditorContent id="tiptap-board" editor={editor} />
       <PostProfile

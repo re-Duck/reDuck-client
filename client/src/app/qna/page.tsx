@@ -4,7 +4,7 @@ import PostSection from './components/PostsSection';
 
 export default function Qna() {
   return (
-    <div className="mt-[38px] flex justify-between">
+    <div className="flex flex-col w-full gap-[42px] max-w-[850px]">
       <TagNavigation />
       <PostSection />
     </div>

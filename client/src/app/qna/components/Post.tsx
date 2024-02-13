@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Post() {
   return (
-    <article className="w-[763px] px-4 py-[26px] border-[1px] border-gray-scale-400">
+    <article className=" px-4 py-[26px] border-[1px] border-gray-scale-400">
       <section className="w-full h-[140px] flex">
         <div className="w-[132px] h-full flex flex-col justify-center pr-6 items-end border-r-[1px] border-blue-gray-scale-50 gap-[17px]">
           <div className="flex items-center gap-2">

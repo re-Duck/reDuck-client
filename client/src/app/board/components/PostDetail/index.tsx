@@ -60,9 +60,7 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
       <h1 className="text-4xl font-bold pt-12 pb-[38px] ">{data.postTitle}</h1>
       <div className="relative flex items-center pb-4 mb-10 border-b border-blue-gray-scale-50">
         <Avatar src={url} alt="user_icon" size="xs" />
-        <span className="ml-1 text-sm text-gray-scale-900">
-          {data.postAuthorName}
-        </span>
+        <span className="ml-1 text-sm">{data.postAuthorName}</span>
         <Divider type="vertical" margin={3} thin={1} />
         <span className="text-sm text-gray-scale-600">
           {parseDate(data?.postCreatedAt)}

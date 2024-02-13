@@ -11,4 +11,4 @@ export { default as AuthComponent } from './AuthComponent';
 export { default as Skeleton } from './Skeleton';
 export { default as Form } from './Form';
 export { default as Alert } from './Alert';
-export { default as Button } from './Button';
+export { default as Button } from './base/Button';

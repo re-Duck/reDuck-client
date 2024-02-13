@@ -4,3 +4,4 @@ export { default as CommentUpload } from './CommentUpload';
 export { default as DeleteButton } from './DeleteButton';
 export { default as ModifyCommentButton } from './ModifyCommentButton';
 export { default as MoreButton } from './MoreButton';
+export { default as FloatingBar } from './FloatingBar';

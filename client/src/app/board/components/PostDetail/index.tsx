@@ -9,7 +9,7 @@ import { IPostInformation } from '@/types';
 //component
 import { Avatar, Divider } from '@/components';
 import PostProfile from '../PostProfile';
-import { MoreButton } from '../../../../components/Post';
+import { MoreButton, FloatingBar } from '../../../../components/Post';
 
 //util and constant
 import { parseDate } from '@/util';
@@ -20,7 +20,6 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-
 import { common, createLowlight } from 'lowlight';
 import { ImageResize } from 'tiptap-extension-resize-image';
 import tiptapLink from '@tiptap/extension-link';
@@ -67,7 +66,14 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
         </span>
         <MoreButton IS_AUTHOR={IS_AUTHOR} postOriginId={data.postOriginId} />
       </div>
-      <EditorContent id="tiptap-board" editor={editor} />
+      <div className="relative h-full">
+        <FloatingBar.FloatingBarContainer>
+          <FloatingBar.FloatingBarLike InitialLikes={data.likes} />
+          <FloatingBar.FloatingBarBookMark />
+          <FloatingBar.FloatingBarShare />
+        </FloatingBar.FloatingBarContainer>
+        <EditorContent id="tiptap-board" editor={editor} />
+      </div>
       <PostProfile
         userId={data.postAuthorId}
         userName={data.postAuthorName}

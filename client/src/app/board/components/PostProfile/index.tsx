@@ -13,7 +13,7 @@ interface IProps {
 
 export default function PostProfile({ userId, userName, imageUrl }: IProps) {
   return (
-    <div className="flex items-center justify-between py-12">
+    <div className="flex items-center justify-between py-12 border-b border-gray-scale-500">
       <Link href={`/profile/${userId}`} className="flex items-center gap-6">
         <Avatar src={imageUrl} alt="user_icon" size="md" />
         <div className="flex flex-col items-start flex-1 gap-2 ">

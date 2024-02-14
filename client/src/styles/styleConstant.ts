@@ -40,6 +40,7 @@ export const myStyle = {
 };
 
 export const avatarSizeStyle = {
+  xxs: 'w-5 h-5',
   xs: 'w-7 h-7',
   sm: 'w-12 h-12',
   md: 'w-20 h-20',

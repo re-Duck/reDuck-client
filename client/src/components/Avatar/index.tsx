@@ -14,7 +14,7 @@ import { BASE_URL } from '@/service/base/api';
 interface IAvatarProp {
   src: string;
   alt: string;
-  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   hasDot?: boolean;
   position?: keyof typeof positionStyle;
 }

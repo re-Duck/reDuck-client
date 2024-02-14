@@ -5,7 +5,7 @@ import React from 'react';
 import { useSearchParams } from 'next/navigation';
 
 //components
-import Avatar from '../../Avatar';
+import { Button, Avatar } from '@/components';
 
 //service
 import { BASE_URL } from '@/service/base/api';
@@ -80,30 +80,39 @@ export default function CommentUpload({ user }: IComentUpload) {
         handleComment({ content, setSubmitting, resetForm })
       }
     >
-      {({ errors, isSubmitting }) => (
-        <Form className="flex justify-between items-center sm:gap-0.5 h-16 bg-white border-gray-100 border-[1px] sm:px-10">
-          <Avatar src={comentImgSrc} alt="user_icon" size="sm" />
-          <Field
-            name="content"
-            type="text"
-            className=" border-b-gray-200 border-b-[1px] p-2 pl-3 w-8/12"
-            placeholder="댓글을 입력해 보세요."
-          />
-          <button
-            className="px-3 py-2 text-xs text-white bg-red-400 rounded-lg "
-            type="submit"
-            onClick={() => {
-              errors.content &&
-                openModal({
-                  type: ModalType.ERROR,
-                  message: errors.content,
-                });
-            }}
-            disabled={isSubmitting}
-          >
-            등록
-          </button>
-        </Form>
+      {({ errors, values, isSubmitting }) => (
+        <>
+          <Form className="px-5 py-3 border border-gray-scale-400">
+            <div className="flex items-center gap-1 mb-1">
+              <Avatar src={comentImgSrc} alt="user_icon" size="xxs" />
+              <span className="text-xs">
+                {user.userName !== '' ? user.userName : '로그인이 필요합니다'}
+              </span>
+            </div>
+            <Field
+              name="content"
+              type="text"
+              className="w-full focus:outline-none placeholder:text-gray-scale-500"
+              placeholder="댓글을 작성해주세요. (@를 입력하여 다른 사람을 태그할 수 있습니다)"
+            />
+          </Form>
+          <div className="mt-5 mb-10 ml-auto">
+            <Button
+              color="blue_gray"
+              type="submit"
+              onClick={() => {
+                errors.content &&
+                  openModal({
+                    type: ModalType.ERROR,
+                    message: errors.content,
+                  });
+              }}
+              disabled={values.content.length === 0 || isSubmitting}
+            >
+              댓글 작성
+            </Button>
+          </div>
+        </>
       )}
     </Formik>
   );

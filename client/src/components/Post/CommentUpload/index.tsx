@@ -81,7 +81,7 @@ export default function CommentUpload({ user }: IComentUpload) {
       }
     >
       {({ errors, values, isSubmitting }) => (
-        <>
+        <div className="border-b border-b-blue-gray-scale-50">
           <Form className="px-5 py-3 border border-gray-scale-400">
             <div className="flex items-center gap-1 mb-1">
               <Avatar src={comentImgSrc} alt="user_icon" size="xxs" />
@@ -96,7 +96,7 @@ export default function CommentUpload({ user }: IComentUpload) {
               placeholder="댓글을 작성해주세요. (@를 입력하여 다른 사람을 태그할 수 있습니다)"
             />
           </Form>
-          <div className="mt-5 mb-10 ml-auto">
+          <div className="flex justify-end mt-5 mb-10">
             <Button
               color="blue_gray"
               type="submit"
@@ -112,7 +112,7 @@ export default function CommentUpload({ user }: IComentUpload) {
               댓글 작성
             </Button>
           </div>
-        </>
+        </div>
       )}
     </Formik>
   );

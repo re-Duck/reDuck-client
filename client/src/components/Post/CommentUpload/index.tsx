@@ -92,7 +92,7 @@ export default function CommentUpload({ user }: IComentUpload) {
             <Field
               name="content"
               type="text"
-              className="w-full focus:outline-none placeholder:text-gray-scale-500"
+              className="w-full text-sm focus:outline-none placeholder:text-gray-scale-500"
               placeholder="댓글을 작성해주세요. (@를 입력하여 다른 사람을 태그할 수 있습니다)"
             />
           </Form>

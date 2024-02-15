@@ -10,7 +10,7 @@ export default function FloatingBarShare() {
   return (
     <div
       className={`relative flex justify-center py-[18px] ${
-        open ? 'bg-yello-scale-50' : 'bg-gray-scale-50'
+        open ? 'bg-yellow-scale-50' : 'bg-gray-scale-50'
       }`}
     >
       <Icon

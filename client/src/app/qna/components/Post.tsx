@@ -1,9 +1,6 @@
 import { Check } from '@/assets/Icon';
-import { BASE_URL } from '@/service/base/api';
+import PostAuthorAndDate from '@/components/PostAuthorAndDate';
 import { IPostInformation } from '@/types';
-import { parseDate } from '@/util';
-import Image from 'next/image';
-
 interface PostProps {
   post: IPostInformation;
 }
@@ -21,7 +18,7 @@ export default function Post({ post }: PostProps) {
           </div>
 
           <span className="text-blue-gray-scale-200 text-[14px] flex items-center gap-2">
-            <strong className="text-[24px] font-normal">{post.hits}</strong>{' '}
+            <strong className="text-[24px] font-normal">{post.hits}</strong>
             조회
           </span>
         </div>
@@ -38,25 +35,8 @@ export default function Post({ post }: PostProps) {
                 #tag
               </span>
             </div>
-            <div className="flex justify-end text-[12px]">
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2">
-                  <Image
-                    className="rounded-full border-[1px] border-gray-scale-400 w-5 h-5 flex justify-center items-center"
-                    width={20}
-                    height={20}
-                    src={`${BASE_URL}${post.postAuthorProfileImgPath}`}
-                    alt="profile image"
-                  />
-                  <span className=" text-gray-scale-900">
-                    {post.postAuthorName}
-                  </span>
-                </div>
-                <span className="w-[1px] h-3 bg-gray-scale-600" />
-                <span className="text-gray-scale-600">
-                  {parseDate(post.postCreatedAt)}
-                </span>
-              </div>
+            <div className="flex justify-end">
+              <PostAuthorAndDate post={post} />
             </div>
           </div>
         </div>

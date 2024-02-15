@@ -5,7 +5,7 @@ export const theme = {
   colors: {
     'white': '#ffffff',
     'black': '#030712',
-    'yello-scale': {
+    'yellow-scale': {
       50: '#FFFCE5',
       100: '#FFF8CC',
       200: '#FFF199',

@@ -7,7 +7,7 @@ export default function LayoutComponent({
 }) {
   return (
     <Layout viewMode="community">
-      <div className="flex justify-between max-w-5xl mx-auto">{children}</div>
+      <div className="pt-[38px] flex justify-center">{children}</div>
     </Layout>
   );
 }

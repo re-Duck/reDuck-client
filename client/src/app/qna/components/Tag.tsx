@@ -11,7 +11,7 @@ export default function Tag({ name, type, setTags }: TagProps) {
   const style = {
     example: 'border-gray-scale-400 text-gray-scale-500',
     selected: 'border-gray-scale-500 text-gray-scale-700',
-    popular: 'border-yello-scale-500 text-gray-scale-700 ',
+    popular: 'border-yellow-scale-500 text-gray-scale-700 ',
   };
   return (
     <span

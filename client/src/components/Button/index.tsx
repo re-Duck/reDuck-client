@@ -13,7 +13,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function Button(props: ButtonProps) {
   const style: Record<ButtonColorType, string> = {
     yellow:
-      'bg-yello-scale-400 text-black hover:active:bg-yello-scale-500 disabled:bg-yello-scale-100 disabled:text-gray-scale-700',
+      'bg-yellow-scale-400 text-black hover:active:bg-yellow-scale-500 disabled:bg-yellow-scale-100 disabled:text-gray-scale-700',
     blue_gray:
       'bg-gray-500 text-white hover:active:bg-blue-gray-800 disabled:bg-blue-gray-100',
     yellow_line:

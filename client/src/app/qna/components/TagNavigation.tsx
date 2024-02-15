@@ -23,7 +23,7 @@ export default function TagNavigation() {
           </div>
         </div>
 
-        <div className="w-full bg-[#FFFCE5] p-4 gap-4 flex flex-col border border-yello-scale-500 rounded-sm">
+        <div className="w-full bg-[#FFFCE5] p-4 gap-4 flex flex-col border border-yellow-scale-500 rounded-sm">
           <h3 className="flex items-center gap-1 text-blue-gray-scale-500">
             <TagIcon />
             태그

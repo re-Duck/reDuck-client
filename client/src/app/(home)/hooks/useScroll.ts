@@ -15,10 +15,7 @@ function useScroll({
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     ...(!!initialData && initialData),
     queryKey: ['projects'],
-    queryFn: ({ pageParam }) => {
-      console.log(pageParam);
-      return getAllPosts({ postType: type, pageParam });
-    },
+    queryFn: ({ pageParam }) => getAllPosts({ postType: type, pageParam }),
     getNextPageParam: (lastPage) => lastPage?.nextPageParms,
     // suspense: true,
   });

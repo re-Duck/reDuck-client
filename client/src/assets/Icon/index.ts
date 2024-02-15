@@ -6,3 +6,4 @@ export { default as ArrowDownIcon } from './arrow-down';
 export { default as Close } from './close';
 export { default as Check } from './check';
 export { default as Tag } from './tag';
+export { default as HeartOn } from './HeartOn';

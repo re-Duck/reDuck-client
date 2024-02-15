@@ -1,13 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@/components/Button';
 import Post from './Post';
+import { IPostInformation } from '@/types';
+import useScroll from '@/app/(home)/hooks/useScroll';
+import { LoadingIcon } from '@/components';
 
-export default function PostSection() {
+interface PostSectionProps {
+  initialData?: { data: IPostInformation[]; nextPageParms?: string };
+}
+
+export default function PostSection({ initialData }: PostSectionProps) {
   const [postViewType, setPostViewType] = useState<
     'latest' | 'popular' | 'notAnswer'
   >('latest');
+  const { datas, hasNextPage } = useScroll({ initialData, type: 'qna' });
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex items-center justify-between">
@@ -47,11 +55,17 @@ export default function PostSection() {
         </div>
       </div>
       <section>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {datas?.map((group, index) => (
+          <React.Fragment key={index}>
+            {group?.data.map((props: IPostInformation) => (
+              <Post key={props.postOriginId} post={props} />
+            ))}
+          </React.Fragment>
+        ))}
       </section>
+      <div className="flex justify-center">
+        {hasNextPage && <LoadingIcon size="40px" />}
+      </div>
     </div>
   );
 }

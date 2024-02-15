@@ -11,7 +11,7 @@ import { PostsBox, WritePostButton } from './components';
 import getAllPosts from '@/service/post/getAllPosts';
 
 export default async function Home() {
-  const data = await getAllPosts({});
+  // const data = await getAllPosts({});
 
   return (
     <>

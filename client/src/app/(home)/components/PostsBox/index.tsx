@@ -11,7 +11,7 @@ interface PostsBoxProps {
 }
 
 function PostsBox({ initialData }: PostsBoxProps) {
-  const { datas, hasNextPage } = useScroll({ initialData });
+  const { datas, hasNextPage } = useScroll({ initialData, type: 'qna' });
 
   return (
     <>

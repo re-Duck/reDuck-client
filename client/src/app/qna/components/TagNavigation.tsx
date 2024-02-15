@@ -6,8 +6,7 @@ import TagSearch from './TagSearch';
 import { Tag as TagIcon } from '@/assets/Icon';
 
 export default function TagNavigation() {
-  const [tags, setTags] = useState<string[]>(['text']);
-  const hasNoTags = tags.length === 0;
+  const [tags, setTags] = useState<string[]>([]);
 
   return (
     <div className="flex flex-col gap-8">

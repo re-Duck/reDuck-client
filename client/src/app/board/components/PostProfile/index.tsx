@@ -1,9 +1,12 @@
 'use client';
 
+import React, { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import Link from 'next/link';
 
 // components
-import { Avatar, Divider, Button } from '@/components';
+import { Avatar, Divider } from '@/components';
+import FollowButton from '@/components/FollowButton';
 
 interface IProps {
   userId: string;
@@ -25,7 +28,11 @@ export default function PostProfile({ userId, userName, imageUrl }: IProps) {
           </div>
         </div>
       </Link>
-      <Button color="yellow_line">+ 팔로우</Button>
+      <ErrorBoundary FallbackComponent={FollowButton.ErrorFallback}>
+        <Suspense fallback={<FollowButton.FallbackLoading />}>
+          <FollowButton userId={userId} />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }

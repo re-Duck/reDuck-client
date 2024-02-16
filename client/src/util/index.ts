@@ -32,6 +32,20 @@ export const parseDate = (date: string) => {
   return `${year}년 ${month}월 ${day}일`;
 };
 
+export const parseDateWithDot = (date: string) => {
+  if (!date) return;
+
+  const padZero = (num: number) => {
+    return num < 10 ? `0${num}` : num;
+  };
+
+  const year = Number(date.slice(0, 4));
+  const month = padZero(Number(date.slice(5, 7)));
+  const day = padZero(Number(date.slice(8, 10)));
+
+  return `${year}.${month}.${day}`;
+};
+
 export const formatDateToHHMM = (dateString: string) => {
   const newDate = new Date(dateString);
   const hours = newDate.getHours().toString().padStart(2, '0');

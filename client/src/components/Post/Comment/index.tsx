@@ -33,9 +33,14 @@ export default function Comment({
   const [comment, setComment] = useState(data.commentContent);
 
   const childCount = React.Children.count(children);
+  const isRoot = data.commentParentId === 'root';
 
   return (
-    <article className="py-6 border-b border-blue-gray-scale-50">
+    <article
+      className={`${
+        isRoot ? 'py-6' : 'pt-3'
+      } border-b border-blue-gray-scale-50`}
+    >
       <div className="relative flex justify-between">
         <Link
           className="flex items-center gap-2"
@@ -76,7 +81,7 @@ export default function Comment({
         </div>
       )}
 
-      {data.commentParentId === 'root' && (
+      {isRoot && (
         <div className="pl-12 ">
           {childCount > 0 ? (
             isReplyOpen ? (

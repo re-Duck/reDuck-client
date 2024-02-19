@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import Button from '@/components/Button';
 import Post from './Post';
 import { IPostInformation } from '@/types';
-import useScroll from '@/app/(home)/hooks/useScroll';
 import { LoadingIcon } from '@/components';
+import useScroll from '@/hooks/scroll/useScroll';
 
 interface PostSectionProps {
   initialData?: { data: IPostInformation[]; nextPageParms?: string };

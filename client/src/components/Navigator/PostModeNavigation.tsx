@@ -11,7 +11,7 @@ export default function PostModeNavigation({ viewMode }: NavitatorProps) {
       <li
         className={`${viewMode === 'community' ? 'text-black' : ''} relative`}
       >
-        <Link href="/">커뮤니티</Link>
+        <Link href="/community">커뮤니티</Link>
         <hr
           className={`h-[2px] w-full absolute bottom-[-1px] left-0 bg-yellow-scale-400 z-10 text-yellow-scale-400 ${
             viewMode === 'community' ? 'visible' : 'invisible'

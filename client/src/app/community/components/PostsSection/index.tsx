@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { IPostInformation } from '@/types';
 
 //hooks
-import useScroll from '../../hooks/useScroll';
+import useScroll from '@/hooks/scroll/useScroll';
 
 //components
 import Button from '@/components/Button';

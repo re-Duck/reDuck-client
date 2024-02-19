@@ -17,9 +17,12 @@ interface IProps {
 export default function PostProfile({ userId, userName, imageUrl }: IProps) {
   return (
     <div className="flex items-center justify-between py-12 border-b border-gray-scale-500">
-      <Link href={`/profile/${userId}`} className="flex items-center gap-6">
+      <Link
+        href={`/profile/${userId}`}
+        className="flex flex-wrap items-center gap-6"
+      >
         <Avatar src={imageUrl} alt="user_icon" size="md" />
-        <div className="flex flex-col items-start flex-1 gap-2 ">
+        <div className="flex flex-col items-start flex-1 gap-2 min-w-fit">
           <h3 className="text-2xl font-bold">{userName}</h3>
           <div className="flex items-center">
             <span className="text-sm text-gray-scale-600">100 팔로워</span>

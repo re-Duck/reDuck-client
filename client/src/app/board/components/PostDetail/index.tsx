@@ -61,7 +61,9 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
 
   return (
     <article className="flex flex-col max-w-4xl min-w-full m-auto bg-white">
-      <h1 className="text-4xl font-medium pt-[38px] pb-6">{data.postTitle}</h1>
+      <h1 className="sm:text-4xl text-3xl font-medium pt-[38px] pb-6">
+        {data.postTitle}
+      </h1>
       <div className="relative flex items-center pb-4 border-b border-blue-gray-scale-50">
         <Avatar src={url} alt="user_icon" size="xs" />
         <span className="ml-1 text-sm">{data.postAuthorName}</span>

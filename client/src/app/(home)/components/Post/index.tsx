@@ -11,9 +11,7 @@ export default function Post({ post }: PostProps) {
     <article className="w-full flex flex-col gap-4 px-4 py-[26px] border-b border-gray-scale-400 cursor-pointer hover:shadow-md">
       <div className="flex justify-between">
         <div className="flex flex-col flex-1 gap-2">
-          <h2 className="text-[18px] font-bold">
-            개발자를 위한 커뮤니티 및 멘토링 시스템
-          </h2>
+          <h2 className="text-[18px] font-bold">{post.postTitle}</h2>
           <div className="h-7">
             <PostAuthorAndDate post={post} />
           </div>

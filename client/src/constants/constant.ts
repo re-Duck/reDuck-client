@@ -67,6 +67,7 @@ export const successMessage = Object.freeze({
   signUpSuccess: '회원가입에 성공했습니다. 다시 로그인해주세요.',
   profileUpdateSuccess: '회원정보 수정이 완료되었습니다.',
   availableIdSuccess: '사용할 수 있는 아이디입니다.',
+  copylinkSuccess: '링크를 복사했습니다.',
   sendingEmailSuccess:
     '이메일이 전송됐습니다. 메일함을 확인하시고 5분 이내로 인증번호를 입력하고 확인해주세요.',
   confirmNumberSuccess: '정상적으로 인증 완료됐습니다.',

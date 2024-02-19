@@ -11,6 +11,9 @@ import { Avatar, Divider } from '@/components';
 import PostProfile from '../PostProfile';
 import { MoreButton, FloatingBar } from '../../../../components/Post';
 
+// hooks
+import useCopyClipBoard from '@/hooks/common/useCopyClipBoard';
+
 //util and constant
 import { parseDate } from '@/util';
 import { BASE_URL } from '@/service/base/api';
@@ -48,6 +51,8 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
     content: data.postContent,
   });
 
+  const onCopy = useCopyClipBoard();
+
   useEffect(() => {
     if (editor) {
       editor.commands.setContent(data.postContent);
@@ -64,7 +69,15 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
         <span className="text-sm text-gray-scale-600">
           {parseDate(data?.postCreatedAt)}
         </span>
-        <MoreButton IS_AUTHOR={IS_AUTHOR} postOriginId={data.postOriginId} />
+        <div className="flex items-end gap-2 ml-auto">
+          <span
+            className="hidden text-sm text-gray-scale-600 hover:cursor-pointer sm:block"
+            onClick={onCopy}
+          >
+            URL 복사
+          </span>
+          <MoreButton IS_AUTHOR={IS_AUTHOR} postOriginId={data.postOriginId} />
+        </div>
       </div>
       <div className="relative h-full">
         <FloatingBar.FloatingBarContainer>

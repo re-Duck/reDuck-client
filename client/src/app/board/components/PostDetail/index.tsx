@@ -61,8 +61,8 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
 
   return (
     <article className="flex flex-col max-w-4xl min-w-full m-auto bg-white">
-      <h1 className="text-4xl font-bold pt-12 pb-[38px] ">{data.postTitle}</h1>
-      <div className="relative flex items-center pb-4 mb-10 border-b border-blue-gray-scale-50">
+      <h1 className="text-4xl font-medium pt-[38px] pb-6">{data.postTitle}</h1>
+      <div className="relative flex items-center pb-4 border-b border-blue-gray-scale-50">
         <Avatar src={url} alt="user_icon" size="xs" />
         <span className="ml-1 text-sm">{data.postAuthorName}</span>
         <Divider type="vertical" margin={3} thin={1} />
@@ -85,7 +85,11 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
           <FloatingBar.FloatingBarBookMark />
           <FloatingBar.FloatingBarShare />
         </FloatingBar.FloatingBarContainer>
-        <EditorContent id="tiptap-board" editor={editor} />
+        <EditorContent
+          className="pt-8 pb-20"
+          id="tiptap-board"
+          editor={editor}
+        />
       </div>
       <PostProfile
         userId={data.postAuthorId}

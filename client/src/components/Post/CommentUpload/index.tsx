@@ -82,7 +82,7 @@ export default function CommentUpload({ user }: IComentUpload) {
     >
       {({ errors, values, isSubmitting }) => (
         <div className="border-b border-b-blue-gray-scale-50">
-          <Form className="px-5 py-3 border border-gray-scale-400">
+          <Form className="px-5 py-3 border border-gray-scale-400 h-[90px]">
             <div className="flex items-center gap-1 mb-1">
               <Avatar src={comentImgSrc} alt="user_icon" size="xxs" />
               <span className="text-xs">

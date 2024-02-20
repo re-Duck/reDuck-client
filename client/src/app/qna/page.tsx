@@ -1,4 +1,3 @@
-import React from 'react';
 import TagNavigation from './components/TagNavigation';
 import PostSection from './components/PostsSection';
 import getAllPosts from '@/service/post/getAllPosts';

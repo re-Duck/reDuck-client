@@ -10,7 +10,6 @@ export default async function updateLikePost({
   const result = await axios_post({ suburl, data: {} });
 
   if (!result.isOkay) {
-    console.log(result);
-    throw new Error(result.error);
+    throw result.error;
   }
 }

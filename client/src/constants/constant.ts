@@ -73,6 +73,7 @@ export const successMessage = Object.freeze({
   confirmNumberSuccess: '정상적으로 인증 완료됐습니다.',
   withdrawalSuccess:
     '정상적으로 탈퇴됐습니다. 지금까지 reDuck을 이용해주셔서 감사합니다.',
+  scrapSuccess: '게시글을 성공적으로 저장했습니다.',
 });
 
 export const warningMessage = Object.freeze({

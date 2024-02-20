@@ -83,8 +83,11 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
       </div>
       <div className="relative h-full">
         <FloatingBar.FloatingBarContainer>
-          <FloatingBar.FloatingBarLike InitialLikes={data.likes} />
-          <FloatingBar.FloatingBarBookMark />
+          <FloatingBar.FloatingBarLike
+            InitialLikes={data.likes}
+            postOriginId={data.postOriginId}
+          />
+          <FloatingBar.FloatingBarBookMark postOriginId={data.postOriginId} />
           <FloatingBar.FloatingBarShare />
         </FloatingBar.FloatingBarContainer>
         <EditorContent

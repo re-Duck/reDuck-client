@@ -2,7 +2,6 @@
 
 //core
 import React from 'react';
-import { useSearchParams } from 'next/navigation';
 
 //components
 import { Button, Avatar } from '@/components';
@@ -25,6 +24,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface IComentUpload {
   user: IUserState;
+  postOriginId: string;
 }
 
 interface IHnadlerComment {
@@ -37,10 +37,7 @@ const ValidationSchema = Yup.object().shape({
   content: Yup.string().required(errorMessage.blankTitle),
 });
 
-export default function CommentUpload({ user }: IComentUpload) {
-  const params = useSearchParams();
-  const postOriginId = params.get('id') as string;
-
+export default function CommentUpload({ user, postOriginId }: IComentUpload) {
   const { openModal } = useModal();
   const comentImgSrc = user ? `${BASE_URL}${user.userProfileImgPath}` : '';
 
@@ -81,8 +78,8 @@ export default function CommentUpload({ user }: IComentUpload) {
       }
     >
       {({ errors, values, isSubmitting }) => (
-        <div className="border-b border-b-blue-gray-scale-50">
-          <Form className="px-5 py-3 border border-gray-scale-400 h-[90px]">
+        <Form className="border-b border-b-blue-gray-scale-50">
+          <div className="px-5 py-3 border border-gray-scale-400 h-[90px]">
             <div className="flex items-center gap-1 mb-1">
               <Avatar src={comentImgSrc} alt="user_icon" size="xxs" />
               <span className="text-xs">
@@ -95,7 +92,7 @@ export default function CommentUpload({ user }: IComentUpload) {
               className="w-full text-sm focus:outline-none placeholder:text-gray-scale-500"
               placeholder="댓글을 작성해주세요. (@를 입력하여 다른 사람을 태그할 수 있습니다)"
             />
-          </Form>
+          </div>
           <div className="flex justify-end mt-5 mb-10">
             <Button
               color="blue_gray"
@@ -112,7 +109,7 @@ export default function CommentUpload({ user }: IComentUpload) {
               댓글 작성
             </Button>
           </div>
-        </div>
+        </Form>
       )}
     </Formik>
   );

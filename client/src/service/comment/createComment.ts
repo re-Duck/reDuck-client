@@ -7,6 +7,7 @@ import { axios_post } from '../base/api';
 interface ICreateComment {
   content: string;
   postOriginId: string | string[] | undefined;
+  parentCommentOriginId?: string;
 }
 
 interface Request {
@@ -15,7 +16,11 @@ interface Request {
   commentOriginId: string;
 }
 
-async function createComment({ content, postOriginId }: ICreateComment) {
+async function createComment({
+  content,
+  postOriginId,
+  parentCommentOriginId = 'root',
+}: ICreateComment) {
   const commentOriginId = uuidv4();
   const suburl = '/post/comment';
 
@@ -23,6 +28,7 @@ async function createComment({ content, postOriginId }: ICreateComment) {
     content,
     postOriginId,
     commentOriginId,
+    parentCommentOriginId,
   };
 
   const result = await axios_post<unknown, Request>({ suburl, data });

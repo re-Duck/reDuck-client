@@ -51,7 +51,7 @@ function PostContent({ postOriginId, initialData }: IProps) {
       <h3 className="text-lg font-bold mt-[52px] mb-[30px] text-gray-scale-800">
         {postComment?.length}개의 댓글
       </h3>
-      <CommentUpload user={user} />
+      <CommentUpload user={user} postOriginId={postOriginId} />
       {postComment
         ?.filter((comment: IComment) => comment.commentParentId === 'root')
         .map((comment: IComment) => (

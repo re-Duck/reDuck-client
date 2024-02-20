@@ -6,7 +6,7 @@ export default function LayoutComponent({
   children: React.ReactNode;
 }) {
   return (
-    <Layout viewMode="community">
+    <Layout>
       <div className="pt-[38px] flex justify-center">{children}</div>
     </Layout>
   );

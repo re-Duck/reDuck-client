@@ -1,5 +1,5 @@
 export interface IComment {
-  commentParentId: string;
+  parentCommentOriginId: string;
   commentAuthorId: string;
   commentAuthorName: string;
   commentAuthorProfileImgPath: string;

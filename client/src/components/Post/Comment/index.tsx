@@ -20,21 +20,16 @@ import { HeartIcon } from '@/assets/Icon';
 interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
-  postOriginId: string;
   children?: React.ReactNode;
 }
-export default function Comment({
-  data,
-  IS_AUTHOR,
-  postOriginId,
-  children,
-}: ICommentProps) {
+export default function Comment({ data, IS_AUTHOR, children }: ICommentProps) {
   const [isModifying, setIsModifying] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [isReplyOpen, setIsReplyOpen] = useState(false);
+  const [comment, setComment] = useState(data.commentContent);
 
   const childCount = React.Children.count(children);
-  const isRoot = data.commentParentId === 'root';
+  const isRoot = data.parentCommentOriginId === 'root';
 
   return (
     <article
@@ -75,10 +70,10 @@ export default function Comment({
       </div>
       {isModifying ? (
         <ModifyComment
-          id={postOriginId}
-          initialComment={data.commentContent}
+          id={data.commentOriginId}
+          comment={comment}
+          setComment={setComment}
           setIsModifying={setIsModifying}
-          postOriginId={postOriginId}
         />
       ) : (
         <div className="relative pr-10 py-[18px]">
@@ -86,7 +81,7 @@ export default function Comment({
             <HeartIcon width={20} height={20} />
             <span className="text-xs text-gray-scale-500">5</span>
           </div>
-          <span className="text-sm">{data.commentContent}</span>
+          <span className="text-sm">{comment}</span>
         </div>
       )}
 

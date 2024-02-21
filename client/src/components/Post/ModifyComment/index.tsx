@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 // components
 import { Button } from '@/components';
 
@@ -16,24 +12,21 @@ import { commentManager } from '@/service/comment';
 
 interface IProps {
   id: string;
-  initialComment: string;
+  comment: string;
+  setComment: (modifyComment: string) => void;
   setIsModifying: (isModifying: boolean) => void;
-  postOriginId: string;
 }
 export default function ModifyComment({
   id,
-  initialComment,
+  comment,
+  setComment,
   setIsModifying,
-  postOriginId,
 }: IProps) {
-  const { openModal } = useModal();
-
-  const [comment, setComment] = useState(initialComment);
+  const { openModal, closeModal } = useModal();
 
   const handleUpdate = async () => {
     try {
       await commentManager.updateComment({
-        postOriginId,
         content: comment,
         commentOriginId: id,
       });
@@ -41,6 +34,10 @@ export default function ModifyComment({
       openModal({
         type: ModalType.SUCCESS,
         message: successMessage.commentUpdateSuccess,
+        callback: () => {
+          setIsModifying(false);
+          closeModal();
+        },
       });
     } catch (e) {
       openModal({

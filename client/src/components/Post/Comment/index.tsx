@@ -1,28 +1,36 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 //components
 import { Icon } from '@iconify/react';
 import { ArrowDownIcon } from '@/assets/Icon';
-import { ModifyComment, ReplyComment } from '..';
+import { ModifyComment, ReplyComment, DeleteComment } from '..';
+import { Avatar } from '@/components';
+import { HeartIcon } from '@/assets/Icon';
 
 //service
 import { BASE_URL } from '@/service/base/api';
 
 //types
 import { IComment } from '@/types';
-import Link from 'next/link';
-import Avatar from '../../Avatar';
+
+// utils
 import { parseDateWithDot } from '@/util';
-import { HeartIcon } from '@/assets/Icon';
 
 interface ICommentProps {
   data: IComment;
   IS_AUTHOR: boolean;
+  postOriginId: string;
   children?: React.ReactNode;
 }
-export default function Comment({ data, IS_AUTHOR, children }: ICommentProps) {
+export default function Comment({
+  data,
+  IS_AUTHOR,
+  postOriginId,
+  children,
+}: ICommentProps) {
   const [isModifying, setIsModifying] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [isReplyOpen, setIsReplyOpen] = useState(false);
@@ -64,7 +72,10 @@ export default function Comment({ data, IS_AUTHOR, children }: ICommentProps) {
                 수정
               </span>
             )}
-            <span className="hover:underline hover:cursor-pointer">삭제</span>
+            <DeleteComment
+              commentOriginId={data.commentOriginId}
+              postOriginId={postOriginId}
+            />
           </div>
         )}
       </div>

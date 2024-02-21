@@ -53,7 +53,9 @@ function PostContent({ postOriginId, initialData }: IProps) {
       </h3>
       <CommentUpload user={user} postOriginId={postOriginId} />
       {postComment
-        ?.filter((comment: IComment) => comment.commentParentId === 'root')
+        ?.filter(
+          (comment: IComment) => comment.parentCommentOriginId === 'root'
+        )
         .map((comment: IComment) => (
           <Comment
             key={comment.commentOriginId}
@@ -64,7 +66,7 @@ function PostContent({ postOriginId, initialData }: IProps) {
             {postComment
               ?.filter(
                 (reply: IComment) =>
-                  reply.commentParentId === comment.commentOriginId
+                  reply.parentCommentOriginId === comment.commentOriginId
               )
               .map((reply: IComment) => (
                 <Comment

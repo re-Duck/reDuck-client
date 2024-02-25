@@ -55,5 +55,84 @@ export const theme = {
   fontFamily: {
     pilseoung: ['Pilseung_Gothic'],
   },
+  fontSize: {
+    caption2: [
+      '0.625rem',
+      {
+        lineHeight: '130%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    caption1: [
+      '0.75rem',
+      {
+        lineHeight: '130%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    body3: [
+      '0.875rem',
+      {
+        lineHeight: '160%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    body2: [
+      '1rem',
+      {
+        lineHeight: '160%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    body1: [
+      '1.125rem',
+      {
+        lineHeight: '160%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    headline6: [
+      '1.25rem',
+      {
+        lineHeight: '150%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    headline5: [
+      '1.5rem',
+      {
+        lineHeight: '150%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    headline4: [
+      '2rem',
+      {
+        lineHeight: '150%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    headline3: [
+      '2.5rem',
+      {
+        lineHeight: '150%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    headline2: [
+      '3rem',
+      {
+        lineHeight: '150%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+    headline1: [
+      '3.75rem',
+      {
+        lineHeight: '150%',
+        letterSpacing: '-0.02em',
+      },
+    ],
+  },
 };
 export const plugins = [];

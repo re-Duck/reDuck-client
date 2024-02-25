@@ -20,7 +20,7 @@ export default async function loginUser({ data }: PropType) {
   const response = await axios_post({ suburl, data });
 
   if (!response.isOkay) {
-    throw new Error(response.error.code);
+    throw new Error(response.error);
   }
   const {
     userId,

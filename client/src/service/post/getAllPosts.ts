@@ -17,7 +17,7 @@ async function getAllPosts({
 
   const response = await axios_get<IPostInformation[]>({ suburl, params });
   if (!response.isOkay) {
-    throw new Error(response.error.code);
+    throw new Error(response.error);
   }
 
   const data = response.data as IPostInformation[];

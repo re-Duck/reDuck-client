@@ -14,11 +14,11 @@ interface PostSectionProps {
   initialData?: { data: IPostInformation[]; nextPageParms?: string };
 }
 
-export default function PostsSection({ initialData }: PostSectionProps) {
+export default function PostsSection() {
   const [postViewType, setPostViewType] = useState<'latest' | 'popular'>(
     'latest'
   );
-  const { datas } = useScroll({ initialData, type: 'qna' });
+  const { datas } = useScroll({ initialData: undefined, type: 'stack' });
   return (
     <div className="flex flex-col w-full">
       <div className="flex justify-between mb-8">

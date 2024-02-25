@@ -20,7 +20,7 @@ export default function Post({ post }: PostProps) {
           </div>
         </div>
 
-        <div className="w-[104px] h-[104px] bg-red-scale-500"></div>
+        <div className="w-[104px] h-[104px] bg-gray-scale-300"></div>
       </div>
       <div className="text-[12px] text-gray-scale-600 flex justify-between">
         <span>{`${post.commentsCount}개의 댓글`}</span>

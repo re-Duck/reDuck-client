@@ -5,9 +5,5 @@ export default function LayoutComponent({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <Layout>
-      <div className="pt-[38px] flex justify-center">{children}</div>
-    </Layout>
-  );
+  return <Layout viewMode="gpt">{children}</Layout>;
 }

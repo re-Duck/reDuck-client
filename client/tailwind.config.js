@@ -5,7 +5,7 @@ export const theme = {
   colors: {
     'white': '#ffffff',
     'black': '#030712',
-    'yello-scale': {
+    'yellow-scale': {
       50: '#FFFCE5',
       100: '#FFF8CC',
       200: '#FFF199',
@@ -43,6 +43,13 @@ export const theme = {
       800: '#646464',
       900: '#454545',
       950: '#242424',
+    },
+    'red-scale': {
+      500: '#F2415A',
+      600: '#E5102E',
+    },
+    'green-scale': {
+      600: '#1F9854',
     },
   },
   fontFamily: {

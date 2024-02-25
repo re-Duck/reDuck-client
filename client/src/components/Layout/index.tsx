@@ -1,29 +1,18 @@
-'use client';
-
-import React, { useState } from 'react';
+import { PostViewType } from '@/types';
 import Navigator from '../Navigator';
-import MenuView from '../MenuView';
 
 interface IProps {
   children: React.ReactNode;
-  hasLoginButton?: boolean;
+  viewMode?: PostViewType;
 }
 
-export default function Layout({ children, hasLoginButton = true }: IProps) {
-  const [isClickedHamburger, setisClickedHamburger] = useState(false);
-
+export default function Layout({ children, viewMode }: IProps) {
   return (
-    <main className="w-full h-full">
-      <MenuView
-        isClickedHamburger={isClickedHamburger}
-        setisClickedHamburger={setisClickedHamburger}
-        hasLoginButton={hasLoginButton}
-      />
-      <Navigator
-        setisClickedHamburger={setisClickedHamburger}
-        hasLoginButton={hasLoginButton}
-      />
-      <main className="min-h-screen pt-20 m-auto bg-gray-50">{children}</main>
+    <main className="w-full min-h-screen ">
+      <Navigator viewMode={viewMode} />
+      <main className="h-full pt-[120px] max-w-[1024px] m-auto px-4">
+        {children}
+      </main>
     </main>
   );
 }

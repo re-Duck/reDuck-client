@@ -7,15 +7,17 @@ import { useEffect } from 'react';
 
 function useScroll({
   initialData,
+  type,
 }: {
   initialData?: { data: IPostInformation[]; nextPageParms?: string };
+  type: 'stack' | 'qna';
 }) {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     ...(!!initialData && initialData),
     queryKey: ['projects'],
-    queryFn: getAllPosts,
+    queryFn: ({ pageParam }) => getAllPosts({ postType: type, pageParam }),
     getNextPageParam: (lastPage) => lastPage?.nextPageParms,
-    suspense: true,
+    // suspense: true,
   });
 
   useEffect(() => {

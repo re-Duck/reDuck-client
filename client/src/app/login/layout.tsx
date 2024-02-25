@@ -6,5 +6,5 @@ export default function LayoutComponent({
 }: {
   children: React.ReactNode;
 }) {
-  return <Layout hasLoginButton={false}>{children}</Layout>;
+  return <Layout>{children}</Layout>;
 }

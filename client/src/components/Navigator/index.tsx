@@ -1,107 +1,65 @@
-'use client';
-
-//core
-import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
+import Link from 'next/link';
+import Button from '../Button';
+import SearchButton from './SearchButton';
+import ChatButton from './ChatButton';
+import AlarmButton from './AlarmButton';
+import ProfileButton from './ProfileButton';
+import { ArrowDownIcon } from '@/assets/Icon';
+import PostModeNavigation from './PostModeNavigation';
+import { PostViewType } from '@/types';
 
-// hooks
-import useModal from '@/hooks/modal/useModal';
-// constants
-import { ModalType, errorMessage } from '@/constants/constant';
-
-// types
-import { IReduxState } from '@/types/redux/IReduxState';
-
-// Icons
-import { Icon } from '@iconify/react';
-
-interface INavigator {
-  setisClickedHamburger: React.Dispatch<React.SetStateAction<boolean>>;
-  hasLoginButton: boolean;
+interface NavitatorProps {
+  viewMode?: PostViewType;
 }
-
-export function Navigator({
-  setisClickedHamburger,
-  hasLoginButton,
-}: INavigator) {
-  const user = useSelector((state: IReduxState) => state.auth);
-  const { openModal } = useModal();
+export default function Navigator({ viewMode }: NavitatorProps) {
   return (
-    <nav
-      className="fixed top-0 left-0 z-10 w-full h-16 bg-white border-b-2 border-gray-100"
-      id="navigator"
-    >
-      <ul className="flex items-center justify-between h-full max-w-5xl p-4 px-6 m-auto">
-        <li>
-          <Link
-            href="/"
-            className="text-2xl font-bold"
-            onClick={() => setisClickedHamburger(false)}
-          >
-            <div className="flex gap-1 font-pilseoung">
+    <div className="w-full z-10 h-[120px] fixed bg-white">
+      <div className="px-4 sm:px-4 max-w-[1024px] w-full h-full flex flex-col gap-[14px] m-auto">
+        <div className="flex items-center justify-between  w-full h-[64px]">
+          <Link href="/" className="flex gap-1  h-[30px] items-center">
+            <span className="text-[24px] font-pilseoung flex items-center">
               reDuck
-              <Image
-                src="/images/main-duck.png"
-                alt="reDuck-icon"
-                width={32}
-                height={32}
-              />
-            </div>
+            </span>
+            <Image
+              src="/images/main-duck.png"
+              alt="reDuck-icon"
+              width={24}
+              height={24}
+            />
           </Link>
-        </li>
-        {hasLoginButton && (
-          <>
-            <li className="flex-auto pl-8">
-              <ul className="hidden gap-8 text-gray-500 sm:flex">
-                {user.userId ? (
-                  <Link href={'/chat'} className="hover:cursor-pointer">
-                    채팅방
-                  </Link>
-                ) : (
-                  <li
-                    className="hover:cursor-pointer"
-                    onClick={() =>
-                      openModal({
-                        type: ModalType.ERROR,
-                        message: errorMessage.needLogin,
-                      })
-                    }
-                  >
-                    채팅방
-                  </li>
-                )}
-                <Link href={'/mygpt'} className="hover:cursor-pointer">
-                  GPT
-                </Link>
-              </ul>
-            </li>
 
-            <li>
-              <ul>
-                <li className="hidden font-bold sm:block">
-                  {user.userId ? (
-                    <Link href={`/profile/${user.userId}`}>마이페이지</Link>
-                  ) : (
-                    <Link href="/login">로그인</Link>
-                  )}
-                </li>
-                <li className="sm:hidden">
-                  <Icon
-                    icon="material-symbols:menu-rounded"
-                    style={{ fontSize: '25px' }}
-                    className="cursor-pointer"
-                    onClick={() => setisClickedHamburger((prev) => !prev)}
-                  />
-                </li>
-              </ul>
-            </li>
-          </>
-        )}
-      </ul>
-    </nav>
+          <div className="flex items-center gap-4 h-[36px]">
+            <ul className="flex gap-4">
+              <li className="w-6 h-6">
+                <SearchButton />
+              </li>
+              <li className="w-6 h-6">
+                <ChatButton />
+              </li>
+              <li className="w-6 h-6">
+                <AlarmButton />
+              </li>
+            </ul>
+            <Link
+              href="/profile"
+              className="flex items-center justify-center cursor-pointer w-[36px] h-[36px]"
+            >
+              <ProfileButton />
+            </Link>
+          </div>
+        </div>
+
+        <div className="w-full h-[40px]">
+          <div className="border-b-[1px] border-gray-scale-400 w-full h-full flex justify-between">
+            <PostModeNavigation viewMode={viewMode} />
+            <Button color="yellow">
+              작성하기
+              <ArrowDownIcon />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
-
-export default React.memo(Navigator);

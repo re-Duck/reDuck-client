@@ -1,3 +1,5 @@
+'use client';
+
 import getAllPosts from '@/service/post/getAllPosts';
 import PostsSection from './components/PostsSection';
 

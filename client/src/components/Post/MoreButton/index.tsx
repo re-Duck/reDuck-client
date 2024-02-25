@@ -99,7 +99,17 @@ export default function MoreButton({ IS_AUTHOR, postOriginId }: IProps) {
               </div>
             </>
           )}
-          <div className="py-2 hover:cursor-pointer">신고하기</div>
+          <div
+            className="py-2 hover:cursor-pointer"
+            onClick={() => {
+              openModal({
+                type: ModalType.ERROR,
+                message: errorMessage.notComplete,
+              });
+            }}
+          >
+            신고하기
+          </div>
         </div>
       )}
     </div>

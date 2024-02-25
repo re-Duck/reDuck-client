@@ -10,13 +10,19 @@ import { ModifyComment, ReplyComment, DeleteComment } from '..';
 import { Avatar } from '@/components';
 import { HeartIcon } from '@/assets/Icon';
 
+//hooks
+import useModal from '@/hooks/modal/useModal';
+
 //service
 import { BASE_URL } from '@/service/base/api';
 
 //types
 import { IComment } from '@/types';
 
-// utils
+//constants
+import { ModalType, errorMessage } from '@/constants/constant';
+
+//utils
 import { parseDateWithDot } from '@/util';
 
 interface ICommentProps {
@@ -31,6 +37,8 @@ export default function Comment({
   postOriginId,
   children,
 }: ICommentProps) {
+  const { openModal } = useModal();
+
   const [isModifying, setIsModifying] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [isReplyOpen, setIsReplyOpen] = useState(false);
@@ -89,8 +97,20 @@ export default function Comment({
       ) : (
         <div className="relative pr-10 py-[18px]">
           <div className="absolute top-1/4 right-4 flex flex-col items-center gap-0.5">
-            <HeartIcon width={20} height={20} />
-            <span className="text-xs text-gray-scale-500">5</span>
+            <HeartIcon
+              className="hover:cursor-pointer"
+              fill="none"
+              stroke="#A1A1A1"
+              width={20}
+              height={20}
+              onClick={() => {
+                openModal({
+                  type: ModalType.ERROR,
+                  message: errorMessage.notComplete,
+                });
+              }}
+            />
+            <span className="text-xs text-gray-scale-500">0</span>
           </div>
           <span className="text-sm">{comment}</span>
         </div>

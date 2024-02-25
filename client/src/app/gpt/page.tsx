@@ -14,12 +14,9 @@ import { IReduxState } from '@/types/redux/IReduxState';
 import { Formik, FormikHelpers } from 'formik';
 import { useSelector } from 'react-redux';
 import useGpt from './hooks/useGpt';
-import Gpt from './components/gpt';
-
-const initialLoginValue = {
-  code: '',
-  question: '',
-};
+import SNB from './components/SNB';
+import ChatBox from './components/ChatBox';
+import ChatInput from './components/ChatInput';
 
 export default function GptPage() {
   const user = useSelector((state: IReduxState) => state.auth);
@@ -62,46 +59,12 @@ export default function GptPage() {
   };
 
   return (
-    <>
-      <Formik initialValues={initialLoginValue} onSubmit={onSubmit}>
-        {({ isSubmitting, values }) => (
-          <>
-            <Gpt>
-              <Gpt.Title title="GPT" />
-              <Gpt.ContentBox>
-                <Gpt.SubTitle title="Code" />
-                <Gpt.Content height="md" name="code" />
-              </Gpt.ContentBox>
-
-              <Gpt.ContentBox>
-                <div className="flex items-end justify-between">
-                  <Gpt.SubTitle title="Question" />
-                  <Gpt.Remaining leftQuestionCount={remainUsageCount} />
-                </div>
-                <div className="flex justify-center gap-4">
-                  <Gpt.Question>
-                    <Gpt.SendButton
-                      disabled={isSubmitting || values.question === ''}
-                    />
-                  </Gpt.Question>
-                </div>
-              </Gpt.ContentBox>
-            </Gpt>
-            {isAnswerOpen && (
-              <div className="pb-10 bg-slate-200">
-                <Gpt ref={answerRef}>
-                  <Gpt.SubTitle title="Answer" />
-                  {answer ? (
-                    <Gpt.Content height="md" content={answer} readOnly={true} />
-                  ) : (
-                    <Gpt.Loading />
-                  )}
-                </Gpt>
-              </div>
-            )}
-          </>
-        )}
-      </Formik>
-    </>
+    <div className="flex w-full h-full gap-5 pt-12 pb-8">
+      <SNB />
+      <div className="flex flex-col w-full">
+        <ChatBox />
+        <ChatInput />
+      </div>
+    </div>
   );
 }

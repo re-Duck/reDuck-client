@@ -9,7 +9,7 @@ async function updateCommtent({ commentOriginId, content }: IUpdateCommtent) {
   const suburl = `/post/comment/${commentOriginId}`;
 
   const data = { content, commentOriginId };
-  console.log(data);
+
   const result = await axios_put({ suburl, data });
 
   if (!result.isOkay) {

@@ -46,7 +46,7 @@ export default function CommentUpload({ user, postOriginId }: IComentUpload) {
     mutationFn: (content: string) =>
       commentManager.createComment({ content, postOriginId }),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [postOriginId] }),
+      queryClient.invalidateQueries({ queryKey: [`${postOriginId}/comment`] }),
   });
 
   const handleComment = async ({

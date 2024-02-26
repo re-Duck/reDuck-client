@@ -36,9 +36,9 @@ const FollowButton = ({ userId }: { userId: string }) => {
   }) => {
     if (!(isFollower || isFollowing)) {
       return (
-        <div className="flex items-center gap-1.5 ">
+        <div className="flex items-center gap-1.5 flex-nowrap">
           <Icon icon="clarity:plus-line" width={20} height={20} />
-          <span className="text-body2">팔로우</span>
+          <span className="text-body2 text-nowrap">팔로우</span>
         </div>
       );
     } else if (isFollower && !isFollowing) {

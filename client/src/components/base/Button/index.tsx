@@ -26,7 +26,7 @@ export default function Button(props: ButtonProps) {
 
   return (
     <button
-      className={`h-8 px-5 py-1 text-body2 leading-[20.48px] tracking-[-0.32px] flex gap-[6px] rounded-[2px] items-center ${
+      className={`h-8 px-5 py-1 text-body2 leading-[20.48px] tracking-[-0.32px] flex gap-[6px] rounded-[2px] items-center text-nowrap ${
         style[props.color]
       } `}
       {...props}

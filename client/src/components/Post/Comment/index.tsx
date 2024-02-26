@@ -164,7 +164,11 @@ export default function Comment({
                 </span>
               </div>
               {isReplying && (
-                <ReplyComment onClose={() => setIsReplying(false)} />
+                <ReplyComment
+                  onClose={() => setIsReplying(false)}
+                  parentCommentOriginId={data.commentOriginId}
+                  postOriginId={postOriginId}
+                />
               )}
             </>
           )}
@@ -188,7 +192,11 @@ export default function Comment({
                 </span>
               </div>
               {isReplying && (
-                <ReplyComment onClose={() => setIsReplying(false)} />
+                <ReplyComment
+                  onClose={() => setIsReplying(false)}
+                  parentCommentOriginId={data.commentOriginId}
+                  postOriginId={postOriginId}
+                />
               )}
             </div>
           )}

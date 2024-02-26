@@ -1,11 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import Button from '@/components/Button';
+
+//components
 import Post from './Post';
-import { IPostInformation } from '@/types';
-import { LoadingIcon } from '@/components';
+import { LoadingIcon, Button } from '@/components';
+
+//hooks
 import useScroll from '@/hooks/scroll/useScroll';
+
+//types
+import { IPostInformation } from '@/types';
 
 interface PostSectionProps {
   initialData?: { data: IPostInformation[]; nextPageParms?: string };

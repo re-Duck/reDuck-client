@@ -7,7 +7,7 @@ import { IPostInformation } from '@/types';
 import useScroll from '@/hooks/scroll/useScroll';
 
 //components
-import Button from '@/components/Button';
+import { Button } from '@/components';
 import Post from '../Post';
 
 interface PostSectionProps {

@@ -56,77 +56,77 @@ export const theme = {
     pilseoung: ['Pilseung_Gothic'],
   },
   fontSize: {
-    'xxs': [
+    caption2: [
       '0.625rem',
       {
         lineHeight: '130%',
         letterSpacing: '-0.02em',
       },
     ],
-    'xs': [
+    caption1: [
       '0.75rem',
       {
         lineHeight: '130%',
         letterSpacing: '-0.02em',
       },
     ],
-    'sm': [
+    body3: [
       '0.875rem',
       {
         lineHeight: '160%',
         letterSpacing: '-0.02em',
       },
     ],
-    'base': [
+    body2: [
       '1rem',
       {
         lineHeight: '160%',
         letterSpacing: '-0.02em',
       },
     ],
-    'lg': [
+    body1: [
       '1.125rem',
       {
         lineHeight: '160%',
         letterSpacing: '-0.02em',
       },
     ],
-    'xl': [
+    headline6: [
       '1.25rem',
       {
         lineHeight: '150%',
         letterSpacing: '-0.02em',
       },
     ],
-    '2xl': [
+    headline5: [
       '1.5rem',
       {
         lineHeight: '150%',
         letterSpacing: '-0.02em',
       },
     ],
-    '3xl': [
+    headline4: [
       '2rem',
       {
         lineHeight: '150%',
         letterSpacing: '-0.02em',
       },
     ],
-    '4xl': [
+    headline3: [
       '2.5rem',
       {
         lineHeight: '150%',
         letterSpacing: '-0.02em',
       },
     ],
-    '5xl': [
+    headline2: [
       '3rem',
       {
         lineHeight: '150%',
         letterSpacing: '-0.02em',
       },
     ],
-    '6xl': [
+    headline1: [
       '3.75rem',
       {
         lineHeight: '150%',

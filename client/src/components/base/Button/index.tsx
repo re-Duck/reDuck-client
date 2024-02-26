@@ -25,7 +25,7 @@ export default function Button(props: ButtonProps) {
     <button
       className={`h-8 px-5 py-1 text-[16px] leading-[20.48px] tracking-[-0.32px] flex gap-[6px] rounded-[2px] items-center ${
         style[props.color]
-      }`}
+      } `}
       {...props}
     >
       {props.children}

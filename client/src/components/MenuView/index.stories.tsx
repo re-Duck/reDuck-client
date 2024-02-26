@@ -62,7 +62,6 @@ type Story = StoryObj<typeof MenuView>;
 export const Primary: Story = {
   args: {
     isClickedHamburger: true,
-    hasLoginButton: true,
   },
   parameters: {
     docs: {

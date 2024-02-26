@@ -50,8 +50,8 @@ export default function Comment({
   return (
     <article
       className={`${
-        isRoot ? 'py-6' : 'pt-3'
-      } border-b border-blue-gray-scale-50`}
+        isRoot ? 'py-6 border-b' : 'pt-3 border-t'
+      } border-blue-gray-scale-50`}
     >
       <div className="relative flex justify-between">
         <Link
@@ -93,6 +93,7 @@ export default function Comment({
           comment={comment}
           setComment={setComment}
           setIsModifying={setIsModifying}
+          isRoot={isRoot}
         />
       ) : (
         <div className="relative pr-10 py-[18px]">
@@ -179,26 +180,28 @@ export default function Comment({
               <div className="border-t border-blue-gray-scale-50 mt-[18px]">
                 {children}
               </div>
-              <div
-                className="mt-3 py-1 flex items-center justify-center gap-1.5 hover:cursor-pointer hover:bg-blue-gray-scale-50 border border-blue-gray-scale-200"
-                onClick={() => setIsReplying(true)}
-              >
-                <Icon
-                  icon="mingcute:pencil-line"
-                  width={16}
-                  height={16}
-                  className="text-gray-scale-900"
-                />
-                <span className="text-caption1 text-gray-scale-900">
-                  답글 달기
-                </span>
-              </div>
-              {isReplying && (
+
+              {isReplying ? (
                 <ReplyComment
                   onClose={() => setIsReplying(false)}
                   parentCommentOriginId={data.commentOriginId}
                   postOriginId={postOriginId}
                 />
+              ) : (
+                <div
+                  className="mt-3 py-1 flex items-center justify-center gap-1.5 hover:cursor-pointer hover:bg-blue-gray-scale-50 border border-blue-gray-scale-200"
+                  onClick={() => setIsReplying(true)}
+                >
+                  <Icon
+                    icon="mingcute:pencil-line"
+                    width={16}
+                    height={16}
+                    className="text-gray-scale-900"
+                  />
+                  <span className="text-caption1 text-gray-scale-900">
+                    답글 달기
+                  </span>
+                </div>
               )}
             </div>
           )}

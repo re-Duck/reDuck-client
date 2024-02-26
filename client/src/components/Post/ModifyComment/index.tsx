@@ -15,12 +15,14 @@ interface IProps {
   comment: string;
   setComment: (modifyComment: string) => void;
   setIsModifying: (isModifying: boolean) => void;
+  isRoot: boolean;
 }
 export default function ModifyComment({
   id,
   comment,
   setComment,
   setIsModifying,
+  isRoot,
 }: IProps) {
   const { openModal, closeModal } = useModal();
 
@@ -63,7 +65,7 @@ export default function ModifyComment({
           취소
         </span>
         <Button color="blue_gray" onClick={handleUpdate}>
-          댓글 수정
+          {isRoot ? '댓글 수정' : '답글 수정'}
         </Button>
       </div>
     </>

@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 const mockComment: IComment = {
-  commentAuthorDevelopAnnual: '0',
+  parentCommentOriginId: 'root',
   commentAuthorId: 'test1234',
   commentAuthorName: '테스터',
   commentAuthorProfileImgPath:

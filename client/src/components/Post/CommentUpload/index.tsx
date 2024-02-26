@@ -82,14 +82,14 @@ export default function CommentUpload({ user, postOriginId }: IComentUpload) {
           <div className="px-5 py-3 border border-gray-scale-400 h-[90px]">
             <div className="flex items-center gap-1 mb-1">
               <Avatar src={comentImgSrc} alt="user_icon" size="xxs" />
-              <span className="text-xs">
+              <span className="text-caption1">
                 {user.userName !== '' ? user.userName : '로그인이 필요합니다'}
               </span>
             </div>
             <Field
               name="content"
               type="text"
-              className="w-full text-sm focus:outline-none placeholder:text-gray-scale-500"
+              className="w-full text-body3 focus:outline-none placeholder:text-gray-scale-500"
               placeholder="댓글을 작성해주세요. (@를 입력하여 다른 사람을 태그할 수 있습니다)"
             />
           </div>

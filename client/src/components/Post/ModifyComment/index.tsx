@@ -50,14 +50,14 @@ export default function ModifyComment({
     <>
       <div className="p-3 mt-3 mb-2 border border-gray-scale-500 h-[60px]">
         <input
-          className="w-full text-sm focus:outline-none"
+          className="w-full text-body3 focus:outline-none"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
       <div className="justify-end flex gap-[20px] items-center">
         <span
-          className="hover:cursor-pointer"
+          className="text-body2 hover:cursor-pointer"
           onClick={() => setIsModifying(false)}
         >
           취소

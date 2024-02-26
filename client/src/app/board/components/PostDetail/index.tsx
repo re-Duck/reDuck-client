@@ -61,19 +61,21 @@ export default function PostDetail({ data, IS_AUTHOR }: PostDetail) {
 
   return (
     <article className="flex flex-col max-w-4xl min-w-full m-auto bg-white">
-      <h1 className="sm:text-4xl text-3xl font-medium pt-[38px] pb-6">
+      <h1 className="sm:text-headline3 text-headline4 pt-[38px] pb-6">
         {data.postTitle}
       </h1>
       <div className="relative flex items-center pb-4 border-b border-blue-gray-scale-50">
         <Avatar src={url} alt="user_icon" size="xs" />
-        <span className="ml-1 text-sm">{data.postAuthorName}</span>
+        <span className="ml-1 text-body3 text-gray-scale-900">
+          {data.postAuthorName}
+        </span>
         <Divider type="vertical" margin={3} thin={1} />
-        <span className="text-sm text-gray-scale-600">
+        <span className="text-body3 text-gray-scale-600">
           {parseDate(data?.postCreatedAt)}
         </span>
         <div className="flex items-end gap-2 ml-auto">
           <span
-            className="hidden text-sm text-gray-scale-600 hover:cursor-pointer sm:block"
+            className="hidden text-body3 text-gray-scale-600 hover:cursor-pointer sm:block"
             onClick={onCopy}
           >
             URL 복사

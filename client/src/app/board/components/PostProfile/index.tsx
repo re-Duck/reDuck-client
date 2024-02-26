@@ -23,11 +23,11 @@ export default function PostProfile({ userId, userName, imageUrl }: IProps) {
       >
         <Avatar src={imageUrl} alt="user_icon" size="md" />
         <div className="flex flex-col items-start flex-1 gap-2 min-w-fit">
-          <h3 className="text-2xl font-bold">{userName}</h3>
+          <h3 className="font-bold text-headline5">{userName}</h3>
           <div className="flex items-center">
-            <span className="text-sm text-gray-scale-600">100 팔로워</span>
+            <span className="text-body3 text-gray-scale-600">100 팔로워</span>
             <Divider type="vertical" margin={3} thin={1} />
-            <span className="text-sm text-gray-scale-600">124 채택</span>
+            <span className="text-body3 text-gray-scale-600">124 채택</span>
           </div>
         </div>
       </Link>

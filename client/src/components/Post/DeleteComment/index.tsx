@@ -49,7 +49,7 @@ export default function DeleteComment({
 
   return (
     <span
-      className="hover:underline hover:cursor-pointer"
+      className="text-caption1 hover:underline hover:cursor-pointer"
       onClick={handleClickDelete}
     >
       삭제

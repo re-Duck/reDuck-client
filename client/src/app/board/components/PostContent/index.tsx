@@ -48,7 +48,7 @@ function PostContent({ postOriginId, initialData }: IProps) {
         data={postData as IBoardPostInformation}
         IS_AUTHOR={IS_POST_AUTHOR}
       />
-      <h3 className="text-lg font-bold mt-[52px] mb-[30px] text-gray-scale-800">
+      <h3 className="text-body1 mt-[52px] mb-[30px] font-bold text-gray-scale-800">
         {postComment?.length}개의 댓글
       </h3>
       <CommentUpload user={user} postOriginId={postOriginId} />

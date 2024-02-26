@@ -93,12 +93,12 @@ export default function ReplyComment({
             <Field
               name="content"
               type="text"
-              className="w-full text-sm focus:outline-none"
+              className="w-full text-body3 focus:outline-none"
               placeholder="답글을 작성해 주세요 (@를 입력하여 다른 사람을 태그할 수 있습니다)"
             />
           </div>
           <div className="justify-end flex gap-[20px] items-center">
-            <span className="hover:cursor-pointer" onClick={onClose}>
+            <span className="text-body2 hover:cursor-pointer" onClick={onClose}>
               취소
             </span>
             <Button

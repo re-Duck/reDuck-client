@@ -70,7 +70,7 @@ export default function FloatingBarLike({
 
   return (
     <div className="flex flex-col items-center py-1.5 mx-[5px] gap-2 px-[5px] bg-gray-scale-50 shadow-[inset_0px_-2px] shadow-gray-scale-200">
-      <p className="font-bold">{likes}</p>
+      <p className="font-bold text-caption1">{likes}</p>
       <HeartIcon
         className="hover:cursor-pointer"
         fill={isLike ? '#F2415A' : 'none'}

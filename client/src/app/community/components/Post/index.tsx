@@ -1,4 +1,4 @@
-import { HeartOn } from '@/assets/Icon';
+import { HeartIcon } from '@/assets/Icon';
 import PostAuthorAndDate from '@/components/PostAuthorAndDate';
 import { IPostInformation } from '@/types';
 
@@ -25,7 +25,7 @@ export default function Post({ post }: PostProps) {
       <div className="text-[12px] text-gray-scale-600 flex justify-between">
         <span>{`${post.commentsCount}개의 댓글`}</span>
         <span className="flex items-center gap-1">
-          <HeartOn width={16} height={16} fill="#A1A1A1" stroke="#A1A1A1" />
+          <HeartIcon width={16} height={16} fill="#A1A1A1" stroke="#A1A1A1" />
           {post.likes}
         </span>
       </div>

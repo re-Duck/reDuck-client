@@ -151,6 +151,6 @@
   }
 }
 #tiptap {
-  height: 60vh;
+  flex: 1;
   padding: 1rem 2rem;
 }

@@ -12,6 +12,7 @@ export default function ArrowDownIcon(props: ArrowDownIconProps) {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
+      className={props.className}
     >
       <path
         d="M6 9L12 15L18 9"

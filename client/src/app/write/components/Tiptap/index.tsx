@@ -16,7 +16,7 @@ const Tiptap = ({ content, editor }: TiptapProps) => {
     }
   }, [content]);
   return (
-    <div className="border-2">
+    <div className="flex flex-col flex-1 border border-blue-gray-scale-50">
       <ToolBar editor={editor} />
       <EditorContent
         id="tiptap"

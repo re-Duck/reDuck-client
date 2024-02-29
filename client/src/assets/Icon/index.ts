@@ -8,3 +8,4 @@ export { default as SaveIcon } from './save';
 export { default as Close } from './close';
 export { default as Check } from './check';
 export { default as Tag } from './tag';
+export { default as MoreIcon } from './more';

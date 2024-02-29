@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { openAlert } from '@/lib/redux/features/alert/alertSlice';
 
+// assets
+import { MoreIcon } from '@/assets/Icon';
+
 // components
 import Button from '../base/Button';
-import { Icon } from '@iconify/react';
 import FollowButtonErrorFallback from './FollowButtonErrorFallback';
 import FollowButtonLoading from './FollowButtonLoading';
 
@@ -37,7 +39,7 @@ const FollowButton = ({ userId }: { userId: string }) => {
     if (!(isFollower || isFollowing)) {
       return (
         <div className="flex items-center gap-1.5 flex-nowrap">
-          <Icon icon="clarity:plus-line" width={20} height={20} />
+          <MoreIcon width={20} height={20} />
           <span className="text-body2 text-nowrap">팔로우</span>
         </div>
       );
@@ -63,7 +65,7 @@ const FollowButton = ({ userId }: { userId: string }) => {
             '맞팔로우'
           ) : (
             <div className="flex items-center gap-1.5">
-              <Icon icon="clarity:plus-line" width={20} height={20} />
+              <MoreIcon width={20} height={20} />
               <span>팔로우</span>
             </div>
           )

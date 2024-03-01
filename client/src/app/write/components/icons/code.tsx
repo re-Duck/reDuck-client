@@ -1,19 +1,16 @@
-'use client';
-
-import { Icon } from '@iconify/react';
 import { Editor } from '@tiptap/react';
-import React from 'react';
+import Icon from '@/assets/Icon/code';
 
 function Code({ editor }: { editor: Editor }) {
   return (
     <button
       onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-      className={`opacity-70 hover:opacity-40  ${
+      className={`hover:opacity-40  ${
         editor.isActive('codeBlock') ? 'is-active' : ''
       }`}
       type="button"
     >
-      <Icon icon="material-symbols:code" fontSize={32} color="black" />
+      <Icon className="w-[30px] h-[30px]" />
     </button>
   );
 }

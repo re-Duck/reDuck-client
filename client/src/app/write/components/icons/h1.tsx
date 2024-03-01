@@ -1,23 +1,16 @@
-'use client';
-
-import React from 'react';
 import { Editor } from '@tiptap/react';
-import { Icon } from '@iconify/react';
+import Icon from '@/assets/Icon/h1';
 
 function H1({ editor }: { editor: Editor }) {
   return (
     <button
       onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-      className={`opacity-70 hover:opacity-40  ${
+      className={`hover:opacity-40  ${
         editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
       }`}
       type="button"
     >
-      <Icon
-        icon="material-symbols:format-h1-rounded"
-        fontSize={32}
-        color="black"
-      />
+      <Icon className="w-[30px] h-[30px]" />
     </button>
   );
 }

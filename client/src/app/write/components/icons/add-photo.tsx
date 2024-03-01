@@ -1,8 +1,3 @@
-'use client';
-
-//core
-import React from 'react';
-
 //constants
 import { ModalType, errorMessage } from '@/constants/constant';
 
@@ -13,7 +8,7 @@ import { postManager } from '@/service/post';
 //third party
 import { Editor } from '@tiptap/react';
 import useModal from '@/hooks/modal/useModal';
-import { Icon } from '@iconify/react';
+import ImagePlus from '@/assets/Icon/image-plus';
 
 function AddPhoto({ editor }: { editor: Editor }) {
   const { openModal } = useModal();
@@ -44,7 +39,7 @@ function AddPhoto({ editor }: { editor: Editor }) {
   return (
     <button
       type="button"
-      className="relative w-8 h-8 cursor-pointer opacity-70 hover:opacity-40"
+      className="relative w-8 h-8 cursor-pointer hover:opacity-40"
     >
       <input
         type="file"
@@ -55,7 +50,7 @@ function AddPhoto({ editor }: { editor: Editor }) {
           e.target.value = '';
         }}
       />
-      <Icon icon="uil:image-plus" fontSize={32} color="black" />
+      <ImagePlus className="w-[30px] h-[30px]" />
     </button>
   );
 }

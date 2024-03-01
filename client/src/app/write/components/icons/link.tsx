@@ -1,11 +1,9 @@
-'use client';
-
 //core
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 //third party
 import { Editor } from '@tiptap/react';
-import { Icon } from '@iconify/react';
+import Icon from '@/assets/Icon/link';
 
 function Link({ editor }: { editor: Editor }) {
   const setLink = useCallback(() => {
@@ -27,10 +25,10 @@ function Link({ editor }: { editor: Editor }) {
   return (
     <button
       type="button"
-      className="relative w-8 h-8 cursor-pointer opacity-70 hover:opacity-40"
+      className="relative w-8 h-8 cursor-pointer hover:opacity-40"
       onClick={setLink}
     >
-      <Icon icon="mingcute:link-line" fontSize={32} color="black" />
+      <Icon className="w-[30px] h-[30px]" />
     </button>
   );
 }

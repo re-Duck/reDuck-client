@@ -1,27 +1,22 @@
 // service
+import { PostType } from '@/types';
 import { axios_put } from '../base/api';
-
-interface IUpdatePost {
-  title: string;
-  content: string;
-  postOriginId: string;
-}
 
 interface Request {
   title: string;
   content: string;
   postOriginId: string;
-  postType: 'qna' | 'stack';
+  postType: PostType;
 }
 
-async function updatePost({ title, content, postOriginId }: IUpdatePost) {
+async function updatePost({ title, content, postOriginId, postType }: Request) {
   const suburl = `/post/${postOriginId}`;
 
   const data: Request = {
     title,
     content,
     postOriginId,
-    postType: 'qna',
+    postType,
   };
 
   const result = await axios_put<unknown, Request>({ suburl, data });

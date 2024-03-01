@@ -24,8 +24,12 @@ import { useSelector } from 'react-redux';
 import { IReduxState } from '@/types/redux/IReduxState';
 import WritingHeader from './components/WritingHeader';
 import QnaOptions from './components/QnaOptions';
-import { ArrowDownIcon } from '@/assets/Icon';
+import { PostType } from '@/types';
 
+interface FormValuesType {
+  title: string;
+  postType: PostType;
+}
 // TODO : title 없을 시 빨간 테두리
 const ValidationSchema = Yup.object().shape({
   title: Yup.string().required(errorMessage.blankTitle),
@@ -45,12 +49,15 @@ export default function Write() {
   } = useWriting(postOriginId);
 
   const user = useSelector((state: IReduxState) => state.auth);
-
+  console.log(user);
   const { openModal } = useModal();
 
   const { editor } = useTipTap();
   const handleSubmit = useCallback(
-    async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {
+    async (
+      formValues: FormValuesType,
+      setSubmitting: (isSubmitting: boolean) => void
+    ) => {
       try {
         const nextContent = editor?.getHTML() || '';
         handleContent(nextContent);
@@ -64,13 +71,15 @@ export default function Write() {
 
         if (returnPostOriginId) {
           await postManager.updatePost({
-            title,
             postOriginId,
+            title: formValues.title,
             content: nextContent,
+            postType: formValues.postType,
           });
         } else {
           returnPostOriginId = await postManager.createPost({
-            title,
+            title: formValues.title,
+            postType: formValues.postType,
             content: nextContent,
           });
         }
@@ -93,7 +102,7 @@ export default function Write() {
           validationSchema={ValidationSchema}
           onSubmit={(props, { setSubmitting }) => {
             console.log(props);
-            // handleSubmit(props.title, setSubmitting);
+            handleSubmit(props, setSubmitting);
           }}
         >
           {({ errors, isSubmitting }) => (

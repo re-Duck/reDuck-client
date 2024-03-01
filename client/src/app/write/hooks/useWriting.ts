@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 function useWriting(postOriginId: string) {
   const [initTitle, setInitTitle] = useState('');
   const [content, setContent] = useState('');
-  const [postType, setPostType] = useState<'qna' | 'stack'>('qna');
+  const [postType, setPostType] = useState<PostType>('qna');
   const [tags, setTags] = useState<string[]>([]);
 
   const handleContent = useCallback((value: string) => setContent(value), []);

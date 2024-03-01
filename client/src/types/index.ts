@@ -18,7 +18,7 @@ export interface IPostInformation {
   postCreatedAt: string;
   postOriginId: string;
   postTitle: string;
-  postType: 'qna' | 'stack';
+  postType: PostType;
   postUpdatedAt: string;
   hits: number;
   likes: number;
@@ -125,5 +125,7 @@ export type TFollowText = '팔로우' | '맞팔로우' | '팔로우 취소';
 export type EmailType = 'SIGNUP' | 'USER' | 'COMPANY' | 'SCHOOL';
 
 export type MyPageTab = '프로필' | '활동기록' | '친구목록' | '덕력치';
+
+export type PostType = 'stack' | 'qna';
 
 export type PostViewType = 'community' | 'qna' | 'gpt';

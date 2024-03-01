@@ -4,6 +4,7 @@ import { ArrowDownIcon } from '@/assets/Icon';
 import Button from '@/components/Button';
 import { ModalType, warningMessage } from '@/constants/constant';
 import useModal from '@/hooks/modal/useModal';
+import { PostType } from '@/types';
 import { Field } from 'formik';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -14,8 +15,8 @@ interface WritingHeaderProps {
     title?: string;
   };
   postOriginId?: string;
-  postType: 'qna' | 'stack';
-  setPostType: Dispatch<SetStateAction<'qna' | 'stack'>>;
+  postType: PostType;
+  setPostType: Dispatch<SetStateAction<PostType>>;
 }
 
 type PostTypeNameKey = keyof typeof postTypeName;

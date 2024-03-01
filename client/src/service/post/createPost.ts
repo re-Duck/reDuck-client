@@ -3,19 +3,19 @@ import { v4 as uuidv4 } from 'uuid';
 
 // service
 import { axios_post } from '../base/api';
-
-interface ICreatePost {
-  title: string;
-  content: string;
-}
+import { PostType } from '@/types';
 
 interface Request {
   title: string;
   content: string;
   postOriginId: string;
-  postType: 'qna' | 'stack';
+  postType: PostType;
 }
-async function createPost({ title, content }: ICreatePost) {
+async function createPost({
+  title,
+  content,
+  postType,
+}: Omit<Request, 'postOriginId'>) {
   const postOriginId = uuidv4();
   const suburl = '/post';
 
@@ -23,7 +23,7 @@ async function createPost({ title, content }: ICreatePost) {
     title,
     content,
     postOriginId,
-    postType: 'qna',
+    postType,
   };
 
   const result = await axios_post<unknown, Request>({

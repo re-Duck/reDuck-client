@@ -18,7 +18,7 @@ export interface IPostInformation {
   postCreatedAt: string;
   postOriginId: string;
   postTitle: string;
-  postType: string;
+  postType: 'qna' | 'stack';
   postUpdatedAt: string;
   hits: number;
   likes: number;

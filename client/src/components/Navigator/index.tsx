@@ -41,12 +41,9 @@ export default function Navigator({ viewMode }: NavitatorProps) {
                 <AlarmButton />
               </li>
             </ul>
-            <Link
-              href="/profile"
-              className="flex items-center justify-center cursor-pointer w-[36px] h-[36px]"
-            >
+            <div className="flex items-center justify-center cursor-pointer w-[36px] h-[36px]">
               <ProfileButton />
-            </Link>
+            </div>
           </div>
         </div>
 

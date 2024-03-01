@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { openAlert } from '@/lib/redux/features/alert/alertSlice';
 
@@ -15,8 +15,9 @@ import FollowButtonLoading from './FollowButtonLoading';
 import { followManager } from '@/service/follow';
 
 // types
-import { IFollowStatus } from '@/types';
 import { AlertType, errorMessage } from '@/constants/constant';
+
+type TFollowState = '팔로우' | '팔로잉' | '언팔로우';
 
 const FollowButton = ({ userId }: { userId: string }) => {
   const dispatch = useDispatch();
@@ -28,73 +29,81 @@ const FollowButton = ({ userId }: { userId: string }) => {
     suspense: true,
     useErrorBoundary: true,
   });
-
-  const calculateFollowState = ({
-    isFollowing,
-    isFollower,
-  }: {
-    isFollowing: boolean;
-    isFollower: boolean;
-  }) => {
-    if (!(isFollower || isFollowing)) {
-      return (
-        <div className="flex items-center gap-1.5 flex-nowrap">
-          <MoreIcon width={20} height={20} />
-          <span className="text-body2 text-nowrap">팔로우</span>
-        </div>
-      );
-    } else if (isFollower && !isFollowing) {
-      return '맞팔로우';
-    } else {
-      return '팔로우 취소';
-    }
-  };
-
-  const [followState, setFollowState] = useState(
-    calculateFollowState(data as IFollowStatus)
-  );
-  const [disabled, setDisabled] = useState<boolean>(false);
-
-  const handleClickFollowButton = async () => {
-    setDisabled(true);
-    try {
-      if (followState === '팔로우 취소') {
-        await followManager.cancleFollow({ userId });
-        setFollowState(
-          data?.isFollower ? (
-            '맞팔로우'
-          ) : (
-            <div className="flex items-center gap-1.5">
-              <MoreIcon width={20} height={20} />
-              <span>팔로우</span>
-            </div>
-          )
-        );
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: (followFlag: boolean) => {
+      if (followFlag) {
+        return followManager.requestFollow({ userId });
       } else {
-        await followManager.requestFollow({ userId });
-        setFollowState('팔로우 취소');
+        return followManager.cancleFollow({ userId });
       }
-    } catch {
-      dispatch(
-        openAlert({
-          type: AlertType.ERROR,
-          message: errorMessage.UnknownFollowCheck,
-        })
-      );
-    } finally {
-      setDisabled(false);
-    }
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['followStatus', userId] }),
+  });
+
+  const [followState, setFollowState] = useState<TFollowState>(
+    data?.isFollowing ? '팔로잉' : '팔로우'
+  );
+
+  const handleClickFollowButton = () => {
+    mutate(true, {
+      onSuccess: () => {
+        setFollowState('팔로잉');
+      },
+      onError: () => {
+        dispatch(
+          openAlert({
+            type: AlertType.ERROR,
+            message: errorMessage.UnknownFollowCheck,
+          })
+        );
+      },
+    });
   };
 
-  return (
-    <Button
-      color="yellow_line"
-      onClick={handleClickFollowButton}
-      disabled={disabled}
-    >
-      {followState}
-    </Button>
-  );
+  const handleClickFollowingButton = () => {
+    setFollowState('언팔로우');
+  };
+
+  const handleClickUnfollowButton = () => {
+    mutate(false, {
+      onSuccess: () => {
+        setFollowState('팔로우');
+      },
+      onError: () => {
+        dispatch(
+          openAlert({
+            type: AlertType.ERROR,
+            message: errorMessage.UnknownFollowCheck,
+          })
+        );
+      },
+    });
+  };
+
+  if (followState === '팔로잉') {
+    return (
+      <Button color="blue_gray_line" onClick={handleClickFollowingButton}>
+        <span>팔로잉</span>
+      </Button>
+    );
+  } else if (followState === '언팔로우') {
+    return (
+      <Button color="red_line" onClick={handleClickUnfollowButton}>
+        <span>언팔로우</span>
+      </Button>
+    );
+  } else {
+    return (
+      <Button color="yellow_line" onClick={handleClickFollowButton}>
+        <div className="flex items-center gap-1.5">
+          <MoreIcon width={20} height={20} />
+          <span>팔로우</span>
+        </div>
+      </Button>
+    );
+  }
 };
 
 FollowButton.ErrorFallback = FollowButtonErrorFallback;

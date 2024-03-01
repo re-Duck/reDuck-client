@@ -25,32 +25,23 @@ export default function PostSection() {
         <span className="text-[20px]">112,112 질문</span>
         <div className="flex gap-2">
           <Button
-            color={
-              postViewType === 'latest'
-                ? 'blue_gray_line'
-                : 'blue_gray_line_disabled'
-            }
+            color="blue_gray_line"
+            disabled={postViewType !== 'latest'}
             onClick={() => setPostViewType('latest')}
           >
             최신순
           </Button>
 
           <Button
-            color={
-              postViewType === 'popular'
-                ? 'blue_gray_line'
-                : 'blue_gray_line_disabled'
-            }
+            color="blue_gray_line"
+            disabled={postViewType !== 'popular'}
             onClick={() => setPostViewType('popular')}
           >
             인기순
           </Button>
           <Button
-            color={
-              postViewType === 'notAnswer'
-                ? 'blue_gray_line'
-                : 'blue_gray_line_disabled'
-            }
+            color="blue_gray_line"
+            disabled={postViewType !== 'notAnswer'}
             onClick={() => setPostViewType('notAnswer')}
           >
             답변 없는 질문

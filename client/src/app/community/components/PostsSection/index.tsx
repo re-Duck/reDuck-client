@@ -26,22 +26,16 @@ export default function PostsSection() {
 
         <div className="flex gap-2">
           <Button
-            color={
-              postViewType === 'latest'
-                ? 'blue_gray_line'
-                : 'blue_gray_line_disabled'
-            }
+            disabled={postViewType !== 'latest'}
+            color={'blue_gray_line'}
             onClick={() => setPostViewType('latest')}
           >
             최신순
           </Button>
 
           <Button
-            color={
-              postViewType === 'popular'
-                ? 'blue_gray_line'
-                : 'blue_gray_line_disabled'
-            }
+            disabled={postViewType !== 'popular'}
+            color={'blue_gray_line'}
             onClick={() => setPostViewType('popular')}
           >
             인기순

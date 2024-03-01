@@ -53,10 +53,12 @@ export default function Navigator({ viewMode }: NavitatorProps) {
         <div className="w-full h-[40px]">
           <div className="border-b-[1px] border-gray-scale-400 w-full h-full flex justify-between">
             <PostModeNavigation viewMode={viewMode} />
-            <Button color="yellow">
-              작성하기
-              <ArrowDownIcon />
-            </Button>
+            <Link href="/write">
+              <Button color="yellow">
+                작성하기
+                <ArrowDownIcon />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

@@ -74,7 +74,7 @@ export default function Login() {
         }
       }
     },
-    [modalState]
+    [modalState, dispatch, openModal, router]
   );
   return (
     <div className="flex flex-col h-[calc(100vh-3.5rem)] justify-center items-center">

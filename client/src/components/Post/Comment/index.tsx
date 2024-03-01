@@ -4,8 +4,6 @@ import React, { PropsWithChildren, useState } from 'react';
 import Link from 'next/link';
 
 //components
-import { Icon } from '@iconify/react';
-import { ArrowDownIcon } from '@/assets/Icon';
 import { ModifyComment, ReplyComment, DeleteComment, ReplyButton } from '..';
 import { Avatar } from '@/components';
 import { HeartIcon } from '@/assets/Icon';

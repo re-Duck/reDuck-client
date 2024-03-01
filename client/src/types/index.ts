@@ -115,6 +115,11 @@ export interface IChatRoomInfo {
   roomName: string;
 }
 
+export interface IFollowStatus {
+  isFollower: boolean;
+  isFollowing: boolean;
+}
+
 export interface IResponseRawData<T> {
   data: T;
   status: string;

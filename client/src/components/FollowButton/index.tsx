@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { openAlert } from '@/lib/redux/features/alert/alertSlice';
@@ -11,16 +12,26 @@ import Button from '../base/Button';
 import FollowButtonErrorFallback from './FollowButtonErrorFallback';
 import FollowButtonLoading from './FollowButtonLoading';
 
+// hooks
+import useModal from '@/hooks/modal/useModal';
+
 // services
 import { followManager } from '@/service/follow';
 
 // types
-import { AlertType, errorMessage } from '@/constants/constant';
+import {
+  AlertType,
+  ModalType,
+  errorMessage,
+  warningMessage,
+} from '@/constants/constant';
 
 type TFollowState = '팔로우' | '팔로잉' | '언팔로우';
 
 const FollowButton = ({ userId }: { userId: string }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { openModal } = useModal();
 
   const { data } = useQuery({
     queryKey: ['followStatus', userId],
@@ -51,7 +62,15 @@ const FollowButton = ({ userId }: { userId: string }) => {
       onSuccess: () => {
         setFollowState('팔로잉');
       },
-      onError: () => {
+      onError: (message) => {
+        if (message === '인증되지 않은 사용자입니다.') {
+          openModal({
+            type: ModalType.WARNING,
+            message: warningMessage.needLogin,
+            callback: () => router.push('/login'),
+          });
+          return;
+        }
         dispatch(
           openAlert({
             type: AlertType.ERROR,

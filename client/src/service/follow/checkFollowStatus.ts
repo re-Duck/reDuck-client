@@ -15,7 +15,7 @@ export default async function checkFollowStatus({
 }) {
   const suburl = `/follow/status/${userId}`;
 
-  const result = await axios_get({ suburl });
+  const result = await axios_get<IRawData>({ suburl });
 
   if (!result.isOkay) {
     throw result.error;

@@ -9,6 +9,6 @@ export default async function requestFollow({ userId }: { userId: string }) {
   const result = await axios_post({ suburl, data });
 
   if (!result.isOkay) {
-    throw new Error(result.error);
+    throw result.error;
   }
 }

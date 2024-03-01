@@ -82,6 +82,7 @@ export const warningMessage = Object.freeze({
   confirmGoOut: '정말로 나가시겠습니까?',
   confirmWithdrawal:
     '정말 회원 탈퇴하시겠습니까? 회원님의 모든 활동기록과 정보가 사라집니다.',
+  needLogin: '로그인이 필요합니다. 로그인하러 갈까요?',
 });
 export const initialSignupValue = {
   userId: '',

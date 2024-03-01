@@ -21,9 +21,9 @@ export default function Button(props: ButtonProps) {
     yellow_line:
       'bg-yellow-scale-50 border border-yellow-scale-500 text-black disabled:bg-gray-scale-50 disabled:border-gray-scale-800 disabled:text-gray-scale-600',
     blue_gray_line:
-      'bg-blue-gray-scale-100 border border-gray-900 disabled:bg-gray-scale-50 disabled:border-gray-800 disabled:text-blue-gray-600',
+      'border border-gray-900 hover:bg-blue-gray-scale-100 active:bg-blue-gary-scale-100 disabled:bg-gray-scale-50 disabled:border-gray-800 disabled:text-blue-gray-600',
     blue_gray_line_disabled:
-      'bg-gray-scale-50 border-[1px] border-gray-800 text-blue-gray-scale-600 opacity-40',
+      'bg-gray-scale-50 border border-gray-800 text-blue-gray-scale-600 opacity-40',
     red: 'bg-red-scale-600 text-white hover:bg-red-scale-700 active:bg-red-scale-700 disable:bg-red-scale-200',
     red_line:
       'border border-red-scale-600 text-red-scale-600 hover:border-red-scale-700 hover:bg-red-scale-200 active:border-red-700 active:bg-red-scale-200 disable:bg-gray-scale-50 disable:border-stroke-400 disable:text-red-scale-300',

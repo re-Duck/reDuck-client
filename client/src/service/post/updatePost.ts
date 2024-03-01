@@ -7,9 +7,16 @@ interface Request {
   content: string;
   postOriginId: string;
   postType: PostType;
+  tags: string[];
 }
 
-async function updatePost({ title, content, postOriginId, postType }: Request) {
+async function updatePost({
+  title,
+  content,
+  postOriginId,
+  postType,
+  tags,
+}: Request) {
   const suburl = `/post/${postOriginId}`;
 
   const data: Request = {
@@ -17,6 +24,7 @@ async function updatePost({ title, content, postOriginId, postType }: Request) {
     content,
     postOriginId,
     postType,
+    tags,
   };
 
   const result = await axios_put<unknown, Request>({ suburl, data });

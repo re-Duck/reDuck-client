@@ -49,7 +49,6 @@ export default function Write() {
   } = useWriting(postOriginId);
 
   const user = useSelector((state: IReduxState) => state.auth);
-  console.log(user);
   const { openModal } = useModal();
 
   const { editor } = useTipTap();
@@ -75,12 +74,14 @@ export default function Write() {
             title: formValues.title,
             content: nextContent,
             postType: formValues.postType,
+            tags: tags,
           });
         } else {
           returnPostOriginId = await postManager.createPost({
             title: formValues.title,
             postType: formValues.postType,
             content: nextContent,
+            tags: tags,
           });
         }
 

@@ -10,11 +10,13 @@ interface Request {
   content: string;
   postOriginId: string;
   postType: PostType;
+  tags: string[];
 }
 async function createPost({
   title,
   content,
   postType,
+  tags,
 }: Omit<Request, 'postOriginId'>) {
   const postOriginId = uuidv4();
   const suburl = '/post';
@@ -24,6 +26,7 @@ async function createPost({
     content,
     postOriginId,
     postType,
+    tags,
   };
 
   const result = await axios_post<unknown, Request>({

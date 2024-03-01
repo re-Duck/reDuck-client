@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import Link from 'next/link';
 
 //components
 import { Icon } from '@iconify/react';
 import { ArrowDownIcon } from '@/assets/Icon';
-import { ModifyComment, ReplyComment, DeleteComment } from '..';
+import { ModifyComment, ReplyComment, DeleteComment, ReplyButton } from '..';
 import { Avatar } from '@/components';
 import { HeartIcon } from '@/assets/Icon';
 
@@ -25,11 +25,10 @@ import { ModalType, errorMessage } from '@/constants/constant';
 //utils
 import { parseDateWithDot } from '@/util';
 
-interface ICommentProps {
+interface ICommentProps extends PropsWithChildren {
   data: IComment;
   IS_AUTHOR: boolean;
   postOriginId: string;
-  children?: React.ReactNode;
 }
 export default function Comment({
   data,
@@ -121,51 +120,23 @@ export default function Comment({
         <>
           {childCount > 0 ? (
             isReplyOpen ? (
-              <div
-                className="w-fit px-2 py-1 flex gap-1.5 items-center hover:cursor-pointer"
+              <ReplyButton
+                type="HIDDEN"
                 onClick={() => setIsReplyOpen(false)}
-              >
-                <ArrowDownIcon
-                  transform="rotate(180)"
-                  width={16}
-                  height={16}
-                  className="text-gary-scale-900"
-                />
-                <span className="text-caption1 text-gray-scale-900">
-                  답글 숨기기
-                </span>
-              </div>
+              />
             ) : (
-              <div
-                className="w-fit px-2 py-1 flex gap-1.5 items-center hover:cursor-pointer"
+              <ReplyButton
+                type="SHOW"
                 onClick={() => setIsReplyOpen(true)}
-              >
-                <ArrowDownIcon
-                  width={16}
-                  height={16}
-                  className="text-gary-scale-900"
-                />
-                <span className="text-caption1 text-gray-scale-900">
-                  답글 {childCount}개 보기
-                </span>
-              </div>
+                childCount={childCount}
+              />
             )
           ) : (
             <>
-              <div className="w-fit px-2 py-1 flex gap-1.5 items-center hover:cursor-pointer">
-                <Icon
-                  icon="mingcute:pencil-line"
-                  width={16}
-                  height={16}
-                  className="text-gray-scale-900"
-                />
-                <span
-                  className="text-caption1 text-gray-scale-900"
-                  onClick={() => setIsReplying(true)}
-                >
-                  답글 달기
-                </span>
-              </div>
+              <ReplyButton
+                type="REPLYFORROOT"
+                onClick={() => setIsReplying(true)}
+              />
               {isReplying && (
                 <ReplyComment
                   onClose={() => setIsReplying(false)}
@@ -188,20 +159,10 @@ export default function Comment({
                   postOriginId={postOriginId}
                 />
               ) : (
-                <div
-                  className="mt-3 py-1 flex items-center justify-center gap-1.5 hover:cursor-pointer hover:bg-blue-gray-scale-50 border border-blue-gray-scale-200"
+                <ReplyButton
+                  type="REPLYFORREPLY"
                   onClick={() => setIsReplying(true)}
-                >
-                  <Icon
-                    icon="mingcute:pencil-line"
-                    width={16}
-                    height={16}
-                    className="text-gray-scale-900"
-                  />
-                  <span className="text-caption1 text-gray-scale-900">
-                    답글 달기
-                  </span>
-                </div>
+                />
               )}
             </div>
           )}

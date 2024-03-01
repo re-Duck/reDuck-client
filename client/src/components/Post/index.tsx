@@ -7,3 +7,4 @@ export { default as MoreButton } from './MoreButton';
 export { default as FloatingBar } from './FloatingBar';
 export { default as ReplyComment } from './ReplyComment';
 export { default as DeleteComment } from './DeleteComment';
+export { default as ReplyButton } from './ReplyButton';

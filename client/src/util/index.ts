@@ -35,13 +35,9 @@ export const parseDate = (date: string) => {
 export const parseDateWithDot = (date: string) => {
   if (!date) return;
 
-  const padZero = (num: number) => {
-    return num < 10 ? `0${num}` : num;
-  };
-
-  const year = Number(date.slice(0, 4));
-  const month = padZero(Number(date.slice(5, 7)));
-  const day = padZero(Number(date.slice(8, 10)));
+  const year = date.slice(0, 4);
+  const month = date.slice(5, 7).padStart(2, '0');
+  const day = date.slice(8, 10).padStart(2, '0');
 
   return `${year}.${month}.${day}`;
 };

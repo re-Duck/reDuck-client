@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
@@ -9,8 +9,7 @@ import { MoreIcon } from '@/assets/Icon';
 
 // components
 import Button from '../base/Button';
-import FollowButtonErrorFallback from './FollowButtonErrorFallback';
-import FollowButtonLoading from './FollowButtonLoading';
+import FollowButtonLoading from './loading';
 
 // hooks
 import useModal from '@/hooks/modal/useModal';
@@ -101,31 +100,26 @@ const FollowButton = ({ userId }: { userId: string }) => {
     });
   };
 
-  if (followState === '팔로잉') {
-    return (
-      <Button color="blue_gray_line" onClick={handleClickFollowingButton}>
-        <span>팔로잉</span>
-      </Button>
-    );
-  } else if (followState === '언팔로우') {
-    return (
-      <Button color="red_line" onClick={handleClickUnfollowButton}>
-        <span>언팔로우</span>
-      </Button>
-    );
-  } else {
-    return (
-      <Button color="yellow_line" onClick={handleClickFollowButton}>
-        <div className="flex items-center gap-1.5">
-          <MoreIcon width={20} height={20} />
-          <span>팔로우</span>
-        </div>
-      </Button>
-    );
-  }
+  return (
+    <Suspense fallback={<FollowButtonLoading />}>
+      {followState === '팔로잉' ? (
+        <Button color="blue_gray_line" onClick={handleClickFollowingButton}>
+          <span>팔로잉</span>
+        </Button>
+      ) : followState === '언팔로우' ? (
+        <Button color="red_line" onClick={handleClickUnfollowButton}>
+          <span>언팔로우</span>
+        </Button>
+      ) : (
+        <Button color="yellow_line" onClick={handleClickFollowButton}>
+          <div className="flex items-center gap-1.5">
+            <MoreIcon width={20} height={20} />
+            <span>팔로우</span>
+          </div>
+        </Button>
+      )}
+    </Suspense>
+  );
 };
-
-FollowButton.ErrorFallback = FollowButtonErrorFallback;
-FollowButton.FallbackLoading = FollowButtonLoading;
 
 export default FollowButton;

@@ -1,7 +1,6 @@
 'use client';
 
-import React, { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import React from 'react';
 import Link from 'next/link';
 
 // components
@@ -31,11 +30,7 @@ export default function FollowUser({ userName, userId, profileImg }: IProp) {
         </div>
       </Link>
       <div className="absolute right-0">
-        <ErrorBoundary FallbackComponent={FollowButton.ErrorFallback}>
-          <Suspense fallback={<FollowButton.FallbackLoading />}>
-            <FollowButton userId={userId} />
-          </Suspense>
-        </ErrorBoundary>
+        <FollowButton userId={userId} />
       </div>
     </div>
   );

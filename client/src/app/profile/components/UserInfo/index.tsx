@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useModal from '@/hooks/modal/useModal';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { ErrorBoundary } from 'react-error-boundary';
 
 // components
 import { Avatar } from '@/components';
@@ -23,9 +22,6 @@ import { ModalType, errorMessage } from '@/constants/constant';
 // types
 import { IUserInfo } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
-
-// icon
-import { Icon } from '@iconify/react';
 
 export default function UserInfo({ targetUserId }: { targetUserId: string }) {
   const router = useRouter();
@@ -132,11 +128,7 @@ export default function UserInfo({ targetUserId }: { targetUserId: string }) {
         ))}
       </div>
       <div className="flex justify-end gap-1 m-2">
-        <ErrorBoundary FallbackComponent={FollowButton.ErrorFallback}>
-          <Suspense fallback={<FollowButton.FallbackLoading />}>
-            <FollowButton userId={targetUserId} />
-          </Suspense>
-        </ErrorBoundary>
+        <FollowButton userId={targetUserId} />
         <button
           onClick={handleChatRoute}
           disabled={isDisable}

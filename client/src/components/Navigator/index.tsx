@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import Button from '../Button';
+import Button from '../base/Button';
 import SearchButton from './SearchButton';
 import ChatButton from './ChatButton';
 import AlarmButton from './AlarmButton';

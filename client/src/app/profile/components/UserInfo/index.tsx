@@ -1,17 +1,15 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useModal from '@/hooks/modal/useModal';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { ErrorBoundary } from 'react-error-boundary';
 
 // components
 import { Avatar } from '@/components';
 import FlexLabelContent from './flex-label-content';
-import FollowButton from '../Follow/follow-button';
-import FollowButtonErrorFallback from '../Follow/follow-button-errorfallback';
+import FollowButton from '@/components/FollowButton';
 
 // service
 import { BASE_URL } from '@/service/base/api';
@@ -24,9 +22,6 @@ import { ModalType, errorMessage } from '@/constants/constant';
 // types
 import { IUserInfo } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
-
-// icon
-import { Icon } from '@iconify/react';
 
 export default function UserInfo({ targetUserId }: { targetUserId: string }) {
   const router = useRouter();
@@ -133,21 +128,7 @@ export default function UserInfo({ targetUserId }: { targetUserId: string }) {
         ))}
       </div>
       <div className="flex justify-end gap-1 m-2">
-        <ErrorBoundary FallbackComponent={FollowButtonErrorFallback}>
-          <Suspense
-            fallback={
-              <button className="w-20 p-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-70 sm:w-24 sm:text-base">
-                <Icon
-                  icon="line-md:loading-loop"
-                  fontSize={25}
-                  className="mx-auto"
-                />
-              </button>
-            }
-          >
-            <FollowButton userId={targetUserId} />
-          </Suspense>
-        </ErrorBoundary>
+        <FollowButton userId={targetUserId} />
         <button
           onClick={handleChatRoute}
           disabled={isDisable}

@@ -12,8 +12,10 @@ import { PostDetail } from '@/app/board/components';
 // types
 import { IBoardPostInformation, IComment } from '@/types';
 import { IReduxState } from '@/types/redux/IReduxState';
+
 // service
 import { postManager } from '@/service/post';
+import { commentManager } from '@/service/comment';
 
 interface IProps {
   postOriginId: string;
@@ -23,34 +25,59 @@ interface IProps {
 function PostContent({ postOriginId, initialData }: IProps) {
   const user = useSelector((state: IReduxState) => state.auth);
 
-  const { data } = useQuery({
+  const { data: postData } = useQuery({
     queryKey: [`${postOriginId}`],
     queryFn: () => postManager.getPost({ postOriginId }),
     initialData: initialData,
     retry: false,
     suspense: true,
   });
-  const comments = data?.comments;
-  const IS_POST_AUTHOR = user.userId === data?.postAuthorId;
+
+  const { data: postComment } = useQuery({
+    queryKey: [`${postOriginId}/comment`],
+    queryFn: () => commentManager.getComments({ postOriginId }),
+    retry: false,
+    suspense: true,
+  });
+
+  const IS_POST_AUTHOR = user.userId === postData?.postAuthorId;
 
   return (
-    <div className="flex flex-col max-w-4xl m-auto mb-4 gap-14">
+    <div className="flex flex-col max-w-[850px] m-auto mb-4">
       <PostDetail
-        data={data as IBoardPostInformation}
+        data={postData as IBoardPostInformation}
         IS_AUTHOR={IS_POST_AUTHOR}
       />
-      <h3 className="pl-3 text-2xl font-bold">댓글 {comments?.length}</h3>
-      <div className="flex flex-col border-gray-100 border-[1px] border-collapse">
-        <CommentUpload user={user} />
-        {comments?.map((comment: IComment) => (
+      <h3 className="text-body1 mt-[52px] mb-[30px] font-bold text-gray-scale-800">
+        {postComment?.length}개의 댓글
+      </h3>
+      <CommentUpload user={user} postOriginId={postOriginId} />
+      {postComment
+        ?.filter(
+          (comment: IComment) => comment.parentCommentOriginId === 'root'
+        )
+        .map((comment: IComment) => (
           <Comment
             key={comment.commentOriginId}
             data={comment}
             IS_AUTHOR={user.userId === comment.commentAuthorId}
             postOriginId={postOriginId}
-          />
+          >
+            {postComment
+              ?.filter(
+                (reply: IComment) =>
+                  reply.parentCommentOriginId === comment.commentOriginId
+              )
+              .map((reply: IComment) => (
+                <Comment
+                  key={reply.commentOriginId}
+                  data={reply}
+                  IS_AUTHOR={user.userId === reply.commentAuthorId}
+                  postOriginId={postOriginId}
+                />
+              ))}
+          </Comment>
         ))}
-      </div>
     </div>
   );
 }

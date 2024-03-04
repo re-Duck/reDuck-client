@@ -1,5 +1,5 @@
 export interface IComment {
-  commentAuthorDevelopAnnual: string;
+  parentCommentOriginId: string;
   commentAuthorId: string;
   commentAuthorName: string;
   commentAuthorProfileImgPath: string;
@@ -120,7 +120,11 @@ export interface IFollowStatus {
   isFollowing: boolean;
 }
 
-export type TFollowText = '팔로우' | '맞팔로우' | '팔로우 취소';
+export interface IResponseRawData<T> {
+  data: T;
+  status: string;
+  message: string | null;
+}
 
 export type EmailType = 'SIGNUP' | 'USER' | 'COMPANY' | 'SCHOOL';
 

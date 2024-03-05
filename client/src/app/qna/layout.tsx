@@ -7,7 +7,7 @@ export default function LayoutComponent({
 }) {
   return (
     <Layout viewMode="qna">
-      <div className="pt-[38px] flex justify-center">{children}</div>
+      <div className="flex justify-center">{children}</div>
     </Layout>
   );
 }

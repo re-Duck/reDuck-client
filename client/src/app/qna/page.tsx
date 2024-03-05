@@ -8,7 +8,7 @@ export default async function Qna() {
   // const data = await getAllPosts({ postType: 'qna', pageParam: '' });
 
   return (
-    <div className="flex flex-col w-full gap-[42px] max-w-[850px]">
+    <div className="flex flex-col w-full gap-[42px] max-w-[850px] pt-[38px]">
       <TagNavigation />
       <PostSection />
     </div>

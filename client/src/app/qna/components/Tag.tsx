@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction } from 'react';
 
 interface TagProps {
   name: string;
-  type: 'example' | 'selected' | 'popular';
-  setTags: Dispatch<SetStateAction<string[]>>;
+  type: 'example' | 'selected' | 'popular' | 'normal';
+  setTags?: Dispatch<SetStateAction<string[]>>;
 }
 
 export default function Tag({ name, type, setTags }: TagProps) {
@@ -12,6 +12,7 @@ export default function Tag({ name, type, setTags }: TagProps) {
     example: 'border-gray-scale-400 text-gray-scale-500',
     selected: 'border-gray-scale-500 text-gray-scale-700',
     popular: 'border-yellow-scale-500 text-gray-scale-700 ',
+    normal: 'border-gary-scale-500 text-gray-scale-700',
   };
   return (
     <span
@@ -24,7 +25,9 @@ export default function Tag({ name, type, setTags }: TagProps) {
           height={16}
           stroke={'#646464'}
           className="cursor-pointer"
-          onClick={() => setTags((prev) => prev.filter((tag) => tag !== name))}
+          onClick={() =>
+            setTags && setTags((prev) => prev.filter((tag) => tag !== name))
+          }
         />
       )}
     </span>

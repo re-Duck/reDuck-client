@@ -20,13 +20,13 @@ const paramsSerializer = (paramObj: Record<string, string>) => {
   return params.toString();
 };
 
-export async function axios_get<Response extends { data: any }>({
+export async function axios_get<Response>({
   suburl,
   headers = {},
   params = {},
 }: Omit<AxiosProps<unknown>, 'data'>) {
   try {
-    const response = await axios.get<Response>(suburl, {
+    const response = await axios.get(suburl, {
       headers,
       params,
       paramsSerializer,
@@ -50,12 +50,13 @@ export async function axios_get<Response extends { data: any }>({
   }
 }
 
-export async function axios_post<
-  Response extends { data: any },
-  Request = unknown
->({ suburl, data, headers = {} }: AxiosProps<Request>) {
+export async function axios_post<Response, Request = unknown>({
+  suburl,
+  data,
+  headers = {},
+}: AxiosProps<Request>) {
   try {
-    const response = await axios.post<Response>(suburl, data, {
+    const response = await axios.post(suburl, data, {
       headers,
     });
     return {
@@ -76,12 +77,13 @@ export async function axios_post<
   }
 }
 
-export async function axios_put<
-  Response extends { data: any },
-  Request = unknown
->({ suburl, data, headers = {} }: AxiosProps<Request>) {
+export async function axios_put<Response, Request = unknown>({
+  suburl,
+  data,
+  headers = {},
+}: AxiosProps<Request>) {
   try {
-    const response = await axios.put<Response>(suburl, data, {
+    const response = await axios.put(suburl, data, {
       headers,
     });
     return {
@@ -102,12 +104,12 @@ export async function axios_put<
   }
 }
 
-export async function axios_delete<Response extends { data: any }>({
+export async function axios_delete<Response>({
   suburl,
   headers = {},
 }: Omit<AxiosProps<unknown>, 'data'>) {
   try {
-    const response = await axios.delete<Response>(suburl, {
+    const response = await axios.delete(suburl, {
       headers,
     });
     return {

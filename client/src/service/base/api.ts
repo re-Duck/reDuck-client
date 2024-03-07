@@ -20,7 +20,7 @@ const paramsSerializer = (paramObj: Record<string, string>) => {
   return params.toString();
 };
 
-export async function axios_get<Response = unknown>({
+export async function axios_get<Response = any>({
   suburl,
   headers = {},
   params = {},
@@ -34,7 +34,7 @@ export async function axios_get<Response = unknown>({
     //TODO: data: response.data.data로 바꾸기 (백엔드 변경 이후)
     return {
       isOkay: true,
-      data: response.data,
+      data: response.data.data,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -50,7 +50,7 @@ export async function axios_get<Response = unknown>({
   }
 }
 
-export async function axios_post<Response = unknown, Request = unknown>({
+export async function axios_post<Response = any, Request = unknown>({
   suburl,
   data,
   headers = {},
@@ -61,7 +61,7 @@ export async function axios_post<Response = unknown, Request = unknown>({
     });
     return {
       isOkay: true,
-      data: response.data,
+      data: response.data.data,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -77,7 +77,7 @@ export async function axios_post<Response = unknown, Request = unknown>({
   }
 }
 
-export async function axios_put<Response = unknown, Request = unknown>({
+export async function axios_put<Response = any, Request = unknown>({
   suburl,
   data,
   headers = {},
@@ -88,7 +88,7 @@ export async function axios_put<Response = unknown, Request = unknown>({
     });
     return {
       isOkay: true,
-      data: response.data,
+      data: response.data.data,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -104,7 +104,7 @@ export async function axios_put<Response = unknown, Request = unknown>({
   }
 }
 
-export async function axios_delete<Response = unknown>({
+export async function axios_delete<Response = any>({
   suburl,
   headers = {},
 }: Omit<AxiosProps<unknown>, 'data'>) {
@@ -120,7 +120,7 @@ export async function axios_delete<Response = unknown>({
     if (axios.isAxiosError(error)) {
       return {
         isOkay: false,
-        error: error.response?.data,
+        error: error.response?.data.data,
       };
     }
     return {

@@ -8,22 +8,14 @@ interface IFollowUser extends Pick<IUserState, 'userId' | 'userName'> {
   profileImg: string;
 }
 
-interface IRawData {
-  data: IFollowUser[];
-  status: string;
-  message: string;
-}
-
 export default async function getFollowing({ userId }: { userId: string }) {
   const suburl = `/follow/followings/${userId}`;
 
-  const result = await axios_get({ suburl });
+  const result = await axios_get<IFollowUser[]>({ suburl });
 
   if (!result.isOkay) {
     throw new Error(result.error);
   }
 
-  const rawData = result.data as IRawData;
-
-  return rawData.data;
+  return result.data;
 }

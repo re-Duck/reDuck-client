@@ -120,12 +120,6 @@ export interface IFollowStatus {
   isFollowing: boolean;
 }
 
-export interface IResponseRawData<T> {
-  data: T;
-  status: string;
-  message: string | null;
-}
-
 export type EmailType = 'SIGNUP' | 'USER' | 'COMPANY' | 'SCHOOL';
 
 export type MyPageTab = '프로필' | '활동기록' | '친구목록' | '덕력치';

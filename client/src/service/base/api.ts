@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { IResponseRawData } from '@/types';
+
 export const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 axios.defaults.baseURL = BASE_URL;
@@ -20,18 +22,18 @@ const paramsSerializer = (paramObj: Record<string, string>) => {
   return params.toString();
 };
 
-export async function axios_get<Response>({
+export async function axios_get<Response = unknown>({
   suburl,
   headers = {},
   params = {},
 }: Omit<AxiosProps<unknown>, 'data'>) {
   try {
-    const response = await axios.get(suburl, {
+    const response = await axios.get<IResponseRawData<Response>>(suburl, {
       headers,
       params,
       paramsSerializer,
     });
-    //TODO: data: response.data.data로 바꾸기 (백엔드 변경 이후)
+
     return {
       isOkay: true,
       data: response.data.data,
@@ -56,9 +58,13 @@ export async function axios_post<Response, Request = unknown>({
   headers = {},
 }: AxiosProps<Request>) {
   try {
-    const response = await axios.post(suburl, data, {
-      headers,
-    });
+    const response = await axios.post<IResponseRawData<Response>>(
+      suburl,
+      data,
+      {
+        headers,
+      }
+    );
     return {
       isOkay: true,
       data: response.data.data,
@@ -83,7 +89,7 @@ export async function axios_put<Response, Request = unknown>({
   headers = {},
 }: AxiosProps<Request>) {
   try {
-    const response = await axios.put(suburl, data, {
+    const response = await axios.put<IResponseRawData<Response>>(suburl, data, {
       headers,
     });
     return {
@@ -109,7 +115,7 @@ export async function axios_delete<Response>({
   headers = {},
 }: Omit<AxiosProps<unknown>, 'data'>) {
   try {
-    const response = await axios.delete(suburl, {
+    const response = await axios.delete<IResponseRawData<Response>>(suburl, {
       headers,
     });
     return {

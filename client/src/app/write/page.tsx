@@ -38,7 +38,7 @@ export default function Write() {
 
   const { openModal, closeModal } = useModal();
 
-  const { editor } = useTipTap();
+  const { editor } = useTipTap({ placeholder: '' });
 
   const handleSubmit = useCallback(
     async (title: string, setSubmitting: (isSubmitting: boolean) => void) => {

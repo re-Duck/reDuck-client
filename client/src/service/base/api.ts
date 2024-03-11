@@ -1,3 +1,4 @@
+import { IResponseRawData } from '@/types';
 import axios from 'axios';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -26,7 +27,7 @@ export async function axios_get<Response = unknown>({
   params = {},
 }: Omit<AxiosProps<unknown>, 'data'>) {
   try {
-    const response = await axios.get<Response>(suburl, {
+    const response = await axios.get<IResponseRawData<Response>>(suburl, {
       headers,
       params,
       paramsSerializer,
@@ -34,7 +35,7 @@ export async function axios_get<Response = unknown>({
     //TODO: data: response.data.data로 바꾸기 (백엔드 변경 이후)
     return {
       isOkay: true,
-      data: response.data,
+      data: response.data.data,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -56,12 +57,16 @@ export async function axios_post<Response = unknown, Request = unknown>({
   headers = {},
 }: AxiosProps<Request>) {
   try {
-    const response = await axios.post<Response>(suburl, data, {
-      headers,
-    });
+    const response = await axios.post<IResponseRawData<Response>>(
+      suburl,
+      data,
+      {
+        headers,
+      }
+    );
     return {
       isOkay: true,
-      data: response.data,
+      data: response.data.data,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -83,12 +88,12 @@ export async function axios_put<Response = unknown, Request = unknown>({
   headers = {},
 }: AxiosProps<Request>) {
   try {
-    const response = await axios.put<Response>(suburl, data, {
+    const response = await axios.put<IResponseRawData<Response>>(suburl, data, {
       headers,
     });
     return {
       isOkay: true,
-      data: response.data,
+      data: response.data.data,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -109,12 +114,12 @@ export async function axios_delete<Response = unknown>({
   headers = {},
 }: Omit<AxiosProps<unknown>, 'data'>) {
   try {
-    const response = await axios.delete<Response>(suburl, {
+    const response = await axios.delete<IResponseRawData<Response>>(suburl, {
       headers,
     });
     return {
       isOkay: true,
-      data: response.data,
+      data: response.data.data,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {

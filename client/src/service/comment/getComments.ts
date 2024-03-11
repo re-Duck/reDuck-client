@@ -1,6 +1,6 @@
 import { axios_get } from '../base/api';
 
-import { IComment, IResponseRawData } from '@/types';
+import { IComment } from '@/types';
 
 export default async function getComments({
   postOriginId,
@@ -9,13 +9,11 @@ export default async function getComments({
 }) {
   const suburl = `/post/${postOriginId}/comments`;
 
-  const result = await axios_get({ suburl });
+  const result = await axios_get<IComment[]>({ suburl });
 
   if (!result.isOkay) {
     throw result.error;
   }
 
-  const rawData = result.data as IResponseRawData<IComment[]>;
-
-  return rawData.data;
+  return result.data;
 }

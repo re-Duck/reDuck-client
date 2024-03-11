@@ -2,8 +2,8 @@ import React from 'react';
 
 interface IDividerProp {
   type: 'horizental' | 'vertical';
-  margin: number;
-  thin: number;
+  margin: 0 | 1 | 3 | 4 | 6 | 8 | 16;
+  thin: 1 | 2 | 4 | 8;
 }
 
 export default function Divider({

@@ -9,7 +9,7 @@ export default async function getIsScrapPost({
 
   const result = await axios_get<boolean>({ suburl });
 
-  if (!result.isOkay) {
+  if (!result.isOkay || result.data === undefined) {
     throw result.error;
   }
 

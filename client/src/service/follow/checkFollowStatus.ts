@@ -2,12 +2,6 @@ import { axios_get } from '../base/api';
 
 import { IFollowStatus } from '@/types';
 
-interface IRawData {
-  data: IFollowStatus;
-  status: string;
-  message: string;
-}
-
 export default async function checkFollowStatus({
   userId,
 }: {
@@ -15,13 +9,11 @@ export default async function checkFollowStatus({
 }) {
   const suburl = `/follow/status/${userId}`;
 
-  const result = await axios_get<IRawData>({ suburl });
+  const result = await axios_get<IFollowStatus>({ suburl });
 
   if (!result.isOkay) {
     throw result.error;
   }
 
-  const rawData = result.data as IRawData;
-
-  return rawData.data;
+  return result.data;
 }

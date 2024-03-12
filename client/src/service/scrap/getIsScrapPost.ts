@@ -1,7 +1,5 @@
 import { axios_get } from '../base/api';
 
-import { IResponseRawData } from '@/types';
-
 export default async function getIsScrapPost({
   postOriginId,
 }: {
@@ -9,13 +7,11 @@ export default async function getIsScrapPost({
 }) {
   const suburl = `scrap/posts/${postOriginId}/status`;
 
-  const result = await axios_get({ suburl });
+  const result = await axios_get<boolean>({ suburl });
 
-  if (!result.isOkay) {
+  if (!result.isOkay || result.data === undefined) {
     throw result.error;
   }
 
-  const rawData = result.data as IResponseRawData<boolean>;
-
-  return rawData.data;
+  return result.data;
 }
